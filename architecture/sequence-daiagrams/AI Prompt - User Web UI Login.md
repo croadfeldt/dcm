@@ -25,4 +25,4 @@ IDM Service authenticates user with target Auth source
 Auth Source returns authentication success to IDM Service
 IDM returns authentication token to Ingress API
 Ingress API returns token to Web UI
-Web UI returns token and entry page to User 
+Web UI returns token and entry page to User
