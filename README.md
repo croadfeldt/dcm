@@ -1,5 +1,5 @@
 # DCM
-DCM (Data Center Management) is envisioned as a framework designed to provide a "hyperscaler-like cloud experience" for on-premises infrastructure. It aims to centralize and automate the management, observation, and lifecycle of IT/IS services within an enterprise data center.
+DCM (Data Center Management) is envisioned as a framework designed to provide a "hyperscaler-like cloud experience" for on-premises infrastructure. It aims to centralize and automate the management, observation, and lifecycle of IT/IS services within an enterprise data center. This is a work in progress with the initial stage of HLD documentation completed. Detailed specifications and discussions are on-going. Expertise and opinions are encouraged and welcome.
 
 Here's an architectural overview of DCM, based on the provided documents:
 
