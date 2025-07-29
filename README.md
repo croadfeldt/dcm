@@ -1,10 +1,11 @@
 # dcm
 Data Center Management - Sovereign Cloud Framework
 
-# Directory of Contents
+# Table of Contents
 
 ## Root
-- [README.md](README.md) — Project overview and references
+- [README.md](README.md) — Project TOC
+- [overview.md](overview.md) - Project overview - will be merged into READMe.
 - [taxonomy.md](taxonomy.md) — DCM taxonomy and definitions
 
 ## architecture
@@ -16,7 +17,7 @@ Data Center Management - Sovereign Cloud Framework
 ### components
 #### data_model
 - [overview.md](architecture/components/data_model/overview.md) — Data flow model overview
-- DCM-Data_Flow_Model.pdf — Data flow model diagram (PDF)
+- [DCM-Data_Flow_Model.pdf](architecture/components/data_model/DCM-Data_Flow_Model.pdf) — Data flow model diagram (PDF)
 
 ### deployment
 *(No text files listed)*
