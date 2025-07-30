@@ -13,6 +13,13 @@ Here's an architectural overview of DCM, based on the provided documents:
 * **Full Lifecycle Management**: Enable complete lifecycle management of IT/IS services and ephemeral/declarative infrastructure.  
 * **Mimics Kubernetes Design**: Draws inspiration from Kubernetes' orchestration and declarative control plane.
 
+# Status of next release (alpha)
+
+[ ] todo 1 (owned by ....)
+[ ] todo 2 (owned by ....)
+[ ] todo 3 (owned by ....)
+[ ] todo 4 (owned by ....)
+
 # Table of Contents
 
 ## Root
