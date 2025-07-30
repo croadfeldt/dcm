@@ -15,10 +15,10 @@ Here's an architectural overview of DCM, based on the provided documents:
 
 # Status of next release (alpha)
 
-[ ] todo 1 (owned by ....)
-[ ] todo 2 (owned by ....)
-[ ] todo 3 (owned by ....)
-[ ] todo 4 (owned by ....)
+- [ ] todo 1 (owned by ....)
+- [ ] todo 2 (owned by ....)
+- [ ] todo 3 (owned by ....)
+- [ ] todo 4 (owned by ....)
 
 # Recommended Reading
 - [overview.md](overview.md) - Project overview - will be merged into READMe.
