@@ -5,12 +5,12 @@ Here's an architectural overview of DCM, based on the provided documents:
 
 **Core Principles & Goals:**
 
-* **Centralized Management**: Consolidate disparate automation efforts under a single control plane or "single pane of glass" to manage various data center components.  
-* **Automation & Self-Service**: Leverage existing automation tools (like Ansible Automation Platform) to offer a self-service model for provisioning, configuration, and day-to-day management. The goal is to enable application teams to define and deploy infrastructure as code.  
-* **Declarative Infrastructure**: Define the desired state of infrastructure, with the system working to achieve and maintain that state, aiding in reconciliation between discovered and intended inventory.  
-* **Composability**: Emphasize a composable architecture that allows for reusable services and operational efficiencies.  
-* **Technology Agnostic Framework**: Designed to be flexible and consume common data formats, translating them to appropriate technologies, though an opinionated model is available.  
-* **Full Lifecycle Management**: Enable complete lifecycle management of IT/IS services and ephemeral/declarative infrastructure.  
+* **Centralized Management**: Consolidate disparate automation efforts under a single control plane or "single pane of glass" to manage various data center components.
+* **Automation & Self-Service**: Leverage existing automation tools (like Ansible Automation Platform) to offer a self-service model for provisioning, configuration, and day-to-day management. The goal is to enable application teams to define and deploy infrastructure as code.
+* **Declarative Infrastructure**: Define the desired state of infrastructure, with the system working to achieve and maintain that state, aiding in reconciliation between discovered and intended inventory.
+* **Composability**: Emphasize a composable architecture that allows for reusable services and operational efficiencies.
+* **Technology Agnostic Framework**: Designed to be flexible and consume common data formats, translating them to appropriate technologies, though an opinionated model is available.
+* **Full Lifecycle Management**: Enable complete lifecycle management of IT/IS services and ephemeral/declarative infrastructure.
 * **Mimics Kubernetes Design**: Draws inspiration from Kubernetes' orchestration and declarative control plane.
 
 # Status of next release (alpha)
@@ -22,7 +22,7 @@ Here's an architectural overview of DCM, based on the provided documents:
 
 # Recommended Reading
 - [overview.md](overview.md) - Project overview - will be merged into READMe.
-- [taxonomy.md](taxonomy.md) — DCM taxonomy and definitions
+- [taxonomy.md](./taxonomy/taxonomy.md) — DCM taxonomy and definitions
 
 # MVP
 *(No text files listed)*
