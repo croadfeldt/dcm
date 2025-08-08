@@ -1,0 +1,125 @@
+architecture:
+  name: Infrastructure Automation Platform
+  description: A platform for automating the provisioning and management of infrastructure resources.
+  version: 1.0
+
+components:
+  - name: Orchestration
+    type: Workflow Engine
+    description: Manages the flow of infrastructure requests and coordinates the execution of tasks.
+    language: Python
+    dependencies:
+      - Service Catalog
+      - API Gateway
+    interfaces:
+      - HTTP
+      - Message Queue
+    properties:
+      scheduling: "Cron-based and Event-driven"
+      scalability: "Horizontal"
+
+  - name: Service Catalog
+    type: API and Data Store
+    description: Provides a centralized catalog of available infrastructure services and their configurations.
+    language: Java
+    dependencies:
+      - Core Data
+    interfaces:
+      - REST API
+    properties:
+      data_format: "JSON"
+      versioning: "Semantic Versioning"
+
+  - name: API Gateway
+    type: Reverse Proxy and API Manager
+    description: Provides a single entry point for accessing infrastructure services and manages authentication, authorization, and rate limiting.
+    language: Go
+    dependencies:
+      - Orchestration
+    interfaces:
+      - HTTP
+      - HTTPS
+    properties:
+      rate_limiting: "100 requests per minute"
+      authentication: "OAuth 2.0"
+
+  - name: Core Data
+    type: Data Store
+    description: Stores core system data, including configuration settings, user profiles, and audit logs.
+    language: PostgreSQL
+    interfaces:
+      - SQL
+    properties:
+      replication: "Synchronous"
+      backup_frequency: "Daily"
+
+  - name: Create API
+    type: REST API
+    description: Responsible for creating new infrastructure resources.
+    language: Python
+    dependencies:
+      - Service Catalog
+    interfaces:
+      - REST API
+    properties:
+      resource_types: ["VM", "Network", "Storage"]
+
+  - name: Read API
+    type: REST API
+    description: Responsible for retrieving information about existing infrastructure resources.
+    language: Java
+    dependencies:
+      - Core Data
+    interfaces:
+      - REST API
+
+  - name: Update API
+    type: REST API
+    description: Responsible for updating existing infrastructure resources.
+    language: Python
+    dependencies:
+      - Service Catalog
+      - Core Data
+    interfaces:
+      - REST API
+
+  - name: Delete API
+    type: REST API
+    description: Responsible for deleting existing infrastructure resources.
+    language: Go
+    dependencies:
+      - Service Catalog
+      - Core Data
+    interfaces:
+      - REST API
+
+relationships:
+  - source: Orchestration
+    target: Service Catalog
+    type: "uses"
+    description: "Orchestration retrieves service definitions from the Service Catalog."
+
+  - source: API Gateway
+    target: Orchestration
+    type: "routes to"
+    description: "API Gateway routes requests to the Orchestration component."
+
+  - source: Create API
+    target: Service Catalog
+    type: "depends on"
+    description: "Create API retrieves resource configurations from the Service Catalog."
+
+  - source: Read API
+    target: Core Data
+    type: "reads from"
+    description: "Read API retrieves resource information from the Core Data store."
+
+  - source: Update API
+    target: Service Catalog
+    type: "updates"
+    description: "Update API updates resource definitions in the Service Catalog."
+
+  - source: Update API
+    target: Core Data
+    type: "updates"
+    description: "Update API updates resource information in the Core Data store."
