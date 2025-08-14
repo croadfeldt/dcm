@@ -1,92 +1,108 @@
 # DCM Logical Components
 
+## Purpose, Role, Responsibility
+
+- **Purpose:** Why it exists  
+- **Role:** What it does  
+- **Responsibility:** What it owns  
+
+---
+
 ## Control Plane
 
 ### Functions
 
 #### Cost Analysis
-- **Purpose:** Capability to analyze cost of service to consumer.
+- **Purpose:** Allow consumers to understand true cost of requesting/utilizing a service throughout its lifecycle.
+- **Role:** Provide full costing of services during the lifecycle of a service through DCM.
+- **Responsibility:** All accounting functions required to inform consumers of the true cost of services throughout the lifecycle of a service estimate or request.
 
 #### Orchestration
-- **Purpose:** Coordinate the specific actions needed to facilitate the realization of the Request Payload.
+- **Purpose:** Ensure the lifecycle of a request from instantiation to fulfillment.
+- **Role:** Coordinate and manage required DCM functions to facilitate the realization of the request.
+- **Responsibility:** Manage and coordinate other functions in DCM to fulfill a request.
 
 #### Audit *(Combine with Observability?)*
-- **Purpose:** Ability to log actions and report on functions and data used during DCM lifecycle functions and activities.
+- **Purpose:** Allow appropriate personas to review/validate transactions end-to-end through the DCM architecture.
+- **Role:** Provide reports, analysis, and interactive interrogation of transaction details to support SRE, Auditors, Security teams, and Consumer personas.
+- **Responsibility:** All functions related to reporting, analysis, and interrogation of transactions for security, RBAC, and operational details.
 
-#### Service Catalog
-- **Purpose:** Provides list of Services available for consumption by consumers.
+#### Service Catalog *(Should this be the initiator of a service request?)*
+- **Purpose:** Provide catalog of services available for consumption by consumers.
+- **Role:** Facilitate the presentation of available services based on RBAC rules.
+- **Responsibility:** Manage the lifecycle of available services and present a catalog based on RBAC rules.
 
 #### Rules Engine
-- **Purpose:** Ability to interpret rules and take appropriate actions defined by them based on input data.
+- **Purpose:** Perform business, operational, and decision-making rules for various information domains (e.g., RBAC, service validation, data injection/manipulation).
+- **Role:** Execute logic based on predefined rules/rulesets triggered by request payload data.
+- **Responsibility:** All business logic required to facilitate a request payload becoming realized.
 
 #### IDM / IAM
-- **Purpose:** Ability to authenticate and retrieve info on consumers and providers of DCM.
+- **Purpose:** Authenticate and retrieve info on consumers and providers of DCM.
 
 #### Observability
-- **Purpose:** Ability to log actions and report on functions and data used during DCM lifecycle functions and activities.
+- **Purpose:** Log actions and report on functions and data used during DCM lifecycle functions and activities.
 
-#### Widget Discovery?
-- **Purpose:** Ability to discover, audit and report on infrastructure and data for the purpose of discovering state of identified items.
+#### Widget Discovery
+- **Purpose:** Discover, audit, and report on infrastructure and data to determine the state of identified items.
 
 #### Message Bus
-- **Purpose:** Ability to send messages into and out of DCM in a common message queue format.
+- **Purpose:** Send messages into and out of DCM in a common message queue format.
 
 #### API Gateway
-- **Purpose:** Central clearing house for the DCM control plane. Responsible for providing API ingress for consumers, internal processes and egress for Service Provider integration. Also manages some of the internal processes of the control plane to ensure information is passed between appropriate DCM control plane services.
+- **Purpose:** Central clearing house for the DCM control plane. Provides API ingress for consumers, internal processes, and egress for Service Provider integration. Manages internal processes to ensure information is passed between appropriate DCM control plane services.
 
 #### Request Payload Processor
-- **Purpose:** Responsible for creating the target service payload based on input from the consumer, core data layers, core data and service layers combined into a single payload using a unified data model. This payload will then be consumed by the service providers to effect the desired state.
+- **Purpose:** Create the target service payload based on consumer input, core data layers, and service layers combined into a unified data model. Consumed by service providers to effect the desired state.
 
 #### Drift Remediation / Notification
-- **Purpose:** Responsible for detecting drift between discovered state, requested state and provisioned state. Once detected, notification and/or remediation should be performed by this function and designated by Rules Engine.
+- **Purpose:** Detect drift between discovered state, requested state, and provisioned state. Perform notification and/or remediation as designated by Rules Engine.
+
+---
 
 ### Data Sources
 
 #### Service Catalog Cache
-- **Purpose:** Act as storage cache for services offered by the service providers.
+- **Purpose:** Storage cache for services offered by service providers.
 
 #### Core Rules
-- **Purpose:** Rules that are scoped to all actions possibly taken by DCM, regardless of service provided. Also a store for service level rules that are NOT owned by the service provider.
-    - *eg; Security Team enforcing rules for a service*
-- **Caveat:** Since this is a modular design, it is entirely possible that all service specific rules will be injected via the service provider as to ensure coordination between service providers and relevant security/audit teams.
+- **Purpose:** Rules scoped to all actions possibly taken by DCM, regardless of service provided. Also stores service-level rules not owned by the service provider.
+    - *Example: Security Team enforcing rules for a service*
+- **Caveat:** In a modular design, service-specific rules may be injected via the service provider to ensure coordination with security/audit teams.
 
 #### IDM
-- **Purpose:** Act as store for User authentication and information in support of RBAC service(s).
+- **Purpose:** Store for user authentication and information in support of RBAC services.
 
 #### Core Layers
-- **Purpose:** Layers for the data payload that are outside the scope of the specific service(s)
-    - *eg; Data Center layer*
-    - *eg; Rack layer*
+- **Purpose:** Layers for the data payload outside the scope of specific services.
+    - *Example: Data Center layer, Rack layer*
 
-##### Core Data *(Could be combined with Core Layers?)*
-- **Purpose:** Provides specific information that is outside the scope of the specific service(s)
-    - *eg; Data Center Name*
-    - *eg; Service categories*
+#### Core Data *(Could be combined with Core Layers?)*
+- **Purpose:** Information outside the scope of specific services.
+    - *Example: Data Center Name, Service categories*
 
-##### Business Data / Groups *(Could be combined with IDM?)*
-- **Purpose:** Provide group information specifically to supply information on business groups for consumers/services.
-    - *eg; Business Unit info*
-    - *eg; Business related organizational information*
-    - *eg; Product Owner*
+#### Business Data / Groups *(Could be combined with IDM?)*
+- **Purpose:** Group information for business groups related to consumers/services.
+    - *Example: Business Unit info, Organizational info, Product Owner*
 
-##### Discovered Widgets *(This may belong in the realm of service providers)*
-- **Purpose:** Cache information that was discovered by Widget Discovery functions. Used to compare discovered state with requested and provisioned state
-    - *eg; Used for drift remediation and notification services*
+#### Discovered Widgets *(May belong in service providers)*
+- **Purpose:** Cache information discovered by Widget Discovery. Used to compare discovered, requested, and provisioned state.
+    - *Example: Used for drift remediation and notification*
 
-##### Requested Widgets
-- **Purpose:** Store of all request payloads as provided to the service providers. This is meant as a record of what was requested and for use by any audit and drift remediation processes.
+#### Requested Widgets
+- **Purpose:** Store all request payloads provided to service providers. Used for audit and drift remediation.
 
-##### Realized Widgets
-- **Purpose:** Store of all realized request payloads as provisioned by the service providers.
-- **Intent / Use:** This is meant to be a record of what was realized/provisioned by the service providers, including any additional detail they add during the process. Used for audit, reporting and drift remediation processes.
+#### Realized Widgets
+- **Purpose:** Store all realized request payloads as provisioned by service providers.
+- **Intent/Use:** Record what was realized/provisioned, including additional details from providers. Used for audit, reporting, and drift remediation.
 
-##### Log Store
-- **Purpose:** Store of all actions/data used during the lifecycle of a DCM action/process.
-- **Intent / Use:** Used by audit, reporting and historical record processes.
+#### Log Store
+- **Purpose:** Store all actions/data used during the lifecycle of a DCM action/process.
+- **Intent/Use:** Used by audit, reporting, and historical record processes.
 
-##### Service Layer Cache
+#### Service Layer Cache
 - **Purpose:** Cache of all layer sources of data used to create a request payload for a service.
-- **Intent / Use:** Stores the data layers that will be used to create the request payload, by the request payload processor.
+- **Intent/Use:** Stores the data layers used to create the request payload.
 
 ---
 
@@ -95,12 +111,12 @@
 ### Functions
 
 #### Web UI
-- **Purpose:** Provides the web UI services to the end user/web consumer of DCM.
-- **Intent / Use:** Builds UI, interacts with consumer and provides DCM services by means of a web interface.
+- **Purpose:** Provide web UI services to end users/web consumers of DCM.
+- **Intent/Use:** Build UI, interact with consumers, and provide DCM services via web interface.
 
 #### Consumer API
-- **Purpose:** Provides the consumer level API spec/services.
-- **Intent / Use:** Direct consumption of Services via unified API model provided by DCM.
+- **Purpose:** Provide consumer-level API spec/services.
+- **Intent/Use:** Direct consumption of services via unified API model.
 
 ### Data Sources
 
@@ -113,12 +129,12 @@
 ### Functions
 
 #### Messaging
-- **Purpose:** Provides a messaging protocol from DCM to external systems.
-- **Intent / Use:** Allows for interaction with external services outside the use of the Interoperability API.
+- **Purpose:** Provide messaging protocol from DCM to external systems.
+- **Intent/Use:** Interaction with external services outside the Interoperability API.
 
 #### Interoperability API
-- **Purpose:** Provides a common API spec and data model to interact with Service Providers.
-- **Intent / Use:** Be able to pass data to a DCM service provider in order for them to consume and effect the desired change or exchange data.
+- **Purpose:** Provide common API spec and data model to interact with Service Providers.
+- **Intent/Use:** Pass data to a DCM service provider for consumption and effecting changes or exchanging data.
 
 ### Data Sources
 
@@ -131,41 +147,41 @@
 ### Functions
 
 #### Services API
-- **Purpose:** Means to communicate with DCM in unified API spec and data format.
-- **Intent / Use:** Provides means to allow DCM to pass data to the Service Provider in order to have the Service Provider effect some change or exchange data.
+- **Purpose:** Communicate with DCM in unified API spec and data format.
+- **Intent/Use:** Allow DCM to pass data to the Service Provider to effect changes or exchange data.
 
 #### Naturalization
-- **Purpose:** Provide a conversion process from the DCM unified data model to a tool/service provider specific data format that is consumable by the provider tooling.
-- **Intent / Use:** Allows DCM to have a unified data and API model that can still execute via native tooling or service provider automation.
+- **Purpose:** Convert DCM unified data model to tool/service provider-specific format.
+- **Intent/Use:** Enable unified data/API model execution via native tooling or automation.
 
 #### Realization
-- **Purpose:** Process to effect the desired change or exchange information.
-- **Intent / Use:** Service Provider tooling/automation performs the steps needed to effect the desired change or gather required information.
+- **Purpose:** Effect the desired change or exchange information.
+- **Intent/Use:** Service Provider tooling/automation performs steps to effect change or gather information.
 
 #### Denaturalization
-- **Purpose:** Opposite of Naturalization, convert tool or provider specific data into the DCM Unified data model.
-- **Intent / Use:** Allows DCM to interact with the data created during the realization process via its natural data model. Allows for drift and audit processes in DCM without need for data translation.
+- **Purpose:** Convert tool/provider-specific data into the DCM Unified data model.
+- **Intent/Use:** Allow DCM to interact with realized data in its natural model for drift and audit processes.
 
 ### Data Sources
 
 #### Service Catalog / APIs
-- **Purpose:** Details the list of services the service provider provides and the appropriate APIs to call.
-- **Intent / Use:** Informs DCM as to what services the provider has and what APIs to use to utilize those services.
+- **Purpose:** List of services provided and appropriate APIs.
+- **Intent/Use:** Inform DCM of available services and APIs.
 
 #### Service Rules
-- **Purpose:** Business Rules specific to the services provided by the Service Provider.
-- **Intent / Use:** Applies specific conditional and data manipulation and enforcement policies for the services provided. Useful for Security, Authorization, Validation, etc.
+- **Purpose:** Business rules specific to services provided.
+- **Intent/Use:** Apply conditional, data manipulation, and enforcement policies (e.g., Security, Authorization, Validation).
 
 #### Service Layer SCM
-- **Purpose:** Location of service specific data layers for the services provided by the provider.
-- **Intent / Use:** Informs DCM on where to get the required data layers for the request payload needed for each service provided.
+- **Purpose:** Location of service-specific data layers.
+- **Intent/Use:** Inform DCM where to get required data layers for request payloads.
 
 ### Data
 
 #### Service Request Payload
-- **Purpose:** Data that defines the requested service/data exchange.
-- **Intent / Use:** Data in DCM data model format to be converted into tool/provider specific data and then used to perform required actions to realize requested service/data exchange.
+- **Purpose:** Data defining the requested service/data exchange.
+- **Intent/Use:** Data in DCM format to be converted to provider-specific format for realization.
 
 #### Realized Request Payload
-- **Purpose:** Data that was created as a result of the realization process after it has been converted back into the DCM data model format.
-- **Intent / Use:** Snapshot of the state/data that defines the realized state of the Service Request Payload in the DCM data model format. Used during audit and drift processes in DCM.
+- **Purpose:** Data created as a result of realization, converted back to DCM format.
+- **Intent/Use:** Snapshot of realized state for audit and drift processes.
