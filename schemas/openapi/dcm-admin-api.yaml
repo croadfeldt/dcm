@@ -1386,6 +1386,65 @@ paths:
             application/json:
               schema: {$ref: "#/components/schemas/FederationConfig"}
 
+  # ── Subscription Administration (doc 50) ────────────────────────────
+
+  /api/v1/admin/subscriptions:
+    get:
+      operationId: adminListSubscriptions
+      summary: List all subscriptions across tenants
+      tags: [Subscription Administration]
+      parameters:
+        - {name: tenant_uuid, in: query, schema: {type: string, format: uuid}}
+        - {name: lifecycle_state, in: query, schema: {type: string}}
+        - {name: provider_uuid, in: query, schema: {type: string, format: uuid}}
+        - {name: page_size, in: query, schema: {type: integer, default: 100}}
+        - {name: page_token, in: query, schema: {type: string}}
+      responses:
+        "200":
+          description: Paginated subscription list across tenants
+          content:
+            application/json:
+              schema: {$ref: "#/components/schemas/ResourceList"}
+
+  /api/v1/admin/subscriptions/expiring:
+    get:
+      operationId: adminListExpiringSubscriptions
+      summary: List subscriptions approaching expiry
+      tags: [Subscription Administration]
+      parameters:
+        - {name: within_days, in: query, schema: {type: integer, default: 30}}
+        - {name: page_size, in: query, schema: {type: integer, default: 100}}
+        - {name: page_token, in: query, schema: {type: string}}
+      responses:
+        "200":
+          description: Expiring subscriptions
+          content:
+            application/json:
+              schema: {$ref: "#/components/schemas/ResourceList"}
+
+  /api/v1/admin/subscriptions/{subscription_uuid}:force-cancel:
+    post:
+      operationId: adminForceCancelSubscription
+      summary: Admin force cancellation — bypasses consumer approval
+      tags: [Subscription Administration]
+      parameters:
+        - {name: subscription_uuid, in: path, required: true, schema: {type: string, format: uuid}}
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [reason]
+              properties:
+                reason: {type: string}
+                skip_grace_period: {type: boolean, default: false}
+      responses:
+        "200":
+          description: Force cancellation initiated
+          content:
+            application/json:
+              schema: {$ref: "#/components/schemas/Operation"}
+
 components:
 
   securitySchemes:

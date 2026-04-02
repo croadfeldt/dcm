@@ -1529,6 +1529,224 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Operation'
+  # ── Subscription Management (doc 50) ──────────────────────────────────
+
+  /api/v1/subscriptions:
+    get:
+      operationId: listSubscriptions
+      summary: List tenant subscriptions (paginated)
+      tags: [Subscription Management]
+      parameters:
+        - { name: page_size, in: query, schema: { type: integer, default: 100 } }
+        - { name: page_token, in: query, schema: { type: string } }
+        - { name: lifecycle_state, in: query, schema: { type: string } }
+      responses:
+        '200':
+          description: Paginated subscription list
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SubscriptionList'
+    post:
+      operationId: createSubscription
+      summary: Create a subscription (enters request pipeline)
+      tags: [Subscription Management]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SubscriptionCreate'
+      responses:
+        '200':
+          description: Subscription creation initiated. Poll operation for status.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Operation'
+
+  /api/v1/subscriptions/{subscription_uuid}:
+    get:
+      operationId: getSubscription
+      summary: Get subscription details
+      tags: [Subscription Management]
+      parameters:
+        - { name: subscription_uuid, in: path, required: true, schema: { type: string, format: uuid } }
+      responses:
+        '200':
+          description: Subscription details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Subscription'
+    patch:
+      operationId: updateSubscription
+      summary: Update subscription (tier change, auto_renew toggle)
+      tags: [Subscription Management]
+      parameters:
+        - { name: subscription_uuid, in: path, required: true, schema: { type: string, format: uuid } }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SubscriptionUpdate'
+      responses:
+        '200':
+          description: Update initiated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Operation'
+
+  /api/v1/subscriptions/{subscription_uuid}:cancel:
+    post:
+      operationId: cancelSubscription
+      summary: Cancel subscription (starts grace period)
+      tags: [Subscription Management]
+      parameters:
+        - { name: subscription_uuid, in: path, required: true, schema: { type: string, format: uuid } }
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                reason: { type: string }
+      responses:
+        '200':
+          description: Cancellation initiated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Operation'
+
+  /api/v1/subscriptions/{subscription_uuid}:renew:
+    post:
+      operationId: renewSubscription
+      summary: Manually renew subscription
+      tags: [Subscription Management]
+      parameters:
+        - { name: subscription_uuid, in: path, required: true, schema: { type: string, format: uuid } }
+      responses:
+        '200':
+          description: Renewal initiated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Operation'
+
+  /api/v1/subscriptions/{subscription_uuid}:suspend:
+    post:
+      operationId: suspendSubscription
+      summary: Suspend subscription
+      tags: [Subscription Management]
+      parameters:
+        - { name: subscription_uuid, in: path, required: true, schema: { type: string, format: uuid } }
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                reason: { type: string }
+      responses:
+        '200':
+          description: Suspension initiated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Operation'
+
+  /api/v1/subscriptions/{subscription_uuid}:resume:
+    post:
+      operationId: resumeSubscription
+      summary: Resume suspended subscription
+      tags: [Subscription Management]
+      parameters:
+        - { name: subscription_uuid, in: path, required: true, schema: { type: string, format: uuid } }
+      responses:
+        '200':
+          description: Resume initiated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Operation'
+
+  /api/v1/subscriptions/{subscription_uuid}/entities:
+    get:
+      operationId: listSubscriptionEntities
+      summary: List managed entities under this subscription
+      tags: [Subscription Management]
+      parameters:
+        - { name: subscription_uuid, in: path, required: true, schema: { type: string, format: uuid } }
+        - { name: page_size, in: query, schema: { type: integer, default: 100 } }
+        - { name: page_token, in: query, schema: { type: string } }
+      responses:
+        '200':
+          description: Paginated entity list
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResourceList'
+
+  /api/v1/subscriptions/{subscription_uuid}/updates:
+    get:
+      operationId: listSubscriptionUpdates
+      summary: List pending and applied updates
+      tags: [Subscription Management]
+      parameters:
+        - { name: subscription_uuid, in: path, required: true, schema: { type: string, format: uuid } }
+        - { name: status, in: query, schema: { type: string, enum: [PENDING, APPROVED, REJECTED, APPLIED, FAILED] } }
+        - { name: page_size, in: query, schema: { type: integer, default: 100 } }
+        - { name: page_token, in: query, schema: { type: string } }
+      responses:
+        '200':
+          description: Paginated update list
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SubscriptionUpdateList'
+
+  /api/v1/subscriptions/{subscription_uuid}/updates/{update_uuid}:approve:
+    post:
+      operationId: approveSubscriptionUpdate
+      summary: Approve a pending provider-originated update
+      tags: [Subscription Management]
+      parameters:
+        - { name: subscription_uuid, in: path, required: true, schema: { type: string, format: uuid } }
+        - { name: update_uuid, in: path, required: true, schema: { type: string, format: uuid } }
+      responses:
+        '200':
+          description: Update approved
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Operation'
+
+  /api/v1/subscriptions/{subscription_uuid}/updates/{update_uuid}:reject:
+    post:
+      operationId: rejectSubscriptionUpdate
+      summary: Reject a pending provider-originated update
+      tags: [Subscription Management]
+      parameters:
+        - { name: subscription_uuid, in: path, required: true, schema: { type: string, format: uuid } }
+        - { name: update_uuid, in: path, required: true, schema: { type: string, format: uuid } }
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                reason: { type: string }
+      responses:
+        '200':
+          description: Update rejected
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Operation'
+
 components:
   securitySchemes:
     BearerAuth:
@@ -2299,3 +2517,96 @@ components:
                 dcm_lifecycle_model: {type: string}
                 rehydration_eligible: {type: boolean}
                 notes: {type: string}
+
+    # ── Subscription Schemas (doc 50) ────────────────────────────────
+
+    Subscription:
+      type: object
+      required: [subscription_uuid, tenant_uuid, catalog_item_uuid, lifecycle_state]
+      properties:
+        subscription_uuid: {type: string, format: uuid}
+        handle: {type: string}
+        display_name: {type: string}
+        tenant_uuid: {type: string, format: uuid}
+        catalog_item_uuid: {type: string, format: uuid}
+        resource_type: {type: string}
+        provider_uuid: {type: string, format: uuid}
+        lifecycle_state:
+          type: string
+          enum: [PENDING, PROVISIONING, ACTIVE, SUSPENDED, RENEWAL_PENDING, TIER_CHANGE_PENDING, EXPIRED, CANCELLED, DECOMMISSIONING, DECOMMISSIONED]
+        terms:
+          type: object
+          properties:
+            tier: {type: string}
+            consumption_model: {type: string, enum: [on_demand, reserved, subscription]}
+            billing_period: {type: string}
+            auto_renew: {type: boolean}
+            renewal_advance_notice: {type: string, description: 'ISO 8601 duration'}
+            started_at: {type: string, format: date-time}
+            expires_at: {type: string, format: date-time}
+            terms_version: {type: string}
+        entitlements:
+          type: object
+          properties:
+            max_instances: {type: integer}
+            resource_limits: {type: object, additionalProperties: true}
+            capabilities: {type: array, items: {type: string}}
+        update_channels:
+          type: array
+          items:
+            type: object
+            properties:
+              channel: {type: string}
+              auto_apply: {type: boolean}
+        managed_entity_count: {type: integer}
+        version: {type: string}
+        created_at: {type: string, format: date-time}
+
+    SubscriptionCreate:
+      type: object
+      required: [catalog_item_uuid, consumption_model]
+      properties:
+        catalog_item_uuid: {type: string, format: uuid}
+        consumption_model: {type: string, enum: [on_demand, reserved, subscription]}
+        subscription_tier: {type: string}
+        auto_renew: {type: boolean, default: true}
+        display_name: {type: string}
+        fields: {type: object, additionalProperties: true}
+
+    SubscriptionUpdate:
+      type: object
+      properties:
+        tier: {type: string}
+        auto_renew: {type: boolean}
+        update_channels:
+          type: array
+          items:
+            type: object
+            properties:
+              channel: {type: string}
+              auto_apply: {type: boolean}
+
+    SubscriptionList:
+      type: object
+      properties:
+        subscriptions: {type: array, items: {$ref: '#/components/schemas/Subscription'}}
+        next_page_token: {type: string}
+
+    SubscriptionUpdateRecord:
+      type: object
+      properties:
+        update_uuid: {type: string, format: uuid}
+        subscription_uuid: {type: string, format: uuid}
+        entity_uuid: {type: string, format: uuid}
+        channel: {type: string}
+        status: {type: string, enum: [PENDING, APPROVED, REJECTED, APPLIED, FAILED, EXPIRED]}
+        update_payload: {type: object, additionalProperties: true}
+        submitted_at: {type: string, format: date-time}
+        decided_at: {type: string, format: date-time}
+        auto_applied: {type: boolean}
+
+    SubscriptionUpdateList:
+      type: object
+      properties:
+        updates: {type: array, items: {$ref: '#/components/schemas/SubscriptionUpdateRecord'}}
+        next_page_token: {type: string}
