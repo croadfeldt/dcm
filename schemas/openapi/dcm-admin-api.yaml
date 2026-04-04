@@ -1445,6 +1445,93 @@ paths:
             application/json:
               schema: {$ref: "#/components/schemas/Operation"}
 
+
+  /api/v1/admin/overrides:
+    get:
+      summary: List pending override requests
+      operationId: listOverrideRequests
+      parameters:
+        - name: status
+          in: query
+          schema:
+            type: string
+            enum: [pending, approved, rejected, expired]
+        - name: role
+          in: query
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Override requests
+  /api/v1/admin/overrides/{request_uuid}:
+    get:
+      summary: Get override request details
+      operationId: getOverrideRequest
+      parameters:
+        - name: request_uuid
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Override request details
+  /api/v1/admin/overrides/{request_uuid}/approve:
+    post:
+      summary: Approve override request
+      operationId: approveOverride
+      parameters:
+        - name: request_uuid
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [justification, role]
+              properties:
+                justification:
+                  type: string
+                role:
+                  type: string
+                compensating_controls:
+                  type: array
+                  items:
+                    type: string
+      responses:
+        '200':
+          description: Override approved
+  /api/v1/admin/overrides/{request_uuid}/reject:
+    post:
+      summary: Reject override request
+      operationId: rejectOverride
+      parameters:
+        - name: request_uuid
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [reason]
+              properties:
+                reason:
+                  type: string
+      responses:
+        '200':
+          description: Override rejected
+
 components:
 
   securitySchemes:
@@ -1661,7 +1748,94 @@ components:
         status:        { type: string, enum: [healthy, degraded, unhealthy] }
         version:       { type: string }
         uptime:        { type: string }
-        components:
+        
+  /api/v1/admin/overrides:
+    get:
+      summary: List pending override requests
+      operationId: listOverrideRequests
+      parameters:
+        - name: status
+          in: query
+          schema:
+            type: string
+            enum: [pending, approved, rejected, expired]
+        - name: role
+          in: query
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Override requests
+  /api/v1/admin/overrides/{request_uuid}:
+    get:
+      summary: Get override request details
+      operationId: getOverrideRequest
+      parameters:
+        - name: request_uuid
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Override request details
+  /api/v1/admin/overrides/{request_uuid}/approve:
+    post:
+      summary: Approve override request
+      operationId: approveOverride
+      parameters:
+        - name: request_uuid
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [justification, role]
+              properties:
+                justification:
+                  type: string
+                role:
+                  type: string
+                compensating_controls:
+                  type: array
+                  items:
+                    type: string
+      responses:
+        '200':
+          description: Override approved
+  /api/v1/admin/overrides/{request_uuid}/reject:
+    post:
+      summary: Reject override request
+      operationId: rejectOverride
+      parameters:
+        - name: request_uuid
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [reason]
+              properties:
+                reason:
+                  type: string
+      responses:
+        '200':
+          description: Override rejected
+
+components:
           type: array
           items:
             type: object

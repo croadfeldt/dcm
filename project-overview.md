@@ -82,7 +82,7 @@ Every business rule, every compliance constraint, every operational standard is 
 
 | Provider Type | Capability |
 |--------------|-----------|
-| **Service Provider** | Realizes infrastructure resources (VMs, networks, storage, containers, bare metal). Also covers credentials (Vault), notifications (email/Slack), and ITSM integration via resource type declarations. |
+| **Service Provider** | Realizes infrastructure resources (VMs, networks, storage, containers, bare metal). Also covers credentials (internal or Vault), notifications (email/Slack), and ITSM integration via resource type declarations. |
 | **Information Provider** | Serves authoritative external data (CMDB, HR, finance, identity systems) |
 | **Meta Provider** | Composes multiple providers into compound catalog items (a "three-tier web app" as a single catalog entry) |
 | **Auth Provider** | Authenticates identities; resolves role and group memberships. Multiple auth providers enable tenant-routed authentication. |
@@ -295,8 +295,8 @@ This is not just an audit requirement — it is an architectural property that m
 | **Provider types** | 12 (unified base contract + typed capability extensions) |
 | **Policy types** | 8 (typed output schemas with deterministic evaluation) |
 | **Entity lifecycle states** | 4 (Intent · Requested · Realized · Discovered) |
-| **Capabilities** | 309 across 39 domains |
-| **Data model documents** | 57 |
+| **Capabilities** | 331 across 39 domains |
+| **Data model documents** | 58 |
 | **Specifications** | 15 |
 | **OpenAPI paths** | 63 consumer · 57 admin · 5 operator · 7 provider callback |
 | **Compliance frameworks** | FedRAMP · CMMC · HIPAA · SOC 2 · ISO 27001 · PCI DSS · DoD IL2–IL6 |

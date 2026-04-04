@@ -1747,6 +1747,57 @@ paths:
               schema:
                 $ref: '#/components/schemas/Operation'
 
+
+  /api/v1/requests/{request_uuid}/resolution:
+    get:
+      summary: Get policy block details and resolution options
+      operationId: getResolutionOptions
+      parameters:
+        - name: request_uuid
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Blocking details and resolution options
+  /api/v1/requests/{request_uuid}:resolve:
+    post:
+      summary: Resolve a policy-blocked request
+      operationId: resolveBlockedRequest
+      parameters:
+        - name: request_uuid
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [action]
+              properties:
+                action:
+                  type: string
+                  enum: [modify, request_override, cancel, escalate]
+                modifications:
+                  type: object
+                justification:
+                  type: string
+                compensating_controls:
+                  type: array
+                  items:
+                    type: string
+                context:
+                  type: string
+      responses:
+        '200':
+          description: Resolution action accepted
+
 components:
   securitySchemes:
     BearerAuth:

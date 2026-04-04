@@ -31,7 +31,7 @@ component_identity:
   component_uuid: <uuid>           # stable; assigned at deployment time
   component_type: api_gateway | policy_engine | placement_engine | request_orchestrator |
                   scoring_engine | drift_reconciler | lifecycle_enforcer | notification_router |
-                  audit_store | session_store | message_bus | credential_provider_proxy
+                  audit_store | session_store | message_bus | service_provider_proxy
   component_name: <string>         # human-readable; e.g. "policy-engine-eu-west-1"
   deployment_uuid: <uuid>          # identifies the DCM deployment instance
   
@@ -110,8 +110,8 @@ Both options satisfy ICOM-001 (mTLS required). The distinction is who issues the
 internal_ca:
   ca_uuid: <uuid>
   deployment_uuid: <uuid>
-  ca_type: built_in | external_credential_provider
-  credential_provider_uuid: <uuid | null>  # if ca_type: external
+  ca_type: built_in | external_service_provider
+  service_provider_uuid: <uuid | null>  # if ca_type: external
   external_ca_protocol: acme | est | scep | cmp | null  # if external
   root_cert_fingerprint: <sha256>
   certificate_lifetime: P90D           # profile-governed — see table below

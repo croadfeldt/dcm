@@ -41,15 +41,22 @@ CREATE TABLE actors (
                             CHECK (actor_type IN ('human', 'service_account', 'system_component', 'provider')),
     handle              VARCHAR(256) NOT NULL,
     display_name        VARCHAR(256) NOT NULL,
-    external_id         VARCHAR(512),           -- IDP subject claim
+    auth_method         VARCHAR(32) NOT NULL DEFAULT 'internal'
+                            CHECK (auth_method IN ('internal', 'external')),
+    password_hash       VARCHAR(256),           -- argon2id hash (internal auth only)
+    totp_secret_ref     VARCHAR(256),           -- reference to TOTP secret in secrets table (optional MFA)
+    external_id         VARCHAR(512),           -- IdP subject claim (external auth only)
+    auth_provider_uuid  UUID,                   -- which auth_provider (external auth only)
+    roles               JSONB NOT NULL DEFAULT '[]', -- direct role assignments (internal); merged with IdP claims (external)
     status              VARCHAR(32) NOT NULL DEFAULT 'ACTIVE',
     created_at          TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    last_login_at       TIMESTAMPTZ,
     UNIQUE(tenant_uuid, handle)
 );
 
 -- ─── Entities (Realized State) ────────────────────────────────────────────────
 -- Spec ref: DCM data model doc 01 (Entity Types), doc 02 (Four States)
--- This table is the Snapshot Store — one row per realized entity per version.
+-- Realized domain — one row per realized entity per version.
 
 CREATE TABLE realized_entities (
     realized_uuid       UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
@@ -93,11 +100,18 @@ CREATE TABLE operations (
     operation_uuid      UUID PRIMARY KEY,        -- == request_uuid, issued by API Gateway
     tenant_uuid         UUID NOT NULL REFERENCES tenants(tenant_uuid),
     resource_uuid       UUID,                    -- AEP convention: the resource this operation acts on
-    operation_type      VARCHAR(64) NOT NULL,    -- e.g. create_request, rehydration, discovery
+    operation_type      VARCHAR(64) NOT NULL      -- Lifecycle operation vocabulary (doc B §2.2)
+                            CHECK (operation_type IN ('initial_provisioning', 'update', 'scale',
+                                                      'rehydration', 'decommission', 'ownership_transfer',
+                                                      'subscription_renewal', 'drift_remediation',
+                                                      'provider_migration', 'compliance_rescan')),
+    changed_fields      JSONB,                    -- Array of field paths that changed (update/scale ops)
     status              VARCHAR(32) NOT NULL DEFAULT 'INITIATED'
                             CHECK (status IN ('INITIATED', 'ASSEMBLING', 'POLICY_EVALUATION',
+                                              'POLICY_BLOCKED', 'PENDING_OVERRIDE',
                                               'PLACEMENT', 'DISPATCHED', 'PROVISIONING',
-                                              'OPERATIONAL', 'FAILED', 'CANCELLED')),
+                                              'OPERATIONAL', 'FAILED', 'CANCELLED',
+                                              'OVERRIDE_DENIED', 'OVERRIDE_TIMEOUT')),
     actor_uuid          UUID REFERENCES actors(actor_uuid),
     catalog_item_uuid   UUID,
     resource_type       VARCHAR(256),
@@ -110,6 +124,46 @@ CREATE TABLE operations (
     updated_at          TIMESTAMPTZ NOT NULL DEFAULT NOW(),
     completed_at        TIMESTAMPTZ
 );
+
+CREATE INDEX idx_operations_tenant ON operations(tenant_uuid, status);
+
+-- ─── Override Requests ───────────────────────────────────────────────────────
+-- Spec ref: doc B §18.8 (Override Approval Flow)
+
+CREATE TABLE override_requests (
+    override_request_uuid UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    request_uuid        UUID NOT NULL REFERENCES operations(operation_uuid),
+    tenant_uuid         UUID NOT NULL REFERENCES tenants(tenant_uuid),
+    blocking_policy_handle VARCHAR(256) NOT NULL,
+    blocking_policy_enforcement VARCHAR(16) NOT NULL CHECK (blocking_policy_enforcement IN ('hard', 'soft')),
+    blocking_reason     TEXT NOT NULL,
+    resolution_guidance JSONB NOT NULL DEFAULT '{}',   -- compliant_values, suggestions per field
+    required_approval_type VARCHAR(16) NOT NULL CHECK (required_approval_type IN ('single', 'dual')),
+    eligible_approver_roles JSONB NOT NULL DEFAULT '[]',
+    -- Consumer-initiated override request
+    consumer_justification TEXT,
+    consumer_compensating_controls JSONB,
+    resolution_action   VARCHAR(32) CHECK (resolution_action IN ('modify', 'request_override', 'cancel', 'escalate')),
+    status              VARCHAR(16) NOT NULL DEFAULT 'blocked'
+                            CHECK (status IN ('blocked', 'pending', 'approved', 'rejected', 'expired', 'resolved', 'cancelled')),
+    timeout_at          TIMESTAMPTZ NOT NULL,
+    -- First approval
+    first_approver_uuid UUID REFERENCES actors(actor_uuid),
+    first_approver_role VARCHAR(64),
+    first_justification TEXT,
+    first_compensating_controls JSONB,
+    first_approved_at   TIMESTAMPTZ,
+    -- Second approval (dual-approval only)
+    second_approver_uuid UUID REFERENCES actors(actor_uuid),
+    second_approver_role VARCHAR(64),
+    second_approved_at  TIMESTAMPTZ,
+    -- Metadata
+    created_at          TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    resolved_at         TIMESTAMPTZ
+);
+
+CREATE INDEX idx_override_status ON override_requests(status, timeout_at);
+CREATE INDEX idx_override_request ON override_requests(request_uuid);
 
 CREATE INDEX idx_operations_tenant ON operations(tenant_uuid);
 CREATE INDEX idx_operations_status ON operations(tenant_uuid, status);
@@ -131,14 +185,26 @@ CREATE TABLE audit_records (
     immediate_actor_type VARCHAR(32),
     authorized_by_uuid   UUID,
     session_uuid         UUID,
+    signer_uuid          UUID NOT NULL,          -- Service or actor that signed this leaf
+    signer_type          VARCHAR(16) NOT NULL CHECK (signer_type IN ('service', 'actor', 'provider')),
     -- WHAT
     subject_handle      VARCHAR(512),
-    before_state        JSONB,
-    after_state         JSONB,
-    -- HASH CHAIN (doc 49 §3)
-    chain_sequence      BIGINT NOT NULL,         -- Monotonically increasing per entity
+    stage               VARCHAR(64),             -- Pipeline stage (intent_submitted, layer_applied, etc.)
+    source              VARCHAR(256),            -- Which layer/policy/service
+    source_type         VARCHAR(64),             -- layer_merge, policy_gatekeeper, policy_transformation, etc.
+    decision            VARCHAR(32),             -- allow, deny, applied, resolved, etc.
+    -- CHAIN OF CUSTODY — payload integrity
+    input_payload_hash  VARCHAR(64),             -- SHA-256 of payload BEFORE this mutation
+    output_payload_hash VARCHAR(64),             -- SHA-256 of payload AFTER this mutation
+    context_hash        VARCHAR(64),             -- Evaluation context hash (policy stages only)
+    -- FIELD-LEVEL DETAIL (mutation/field granularity only)
+    fields_changed      JSONB,                   -- Array of field paths changed (mutation+)
+    field_mutations     JSONB,                   -- Per-field old/new hashes (field granularity only)
+    -- MERKLE TREE (RFC 9162 pattern)
+    leaf_index          BIGINT NOT NULL,         -- Position in global Merkle tree
     record_hash         VARCHAR(64) NOT NULL,    -- SHA-256 of record content
-    previous_record_hash VARCHAR(64),            -- Hash of sequence N-1; 'GENESIS-HASH' for first
+    previous_leaf_hash  VARCHAR(64),             -- Hash of previous leaf for this request
+    signature           TEXT NOT NULL,            -- Ed25519/ECDSA-P256 over all fields
     -- METADATA
     dcm_version         VARCHAR(32),
     request_uuid        UUID,
@@ -146,9 +212,31 @@ CREATE TABLE audit_records (
     provider_uuid       UUID
 );
 
-CREATE INDEX idx_audit_entity ON audit_records(entity_uuid, chain_sequence);
+CREATE INDEX idx_audit_entity ON audit_records(entity_uuid, leaf_index);
 CREATE INDEX idx_audit_tenant ON audit_records(tenant_uuid, record_timestamp);
 CREATE INDEX idx_audit_action ON audit_records(action, record_timestamp);
+CREATE INDEX idx_audit_request ON audit_records(request_uuid, leaf_index);
+CREATE INDEX idx_audit_leaf ON audit_records(leaf_index);
+
+-- Signed Tree Heads (RFC 9162 pattern)
+CREATE TABLE signed_tree_heads (
+    sth_uuid            UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    tree_size           BIGINT NOT NULL,         -- Number of leaves when STH was computed
+    timestamp           TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    sha256_root_hash    VARCHAR(64) NOT NULL,    -- Merkle root hash
+    signature           TEXT NOT NULL,            -- Signed by DCM audit signing key
+    signing_key_id      VARCHAR(128) NOT NULL    -- Identifies which key signed this STH
+);
+
+CREATE INDEX idx_sth_tree_size ON signed_tree_heads(tree_size);
+
+-- Merkle tree intermediate nodes (materialized mode — optional)
+CREATE TABLE merkle_tree_nodes (
+    level               INT NOT NULL,            -- Tree level (0 = leaves)
+    position            BIGINT NOT NULL,         -- Position at this level
+    hash                VARCHAR(64) NOT NULL,    -- SHA-256 hash of this node
+    PRIMARY KEY (level, position)
+);
 
 -- Audit table is append-only — enforce via policy
 REVOKE UPDATE, DELETE ON audit_records FROM dcm_app;
@@ -384,6 +472,42 @@ CREATE POLICY tenant_isolation_discovered ON discovered_records
 CREATE POLICY tenant_isolation_events ON pipeline_events
     FOR SELECT TO dcm_app
     USING (tenant_uuid = current_setting('dcm.current_tenant_uuid')::uuid);
+
+-- ─── Secrets (doc 31, doc 51 §4.2) ───────────────────────────────────────────
+-- Internal secrets management using envelope encryption.
+-- Each secret value is AES-256-GCM encrypted with a per-secret DEK.
+-- DEKs are encrypted with the master KEK from the deployment environment.
+-- External mode (Vault) bypasses this table entirely.
+
+CREATE TABLE secrets (
+    secret_uuid             UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    tenant_uuid             UUID REFERENCES tenants(tenant_uuid),    -- null for system secrets
+    secret_path             VARCHAR(512) NOT NULL,                   -- hierarchical path (e.g., providers/{uuid}/credentials)
+    secret_type             VARCHAR(64) NOT NULL
+                                CHECK (secret_type IN ('credential', 'encryption_key',
+                                                       'signing_key', 'certificate', 'generic')),
+    encrypted_value         BYTEA NOT NULL,                          -- AES-256-GCM encrypted
+    encrypted_dek           BYTEA NOT NULL,                          -- DEK encrypted with KEK
+    encryption_algorithm    VARCHAR(32) NOT NULL DEFAULT 'AES-256-GCM',
+    kek_id                  VARCHAR(128) NOT NULL,                   -- identifies which KEK encrypted the DEK
+    created_at              TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    rotated_at              TIMESTAMPTZ,
+    expires_at              TIMESTAMPTZ,
+    lifecycle_state         VARCHAR(16) NOT NULL DEFAULT 'ACTIVE'
+                                CHECK (lifecycle_state IN ('ACTIVE', 'ROTATING', 'REVOKED', 'EXPIRED')),
+    UNIQUE(secret_path)
+);
+
+CREATE INDEX idx_secrets_tenant ON secrets(tenant_uuid);
+CREATE INDEX idx_secrets_path ON secrets(secret_path);
+CREATE INDEX idx_secrets_expiry ON secrets(expires_at) WHERE lifecycle_state = 'ACTIVE';
+
+-- Secrets table: no UPDATE on encrypted_value (rotation creates new row, revokes old)
+-- SELECT restricted to dcm_app via RLS
+ALTER TABLE secrets ENABLE ROW LEVEL SECURITY;
+CREATE POLICY tenant_isolation_secrets ON secrets
+    FOR ALL TO dcm_app
+    USING (tenant_uuid IS NULL OR tenant_uuid = current_setting('dcm.current_tenant_uuid')::uuid);
 
 -- ─── Subscriptions (doc 50) ──────────────────────────────────────────────────
 

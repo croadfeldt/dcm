@@ -284,27 +284,70 @@ Instead of provider registrations for infrastructure, DCM prescribes infrastruct
 
 | Infrastructure | Contract | Examples |
 |---------------|----------|----------|
-| **PostgreSQL-compatible database** | SQL, RLS, `LISTEN/NOTIFY`, JSONB, triggers, append-only tables. Schema defined by DCM. | PostgreSQL, CockroachDB, Aurora PostgreSQL, Crunchy Postgres |
-| **OIDC-compatible identity provider** | OpenID Connect, JWT issuance, RBAC/group claims, MFA support. Registered as `auth_provider` — DCM routes tenants to the appropriate IdP. | Keycloak, Okta, Azure AD, LDAP + Dex |
-| **Vault-compatible secrets management** | Vault HTTP API for secrets CRUD, PKI certificate issuance, dynamic database credentials, transit encryption. DCM services consume this API for mTLS certs, provider credentials (PCA model), encryption keys, and dynamic DB credentials. | HashiCorp Vault, OpenBao, CyberArk (Vault-compatible endpoint) |
+| **PostgreSQL-compatible database** | SQL, RLS, `LISTEN/NOTIFY`, JSONB, triggers, append-only tables, `pgcrypto` for envelope encryption. Schema defined by DCM. Includes the `secrets` table for internal secrets management and the `actors` table for internal authentication. | PostgreSQL, CockroachDB, Aurora PostgreSQL, Crunchy Postgres |
 
-### 4.2 Optional Infrastructure (Deployment Enhancements)
+PostgreSQL is the only required external infrastructure. All other dependencies — identity, secrets, event streaming, caching, Git ingress — can either be handled internally by DCM or optionally delegated to external systems.
 
-| Infrastructure | When to add | What it replaces |
+### 4.2 Authentication — Internal and External
+
+DCM manages authentication using the same Internal/External pattern as policy evaluation and secrets management.
+
+**Internal mode (default):** Local user accounts stored in the `actors` table. Passwords stored as argon2id hashes. DCM issues its own JWT session tokens with configurable expiry. For a homelab deployment, you create a local admin account via the bootstrap CLI and you're done.
+
+**External mode (optional):** Organizations with existing identity infrastructure register `auth_provider` instances. DCM validates their tokens, extracts claims, and maps groups to DCM roles. OIDC, SAML, LDAP — whatever the auth_provider supports. Multiple auth_providers enable tenant-routed authentication (Tenant A through AD, Tenant B through Okta). External auth_providers are registered via the standard provider registration contract.
+
+| Feature | Internal | External (auth_provider) |
+|---------|----------|--------------------------|
+| User management | `actors` table — local accounts | External IdP manages users |
+| Authentication | Password → argon2id hash → DCM-issued JWT | External token → DCM validates → extracts claims |
+| MFA | TOTP (optional) | Delegated to IdP |
+| Group/role mapping | Direct role assignment in `actors` table | JWT group claims mapped to DCM roles |
+| Session management | `sessions` table with configurable TTL | Token lifetime governed by IdP + DCM validation |
+| Federation | N/A (single instance) | Multiple auth_providers, tenant routing |
+
+### 4.3 Secrets Management — Internal and External
+
+DCM manages secrets using the same Internal/External pattern as policy evaluation.
+
+**Internal mode (default):** Secrets are stored in DCM's PostgreSQL database in a `secrets` table using envelope encryption. Each secret value is encrypted with AES-256-GCM using a data encryption key (DEK). DEKs are encrypted with a master key (KEK) sourced from the deployment environment:
+
+| KEK Source | Deployment | Security Level |
+|------------|-----------|----------------|
+| Environment variable | Homelab, dev | Basic — protects against database theft, not host compromise |
+| Kubernetes Secret | Standard | Good — Kubernetes RBAC protects the KEK; etcd encryption at rest protects storage |
+| HSM via PKCS#11 | Sovereign | Strong — KEK never leaves the hardware security module |
+
+Internal mode requires no external secrets infrastructure. The `secrets` table has the same RLS, append-only audit, and tenant isolation as every other DCM table.
+
+**External mode (optional):** Organizations with existing secrets infrastructure register a Vault-compatible API endpoint. DCM calls the Vault HTTP API for all secret operations. Vault, OpenBao, or any API-compatible implementation works. This is an optional deployment enhancement — not a required component.
+
+| Feature | Internal | External (Vault) |
+|---------|----------|------------------|
+| Secret CRUD | PostgreSQL `secrets` table | Vault KV engine |
+| PKI certificates | cert-manager / service mesh | Vault PKI engine |
+| Dynamic DB credentials | Static credentials + rotation | Vault database engine |
+| Transit encryption | `pgcrypto` AES-256-GCM | Vault transit engine |
+| HSM backing | PKCS#11 for KEK only | Full HSM seal + transit |
+
+### 4.4 Optional Infrastructure (Deployment Enhancements)
+
+| Infrastructure | When to add | What it provides |
 |---------------|------------|-----------------|
-| **Kafka-compatible event stream** | High-throughput deployments (>1000 events/sec). Multiple consumer groups needing independent replay. | `pipeline_events` table + `LISTEN/NOTIFY` |
-| **Redis-compatible cache** | Read-heavy catalog/placement workloads. Geographically distributed read replicas. | Materialized views in PostgreSQL |
-| **Git repository** | CI/CD pipeline integration. Teams that want PR-based request ingress. | Direct API submission |
-| **Service mesh** | Production deployments requiring mTLS between control plane services. | Application-level TLS configuration |
+| **OIDC-compatible identity provider** | Organizations with existing identity infrastructure. Multi-tenant deployments requiring federated authentication across different IdPs. | External authentication — replaces internal PostgreSQL-based user management. Registered as `auth_provider`. |
+| **Vault-compatible secrets management** | Organizations with existing Vault infrastructure. Deployments requiring dynamic database credentials, PKI certificate issuance, or full HSM-backed transit encryption. | External secrets backend — replaces internal PostgreSQL-based secrets management. |
+| **Kafka-compatible event stream** | High-throughput deployments (>1000 events/sec). Multiple consumer groups needing independent replay. | Replaces `pipeline_events` table + `LISTEN/NOTIFY` for event routing. |
+| **Redis-compatible cache** | Read-heavy catalog/placement workloads. Geographically distributed read replicas. | Replaces materialized views in PostgreSQL. |
+| **Git repository** | CI/CD pipeline integration. Teams that want PR-based request ingress. | Adds Git as an ingress path alongside API/CLI. |
+| **Service mesh** | Production deployments requiring mTLS between control plane services. | Replaces application-level TLS configuration. |
 
-### 4.3 Deployment Profiles
+### 4.5 Deployment Profiles
 
 | Profile | Required | Optional |
 |---------|----------|----------|
-| **Minimal** (dev/demo) | PostgreSQL (single instance), Keycloak, Vault (dev mode) | — |
-| **Standard** (production) | PostgreSQL (HA), Keycloak (HA), Vault (HA), Service mesh | Redis (catalog cache) |
-| **Enterprise** (large scale) | PostgreSQL (HA + read replicas), Keycloak (HA), Vault (HA + HSM), Service mesh | Kafka, Redis, Git (ingress) |
-| **Sovereign** (air-gapped) | PostgreSQL (per-zone), Keycloak (per-zone), Vault (per-zone + HSM seal), Service mesh | — (minimize surface area) |
+| **Minimal** (homelab/dev) | PostgreSQL (single instance) | — |
+| **Standard** (production) | PostgreSQL (HA) | Keycloak, Vault, Service mesh, Redis |
+| **Enterprise** (large scale) | PostgreSQL (HA + read replicas) | Keycloak (HA), Vault (HA + HSM), Service mesh, Kafka, Redis, Git |
+| **Sovereign** (air-gapped) | PostgreSQL (per-zone) | Keycloak (per-zone), Vault (per-zone + HSM seal), Service mesh |
 
 ---
 
@@ -425,14 +468,15 @@ This is a consumer convenience — a structured workspace for declaring intent. 
 
 | Aspect | Specification |
 |--------|--------------|
-| Required infrastructure | PostgreSQL-compatible DB + OIDC-compatible IdP + Vault-compatible secrets management |
-| Optional infrastructure | Kafka (event streaming), Redis (caching), Git (ingress adapter), Service mesh (mTLS) |
+| Required infrastructure | PostgreSQL-compatible DB |
+| Internal capabilities | Authentication (local accounts + JWT), secrets (envelope encryption), event routing (`LISTEN/NOTIFY`) |
+| Optional infrastructure | OIDC IdP (external auth), Vault (external secrets), Kafka (event streaming), Redis (caching), Git (ingress), Service mesh (mTLS) |
 | Provider types | 6: `service_provider`, `information_provider`, `meta_provider`, `auth_provider`, `peer_dcm`, `process_provider` |
 | Policy evaluation modes | 2: Internal (DCM evaluates via OPA, any delivery mechanism) and External (external provider evaluates) |
 | Control plane services | 9 deployable services |
 | Data domains | 4 logical domains (Intent, Requested, Realized, Discovered) in 1 database |
-| Minimum deployment | 3 infrastructure components + control plane services |
-| Sovereign deployment | PostgreSQL + Keycloak + Vault per sovereignty zone |
+| Minimum deployment | 1 infrastructure component (PostgreSQL) + control plane services |
+| Sovereign deployment | PostgreSQL per sovereignty zone (+ Keycloak, Vault optional) |
 
 ### 7.1 Architectural Invariants
 
@@ -445,7 +489,7 @@ These properties hold regardless of deployment profile or infrastructure choices
 - **Provider Contract** — registration, health, capability, sovereignty, naturalization/denaturalization
 - **Policy Engine** — 8 policy types, OPA/Rego, scoring model
 - **AEP compliance** on all APIs
-- **309 capabilities** across 39 domains
+- **331 capabilities** across 39 domains
 - **101 event payloads** across 22 domains
 
 ---

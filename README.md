@@ -22,7 +22,7 @@ dcm/
 │   │   ├── A-provider-contract.md
 │   │   └── B-policy-contract.md
 │   ├── ai/DCM-AI-PROMPT.md                ← AI knowledge base (104 sections)
-│   ├── DCM-Capabilities-Matrix.md         ← 309 capabilities across 39 domains
+│   ├── DCM-Capabilities-Matrix.md         ← 331 capabilities across 39 domains
 │   └── DISCUSSION-TOPICS.md               ← Open and resolved discussion topics
 ├── docs/
 │   ├── specifications/                     ← 15 prose specification documents
@@ -32,19 +32,19 @@ dcm/
 │   └── DCM-Taxonomy.md                    ← Vocabulary, anti-vocabulary, 39 domain prefixes
 ├── schemas/
 │   ├── openapi/                           ← 4 AEP-compliant API specs
-│   │   ├── dcm-consumer-api.yaml          ← 72 consumer paths
-│   │   ├── dcm-admin-api.yaml             ← 57 admin paths
+│   │   ├── dcm-consumer-api.yaml          ← 74 consumer paths
+│   │   ├── dcm-admin-api.yaml             ← 61 admin paths
 │   │   ├── dcm-operator-api.yaml
 │   │   └── dcm-provider-callback-api.yaml
 │   ├── jsonschema/                        ← 6 JSON schemas
 │   │   ├── dcm-common.json
 │   │   ├── dcm-entities.json
-│   │   ├── dcm-events.json                ← 101 event payloads across 22 domains
+│   │   ├── dcm-events.json                ← 109 event payloads across 22 domains
 │   │   ├── dcm-policies.json
 │   │   ├── dcm-providers.json             ← 6 provider types
 │   │   └── resource-type-spec-template.json
 │   └── sql/
-│       └── 001-initial.sql                ← 14 tables, RLS, hash chain, LISTEN/NOTIFY
+│       └── 001-initial.sql                ← 18 tables, RLS, hash chain, LISTEN/NOTIFY
 ├── project-overview.md
 ├── LICENSE
 └── README.md
@@ -54,14 +54,14 @@ dcm/
 
 | Metric | Value |
 |--------|-------|
-| Architecture documents | 57 data model + 15 specifications |
-| Capabilities | 309 across 39 domains |
+| Architecture documents | 58 data model + 15 specifications |
+| Capabilities | 322 across 39 domains |
 | Provider types | 6 (service, information, meta, auth, peer_dcm, process) |
 | Policy evaluation modes | 2 (Internal via OPA, External via provider) |
 | Control plane services | 9 |
-| Required infrastructure | 3 (PostgreSQL-compatible DB, OIDC-compatible IdP, Vault-compatible secrets) |
-| Consumer API | 72 paths |
-| Admin API | 57 paths |
+| Required infrastructure | 1 (PostgreSQL-compatible DB) — auth, secrets, events handled internally |
+| Consumer API | 74 paths |
+| Admin API | 61 paths |
 | Event catalog | 101 payloads across 22 domains |
 
 ## Getting Started

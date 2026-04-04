@@ -2553,6 +2553,208 @@
           "type": "integer"
         }
       }
+    },
+    "override_first_approval_payload": {
+      "type": "object",
+      "properties": {
+        "override_request_uuid": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "approver_uuid": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "approver_role": {
+          "type": "string"
+        },
+        "awaiting_second": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "override_request_uuid",
+        "approver_uuid"
+      ]
+    },
+    "override_approved_payload": {
+      "type": "object",
+      "properties": {
+        "override_request_uuid": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "request_uuid": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "approvers": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        },
+        "compensating_controls": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "override_request_uuid",
+        "request_uuid"
+      ]
+    },
+    "override_rejected_payload": {
+      "type": "object",
+      "properties": {
+        "override_request_uuid": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "rejector_uuid": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "reason": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "override_request_uuid",
+        "rejector_uuid"
+      ]
+    },
+    "override_expired_payload": {
+      "type": "object",
+      "properties": {
+        "override_request_uuid": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "timeout_at": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "override_request_uuid"
+      ]
+    },
+    "request_policy_blocked_payload": {
+      "type": "object",
+      "properties": {
+        "request_uuid": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "blocking_details": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        },
+        "resolution_options": {
+          "type": "object"
+        },
+        "timeout_at": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "request_uuid",
+        "blocking_details",
+        "resolution_options"
+      ]
+    },
+    "request_resolution_chosen_payload": {
+      "type": "object",
+      "properties": {
+        "request_uuid": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "action": {
+          "type": "string",
+          "enum": [
+            "modify",
+            "request_override",
+            "cancel",
+            "escalate"
+          ]
+        },
+        "modifications": {
+          "type": "object"
+        },
+        "justification": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "request_uuid",
+        "action"
+      ]
+    },
+    "request_modified_resubmit_payload": {
+      "type": "object",
+      "properties": {
+        "request_uuid": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "modified_fields": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "previous_blocking_policy": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "request_uuid",
+        "modified_fields"
+      ]
+    },
+    "override_requested_payload": {
+      "type": "object",
+      "properties": {
+        "override_request_uuid": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "request_uuid": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "blocking_policy_handle": {
+          "type": "string"
+        },
+        "consumer_justification": {
+          "type": "string"
+        },
+        "required_approval_type": {
+          "type": "string",
+          "enum": [
+            "single",
+            "dual"
+          ]
+        },
+        "eligible_approver_roles": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "override_request_uuid",
+        "request_uuid",
+        "blocking_policy_handle"
+      ]
     }
   },
   "$ref": "#/$defs/dcm_event"
