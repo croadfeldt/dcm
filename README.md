@@ -1,40 +1,87 @@
-# DCM
+# DCM — Data Center Management
 
-DCM (Data Center Management) is envisioned as a framework designed to provide a "hyperscaler-like cloud experience" for on-premises infrastructure. It aims to centralize and automate the management, observation, and lifecycle of IT/IS services within an enterprise data center. This is a work in progress with the initial stage of HLD documentation completed. Detailed specifications and discussions are on-going. Expertise and opinions are encouraged and welcome.
-  
-## Core Principles & Goals:
-  
-* **Centralized Management**: Consolidate disparate automation efforts under a single control plane or "single pane of glass" to manage various data center components.
-* **Automation & Self-Service**: Leverage existing automation tools (like Ansible Automation Platform) to offer a self-service model for provisioning, configuration, and day-to-day management. The goal is to enable application teams to define and deploy infrastructure as code.
-* **Declarative Infrastructure**: Define the desired state of infrastructure, with the system working to achieve and maintain that state, aiding in reconciliation between discovered and intended inventory.
-* **Composability**: Emphasize a composable architecture that allows for reusable services and operational efficiencies.
-* **Technology Agnostic Framework**: Designed to be flexible and consume common data formats, translating them to appropriate technologies, though an opinionated model is available.
-* **Full Lifecycle Management**: Enable complete lifecycle management of IT/IS services and ephemeral/declarative infrastructure.
-* **Mimics Kubernetes Design**: Draws inspiration from Kubernetes' orchestration and declarative control plane.
-* **API First**: All integrations are done via a common API framework.
-* **AI Ready**: DCM is standalone, but designed with AI in mind as core components and AIOps layered over the top.
-  
-## Status of next release (alpha)
-  
-- [ ] todo 1 (owned by ....)
-- [ ] todo 2 (owned by ....)
-- [ ] todo 3 (owned by ....)
-- [ ] todo 4 (owned by ....)
-  
-## Recommended Reading
-- [overview.md](overview.md) - Project overview - will be merged into READMe.
-- [taxonomy.md](./taxonomy/) — DCM taxonomy and definitions
+DCM is a framework for sovereign private cloud management. It provides a declarative control plane for managing the lifecycle of arbitrary infrastructure resources across an enterprise — from bare metal and VMs to containers, applications, and managed services.
 
-## AI Model Knowledge Base
+**Three foundational abstractions:** Data · Provider · Policy
+**License:** Apache 2.0
 
-[Infrastructure Knowledge YAML file](architecture/infrastructure_knowledge.yaml) - This file is pre-loaded with information and context on DCM to be used by an AI model. - This is a WIP in progress, best effort to be update with changes.
-  
-## MVP
-_(No text files listed)_
-  
-## Other projects in the same space
-There are many other projects in the same space, like:
-  
-* [Crossplane](https://crossplane.io)
-* [Kessel](https://github.com/project-kessel)
-* [KRO](https://kro.run)
+---
+
+## Repository Structure
+
+```
+dcm/
+├── architecture/
+│   ├── data-model/                         ← 57 architecture documents
+│   │   ├── 00-foundations.md               ← Start here — three abstractions
+│   │   ├── 01-entity-types.md
+│   │   ├── 02-four-states.md
+│   │   ├── ...
+│   │   ├── 50-subscription-lifecycle.md
+│   │   ├── 51-infrastructure-optimization.md
+│   │   ├── A-provider-contract.md
+│   │   └── B-policy-contract.md
+│   ├── ai/DCM-AI-PROMPT.md                ← AI knowledge base (104 sections)
+│   ├── DCM-Capabilities-Matrix.md         ← 331 capabilities across 39 domains
+│   └── DISCUSSION-TOPICS.md               ← Open and resolved discussion topics
+├── docs/
+│   ├── specifications/                     ← 15 prose specification documents
+│   └── engineering/
+│       └── ENGINEERING-ALIGNMENT.md        ← Per-repo mapping for engineering teams
+├── taxonomy/
+│   └── DCM-Taxonomy.md                    ← Vocabulary, anti-vocabulary, 39 domain prefixes
+├── schemas/
+│   ├── openapi/                           ← 4 AEP-compliant API specs
+│   │   ├── dcm-consumer-api.yaml          ← 74 consumer paths
+│   │   ├── dcm-admin-api.yaml             ← 61 admin paths
+│   │   ├── dcm-operator-api.yaml
+│   │   └── dcm-provider-callback-api.yaml
+│   ├── jsonschema/                        ← 6 JSON schemas
+│   │   ├── dcm-common.json
+│   │   ├── dcm-entities.json
+│   │   ├── dcm-events.json                ← 109 event payloads across 22 domains
+│   │   ├── dcm-policies.json
+│   │   ├── dcm-providers.json             ← 6 provider types
+│   │   └── resource-type-spec-template.json
+│   └── sql/
+│       └── 001-initial.sql                ← 18 tables, RLS, hash chain, LISTEN/NOTIFY
+├── project-overview.md
+├── LICENSE
+└── README.md
+```
+
+## Key Facts
+
+| Metric | Value |
+|--------|-------|
+| Architecture documents | 58 data model + 15 specifications |
+| Capabilities | 322 across 39 domains |
+| Provider types | 6 (service, information, meta, auth, peer_dcm, process) |
+| Policy evaluation modes | 2 (Internal via OPA, External via provider) |
+| Control plane services | 9 |
+| Required infrastructure | 1 (PostgreSQL-compatible DB) — auth, secrets, events handled internally |
+| Consumer API | 74 paths |
+| Admin API | 61 paths |
+| Event catalog | 101 payloads across 22 domains |
+
+## Getting Started
+
+1. **Understand the design** — read [`architecture/data-model/00-foundations.md`](architecture/data-model/00-foundations.md)
+2. **Learn the vocabulary** — read [`taxonomy/DCM-Taxonomy.md`](taxonomy/DCM-Taxonomy.md)
+3. **See what DCM can do** — browse [`architecture/DCM-Capabilities-Matrix.md`](architecture/DCM-Capabilities-Matrix.md)
+4. **Build a service** — start with the OpenAPI specs in [`schemas/openapi/`](schemas/openapi/) and the engineering guide in [`docs/engineering/ENGINEERING-ALIGNMENT.md`](docs/engineering/ENGINEERING-ALIGNMENT.md)
+5. **Deploy an example** — see [dcm-examples](https://github.com/dcm-project/dcm-examples)
+
+## Related Repositories
+
+| Repository | Purpose |
+|-----------|---------|
+| [dcm-examples](https://github.com/dcm-project/dcm-examples) | Reference implementations — Summit demo with Go services, Ansible, OpenShift manifests |
+| [dcm-project.github.io](https://github.com/dcm-project/dcm-project.github.io) | Project website — documentation segmented by domain |
+| [catalog-manager](https://github.com/dcm-project/catalog-manager) | Service catalog implementation |
+| [service-provider-manager](https://github.com/dcm-project/service-provider-manager) | Provider registration |
+| [policy-manager](https://github.com/dcm-project/policy-manager) | Policy CRUD and evaluation |
+| [placement-manager](https://github.com/dcm-project/placement-manager) | Provider selection |
+| [api-gateway](https://github.com/dcm-project/api-gateway) | API ingress (Traefik) |
+| [enhancements](https://github.com/dcm-project/enhancements) | Design proposals |
+| [shared-workflows](https://github.com/dcm-project/shared-workflows) | CI/CD workflows |
