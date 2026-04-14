@@ -251,7 +251,7 @@ CREATE TABLE providers (
     display_name        VARCHAR(256) NOT NULL,
     provider_type       VARCHAR(64) NOT NULL
                             CHECK (provider_type IN ('service_provider', 'information_provider',
-                                                     'meta_provider', 'auth_provider',
+                                                      'auth_provider',
                                                      'peer_dcm', 'process_provider')),
     status              VARCHAR(32) NOT NULL DEFAULT 'PENDING'
                             CHECK (status IN ('PENDING', 'ACTIVE', 'SUSPENDED', 'DEREGISTERED', 'SANDBOX')),
