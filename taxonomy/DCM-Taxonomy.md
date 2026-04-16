@@ -22,14 +22,14 @@ The DCM taxonomy defines the precise vocabulary used throughout the architecture
 |------|-----------|
 | **Service Provider** | Typed Provider. Capability: realize infrastructure resources. Implements naturalization, realization, denaturalization, and discovery. |
 | **Information Provider** | Typed Provider. Capability: serve authoritative external data (CMDB, HR, Finance, identity). |
-| **Storage Provider** | Typed Provider. Capability: persist DCM state. Sub-types: GitOps, write-once snapshot, event stream, search index, audit. |
+| **Data Store Contract** | PostgreSQL store contract defining persistence requirements per data domain (Intent, Requested, Realized, Discovered, Audit). |
 | **Meta Provider** | Typed Provider. Capability: compose multiple child providers into a compound service delivered as a single catalog item. |
-| **Policy Provider** | Typed Provider. Capability: evaluate policies externally. Modes 1–4; Mode 3–4 for OPA/Rego sidecar and black-box query enrichment. |
-| **Credential Provider** | Typed Provider. Capability: issue, rotate, and revoke secrets and credentials. |
+| **External Policy Evaluator** | Typed Provider. Capability: evaluate policies externally. Modes 1–4; Mode 3–4 for OPA/Rego sidecar and black-box query enrichment. |
+| **credential management service** | Typed Provider. Capability: issue, rotate, and revoke secrets and credentials. |
 | **Auth Provider** | Typed Provider. Capability: authenticate actor identities and resolve role/group memberships. |
-| **Notification Provider** | Typed Provider. Capability: deliver notification envelopes to configured channels (Slack, PagerDuty, email, webhook). |
-| **Message Bus Provider** | Typed Provider. Capability: async event streaming between DCM and external systems. |
-| **Registry Provider** | Typed Provider. Capability: serve the Resource Type Registry (core, community, organization tiers). |
+| **notification service** | Typed Provider. Capability: deliver notification envelopes to configured channels (Slack, PagerDuty, email, webhook). |
+| **event routing service** | Typed Provider. Capability: async event streaming between DCM and external systems. |
+| **Resource Type Registry** | Typed Provider. Capability: serve the Resource Type Registry (core, community, organization tiers). |
 | **Peer DCM** | Typed Provider. Another DCM instance participating in federation. Federation is the Provider abstraction applied across DCM instances. |
 
 ### Policy Types (7)
@@ -81,20 +81,20 @@ The DCM taxonomy defines the precise vocabulary used throughout the architecture
 
 
 
-### Credential Provider Terms
+### credential management service Terms
 
 | Term | Definition |
 |------|-----------|
-| **Credential Record** | DCM Data artifact storing credential metadata (UUID, type, scope, expiry, status). Never contains the credential value — values are held by the Credential Provider. |
+| **Credential Record** | DCM Data artifact storing credential metadata (UUID, type, scope, expiry, status). Never contains the credential value — values are held by the credential management service. |
 | **DCM Interaction Credential** | Short-lived (PT15M–PT1H profile-governed), scoped credential issued before every provider dispatch. Implements ZTS-002. Never stored beyond the interaction window. |
 | **Credential Revocation Registry** | Fast-queryable store of revoked credential UUIDs. All components that receive interaction credentials must check this registry at each use. Cache TTL: PT1M standard; PT30S fsi/sovereign. |
 | **Transition Window** | Period during rotation when both the old and new credential are valid. Prevents downtime. P1D for consumer credentials; PT5M for dcm_interaction; P7D for x509. |
 | **Emergency Rotation** | Rotation triggered by a security event. No transition window — old credential revoked immediately. Fastest-channel notification delivery. |
-| **CPX-001–CPX-012** | Credential Provider system policies. Key: CPX-001 (values never in DCM stores — every profile), CPX-002 (every dispatch must present scoped interaction credential), CPX-009 (algorithm and key_usage declared at issuance; validated at use), CPX-012 (CPX-001 applies in ALL profiles — no exceptions). |
+| **CPX-001–CPX-012** | credential management service system policies. Key: CPX-001 (values never in DCM stores — every profile), CPX-002 (every dispatch must present scoped interaction credential), CPX-009 (algorithm and key_usage declared at issuance; validated at use), CPX-012 (CPX-001 applies in ALL profiles — no exceptions). |
 | **credential_profile** | Profile-governed credential configuration block controlling: permitted credential types, max lifetime per type, rotation requirements, retrieval auth level (bearer/step-up-mfa/mtls), FIPS level enforcement, approved algorithms, revocation SLA, idle detection threshold, IP binding requirement. |
 | **AAL (Authenticator Assurance Level)** | NIST 800-63B vocabulary: AAL1 (minimal/dev — single factor), AAL2 (standard/prod — MFA required for sensitive credentials), AAL2+ (fsi — hardware MFA, FIPS L2), AAL3 (sovereign — hardware-bound, FIPS L3, tamper evidence). |
 | **Idle Credential** | A credential issued but not retrieved within the profile-governed threshold. Triggers notification but not automatic revocation. Auto-revocation after 2× threshold is profile-configurable. |
-| **key_usage** | Declared purpose of a credential: authentication, signing, or encryption. Non-overlapping — a credential issued for authentication cannot be used for signing even if the algorithm supports both. Validated at use time by Credential Provider. |
+| **key_usage** | Declared purpose of a credential: authentication, signing, or encryption. Non-overlapping — a credential issued for authentication cannot be used for signing even if the algorithm supports both. Validated at use time by credential management service. |
 
 
 ### Meta Provider Composability Terms
@@ -122,8 +122,8 @@ The DCM taxonomy defines the precise vocabulary used throughout the architecture
 
 | Term | Definition |
 |------|-----------|
-| **External CA Credential Provider** | A Credential Provider backend that issues x509 certificates using standard protocols (ACME/RFC 8555, EST/RFC 7030, SCEP, CMP, or native API like HashiCorp Vault PKI). Recommended for fsi and sovereign profiles to maintain enterprise PKI chain. Registered trust anchor root cert must be installed in all component trust stores. |
-| **Trust Anchor** | The root or intermediate CA certificate installed in all DCM component trust stores. May be the built-in Internal CA or an external CA registered as a Credential Provider. ICOM-009: components only accept certificates from registered trust anchors. |
+| **External CA credential management service** | A credential management service backend that issues x509 certificates using standard protocols (ACME/RFC 8555, EST/RFC 7030, SCEP, CMP, or native API like HashiCorp Vault PKI). Recommended for fsi and sovereign profiles to maintain enterprise PKI chain. Registered trust anchor root cert must be installed in all component trust stores. |
+| **Trust Anchor** | The root or intermediate CA certificate installed in all DCM component trust stores. May be the built-in Internal CA or an external CA registered as a credential management service. ICOM-009: components only accept certificates from registered trust anchors. |
 | **Server-Sent Events (SSE)** | W3C standard HTTP/1.1 unidirectional event stream. DCM exposes `GET /api/v1/requests/{uuid}/stream` as an SSE endpoint for live request status updates without polling. Stream closes on terminal status. |
 | **Interim Status** | Provider-sent progress update during a long-running operation, via `POST /api/v1/provider/entities/{uuid}/status`. Includes step_current/step_total, step_label, and constituent_status array for compound operations. Triggers `request.progress_updated` event. |
 | **constituent_status** | Array of named component statuses in a compound/Meta Provider request (e.g. `[{ref: "vm", status: "REALIZED"}, {ref: "dns", status: "PROVISIONING"}]`). Surfaced in SSE stream and polling response so consumers can track multi-part operations. |
@@ -154,8 +154,8 @@ The DCM taxonomy defines the precise vocabulary used throughout the architecture
 |------|-----------|
 | **ITSM Bridge** | DCM's bidirectional integration with ITSM systems (ServiceNow, Jira Service Management, Remedy). DCM is the system of record; ITSM is a consumer of DCM events and a source of approval votes. No ITSM dependency for DCM core operation. |
 | **ITSM Reference** | Optional metadata on a DCM entity linking it to one or more ITSM records (Change Request, Incident, CMDB CI). Stored as business data fields; visible on resource entity Overview tab; included in audit records. |
-| **CMDB Sync** | One-way sync from DCM to CMDB. DCM entities are the system of record; CMDB CI state is updated via Notification Provider subscription to `entity.*` events. Field mapping is provider-configured, not hardcoded. |
-| **GUI-014** | ITSM Integration Bridge capability — ITSM references on entity pages, change records linked to requests, ITSM-sourced approval votes in request status, CMDB sync via Notification Provider. |
+| **CMDB Sync** | One-way sync from DCM to CMDB. DCM entities are the system of record; CMDB CI state is updated via notification service subscription to `entity.*` events. Field mapping is provider-configured, not hardcoded. |
+| **GUI-014** | ITSM Integration Bridge capability — ITSM references on entity pages, change records linked to requests, ITSM-sourced approval votes in request status, CMDB sync via notification service. |
 
 
 
@@ -163,13 +163,13 @@ The DCM taxonomy defines the precise vocabulary used throughout the architecture
 
 | Term | Definition |
 |------|-----------|
-| **ITSM Provider** | The 12th DCM Provider type. Provides bidirectional integration with IT Service Management systems (ServiceNow, Jira Service Management, BMC Remedy/Helix, Freshservice, PagerDuty, etc.). Outbound: DCM lifecycle events → ITSM records. Inbound: ITSM approvals → DCM approval votes. Implements full base Provider contract. |
+| **ITSM Integration** | Bidirectional integration with IT Service Management systems (ServiceNow, Jira Service Management, BMC Remedy/Helix, Freshservice, PagerDuty, etc.) via process_provider and service_provider types. Outbound: DCM lifecycle events → ITSM records. Inbound: ITSM approvals → DCM approval votes. |
 | **ITSM Action Policy** | The 8th DCM Policy output type. Side-effect policy that triggers an action in a connected ITSM system when a DCM event matches. Non-blocking by default (`on_failure: log_and_continue`). May gate the pipeline via `block_until_created: true` with mandatory timeout (ITSM-005). |
 | **ITSM Reference** | Metadata stored on a DCM entity linking it to an ITSM record: system, record_type (change_request/incident/cmdb_ci), record_id, record_url, status, last_synced_at. Preserved through entity lifecycle; included in audit records. |
 | **block_until_created** | Optional ITSM Policy flag. When `true`, DCM waits for ITSM record creation confirmation before dispatching to Service Provider. Requires `block_timeout`. Timeout expiry triggers `on_failure` behavior — the pipeline never permanently stalls due to ITSM unavailability (ITSM-005). |
-| **CMDB CI Mapping** | ITSM Provider configuration mapping DCM resource type FQNs to ITSM CI class names (e.g. `Compute.VirtualMachine → cmdb_ci_server` in ServiceNow). Used for `create_cmdb_ci`, `update_cmdb_ci`, and `retire_cmdb_ci` actions. |
-| **recorded_via** | Field on DCM approval vote records identifying the system that submitted the vote (dcm_admin_ui / servicenow / jira / slack_bot / api_direct / other). Used by ITSM Provider inbound approval routing and in audit records for compliance traceability. |
-| **ITSM-001–007** | ITSM Provider system policies. Key: ITSM-002 (DCM never requires ITSM — non-blocking default), ITSM-003 (inbound webhooks must be authenticated), ITSM-005 (block_until_created must have timeout — pipeline never permanently stalled). |
+| **CMDB CI Mapping** | ITSM integration configuration mapping DCM resource type FQNs to ITSM CI class names (e.g. `Compute.VirtualMachine → cmdb_ci_server` in ServiceNow). Used for `create_cmdb_ci`, `update_cmdb_ci`, and `retire_cmdb_ci` actions. |
+| **recorded_via** | Field on DCM approval vote records identifying the system that submitted the vote (dcm_admin_ui / servicenow / jira / slack_bot / api_direct / other). Used by ITSM integration inbound approval routing and in audit records for compliance traceability. |
+| **ITSM-001–007** | ITSM integration system policies. Key: ITSM-002 (DCM never requires ITSM — non-blocking default), ITSM-003 (inbound webhooks must be authenticated), ITSM-005 (block_until_created must have timeout — pipeline never permanently stalled). |
 | **ITSM-POL-001–004** | ITSM Policy system policies. Key: ITSM-POL-002 (ITSM Policies are side-effect only — not GateKeeper substitutes), ITSM-POL-003 (full audit record per evaluation), ITSM-POL-004 (multiple ITSM Policies on same event fire independently). |
 
 
@@ -179,7 +179,7 @@ The DCM taxonomy defines the precise vocabulary used throughout the architecture
 |------|-----------|
 | **Consumer Portal** | The self-service web interface for application developers, owners, and tenant admins. Wraps the Consumer API completely. Bounded by tenancy (X-DCM-Tenant context). Features: catalog browse, request submission with scheduling and dependency groups, live SSE status stream with constituent tracking, resource management, approvals, cost and quota, notifications, sessions. |
 | **Admin Panel** | The platform operations console for Platform Admins, SREs, Policy Owners, Security teams, and Auditors. Wraps the Admin API. Features: platform health dashboard, tenant management, provider registration approval, accreditation, quota, scoring configuration, approval queue, tier registry editor, audit and compliance, session management. |
-| **Provider Management GUI** | The management interface for provider owner teams. One common shell (overview, health, config, audit) for all 11 provider types, with type-specific extension tabs. Service Provider extends with capacity, managed entities, naturalization; Credential Provider with inventory, rotation, revocation, external CA config; Auth Provider with session stats and SCIM sync; etc. |
+| **Provider Management GUI** | The management interface for provider owner teams. One common shell (overview, health, config, audit) for all 11 provider types, with type-specific extension tabs. Service Provider extends with capacity, managed entities, naturalization; credential management service with inventory, rotation, revocation, external CA config; Auth Provider with session stats and SCIM sync; etc. |
 | **Unified Shell** | A single DCM web application with role-gated surfaces: Consumer Portal (all actors), Admin Panel (platform-level roles), Provider Management (provider_owner role), Flow GUI (policy_owner/sre). One login, one session. Navigation adapts to actor's highest privilege level. |
 | **GUI-001–GUI-010** | Web Interface capabilities. Key: GUI-002 (SSE live status stream for consumer — status_change, progress_updated, approval events), GUI-006 (tier registry drag-and-drop with hard-stop at auto_approve_below ≤ 50), GUI-010 (unified shell — one application, role-gated surfaces). |
 
@@ -390,7 +390,7 @@ Terms to avoid because they introduce ambiguity. Use the precise alternatives in
 | FCM | Federated Contribution Model |
 | SMX | Scoring Model |
 | MPX | Meta Provider Composability |
-| CPX | Credential Provider Model |
+| CPX | credential management service Model |
 | DPO | Design Priority Order |
 | ATM | Authority Tier Model |
 | EVT | Event Catalog |
