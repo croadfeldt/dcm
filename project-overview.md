@@ -140,7 +140,7 @@ DCM operates in the control plane layer of an enterprise data center estate. It 
 
 ### Data Sovereignty
 
-DCM enforces data sovereignty as a structural property, not a configuration option. Every entity carries sovereignty zone declarations that constrain which Storage Providers may hold copies and which Service Providers may handle the data. The Governance Matrix enforces these boundaries at every cross-boundary interaction — and it is always boolean. No scoring, no exceptions, no policy can route around a declared sovereignty constraint.
+DCM enforces data sovereignty as a structural property, not a configuration option. Every entity carries sovereignty zone declarations that constrain which stores may hold copies and which Service Providers may handle the data. The Governance Matrix enforces these boundaries at every cross-boundary interaction — and it is always boolean. No scoring, no exceptions, no policy can route around a declared sovereignty constraint.
 
 ### Target Environments
 
