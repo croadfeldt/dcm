@@ -274,7 +274,7 @@
         }
       }
     },
-    "meta_provider_capabilities": {
+    "compound_service_capabilities": {
       "type": "object",
       "title": "Meta Provider Capability Extension",
       "description": "Composes multiple sub-providers to deliver a higher-order composite service.",
@@ -391,7 +391,7 @@
           "$ref": "#/$defs/information_provider_capabilities"
         },
         {
-          "$ref": "#/$defs/meta_provider_capabilities"
+          "$ref": "#/$defs/compound_service_capabilities"
         },
         {
           "$ref": "#/$defs/auth_provider_capabilities"

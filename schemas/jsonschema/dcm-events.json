@@ -519,7 +519,7 @@
             "$ref": "dcm-common.json#/$defs/uuid"
           }
         },
-        "meta_provider_uuid": {
+        "compound_service_ref": {
           "$ref": "dcm-common.json#/$defs/uuid"
         }
       }
@@ -1643,13 +1643,13 @@
     "governance_policy_trust_elevated_payload": {
       "type": "object",
       "required": [
-        "policy_provider_uuid",
+        "policy_evaluator_ref",
         "previous_trust",
         "new_trust"
       ],
       "additionalProperties": false,
       "properties": {
-        "policy_provider_uuid": {
+        "policy_evaluator_ref": {
           "$ref": "dcm-common.json#/$defs/uuid"
         },
         "previous_trust": {

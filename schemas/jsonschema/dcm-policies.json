@@ -131,7 +131,7 @@
       "type": "object",
       "additionalProperties": false,
       "properties": {
-        "type": { "type": "string", "enum": ["provider", "peer_dcm", "storage_provider"] },
+        "type": { "type": "string", "enum": ["provider", "peer_dcm", "data_store"] },
         "sovereignty_zone": {
           "type": "object",
           "properties": {

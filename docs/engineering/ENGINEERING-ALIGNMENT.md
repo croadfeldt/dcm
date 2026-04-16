@@ -107,7 +107,7 @@ Provider registration CRUD (POST/GET/PUT/DELETE) with health endpoint. Go client
   - `ownership_model_declaration` — how the provider handles entity ownership
   - `public_key_pem` — for mTLS mutual authentication (doc 43, PCA-001)
   - **How:** Add JSONB columns for structured fields. Extend OpenAPI spec with new request/response fields.
-  - **Note (doc 51):** DCM defines 6 provider types: `service_provider`, `information_provider`, `meta_provider`, `auth_provider`, `peer_dcm`, `process_provider`. Credentials and notifications are handled by service_providers via resource type declarations.
+  - **Note (doc 51):** DCM defines 5 provider types: `service_provider`, `information_provider`, `auth_provider`, `peer_dcm`, `process_provider`. Credentials and notifications are handled by service_providers via resource type declarations.
 
 - 🔴 **Provider status lifecycle** — current model is likely binary (registered/not). Architecture requires: `PENDING → ACTIVE → SUSPENDED → DEREGISTERED | SANDBOX` with approval pipeline (auto/reviewed/verified/authorized per doc A §2).
   - **How:** Add `status` column with CHECK constraint. Add admin approval endpoint.
