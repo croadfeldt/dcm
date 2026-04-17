@@ -22,7 +22,7 @@ DCM addresses a fundamental gap in enterprise infrastructure management: on-prem
 
 **DCM's Value Proposition**
 
-DCM is the management plane that sits above provisioning tools (Ansible, Terraform, Kubernetes operators) and governs what gets requested, approved, built, owned, and decommissioned. It provides: a unified data model and API across all infrastructure platforms; policy-as-code enforcement on every request before provisioning; full lifecycle management from request through decommission with tamper-evident audit; and a provider abstraction that makes any infrastructure platform consumable through the same interface.
+DCM is the management plane that sits above provisioning tools (Ansible, Terraform, Kubernetes operators) and governs what gets requested, approved, built, owned, and decommissioned. It provides: a unified data model and API across all infrastructure platforms; policy-as-code enforcement on every request before provisioning; full lifecycle management from request through decommission with tamper-evident audit; and a provider abstraction with capability discovery that makes any infrastructure platform consumable through the same interface.
 
 **Delivery Context**
 
@@ -632,7 +632,8 @@ Patterns follow the standard DCM artifact lifecycle: `developing â†’ proposed â†
 
 - **Management plane, not provisioning tool.** DCM orchestrates lifecycle and enforces governance. Provisioning is delegated to service providers that implement the provider contract.
 - **Three abstractions.** Everything in DCM is Data, Provider, or Policy. No exceptions. If a new concept doesn't map to one of these three, the abstraction model needs revision.
-- **Provider-agnostic.** Any infrastructure platform is consumable through the same interface via naturalization/denaturalization. No lock-in to any platform.
+- **Provider-agnostic.** Any infrastructure platform is consumable through the same interface via naturalization/denaturalization. Providers declare capabilities (realize_resources, serve_data, authenticate, federate, execute_workflows) rather than being assigned rigid types. Multi-capability providers register once. No lock-in to any platform.
+- **Discoverable.** DCM advertises its capabilities via a machine-readable endpoint. External systems query what DCM offers and subscribe to data streams without reading documentation. Providers declare what they need from DCM at registration; DCM matches needs to capabilities automatically.
 - **Policy-mandatory.** Every request is policy-evaluated. This is not optional. Governance is the value proposition, not a feature toggle.
 - **Tamper-evident audit.** Every mutation is recorded in a Merkle tree with Ed25519 signatures. Auditors can verify integrity without trusting DCM.
 - **Sovereignty first-class.** Data residency is enforced at request time on every lifecycle operation, not discovered after deployment.

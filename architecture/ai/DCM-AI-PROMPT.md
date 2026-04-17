@@ -68,7 +68,7 @@ Effective at the core mission · Easy to use · Easy to implement · Easy to ext
 **Last Updated:** 2026-03  
 **Status:** Architecture complete — 0 unresolved questions — Ready for implementation
 
-**Note on section structure:** This prompt was built cumulatively across multiple design sessions. Sections 0–57 establish the architecture. Sections 58+ record subsequent additions and refinements. Capability counts, path counts, and domain counts in earlier sections reflect the state at the time that section was written. The authoritative current counts are: **331 capabilities across 39 domains · 58 data model docs · 15 specifications · 16 ADRs · 74 consumer API paths · 61 admin API paths · 109 event payloads across 23 domains · 5 provider types · 2 policy evaluation modes · 9 control plane services · 104 prompt sections.** When earlier sections conflict with later sections, the later section is authoritative. **Infrastructure (doc 51):** 5 provider types: service_provider, information_provider, auth_provider, peer_dcm, process_provider. Credentials and notifications are service_provider resource types. 2 policy evaluation modes: Internal (DCM evaluates via OPA) and External (external provider evaluates). Four data domains (Intent, Requested, Realized, Discovered) in a single PostgreSQL-compatible database. One required infrastructure: PostgreSQL-compatible DB. Authentication (local accounts + JWT), secrets (envelope encryption), and event routing (LISTEN/NOTIFY) are handled internally. OIDC IdP, Vault, Kafka, Redis, Git are optional deployment enhancements. 9 control plane services.
+**Note on section structure:** This prompt was built cumulatively across multiple design sessions. Sections 0–57 establish the architecture. Sections 58+ record subsequent additions and refinements. Capability counts, path counts, and domain counts in earlier sections reflect the state at the time that section was written. The authoritative current counts are: **331 capabilities across 39 domains · 59 data model docs · 12 specifications · 16 ADRs · 75 consumer API paths · 61 admin API paths · 109 event payloads across 23 domains · unified provider model (5 capability types) · 2 policy evaluation modes · 9 control plane services · 105 prompt sections.** When earlier sections conflict with later sections, the later section is authoritative. **Infrastructure (doc 51):** Unified provider model — providers declare capabilities: realize_resources, serve_data, authenticate, federate, execute_workflows. Multi-capability providers register once. Bidirectional capability discovery via GET /api/v1/capabilities. 2 policy evaluation modes: Internal (DCM evaluates via OPA) and External (external provider evaluates). Four data domains (Intent, Requested, Realized, Discovered) in a single PostgreSQL-compatible database. One required infrastructure: PostgreSQL-compatible DB. Authentication (local accounts + JWT), secrets (envelope encryption), and event routing (LISTEN/NOTIFY) are handled internally. OIDC IdP, Vault, Kafka, Redis, Git are optional deployment enhancements. 9 control plane services.
 
 ---
 
@@ -5892,4 +5892,61 @@ Engineering team feedback incorporated. Key decisions:
 | Use cases (Jira) | 30 epics, 249 stories |
 | Use cases (requirements doc) | 31 total, 23 detailed |
 | Prompt sections | 104 |
+
+
+## SECTION 104 — CAPABILITY DISCOVERY, UNIFIED PROVIDER MODEL, AND K8S FUTURE FEATURE (2026-04)
+
+### 104.1 Unified Provider Model (replaces typed providers)
+
+Provider types (service_provider, information_provider, auth_provider, peer_dcm, process_provider) are replaced by a **single provider type with capability declarations**. All providers share the base contract (registration, health, sovereignty, accreditation, zero trust, audit). What varies is the capabilities:
+
+| Capability | What it means | Replaces |
+|-----------|--------------|----------|
+| `realize_resources` | Provision/update/decommission infrastructure | service_provider |
+| `serve_data` | Respond to queries with authoritative data | information_provider |
+| `authenticate` | Authenticate identities, return tokens/roles | auth_provider |
+| `federate` | Another DCM instance — mTLS, dual audit | peer_dcm |
+| `execute_workflows` | Run ephemeral workflows, no persistent entities | process_provider |
+
+**Key change:** A provider can declare multiple capabilities. An IPAM system registers once with `capabilities: [serve_data, realize_resources]`. Old type names become convenience labels derived from capability profiles.
+
+### 104.2 Capability Discovery
+
+**DCM side:** `GET /api/v1/capabilities` — machine-readable advertisement of what DCM offers. External systems query by domain (cost, audit, lifecycle) and get matching capabilities with subscription endpoints. No docs required — the API is self-describing.
+
+**Provider side:** At registration, providers declare `needs_from_dcm` alongside capabilities. DCM matches needs to its capabilities and returns subscription endpoints. Provider explicitly activates subscriptions (never auto-subscribed).
+
+**Integration flow:** External system queries capabilities → discovers matching data streams → subscribes via webhook → data flows automatically. Replaces the manual "read docs, find events, wire webhook" pattern.
+
+New doc: **53-capability-discovery.md** — full specification.
+
+### 104.3 Kubernetes Operator Compatibility → Future Feature
+
+Moved to `docs/future-features/`:
+- kubernetes-compatibility.md
+- dcm-operator-interface-spec.md
+- dcm-operator-sdk-api.md
+
+These describe design intent not yet validated against implementation. DCM's current architecture manages infrastructure through the provider contract. Kubernetes-specific operator integration (CRD mappings, operator SDK, K8s API compatibility layer) is future work that builds on the provider model.
+
+Specifications count: 15 → 12 (3 moved to future-features).
+
+### 104.4 Authoritative Counts Update
+
+| Metric | Value |
+|--------|-------|
+| Data model docs | 59 (added doc 53) |
+| Specifications | 12 (3 K8s specs moved to future-features) |
+| ADRs | 16 (+ README) |
+| OpenAPI schemas | 4 |
+| Capabilities | 331 across 39 domains |
+| SQL tables | 18 |
+| Consumer API paths | 74 (+1 for /capabilities) |
+| Admin API paths | 61 |
+| Event payloads | 109 across 23 domains |
+| Provider model | Unified — capability-based (5 capability types, multi-capability providers) |
+| Policy evaluation modes | 2 (Internal, External) |
+| Control plane services | 9 |
+| Required infrastructure | 1 (PostgreSQL) |
+| Prompt sections | 105 |
 
