@@ -1,0 +1,83 @@
+uuid: uc-seed-009a
+handle: governance/minimal-profile-policy-scope-boundary
+scenario:
+  description: A developer in a minimal-profile personal sandbox tenant provisions
+    a VM with an attached persistent volume and a network attachment to a resource
+    in a different region. This same combination of actions, if performed by an
+    fsi-profile tenant, would trigger (a) data-residency enforcement prohibiting
+    the cross-region attachment, (b) dual-approval requirement for the privileged
+    cross-boundary operation, and (c) mandatory encryption-at-rest on the provisioned
+    volume. Under minimal profile, none of those policies should apply to the request
+    because they are not bound to the minimal profile group — the request should
+    proceed with only the policies minimal profile actually carries, which is
+    effectively system defaults only. The architectural question this exercises is
+    whether DCM's profile-group binding correctly prevents FSI-scoped policies from
+    evaluating against minimal-profile requests, and whether the audit record makes
+    it clear that those policies were not evaluated, rather than silently passing.
+  actor:
+    persona: individual-developer
+    profile: minimal
+  intent: Provision a VM with attached volume and cross-region network attachment
+    under a minimal profile, with FSI-scope policies correctly not applied
+  success_criteria:
+  - Request succeeds because no policies bound to the minimal profile group reject it
+  - FSI-scoped policies (data-residency, dual-approval, encryption-at-rest-mandatory)
+    do not evaluate against this request
+  - Audit record explicitly shows which policies were evaluated, and does NOT list
+    the FSI-scoped policies as either passed or skipped with false-positive framing
+  - No silent fallback evaluates FSI policies with soft enforcement and records a
+    pass; those policies must simply be out of scope
+  - The same request shape submitted under an fsi-profile tenant would fail on at
+    least data-residency and dual-approval (this criterion is about the profile
+    boundary being real, not about this specific run)
+  dimensions:
+    lifecycle_phase: new_request
+    resource_complexity: cross_dependency_payload
+    policy_complexity: system_defaults_only
+    provider_landscape: mixed
+    governance_context: no_governance
+    failure_mode: happy_path
+  profile: minimal
+  expected_domain_interactions:
+  - domain: policy
+    interaction: policy engine determines which policy groups apply based on tenant's
+      profile (minimal) — FSI-scoped groups are excluded by construction
+  - domain: policy
+    interaction: any gatekeepers bound to minimal-profile group evaluate (system
+      defaults only for this profile)
+  - domain: provider
+    interaction: service provider allocates VM in the minimal tenant
+  - domain: provider
+    interaction: storage provider allocates volume without forced encryption-at-rest
+      (FSI-scoped, not bound to minimal)
+  - domain: provider
+    interaction: network provider establishes cross-region attachment without
+      residency rejection (FSI-scoped, not bound to minimal)
+  - domain: data
+    interaction: request record created with profile=minimal and the resolved
+      policy group set for audit
+  - domain: audit
+    interaction: audit record lists policies-evaluated explicitly and does not falsely
+      record FSI-scoped policies as skipped-and-passed
+generated_by:
+  mode: authoring
+  source: human-authored
+  model: null
+  prompt_version: seed-1.0
+  timestamp: '2026-04-23T04:45:00.000000+00:00'
+tags:
+- governance
+- policy
+- profile-boundary
+- minimal-profile
+- negative-policy-claim
+- fsi-policies-out-of-scope
+- cross-region
+- system-defaults-only
+version: 1.0.0
+metadata:
+  admitted_at: '2026-04-23T04:45:00.000000+00:00'
+  admitted_dcm_version: preview
+  promoted_from_run: null
+  initial_baseline_path: null
+  author: chris@croadfeldt
