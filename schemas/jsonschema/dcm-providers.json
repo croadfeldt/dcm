@@ -2,14 +2,13 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://dcm-project.io/schemas/providers/v1",
   "title": "DCM Provider Schemas",
-  "description": "JSON Schema for DCM Provider registration and capability declarations. 6 provider types: service, information, meta, auth, peer_dcm, process. Two policy evaluation modes: Internal (DCM evaluates via OPA) and External (external provider evaluates).",
+  "description": "JSON Schema for DCM Provider registration and capability declarations. 5 provider types: service, information, auth, peer_dcm, process (compound services are a Data concept orchestrated by the Control Plane, not a provider type — see DCM-AI-PROMPT.md). Two policy evaluation modes: Internal (DCM evaluates via OPA) and External (external provider evaluates).",
   "$defs": {
     "provider_type": {
       "type": "string",
       "enum": [
         "service",
         "information",
-        "meta",
         "auth",
         "peer_dcm",
         "process"
