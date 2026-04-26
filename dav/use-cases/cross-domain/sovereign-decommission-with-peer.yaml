@@ -1,0 +1,57 @@
+uuid: uc-seed-002a
+handle: cross-domain/sovereign-decommission-with-peer
+scenario:
+  description: A sovereign-profile tenant initiates decommissioning of a resource
+    that has been replicated to a peer DCM instance for disaster-recovery compliance.
+    The decommission must coordinate with the peer to ensure both replicas are released
+    and the audit trail is consistent across both DCM instances.
+  actor:
+    persona: sovereign-tenant-admin
+    profile: sovereign
+  intent: Decommission a resource such that both the local and the peer replica are
+    released
+  success_criteria:
+  - Local replica is released only after peer acknowledges the decommission
+  - If the peer is unreachable, the decommission is held in a pending state, not silently
+    completed
+  - Final audit record includes the peer acknowledgement evidence
+  - Sovereign data-residency constraints are not violated during the wind-down
+  dimensions:
+    lifecycle_phase: decommission
+    resource_complexity: hard_dependencies
+    policy_complexity: cross_domain_constraint
+    provider_landscape: peer_dcm_required
+    governance_context: sovereignty_enforced
+    failure_mode: peer_dcm_disconnect
+  profile: sovereign
+  expected_domain_interactions:
+  - domain: policy
+    interaction: sovereignty policy evaluates residency at decommission
+  - domain: provider
+    interaction: peer_dcm provider coordinates with remote DCM
+  - domain: provider
+    interaction: service provider releases local resource
+  - domain: data
+    interaction: resource record marked released with peer-ack metadata
+  - domain: audit
+    interaction: cross-DCM audit record stitched together
+generated_by:
+  mode: authoring
+  source: human-authored
+  model: null
+  prompt_version: seed-1.0
+  timestamp: '2026-04-20T18:41:39.741639+00:00'
+tags:
+- cross-domain
+- decommission
+- sovereign
+- peer-dcm
+- edge-case
+- failure-mode
+version: 1.0.0
+metadata:
+  admitted_at: '2026-04-20T18:41:39.741660+00:00'
+  admitted_dcm_version: preview
+  promoted_from_run: null
+  initial_baseline_path: null
+  author: chris@croadfeldt

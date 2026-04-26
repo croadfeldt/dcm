@@ -1,0 +1,67 @@
+uuid: uc-seed-008a
+handle: cross-domain/tenant-onboarding
+scenario:
+  description: A platform engineer onboards a new tenant into the FSI-profile DCM
+    deployment. Onboarding must provision the tenant identity boundary, bind the
+    appropriate policy profile and compliance domain overlays, establish storage
+    and compute quota allocations, configure auth provider claims mapping, and
+    produce a single atomic onboarding record such that either all steps complete
+    or none persist. The new tenant must be immediately governed by FSI policies
+    before any resource is requestable under its name.
+  actor:
+    persona: platform-engineer
+    profile: fsi
+  intent: Onboard a new tenant as an atomic operation with full policy and quota
+    binding before the tenant can request any resources
+  success_criteria:
+  - Tenant identity boundary is created and linked to the FSI profile
+  - Compliance domain overlays appropriate to the tenant's declared regulatory scope
+    are bound to the tenant
+  - Storage and compute quotas are allocated with the requested ceilings
+  - Auth provider claims mapping is configured to resolve tenant membership
+  - Partial-completion of onboarding is not observable to downstream consumers; either
+    the tenant is fully governed or the partial state is rolled back
+  - FSI policy enforcement is active on the tenant before its first resource request
+    is accepted
+  dimensions:
+    lifecycle_phase: new_request
+    resource_complexity: compound_service
+    policy_complexity: cross_domain_constraint
+    provider_landscape: mixed
+    governance_context: compliance_gated
+    failure_mode: happy_path
+  profile: fsi
+  expected_domain_interactions:
+  - domain: data
+    interaction: tenant identity boundary entity created with profile binding
+  - domain: policy
+    interaction: FSI profile policies and compliance overlays bound to tenant
+  - domain: data
+    interaction: storage and compute quota allocations recorded against tenant
+  - domain: provider
+    interaction: auth provider configured with tenant claims mapping
+  - domain: policy
+    interaction: onboarding atomicity enforced by orchestration flow policy
+  - domain: audit
+    interaction: single onboarding record stitches all sub-operations together
+generated_by:
+  mode: authoring
+  source: human-authored
+  model: null
+  prompt_version: seed-1.0
+  timestamp: '2026-04-23T04:45:00.000000+00:00'
+tags:
+- cross-domain
+- tenant
+- onboarding
+- fsi-profile
+- atomic-composition
+- identity-policy-data
+- compound-service
+version: 1.0.0
+metadata:
+  admitted_at: '2026-04-23T04:45:00.000000+00:00'
+  admitted_dcm_version: preview
+  promoted_from_run: null
+  initial_baseline_path: null
+  author: chris@croadfeldt

@@ -1,0 +1,53 @@
+uuid: uc-seed-003a
+handle: identity/auth-provider-drift-detection
+scenario:
+  description: The DCM control plane detects that the identity provider's view of
+    a tenant's user group membership no longer matches DCM's cached view. Drift detection
+    must identify the discrepancy, evaluate whether it is permissible under the tenant's
+    governance policy, and either remediate or escalate for human review.
+  actor:
+    persona: platform-engineer
+    profile: prod
+  intent: Detect and respond to drift between DCM's identity cache and the authoritative
+    IdP
+  success_criteria:
+  - Drift is detected within one reconciliation cycle of the source change
+  - Discrepancies are classified by severity based on policy (silent fixup vs escalation)
+  - Automated remediation only runs for governance-approved drift categories
+  - Escalation produces a reviewable record including before/after state
+  dimensions:
+    lifecycle_phase: drift_detection
+    resource_complexity: cross_dependency_payload
+    policy_complexity: human_escalation_required
+    provider_landscape: single_eligible
+    governance_context: standard_governance
+    failure_mode: data_inconsistency
+  profile: prod
+  expected_domain_interactions:
+  - domain: provider
+    interaction: auth provider polls IdP for canonical state
+  - domain: data
+    interaction: compare cached vs canonical identity state
+  - domain: policy
+    interaction: classify drift severity and remediation path
+  - domain: audit
+    interaction: record drift detection, classification, and action
+generated_by:
+  mode: authoring
+  source: human-authored
+  model: null
+  prompt_version: seed-1.0
+  timestamp: '2026-04-20T18:41:39.744440+00:00'
+tags:
+- identity
+- auth
+- drift-detection
+- prod-profile
+- human-in-loop
+version: 1.0.0
+metadata:
+  admitted_at: '2026-04-20T18:41:39.744455+00:00'
+  admitted_dcm_version: preview
+  promoted_from_run: null
+  initial_baseline_path: null
+  author: chris@croadfeldt
