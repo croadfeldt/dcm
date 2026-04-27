@@ -295,7 +295,7 @@ KrakenD-based gateway. Config-driven routing to 4 backends (SPM, Catalog, Policy
 ### What to add
 
 - 🔴 **Composite Service contract compliance** — architecture's Composite Service Composition Model (doc 30) requires: composition declaration at registration, dependency graph between constituents, cascading lifecycle management, aggregated status reporting.
-- 🟡 **Subscription support** — meta providers can offer subscription-based compound services (doc 50 §12, Q2).
+- 🟡 **Subscription support** — meta providers can offer subscription-based composite services (doc 50 §12, Q2).
 
 ---
 

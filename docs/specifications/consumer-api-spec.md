@@ -708,7 +708,7 @@ data: {"status":"COMPLETED","at":"2026-04-01T02:03:12Z"}
 | `approval_recorded` | A reviewer votes | votes_recorded, quorum_required, quorum_reached |
 | `heartbeat` | Every 30s (keep-alive) | ts |
 
-**Constituent status** (for compound/compound service definition requests):
+**Constituent status** (for compound/composite service definition requests):
 ```json
 {
   "constituent_status": [
@@ -741,7 +741,7 @@ CANCELLING              → cancellation in progress; provider notified
 TIMEOUT_PENDING         → dispatch timeout fired; recovery policy evaluating
 LATE_REALIZATION_PENDING → provider responded after timeout; recovery decision pending
 INDETERMINATE_REALIZATION → state ambiguous; drift detection resolving
-COMPENSATION_IN_PROGRESS → compound service rollback underway
+COMPENSATION_IN_PROGRESS → composite service rollback underway
 COMPENSATION_FAILED     → rollback failed; platform admin notified; orphan detection active
 PENDING_REVIEW          → conflict detected requiring human resolution
 ```

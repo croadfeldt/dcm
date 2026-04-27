@@ -648,7 +648,7 @@ If the provider returns `status: too_late`, it must still send the completed rea
 
 ### 6.4 Interim Status Reporting
 
-For long-running operations (provisioning complex resources, compound service constituents), providers may send interim progress updates to DCM without waiting for terminal status. This gives DCM — and therefore consumers — live visibility into multi-step operations.
+For long-running operations (provisioning complex resources, composite service constituents), providers may send interim progress updates to DCM without waiting for terminal status. This gives DCM — and therefore consumers — live visibility into multi-step operations.
 
 **DCM endpoint for interim status:**
 
@@ -668,7 +668,7 @@ Content-Type: application/json
     "step_started_at": "<ISO 8601>",
     "estimated_completion": "<ISO 8601>"
   },
-  "constituent_status": [              // for compound/compound service definition operations
+  "constituent_status": [              // for compound/composite service definition operations
     { "ref": "vm",      "status": "REALIZED",     "completed_at": "<ISO 8601>" },
     { "ref": "ip",      "status": "REALIZED",     "completed_at": "<ISO 8601>" },
     { "ref": "dns",     "status": "PROVISIONING", "started_at": "<ISO 8601>" },
@@ -1136,7 +1136,7 @@ Operators must monitor for changes to DCM-managed CRs that did not originate fro
 
 **Q4:** The Operator Interface Specification is a REST/HTTP API specification and is language-agnostic by definition. The Go SDK is the reference implementation. Operators in any language implement the specification directly via HTTP — no language-specific adapter is required. Community SDKs for Java and Python are encouraged as community projects under the DCM umbrella; the DCM project does not maintain them in v1.
 
-**Q5:** CAPI clusters are `Platform.KubernetesCluster` resources in DCM. The CAPI operator registers as a Service Provider for this resource type. Once provisioned, a CAPI cluster can optionally register with DCM as a nested DCM deployment or as a Service Provider for workload resources (the compound service definition pattern). Sovereignty constraints are enforced at the CAPI provider selection level.
+**Q5:** CAPI clusters are `Platform.KubernetesCluster` resources in DCM. The CAPI operator registers as a Service Provider for this resource type. Once provisioned, a CAPI cluster can optionally register with DCM as a nested DCM deployment or as a Service Provider for workload resources (the composite service definition pattern). Sovereignty constraints are enforced at the CAPI provider selection level.
 
 **Q6:** Level 0 exists as a label-based passive discovery mode. Organizations apply DCM labels to existing operator-managed resources. DCM discovers and tracks these resources (they appear in inventory, drift detection runs against them) but DCM does not dispatch to or control them. No operator code changes are required for Level 0. This is the brownfield ingestion model applied to operators — the lowest possible adoption friction.
 

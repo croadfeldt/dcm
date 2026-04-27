@@ -33,7 +33,7 @@ Providers:
   ceph-prod           UUID: pvd-cph-001    data store — Realized State snapshots
   rabbitmq-prod       UUID: pvd-rmq-001    event routing service
   servicenow-prod     UUID: pvd-sn-001     ITSM integration — ServiceNow
-  webapp-meta         UUID: pvd-wam-001    compound service definition — ApplicationStack.WebApp
+  webapp-meta         UUID: pvd-wam-001    composite service definition — ApplicationStack.WebApp
 
 Data Centers / Zones:
   dc-west-1 / zone-a    Primary production zone
@@ -1308,17 +1308,17 @@ Response:
 
 ---
 
-## 2.9 compound service definition — Compound WebApp Provisioning
+## 2.9 composite service definition — Compound WebApp Provisioning
 
-`webapp-meta` is a compound service definition that composes a VM + IP + Firewall Rule + DNS Record into a single `ApplicationStack.WebApp` catalog item. The consumer requests one thing; DCM provisions four.
+`webapp-meta` is a composite service definition that composes a VM + IP + Firewall Rule + DNS Record into a single `ApplicationStack.WebApp` catalog item. The consumer requests one thing; DCM provisions four.
 
-**Compound service definition (registered by compound service definition):**
+**Compound service definition (registered by composite service definition):**
 
 ```yaml
-compound service_registration:
+composite service_registration:
   uuid: pvd-wam-001
   name: webapp-meta
-  display_name: Web Application Stack (compound service definition)
+  display_name: Web Application Stack (composite service definition)
 
   resource_types_composed:
     - fqn: ApplicationStack.WebApp
@@ -1577,14 +1577,14 @@ X-Client-Cert: <mTLS cert>
 
 ---
 
-## 3.3 compound service definition Onboarding
+## 3.3 composite service definition Onboarding
 
 ```yaml
 POST /api/v1/admin/providers/register
 Authorization: Bearer reg-tok-meta-001
 
 {
-  "provider_type": "compound service",
+  "provider_type": "composite service",
   "name": "Web Application Stack",
   "handle": "providers/meta/webapp-stack",
   "version": "2.0.0",
@@ -1623,7 +1623,7 @@ Authorization: Bearer reg-tok-meta-001
 }
 
 # Validation:
-# V1: compound service enabled in profile ✓
+# V1: composite service enabled in profile ✓
 # V2: All constituent resource_types registered in Registry ✓
 # V3: No circular dependencies in constituent graph ✓
 # V4: Decomposition policy handle resolvable ✓

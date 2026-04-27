@@ -23,6 +23,17 @@ The dimension vocabulary value `policy_complexity: cross_domain_constraint`
 intentionally retains its underscore form — it's a controlled vocabulary
 term, not a path.
 
+Vocabulary rename (same date): the dimension value
+`resource_complexity: compound_service` was renamed to
+`composite_service` to match the architecture's adoption of "Composite
+Service" as the canonical catalog-level term (Meta Provider was retired
+as a provider type; what was previously called a compound service is
+now a Composite Service registered by an ordinary Service Provider).
+The UC `cross-domain/tenant-onboarding.yaml` was updated to use the new
+value. Historical entries below mentioning `compound_service` describe
+the value as it was when those entries were written — the actual
+vocabulary value in use today is `composite_service`.
+
 
 ## Unreleased
 

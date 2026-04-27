@@ -219,7 +219,7 @@ paths:
       summary: Push interim progress update for a long-running operation (Level 1+, optional)
       description: |
         Operators may push interim status updates for long-running operations (provisioning
-        complex resources, compound service constituents) to give DCM — and therefore
+        complex resources, composite service constituents) to give DCM — and therefore
         consumers — live visibility into multi-step operations without waiting for terminal state.
 
         DCM uses interim status to:

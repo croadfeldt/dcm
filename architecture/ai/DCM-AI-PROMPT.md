@@ -556,7 +556,7 @@ Providers are **custodians** of the underlying infrastructure — they are not t
 | **TIMEOUT_PENDING** | Infrastructure Resource Entity state: dispatch timeout fired; recovery policy evaluating |
 | **LATE_REALIZATION_PENDING** | Entity state: provider responded after timeout; NOTIFY_AND_WAIT recovery decision pending |
 | **INDETERMINATE_REALIZATION** | Entity state: state ambiguous; drift detection resolving |
-| **COMPENSATION_FAILED** | Entity state: compound service rollback itself failed; orphan detection active |
+| **COMPENSATION_FAILED** | Entity state: composite service rollback itself failed; orphan detection active |
 | **orphan_candidate** | Resource discovered at provider with no corresponding Realized State record; surfaced to platform admin for human resolution |
 | **Discovery Scheduler** | DCM control plane component maintaining priority queue of discovery requests; dispatches to provider discovery endpoints |
 | **recovery-automated-reconciliation** | Built-in recovery profile: trust drift detection; accept late responses; appropriate for dev/standard |
@@ -2664,7 +2664,7 @@ The Ship/Shore/Enclave terminology from defense IT contexts has been replaced th
 | **TIMEOUT_PENDING** | Infrastructure Resource Entity state: dispatch timeout fired; recovery policy evaluating |
 | **LATE_REALIZATION_PENDING** | Entity state: provider responded after timeout; NOTIFY_AND_WAIT recovery decision pending |
 | **INDETERMINATE_REALIZATION** | Entity state: state ambiguous; drift detection resolving |
-| **COMPENSATION_FAILED** | Entity state: compound service rollback itself failed; orphan detection active |
+| **COMPENSATION_FAILED** | Entity state: composite service rollback itself failed; orphan detection active |
 | **orphan_candidate** | Resource discovered at provider with no corresponding Realized State record; surfaced to platform admin for human resolution |
 | **Discovery Scheduler** | DCM control plane component maintaining priority queue of discovery requests; dispatches to provider discovery endpoints |
 | **recovery-automated-reconciliation** | Built-in recovery profile: trust drift detection; accept late responses; appropriate for dev/standard |
@@ -3310,7 +3310,7 @@ Provider responds after DCM timeout:
 
 NOTIFY_AND_WAIT consumer interface: `GET /api/v1/resources/{uuid}/recovery-decisions` and `POST` with chosen action. Platform admin can resolve any entity's pending decision via Admin API.
 
-### 49.7 Compound Service Compensation
+### 49.7 Composite Service Compensation
 
 Declared per component in service definition:
 - `required_for_delivery: atomic` — failure triggers full compensation rollback
@@ -3765,7 +3765,7 @@ FCM-001: contributor recorded in contributed_by; immutable. FCM-002: domain scop
 | **TIMEOUT_PENDING** | Infrastructure Resource Entity state: dispatch timeout fired; recovery policy evaluating |
 | **LATE_REALIZATION_PENDING** | Entity state: provider responded after timeout; NOTIFY_AND_WAIT recovery decision pending |
 | **INDETERMINATE_REALIZATION** | Entity state: state ambiguous; drift detection resolving |
-| **COMPENSATION_FAILED** | Entity state: compound service rollback itself failed; orphan detection active |
+| **COMPENSATION_FAILED** | Entity state: composite service rollback itself failed; orphan detection active |
 | **orphan_candidate** | Resource discovered at provider with no corresponding Realized State record; surfaced to platform admin for human resolution |
 | **Discovery Scheduler** | DCM control plane component maintaining priority queue of discovery requests; dispatches to provider discovery endpoints |
 | **recovery-automated-reconciliation** | Built-in recovery profile: trust drift detection; accept late responses; appropriate for dev/standard |
@@ -4284,7 +4284,7 @@ SMX-001 through SMX-008 in Capabilities Matrix Domain 21. Total: 167 capabilitie
 
 ### What a Composite Service Is
 
-A Composite Service is a **catalog-level registration** that declares a compound payload — multiple constituent resource types, with declared dependencies and delivery requirements — fulfillable as a single request. There is no separate "meta provider" type. A Service Provider that registers a Composite Service simply declares the composition definition and fulfills the constituents flagged `provided_by: self`; everything else is DCM's standard machinery. The 5 provider types are: service_provider, information_provider, auth_provider, peer_dcm, process_provider.
+A Composite Service is a **catalog-level registration** that declares a composite payload — multiple constituent resource types, with declared dependencies and delivery requirements — fulfillable as a single request. There is no separate "meta provider" type. A Service Provider that registers a Composite Service simply declares the composition definition and fulfills the constituents flagged `provided_by: self`; everything else is DCM's standard machinery. The 5 provider types are: service_provider, information_provider, auth_provider, peer_dcm, process_provider.
 
 ### Key Principle
 The Composite Service registration declares the dependency graph. DCM executes it. Parallelism emerges from the graph — constituents with no unresolved dependencies dispatch concurrently. The registering provider does not manage sequencing, external placement, failure handling, or compensation.
@@ -4641,7 +4641,7 @@ request.scheduled · request.schedule_cancelled · request.schedule_deadline_mis
 > **Full specification:** [38-request-dependency-graph.md](data-model/38-request-dependency-graph.md) — consumer-declared cross-request ordering, field injection, PENDING_DEPENDENCY status, RDG-001–RDG-006.
 
 ### What This Is
-Consumer-declared ordering of INDEPENDENT requests. Distinct from: type-level deps (doc 07, resolved automatically) and Composite Service composition (doc 30, platform team defines). Use when no Composite Service exists for the compound deployment.
+Consumer-declared ordering of INDEPENDENT requests. Distinct from: type-level deps (doc 07, resolved automatically) and Composite Service composition (doc 30, platform team defines). Use when no Composite Service exists for the composite deployment.
 
 ### Request Dependency Group
 POST /api/v1/request-groups — submit multiple requests with depends_on declarations using local refs. Response includes group_uuid and per-request entity_uuids. GET /api/v1/request-groups/{uuid} for group status. DELETE to cancel.

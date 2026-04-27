@@ -48,9 +48,9 @@ A developer or application owner who requests and manages infrastructure resourc
 
 ## Platform Engineer
 
-Defines the organizational infrastructure standards that DCM enforces. Authors resource type specifications, data layers (datacenter configs, environment defaults, tenant overrides), policies, and compound resource type specifications (three-tier applications, data pipelines).
+Defines the organizational infrastructure standards that DCM enforces. Authors resource type specifications, data layers (datacenter configs, environment defaults, tenant overrides), policies, and composite resource type specifications (three-tier applications, data pipelines).
 
-- **Key activities:** Define resource types and catalog items, author data layers, write and test policies (shadow mode), create compound service definitions, manage the resource type registry
+- **Key activities:** Define resource types and catalog items, author data layers, write and test policies (shadow mode), create composite service definitions, manage the resource type registry
 
 ## Infrastructure Operator
 
@@ -175,9 +175,9 @@ A consumer developer browses the service catalog, selects "Virtual Machine — S
 
 ### UC-011: Provision a Three-Tier Application
 
-A consumer requests a "Web Application — Standard" catalog item. This is a compound service backed by a compound resource type specification that decomposes into four constituent resources: network port, database VM, application server VM, and load balancer.
+A consumer requests a "Web Application — Standard" catalog item. This is a composite service backed by a composite resource type specification that decomposes into four constituent resources: network port, database VM, application server VM, and load balancer.
 
-The compound resource type spec declares the dependency graph and binding fields:
+The composite resource type spec declares the dependency graph and binding fields:
 - Network port has no dependencies — provisioned first
 - Database depends on network port — IP address injected from port
 - Application server depends on database — connection string and credentials injected
@@ -210,9 +210,9 @@ A consumer sees an estimated cost for their resource request before submitting. 
 
 ### UC-014: Track Request Progress
 
-After submitting a request, the consumer monitors progress through pipeline stages: SUBMITTED → ASSEMBLING → POLICY_EVALUATION → PLACEMENT → DISPATCHED → REALIZING → OPERATIONAL. For compound services, each constituent's status is tracked independently.
+After submitting a request, the consumer monitors progress through pipeline stages: SUBMITTED → ASSEMBLING → POLICY_EVALUATION → PLACEMENT → DISPATCHED → REALIZING → OPERATIONAL. For composite services, each constituent's status is tracked independently.
 
-**Success criteria:** Real-time status updates via Server-Sent Events (SSE) or polling. Constituent-level tracking for compound service requests. Failed stages show clear error with remediation guidance.
+**Success criteria:** Real-time status updates via Server-Sent Events (SSE) or polling. Constituent-level tracking for composite service requests. Failed stages show clear error with remediation guidance.
 
 ---
 
@@ -245,7 +245,7 @@ Each entity re-enters the full pipeline as a new request with operation_type `re
 1. **Layer assembly re-runs** — layers may have changed since original provisioning (new compliance requirements, updated monitoring agents). The resource gets current organizational context, not stale data.
 2. **All policies re-evaluate** — current sovereignty policies, sizing limits, and security requirements apply. A resource that was compliant when originally provisioned may now violate a newer policy. If so, it enters POLICY_BLOCKED and the operator must resolve before rehydration proceeds.
 3. **Placement re-evaluates** — the original provider/zone is unavailable. The placement engine scores surviving providers, subject to the same sovereignty pre-filter. A resource originally in EU-WEST-Prod-1 may rehydrate to EU-WEST-Prod-2.
-4. **Dependencies rehydrate in order** — for compound services (three-tier apps), DCM reads the dependency graph and rehydrates constituents in dependency order: database first, then backend (with new DB IP injected), then frontend (with new backend IP injected). Binding fields resolve against newly realized values, not cached originals.
+4. **Dependencies rehydrate in order** — for composite services (three-tier apps), DCM reads the dependency graph and rehydrates constituents in dependency order: database first, then backend (with new DB IP injected), then frontend (with new backend IP injected). Binding fields resolve against newly realized values, not cached originals.
 5. **Entity UUID is preserved** — the resource keeps its original entity_uuid across rehydration. Audit trail links the original lifecycle to the rehydrated one.
 
 **What does NOT happen:** The realized state from the lost zone is not replayed. The intent is re-processed from scratch with current layers, current policies, and current provider availability. This is a design choice — rehydration produces resources that comply with today's rules, not yesterday's.
@@ -420,11 +420,11 @@ A deployment pattern is a reusable, provider-agnostic blueprint that defines a c
 │  Curated library of reusable deployment blueprints    │
 │  Authored by: Platform Engineers                      │
 │  Consumed by: Consumer Developers                     │
-│  Stored in: Resource Type Registry (compound types)   │
+│  Stored in: Resource Type Registry (composite types)   │
 ├──────────────────────────────────────────────────────┤
 │                  SERVICE CATALOG                       │
 │  Provider-specific offerings + pattern offerings       │
-│  Populated by: Providers (atomic) + Patterns (compound)│
+│  Populated by: Providers (atomic) + Patterns (composite)│
 ├──────────────────────────────────────────────────────┤
 │                  DCM CONTROL PLANE                     │
 │  Decompose → Policy → Placement → Dispatch → Audit    │
@@ -436,18 +436,18 @@ A deployment pattern is a reusable, provider-agnostic blueprint that defines a c
 └──────────────────────────────────────────────────────┘
 ```
 
-**The Pattern Catalog is not a new architectural component.** It is a curated view of the Resource Type Registry filtered to compound resource types. DCM already has all the machinery — the compound service definition model, dependency graphs, binding fields, and constituent dispatch. The Pattern Catalog adds the curation and consumer experience layer.
+**The Pattern Catalog is not a new architectural component.** It is a curated view of the Resource Type Registry filtered to composite resource types. DCM already has all the machinery — the composite service definition model, dependency graphs, binding fields, and constituent dispatch. The Pattern Catalog adds the curation and consumer experience layer.
 
 ### How a Pattern Maps to DCM Constructs
 
 | Pattern concept | DCM construct | Where it lives |
 |----------------|--------------|----------------|
-| The pattern itself | Compound Resource Type Specification | Resource Type Registry |
-| The constituents | Resource Type references with dependency declarations | `constituents[]` in the compound spec |
+| The pattern itself | Composite Resource Type Specification | Resource Type Registry |
+| The constituents | Resource Type references with dependency declarations | `constituents[]` in the composite spec |
 | How pieces connect | Binding fields — runtime values from one constituent injected into another | `binding_fields[]` on dependent constituents |
 | What the consumer fills in | Parameterized fields exposed at the pattern level | `fields_from_parent[]` mapping pattern params to constituent fields |
-| Who provides each piece | `provided_by: external` (DCM places) or `provided_by: self` (compound service definition handles) | Per-constituent declaration |
-| What happens on failure | Lifecycle policy on the compound spec | `on_constituent_failure: rollback_all` or `continue_degraded` or `notify` |
+| Who provides each piece | `provided_by: external` (DCM places) or `provided_by: self` (composite service definition handles) | Per-constituent declaration |
+| What happens on failure | Lifecycle policy on the composite spec | `on_constituent_failure: rollback_all` or `continue_degraded` or `notify` |
 | Operational policies | Standard DCM policies scoped to constituent resource types | Policy match on resource_type per constituent |
 
 ### Pattern Definition Example — Standard Web Application
@@ -692,7 +692,7 @@ Each capability area maps to a measurable outcome:
 - **Naturalization:** Translation of DCM's unified payload into a provider's native API format.
 - **Denaturalization:** Translation of a provider's native response back into DCM's unified format.
 - **Evaluation Context:** The complete payload, provenance chain, constraint accumulator, and governance scope passed to the policy engine for each evaluation.
-- **Binding Fields:** Declarations in compound service definitions that connect realized outputs of one resource (e.g., an IP address) to inputs of a dependent resource (e.g., a VM's network config).
+- **Binding Fields:** Declarations in composite service definitions that connect realized outputs of one resource (e.g., an IP address) to inputs of a dependent resource (e.g., a VM's network config).
 - **Merkle Tree:** A binary hash tree where modifying any leaf changes the root hash. Enables inclusion proofs (a record exists) and consistency proofs (the tree has only grown). RFC 9162.
 - **RLS (Row-Level Security):** PostgreSQL feature that automatically scopes every query to the actor's tenant — application code cannot leak cross-tenant data.
 - **Sovereignty Zone:** A geopolitical or regulatory boundary declared by providers and enforced by policy. Resources placed in a zone are governed by that zone's data residency rules.

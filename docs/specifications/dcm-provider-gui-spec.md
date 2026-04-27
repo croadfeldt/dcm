@@ -272,18 +272,18 @@ Service Providers (the most common type — realize infrastructure resources) ha
 
 ---
 
-## 10. compound service definition — Extended Tabs
+## 10. composite service definition — Extended Tabs
 
-### 10.1 Compound Service Status
+### 10.1 Composite Service Status
 
-- Active compound service instances: all constituent statuses
+- Active composite service instances: all constituent statuses
 - Constituents in PENDING_DEPENDENCY state across all active instances
 - Failed compensation attempts (COMPENSATION_FAILED state)
 
 ### 10.2 Constituent Provider Health
 
-- Health of each provider this compound service definition depends on
-- Impact analysis: if Provider X degrades, which compound services are affected
+- Health of each provider this composite service definition depends on
+- Impact analysis: if Provider X degrades, which composite services are affected
 
 ---
 
