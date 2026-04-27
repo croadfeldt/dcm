@@ -234,7 +234,7 @@ paths:
         state push. Operators must still call `PUT /api/v1/instances/{resource_id}/status`
         to report terminal state.
 
-        **For compound/Meta Provider operations:** Include `constituent_status` to give
+        **For Composite Service requests:** Include `constituent_status` to give
         visibility into each constituent's progress independently.
       parameters:
         - { $ref: "#/components/parameters/entity_uuid" }
@@ -709,13 +709,13 @@ components:
             estimated_completion:  { type: string, format: date-time }
         constituent_status:
           type: array
-          description: Per-constituent status for compound/Meta Provider operations
+          description: Per-constituent status for Composite Service requests
           items:
             type: object
             required: [ref, status]
             additionalProperties: false
             properties:
-              ref:          { type: string, description: "Constituent identifier (matches Meta Provider composition declaration)" }
+              ref:          { type: string, description: "Constituent identifier (matches the Composite Service composition declaration's component_id)" }
               status:       { type: string, enum: [PENDING, PROVISIONING, REALIZED, FAILED] }
               completed_at: { type: string, format: date-time }
               started_at:   { type: string, format: date-time }
