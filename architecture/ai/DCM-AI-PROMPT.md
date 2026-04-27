@@ -262,7 +262,6 @@ All five provider types follow the same base contract (registration, health chec
 |------|---------|-----------------|
 | **Service Provider** | Realizes resources — KubeVirt, VMware, AAP, Terraform | Yes |
 | **Information Provider** | Serves authoritative external data DCM references but does not own | No — external system is authoritative |
-| **Meta Provider** | Composes multiple providers into higher-order services | Yes |
 
 
 The five provider types (service_provider, information_provider, auth_provider, peer_dcm, process_provider) all implement the same base contract. Capabilities that were formerly separate provider types (credentials, notifications, ITSM, message bus, storage, policy evaluation, registry) are now either internal to DCM or handled by service_providers with specialized resource types. See [A-provider-contract.md](data-model/A-provider-contract.md) for the unified contract.
@@ -942,7 +941,6 @@ DCM has five provider types (see Section 0 for the complete list). The data owne
 |------|---------|-----------------|
 | **Service Provider** | Realizes resources — KubeVirt, VMware, AAP, etc. | Yes |
 | **Information Provider** | Serves authoritative external data DCM references but does not own | No — external system is authoritative |
-| **Meta Provider** | Composes multiple providers into higher-order services | Yes |
 
 
 All five provider types follow the same base contract: registration, health check, trust, sovereignty, accreditation, governance matrix enforcement, zero trust, and provenance emission obligation.
@@ -1199,7 +1197,7 @@ Providers must honor a multi-dimensional contract:
 
 ### 16.4 Provider Types
 - **Atomic Providers** — manage a single fundamental resource type (VM, IP, VLAN, container)
-- **Meta Providers** — compose multiple providers as components of their own service
+- **Composite Services** — compose multiple constituent resource types into a single catalog item
 - **Process Providers** — purely process-based workflow or automation
 - **External Policy Evaluators** — supply policies; Mode 4 evaluates/enriches via black box query
 - **event routing services** — bidirectional bridge to external message buses (Kafka, AMQP, NATS, etc.)
@@ -2065,8 +2063,8 @@ ENT-007.
 ### 31.8 Dependency Graph Depth (Q33)
 Profile-governed maximum: minimal=20, dev=15, standard/prod=10, fsi/sovereign=7. Requests exceeding max depth rejected with clear error. Circular dependency detection always enforced regardless of depth configuration. ENT-008.
 
-### 31.9 Meta Provider Composition Visibility (Q34)
-Meta Providers declare `composition_visibility`:
+### 31.9 Composite Service Composition Visibility (Q34)
+A Composite Service registration declares `composition_visibility`:
 - `opaque` — consumer sees only top-level service; sub-resources not in DCM; drift on realized payload only
 - `transparent` — all sub-resources registered as DCM entities; full drift detection
 - `selective` — provider declares which sub-resources are DCM-visible
@@ -3035,7 +3033,7 @@ Three primary entity types in DCM:
 
 **Infrastructure Resource Entity** — persistent, full lifecycle (REQUESTED → PENDING → PROVISIONING → REALIZED → OPERATIONAL → SUSPENDED → DECOMMISSIONED). Owned by exactly one Tenant. Drift detection active. TTL management. `PENDING_REVIEW` is a valid state for sovereignty/tenancy conflicts during rehydration — not an error state; requires human resolution.
 
-**Composite Resource Entity** — Meta Provider composition of multiple Infrastructure Resource Entities. Owns its UUID; constituents own theirs. `lifecycle_state` reflects aggregate health — OPERATIONAL only when all required constituents OPERATIONAL. Two-level drift detection (composite + constituent). Staged decommission (composite first, then constituents in reverse dependency order). `composition_visibility: opaque|transparent|selective`.
+**Composite Resource Entity** — produced by a Composite Service request that aggregates multiple Infrastructure Resource Entities. Owns its UUID; constituents own theirs. `lifecycle_state` reflects aggregate health — OPERATIONAL only when all required constituents OPERATIONAL. Two-level drift detection (composite + constituent). Staged decommission (composite first, then constituents in reverse dependency order). `composition_visibility: opaque|transparent|selective`.
 
 **Process Resource Entity** — ephemeral execution (automation jobs, playbooks, pipelines). Short lifecycle (REQUESTED → INITIATED → EXECUTING → terminal). No SUSPENDED state. No PENDING_REVIEW. `max_execution_time` mandatory — no default. Must record `affected_entity_uuids` if any infrastructure modifications made.
 
@@ -3983,7 +3981,7 @@ All 21 previously open community/implementation questions are now resolved. Key 
 - **Conformance certification:** self-certified via automated test suite (low friction gate) + optional DCM Verified badge via project review
 - **Cluster-scoped resources — two models:** (A) **Cluster as a catalog item (example):** When a Service Provider offers Kubernetes clusters as a resource type, a Tenant that owns a provisioned cluster entity owns all cluster-scoped resources within it — the cluster entity is the ownership boundary; (B) **Shared cluster infrastructure:** cluster-scoped resources governing shared multi-tenant cluster infrastructure belong to `__platform__` Tenant. Note: Cluster-as-a-Service is an example Service Provider implementation, not a DCM architectural feature — DCM treats the cluster as any other resource entity
 - **Non-Go frameworks:** spec is language-agnostic; Go SDK is reference implementation; community Java/Python SDKs encouraged; not maintained by DCM project in v1
-- **Cluster API as an example Service Provider:** A CAPI-based operator can register as a Service Provider for a `Platform.KubernetesCluster` resource type — this is an example of what DCM's Provider model enables, not a special architectural feature. DCM has no built-in knowledge of Kubernetes; a CAPI Service Provider is structurally identical to any other Service Provider. Once provisioned, the cluster entity can optionally register as a nested Service Provider for workload resources (the Meta Provider pattern — composing compute + network + storage + DNS + credentials)
+- **Cluster API as an example Service Provider:** A CAPI-based operator can register as a Service Provider for a `Platform.KubernetesCluster` resource type — this is an example of what DCM's Provider model enables, not a special architectural feature. DCM has no built-in knowledge of Kubernetes; a CAPI Service Provider is structurally identical to any other Service Provider. Once provisioned, the cluster entity can optionally register as a nested Service Provider for workload resources (the Composite Service pattern — composing compute + network + storage + DNS + credentials)
 - **Level 0:** exists — label-based passive discovery, no operator code changes; DCM discovers and tracks but does not control; lowest adoption friction
 
 ### Operator SDK (5 resolved)
@@ -4036,7 +4034,7 @@ These items are explicitly unresolved. Do not make assumptions about them — fl
 | 31 | Should the dependency graph be stored as a separate entity or embedded in the request payload? | Dependencies |
 | 32 | How are cross-tenant dependencies handled? | Dependencies | ✅ Resolved — governed by REL-010/011/012; DEP-001/002/003 for dependency graph specifics; explicit_only default; cross_tenant_authorization required |
 | 33 | Should there be a maximum dependency graph depth? | Dependencies |
-| 34 | How does the dependency graph interact with the Meta Provider model? | Dependencies |
+| 34 | How does the dependency graph interact with the Composite Service model? | Dependencies |
 | 35 | Should DCM maintain a registry of well-known custom group types? | Grouping |
 | 36 | How does group membership interact with sovereignty — can a group span sovereignty boundaries? | Grouping |
 | 37 | When a Tenant is decommissioned, what happens to its resources and group memberships? | Grouping |
@@ -4104,7 +4102,7 @@ These items are explicitly unresolved. Do not make assumptions about them — fl
 
 **1.3 Policy-gated hard block** — GateKeeper denies unsupported OS. Consumer receives clear error with policy_uuid and suggestion. No requires_approval flag → terminal FAILED.
 
-**1.4 Compound service (Meta Provider)** — VM + IP + DNS + LoadBalancer. Dependency-ordered execution (parallel where no deps). DNS fails (partial delivery) → DEGRADED state. Recovery: NOTIFY_AND_WAIT. Consumer chooses: accept degraded or trigger DNS retry.
+**1.4 Composite Service** — VM + IP + DNS + LoadBalancer delivered as one catalog item. Dependency-ordered execution (parallel where no deps). DNS fails (partial delivery) → DEGRADED state. Recovery: NOTIFY_AND_WAIT. Consumer chooses: accept degraded or trigger DNS retry.
 
 **1.5 Drift detection + remediation** — Discovery finds memory_gb changed (unsanctioned). Drift: significant + unsanctioned → critical. Policy: ESCALATE. Consumer submits REVERT → new request cycle → next discovery clean.
 
@@ -4151,7 +4149,7 @@ IAM, CAT, REQ, PRV, LCM, DRF, POL, LAY, INF, ING, AUD, OBS, STO, FED, GOV, ACC, 
 
 **Recent additions (docs 29–34):**
 - SMX (Scoring Model, doc 29): risk scoring, approval routing, signal weights, governance matrix
-- MPX (Meta Provider, doc 30): compound service definition, constituent orchestration via dependency graph
+- CMP (Composite Service, doc 30): composite service definition, constituent dispatch via dependency graph
 - CPX (credential management service, doc 31): credential lifecycle, rotation, revocation, profile-governed security
 - ATM (Authority Tier, doc 32): dynamic ordered tier list, custom tiers, degradation gate, impact detection
 - EVT (Event Catalog, doc 33): 82 event types, base envelope, payload schemas, EVT-001–007
@@ -4282,62 +4280,61 @@ SMX-001 through SMX-008 in Capabilities Matrix Domain 21. Total: 167 capabilitie
 
 ---
 
-## SECTION 62 — META PROVIDER COMPOSABILITY MODEL (doc 30)
+## SECTION 62 — COMPOSITE SERVICE COMPOSITION MODEL (doc 30)
 
-### What a compound service definition Is (formerly "Meta Provider")
+### What a Composite Service Is
 
-> **Architecture update (April 2026):** "Meta Provider" is no longer a separate provider type. The concept is now **Compound Resource Type Specifications** — a Data concept in the Resource Type Registry, orchestrated by the Control Plane. Individual constituents are fulfilled by standard Service Providers. References to "Meta Provider" in earlier sections are historical. The authoritative model is 5 provider types: service_provider, information_provider, auth_provider, peer_dcm, process_provider.
-A **compound Service Provider** that uses other providers in the DCM catalog to fulfill a higher-order service. Its primary contribution is a **compound service definition** declaring constituent resource types, dependencies, and delivery requirements so DCM can place, sequence, and govern the constituents. The Meta Provider is NOT an orchestrator — it is a compound service definition plus a standard Service Provider for its own resource types.
+A Composite Service is a **catalog-level registration** that declares a compound payload — multiple constituent resource types, with declared dependencies and delivery requirements — fulfillable as a single request. There is no separate "meta provider" type. A Service Provider that registers a Composite Service simply declares the composition definition and fulfills the constituents flagged `provided_by: self`; everything else is DCM's standard machinery. The 5 provider types are: service_provider, information_provider, auth_provider, peer_dcm, process_provider.
 
 ### Key Principle
-The Meta Provider declares the dependency graph. DCM executes it. Parallelism emerges from the graph — constituents with no unresolved dependencies dispatch concurrently. The Meta Provider does not manage sequencing, external placement, failure handling, or compensation.
+The Composite Service registration declares the dependency graph. DCM executes it. Parallelism emerges from the graph — constituents with no unresolved dependencies dispatch concurrently. The registering provider does not manage sequencing, external placement, failure handling, or compensation.
 
 ### provided_by (critical field on each constituent)
-- `self` — Meta Provider handles this constituent via standard Services API (naturalize/execute/denaturalize — same as any Service Provider)
+- `self` — registering provider handles this constituent via standard Services API (naturalize/execute/denaturalize — same as any Service Provider)
 - `external` — DCM places with best available provider via Placement Engine (all sovereignty/accreditation/trust checks apply)
 - `<provider_uuid>` — DCM dispatches to specific named provider
 
 ### depends_on → Execution Order
-Each constituent declares `depends_on: [component_id, ...]`. DCM reads this graph and dispatches in order — no dependencies first, then those whose dependencies are REALIZED. Parallelism within a round emerges from the graph. Meta Provider does NOT manage this.
+Each constituent declares `depends_on: [component_id, ...]`. DCM reads this graph and dispatches in order — no dependencies first, then those whose dependencies are OPERATIONAL. Parallelism within a round emerges from the graph. The registering provider does NOT manage this.
 
 ### required_for_delivery
 - `required` — failure triggers Recovery Policy; unrealized constituents cancelled
-- `partial` — failure noted; compound continues; composite status may be DEGRADED
+- `partial` — failure noted; composite continues; composite status may be DEGRADED
 - `optional` — failure noted; execution continues unaffected
 
 ### Division of Responsibility (authoritative — see doc 30 Section 4)
 **DCM:** catalog, layer assembly, policy/scoring, external placement (Placement Engine), dependency-ordered dispatch, failure handling (Recovery Policy), compensation (dependency-reverse decommission), composite Realized State assembly, drift detection, audit, lifecycle.
-**Meta Provider:** declares compound service definition; executes `self` constituents as standard Service Provider; implements standard decommission for `self` constituents.
+**Registering provider:** declares Composite Service composition; executes `self` constituents as standard Service Provider; implements standard decommission for `self` constituents.
 
 ### Composite Entity Four States
-- **Intent:** Compound request stored as-is; no constituent expansion
-- **Requested:** DCM expands using compound service definition; Placement Engine resolves `external` providers; constituent blocks have component_id, provided_by, depends_on, required_for_delivery
+- **Intent:** Composite request stored as-is; no constituent expansion
+- **Requested:** DCM expands using Composite Service definition; Placement Engine resolves `external` providers; constituent blocks have component_id, provided_by, depends_on, required_for_delivery
 - **Realized:** DCM assembles from all constituent realized payloads; composite_status; synthesized composite_fields
-- **Discovered:** Via Meta Provider endpoint (opaque/selective) or per-constituent providers (transparent)
+- **Discovered:** Per-constituent providers (transparent) or aggregated via the registering provider's standard discovery surface (opaque/selective)
 
 ### Composite Status — determined by DCM
-- `REALIZED` — all required constituents REALIZED
-- `DEGRADED` — required REALIZED; partial(s) failed; accepted if profile permits
+- `OPERATIONAL` — all required constituents OPERATIONAL
+- `DEGRADED` — required OPERATIONAL; partial(s) failed; accepted if profile permits
 - `FAILED` — required constituent(s) failed → Recovery Policy → compensation in dependency-reverse order
 
 ### Composition Visibility
-- `opaque` — top-level entity only; discovery via Meta Provider endpoint
+- `opaque` — top-level entity only; aggregated discovery via the registering provider's standard discovery surface
 - `transparent` — all constituents as DCM entities; UUIDs = deterministic(parent_uuid + component_id); per-constituent drift detection
 - `selective` — declared sub-set as DCM entities
 
 ### Rehydration
-Primary use case for dependency graph declaration. DCM sequences rehydration from `depends_on` graph in same order as provisioning. `external` constituents re-placed by Placement Engine. `self` constituents return to same Meta Provider.
+Primary use case for dependency graph declaration. DCM sequences rehydration from `depends_on` graph in same order as provisioning. `external` constituents re-placed by Placement Engine. `self` constituents return to the same registering provider.
 
 ### Scoring
-Operational GateKeepers fire on compound payload (not per-constituent). Signal 5 (accreditation richness) = lowest richness score among required-constituent providers.
+Operational GateKeepers fire on the composite payload (not per-constituent). Signal 5 (accreditation richness) = lowest richness score among required-constituent providers.
 
-### Nested Meta Providers
-Max depth 3 enforced by DCM at placement. Nested Meta Provider has no awareness it is a constituent — receives and responds with standard payloads.
+### Nested Composite Services
+Max depth 3 enforced by DCM at placement. A Composite Service used as a constituent of another Composite Service has no awareness it is a constituent — receives and responds with standard payloads.
 
-### MPX-001–MPX-008 System Policies
-MPX-001: self constituents use standard Services API. MPX-002: DCM derives ordering from depends_on. MPX-003: parallelism from graph, not Meta Provider. MPX-004: composite status determined by DCM. MPX-005: Recovery Policy governs failure/compensation. MPX-006: external placement by Placement Engine only. MPX-007: transparent UUIDs are deterministic. MPX-008: max nesting depth 3 enforced at placement.
+### CMP-001–CMP-008 System Policies
+CMP-001: self constituents use standard Services API. CMP-002: DCM derives ordering from depends_on. CMP-003: parallelism from graph, not the registering provider. CMP-004: composite status determined by DCM. CMP-005: Recovery Policy governs failure/compensation. CMP-006: external placement by Placement Engine only. CMP-007: transparent UUIDs are deterministic. CMP-008: max nesting depth 3 enforced at placement.
 
-### Capabilities: MPX-001–MPX-007 (Domain 22 — 141 total across 23 domains)
+### Capabilities: CMP-001–CMP-007 (Domain 22 — 141 total across 23 domains)
 
 ## SECTION 63 — CREDENTIAL PROVIDER MODEL (doc 31)
 
@@ -4644,7 +4641,7 @@ request.scheduled · request.schedule_cancelled · request.schedule_deadline_mis
 > **Full specification:** [38-request-dependency-graph.md](data-model/38-request-dependency-graph.md) — consumer-declared cross-request ordering, field injection, PENDING_DEPENDENCY status, RDG-001–RDG-006.
 
 ### What This Is
-Consumer-declared ordering of INDEPENDENT requests. Distinct from: type-level deps (doc 07, resolved automatically) and Meta Provider composition (doc 30, platform team defines). Use when no Meta Provider exists for the compound deployment.
+Consumer-declared ordering of INDEPENDENT requests. Distinct from: type-level deps (doc 07, resolved automatically) and Composite Service composition (doc 30, platform team defines). Use when no Composite Service exists for the compound deployment.
 
 ### Request Dependency Group
 POST /api/v1/request-groups — submit multiple requests with depends_on declarations using local refs. Response includes group_uuid and per-request entity_uuids. GET /api/v1/request-groups/{uuid} for group status. DELETE to cancel.
@@ -4770,7 +4767,7 @@ ONE application, THREE role-gated surfaces: Consumer Portal (all actors) + Admin
 ### Consumer Portal (dcm-consumer-gui-spec.md — 20 sections)
 Tenancy: X-DCM-Tenant header; ContextSelector in masthead (hidden for single-tenant actors).
 Navigation (PatternFly grouped left nav): Service Catalog | MY WORK (Requests, Resources, Dependency Groups) | Approvals [badge] | GOVERNANCE (Cost & Quota, Audit Trail, Contributions) | SETTINGS (Notifications, Sessions). **Hide, not disable** — unavailable items hidden entirely.
-Key capability — Live Status (GUI-002): SSE stream (GET /api/v1/requests/{uuid}/stream); events: status_change, progress_updated, approval_required, approval_recorded, heartbeat; constituent_status array for compound/Meta Provider requests; fallback to polling.
+Key capability — Live Status (GUI-002): SSE stream (GET /api/v1/requests/{uuid}/stream); events: status_change, progress_updated, approval_required, approval_recorded, heartbeat; constituent_status array for Composite Service requests; fallback to polling.
 Key capability — Request form: rendered from catalog item schema; live cost estimate; scheduling section (at/window/recurring); dependency group linking with field injection declaration.
 Key capability — ITSM Bridge (GUI-014, section 8): ITSM references (ServiceNow/Jira change records, CMDB CIs) displayed on entity Overview tab; ITSM notification service translates DCM events → ITSM records; ITSM systems call Admin API to record approval votes (DCM records decision, ITSM runs CAB process); CMDB sync is one-way DCM→CMDB via notification service subscription.
 Key capability — Consumer Audit Trail (section 11): own resource audit trail with Correlation ID trace through full pipeline; filterable by operation/type/date; export CSV.
@@ -5077,13 +5074,13 @@ New specification: `specifications/dcm-use-case-examples.md` — 1,853 lines, 5 
 - 2.6 Data Store: write-once snapshot registration, Realized State write
 - 2.7 event routing service (RabbitMQ): topic exchange, routing key pattern, multi-subscriber routing
 - 2.8 credential management service (Vault): AppRole registration, ephemeral bind-password fetch, dynamic DB creds, consumer SSH key retrieval with audit
-- 2.9 Meta Provider: compound WebApp (VM+IP+FW+DNS) decomposition, parallel + sequential constituent ordering, field injection
+- 2.9 Composite Service: WebApp (VM+IP+FW+DNS) decomposition, parallel + sequential constituent ordering, field injection
 - 2.10 ITSM integration (ServiceNow): incident creation on provider health change, field mapping, resolve on recovery
 
 **Section 3 — Registration Flow Examples (3 examples):**
 - 3.1 Information Provider (NetBox): token issuance, mTLS registration, 6-check validation, approval, assembly enrichment
 - 3.2 Auth Provider (Azure AD OIDC): secondary auth source for contractors, precedence ordering, TTL-scoped role mapping
-- 3.3 Meta Provider: constituent validation, circular dependency check, activation
+- 3.3 Composite Service: constituent validation, circular dependency check, activation
 
 **Section 4 — OPA Policy Integration (2 examples):**
 - 4.1 Shadow mode: 30-day shadow evaluation, divergence reporting, admin review dashboard, promotion to active
@@ -5103,7 +5100,7 @@ dcm-examples.md expanded from 1,058 lines to 2,189 lines. Now covers all 10 prov
 - 6.1 Data Store — state store write/read cycle (provenance emission, replica confirmation)
 - 6.2 Auth Provider — OIDC cutover from GitHub OAuth (shadow evaluation, zero-downtime cutover)
 - 6.3 credential management service — SSH key issuance post-VM-realization, 90-day TTL, auto-rotation at P45D
-- 6.4 Meta Provider — three-tier WebApp stack (VM→VM→LB→DNS with field injection between tiers)
+- 6.4 Composite Service — three-tier WebApp stack (VM→VM→LB→DNS with field injection between tiers)
 - 6.5 ITSM integration — ServiceNow Change Request lifecycle (create→approve→implement→close)
 - 6.6 event routing service — Kafka event bridge (entity lifecycle events, dead letter handling)
 
@@ -5271,7 +5268,7 @@ intent capture → layer reference resolution → layer assembly (showing each c
 provenance) → policy evaluation (GateKeeper, Validation, Transformation each shown) → placement →
 requested state write (with provenance on every field) → dispatch → realized state.
 
-**9.6 WebApp as a Service Request:** Meta Provider orchestration: DB first, then 3 web VMs with
+**9.6 WebApp as a Service Request:** Composite Service composition: DB first, then 3 web VMs with
 db_host injected from DB realization, then LoadBalancer with backend_pool injected from VM IPs.
 Tier 1 GateKeeper policies enforcing HA, minimum replicas, LTM requirement. Environment layer
 injecting production defaults (backup, TTL=null, approval tier, log retention).
@@ -5532,7 +5529,7 @@ Source: DCM Technical Roadmap Summit 2026 presentation (Red Hat FlightPath Team)
 - Q2 (pre-April): Mock providers confirmed by slides (VM Service Provider Mock API explicit)
 - Q3 (pre-April): ACM — treat as Information Provider (feeds cluster inventory), not Service Provider
 - Q4 (pre-April): X2Ansible — needs resource type spec for AAP job template/workflow as DCM resource
-- Q5 (pre-April): Firewall — handle as FirewallRule sub-resource of Networking Meta Provider
+- Q5 (pre-April): Firewall — handle as FirewallRule constituent of a Networking Composite Service
 - Q9 (pre-April): RHDH vs Consumer GUI — RHDH is likely Summit target (Red Hat branding on slides)
 - Q10 (pre-April): 'Data Center Pipeline' = RHDH scaffolding sitting above DCM Consumer API; consistent with RHDH integration spec
 
@@ -5563,7 +5560,7 @@ Source: DCM Technical Roadmap Summit 2026 presentation (Red Hat FlightPath Team)
 - Network Port: DCM → Netbox (IPAM) or OpenStack Neutron
 - OCP Cluster: DCM → ACM Shim (Go service) → ACM API → ClusterDeployment (Hive)
 - ACM also as Information Provider: feeds cluster inventory/capacity into placement engine
-- Web App: Meta Provider composing VM + Network Port + OCP Cluster (optional)
+- Web App: Composite Service composing VM + Network Port + OCP Cluster (optional)
 - X2Ansible: deferred. Firewall: deferred.
 
 **New document: implementations/example-1-summit/IMPLEMENTATION.md** (1029 lines)
@@ -5571,7 +5568,7 @@ Contents:
 - Purpose and scope (3 Summit demos + portability validation goal)
 - Technology stack table (all Red Hat sanctioned choices)
 - Architecture overview ASCII diagram (3 namespaces: dcm-system, dcm-providers, dcm-infra)
-- Provider specs: VM, Network Port, OCP Cluster (ACM Shim), Web App Meta Provider
+- Provider specs: VM, Network Port, OCP Cluster (ACM Shim), Web App Composite Service
 - All 3 demo use case flows: Intelligent Placement, DC Rehydration, App as a Service
 - Namespace + Pod design (API Gateway with OPA sidecar, Orchestrator, Policy Engine, Provider pods)
 - Full OpenShift file structure (ansible/ + openshift/ + config/ directories)
@@ -5613,7 +5610,7 @@ dcm-api-gateway, dcm-request-orchestrator, dcm-policy-engine, dcm-placement-engi
 - dcm-provider-ocp-cluster: wraps RHOCP/CAPI (OIS Level 2)
 - dcm-provider-network: wraps AAP for network ports/VLANs (OIS Level 2)
 - dcm-provider-acm-shim: shim wrapping ACM API as standard DCM provider; ClusterRole grants ACM ManagedCluster/Placement/ManifestWork access
-- dcm-provider-webapp: Meta Provider composing VM + Network + OCP Cluster (OIS Level 1; sequential with rollback)
+- dcm-provider-webapp: Service Provider that registers a Composite Service composing VM + Network + OCP Cluster (OIS Level 1; sequential with rollback)
 
 **OPA Rego policies (Summit demo):**
 - tier-region.rego: GateKeeper (compliance) — enforces zone ⊆ tier allowed zones. Matches slide 17 demo exactly.
@@ -5631,7 +5628,7 @@ dcm-api-gateway, dcm-request-orchestrator, dcm-policy-engine, dcm-placement-engi
 **Demo script covers 3 use cases:**
 1. Intelligent Placement (March 1): tier-region.rego enforces zone policy; pipeline visible in RHDH
 2. Datacenter Rehydration (April 1): simulate DC loss; :rehydrate endpoint replays Intent through current policies
-3. Application as a Service (April 1): single request → webapp Meta Provider sequences Network + VM + OCP Cluster
+3. Application as a Service (April 1): single request → webapp Composite Service is dispatched by DCM as Network + VM + OCP Cluster in dependency order
 
 **Deploy single command:** `cd ansible && ansible-playbook site.yml -i inventory/hosts.yml`
 **BOOT-002:** Bootstrap admin password CHANGE_ME_BOOT002 must be rotated on first login.
@@ -5680,10 +5677,10 @@ When working on this project, apply these instructions in addition to the number
 178. **Governance Matrix is always boolean — never scored** — SMX-004 is absolute. Scoring cannot be used to route around data sovereignty or regulatory boundaries. The Governance Matrix evaluates before the scoring pipeline runs.
 179. **Profile thresholds determine routing, not individual policies** — the approval routing decision (auto/review/dual/authorized) emerges from the aggregate risk score crossing profile-configured thresholds, not from individual policy flags. Changing governance sensitivity = adjusting thresholds in the profile.
 180. **SMX-008 is a hard system constraint** — auto_approve_below may never exceed 50 in any profile. Platform admins cannot override this. Profiles submitted with auto_approve_below > 50 fail validation.
-181. **Meta Provider is a compound service definition + standard Service Provider** — not an orchestrator. It declares the dependency graph so DCM can place, sequence, and govern constituents. For `self` constituents it executes as any Service Provider does. DCM handles all orchestration, placement, failure, and compensation.
+181. **A Composite Service is a composition definition fulfilled by a registering Service Provider** — not an orchestrator. The registering provider declares the dependency graph so DCM can place, sequence, and govern constituents. For `self` constituents it executes as any Service Provider does. DCM handles all orchestration, placement, failure, and compensation.
 182. **Composite Entity has ONE entity UUID** that links Intent, Requested, Realized, and Discovered states; the UUID is assigned at Intent creation and is stable throughout the lifecycle including rehydration
 183. **DEGRADED is a valid terminal state** — not an error; a DEGRADED entity enters standard OPERATIONAL lifecycle; profile governs whether degraded delivery is accepted; Recovery Policy governs failure/compensation decisions
-184. **Parallelism emerges from the dependency graph** — constituents with no unresolved dependencies dispatch concurrently within DCM's pipeline; the Meta Provider does not manage this
+184. **Parallelism emerges from the dependency graph** — constituents with no unresolved dependencies dispatch concurrently within DCM's pipeline; the registering provider does not manage this
 186. **Credential values are NEVER stored in DCM** (CPX-001) — only metadata is stored; values are held by the credential management service; retrieved via authenticated endpoint; this applies to ALL credential types including dcm_interaction credentials
 187. **Every provider dispatch requires a scoped interaction credential** (CPX-002) — issued before dispatch, scoped to the specific operation+entity+provider, expires PT15M; provider must validate at use time not just receipt; check revocation cache on each use
 189. **Security properties are present in ALL profiles — minimal profile is "security with minimal operational overhead" not "minimal security"** — rotation required in all profiles (minimal: P365D max, manual OK); idle detection on in all profiles (minimal: P30D); algorithm baseline in all profiles (minimal: forbidden list); CPX-001 (values never in DCM stores) is absolute — homelab (minimal) uses bearer_token retrieval, no scheduled rotation, no FIPS; sovereign uses mtls+hardware attestation, FIPS Level 3, PT15S revocation cache; same API contract, same data model, same CPX-001 (values never in DCM stores)
@@ -5701,7 +5698,7 @@ When working on this project, apply these instructions in addition to the number
 203. **SES and ICOM domains added to capabilities matrix** — matrix is now 177 capabilities across 28 domains; SES-001–SES-005 (session lifecycle, deprovisioning, emergency revocation, introspection, concurrent enforcement); ICOM-001–ICOM-005 (mTLS, bootstrap, call authorization, interaction credentials, cert revocation)
 204. **Domain prefix totals now 28** — IAM CAT REQ PRV LCM DRF POL LAY INF ING AUD OBS STO FED GOV ACC ZTS GMX DRC FCM SMX MPX CPX DPO ATM EVT VER SES ICOM; README and taxonomy both updated to 177/28
 205. **Doc 37 (Scheduled Requests): dual policy evaluation** — GateKeeper runs at declaration AND at dispatch; dispatch-time rejection = FAILED not retried; schedule field is optional addition to existing POST /api/v1/requests body; SCHEDULED status is cancellable; not_after deadline miss = terminal FAILED (SCH-005)
-206. **Doc 38 (Request Dependency Graph): distinct from type-level and Meta Provider deps** — consumer-declared ad-hoc ordering for independent requests; POST /api/v1/request-groups; PENDING_DEPENDENCY status counts against quota at submission not dispatch; max 50 requests per group; circular deps → 422 at submission; field injection passes realized outputs into dependent request fields automatically
+206. **Doc 38 (Request Dependency Graph): distinct from type-level and Composite Service deps** — consumer-declared ad-hoc ordering for independent requests; POST /api/v1/request-groups; PENDING_DEPENDENCY status counts against quota at submission not dispatch; max 50 requests per group; circular deps → 422 at submission; field injection passes realized outputs into dependent request fields automatically
 207. **Doc 39 (DCM Self-Health): three endpoints, different purposes** — /livez (liveness, PT5S max, no external calls, Kubernetes restarts pod on fail) vs /readyz (readiness, checks 5 core dependencies, Kubernetes removes from LB) vs /api/v1/admin/health (per-component detail, admin auth required, Prometheus metrics at /metrics); all follow RFC 8615 / IANA health+json
 208. **Capabilities matrix now 189 across 31 domains** — SES(5) ICOM(5) SCH(4) RDG(4) HLT(4) added; domain prefixes: IAM CAT REQ PRV LCM DRF POL LAY INF ING AUD OBS STO FED GOV ACC ZTS GMX DRC FCM SMX MPX CPX DPO ATM EVT VER SES ICOM SCH RDG HLT (31 total)
 209. **40-standards-catalog.md is the authoritative source for all DCM standards** — forbidden algorithms (MD5, SHA-1, DES, 3DES, RC4, RSA<2048) are prohibited in ALL profiles with no exceptions; TLS 1.0/1.1 prohibited in ALL profiles; ECDSA P-384 is the mandated algorithm for Internal CA certs; AAL mapping: minimal/dev=AAL1, standard/prod=AAL2, fsi=AAL2+, sovereign=AAL3; doc 40 Section 8 maps every standard to the docs that use it
@@ -5721,7 +5718,7 @@ When working on this project, apply these instructions in addition to the number
 191. **The priority order is a decision framework, not a suggestion** — when security and ease of use conflict, security wins AND you must design an easy mechanism for the secure path; "it's too complex" is a reason to improve the ease-of-use design, not to reduce security; "minimal profile" means minimal overhead, never minimal security (DPO-005, DPO-006)
 190. **key_usage is declared at issuance and validated at use** (CPX-009) — a credential issued for authentication cannot be used for signing; credential management service must validate this at the validate endpoint; prevents algorithm confusion attacks
 188. **Actor deprovisioning and entity decommissioning trigger immediate credential revocation** (CPX-006, CPX-007) — deprovisioning publishes revocation events before the deprovisioning is acknowledged; decommission is blocked until all entity-scoped credentials are revoked
-185. **provided_by: external constituents are placed by DCM's Placement Engine** — all governance controls (sovereignty, accreditation, trust) apply; the Meta Provider has no influence over external constituent provider selection
+185. **provided_by: external constituents are placed by DCM's Placement Engine** — all governance controls (sovereignty, accreditation, trust) apply; the Composite Service definition has no influence over external constituent provider selection
 
 ---
 
@@ -5818,7 +5815,7 @@ ADR-016 is the key open design question raised by the engineering team (Ondra/ma
 
 ### 103.3 Deployment Pattern Catalog
 
-Patterns are compound Resource Type Specifications — reusable, provider-agnostic blueprints that define collections of resources with dependencies and binding fields. The Pattern Catalog is NOT a new architectural component — it is a curated view of the Resource Type Registry filtered to compound types. All existing DCM machinery (Meta Provider, dependency graphs, binding fields, placement) executes patterns.
+Patterns are composite Resource Type Specifications — reusable, provider-agnostic blueprints that define collections of resources with dependencies and binding fields. The Pattern Catalog is NOT a new architectural component — it is a curated view of the Resource Type Registry filtered to composite types. All existing DCM machinery (Composite Services, dependency graphs, binding fields, placement) executes patterns.
 
 Example patterns: Standard Web Application (6 constituents), Secure Data Pipeline, Developer Sandbox, Regulated Database Service, Edge Compute Node.
 
@@ -5852,24 +5849,25 @@ Engineering team feedback incorporated. Key decisions:
 - Use cases drive architecture and priorities (Piotr and Ygal's point)
 - Reading guide (proposal 1), session changelogs (proposal 7) still needed
 
-### 103.8 Meta Provider Removal
+### 103.8 Meta Provider Removal → Composite Service
 
-**Decision:** `meta_provider` removed as a provider type (6 → 5 types). Compound service composition is a **Data** concept (Compound Resource Type Specifications in the Resource Type Registry) orchestrated by the **Control Plane** (Request Processor, Request Orchestrator). Individual constituents are fulfilled by standard **Service Providers**.
+**Decision:** `meta_provider` was removed as a provider type (6 → 5 types). Composite payload delivery is now a catalog-level concept registered by ordinary Service Providers as **Composite Services**, with the Control Plane handling all orchestration (placement, sequencing, failure handling, compensation). Individual constituents are fulfilled by standard **Service Providers**.
 
 **What changed:**
 - Provider type count: 6 → 5 (service_provider, information_provider, auth_provider, peer_dcm, process_provider)
-- Doc 30 retitled: "Meta Provider Model" → "Compound Resource Type Specifications"
-- `provided_by: self` → `provided_by: <provider_uuid>` (a named service provider)
-- Pattern Catalog uses compound specs, not a meta provider type
+- Doc 30 retitled: "Meta Provider Composability Model" → "Composite Service Composition Model"
+- `provided_by: self` → `provided_by: self` (the registering provider) or `provided_by: <provider_uuid>` (a named service provider) or `provided_by: external` (DCM places via Placement Engine)
+- Pattern Catalog uses composite Resource Type specifications, not a meta provider type
 - SQL CHECK constraint updated (meta_provider removed from provider_type enum)
+- System policy IDs renamed: MPX-001..MPX-008 → CMP-001..CMP-008 (semantics preserved)
 - All ADRs, walkthrough, requirements, pattern overlay, examples repo updated
-- Historical sections in AI prompt retain "Meta Provider" references with architectural note
+- AI prompt fully migrated to Composite Service vocabulary
 
 **What didn't change:**
-- The compound Resource Type Specification YAML format — identical
+- The composite Resource Type Specification YAML format — identical
 - Consumer experience — still requests a catalog item, gets a composed application
 - Dependency graphs, binding fields, compensation — all still work identically
-- Platform engineer authoring — still defines compound specs the same way
+- Platform engineer authoring — still defines composite specs the same way
 
 ### 103.9 Authoritative Counts Update
 
