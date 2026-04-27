@@ -84,7 +84,7 @@ Every business rule, every compliance constraint, every operational standard is 
 |--------------|-----------|
 | **Service Provider** | Realizes infrastructure resources (VMs, networks, storage, containers, bare metal). Also covers credentials (internal or Vault), notifications (email/Slack), and ITSM integration via resource type declarations. |
 | **Information Provider** | Serves authoritative external data (CMDB, HR, finance, identity systems) |
-| **Meta Provider** | Composes multiple providers into compound catalog items (a "three-tier web app" as a single catalog entry) |
+| **Composite Service** | A catalog item composed of multiple constituent resource types (a "three-tier web app" as a single catalog entry); registered by an ordinary Service Provider, not a separate provider type |
 | **Auth Provider** | Authenticates identities; resolves role and group memberships. Multiple auth providers enable tenant-routed authentication. |
 | **Peer DCM** | Another DCM instance participating in federated deployment |
 | **Process Provider** | Executes ephemeral workflows (software install, backup, migration, compliance scan) via automation platforms (AAP, Tekton) |

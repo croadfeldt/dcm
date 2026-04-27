@@ -273,7 +273,7 @@
     "composite_resource_entity": {
       "type": "object",
       "title": "Composite Resource Entity",
-      "description": "Produced by a Meta Provider orchestrating multiple constituent Infrastructure Resource Entities into a higher-order service. The composite is a first-class entity with its own UUID. See data-model/01-entity-types.md Section 2.2.",
+      "description": "Produced by a Composite Service registration aggregating multiple constituent Infrastructure Resource Entities into a higher-order service. The composite is a first-class entity with its own UUID. See data-model/01-entity-types.md Section 2.2 and data-model/30-composite-service-model.md.",
       "required": [
         "artifact_metadata",
         "entity_type",
@@ -320,7 +320,7 @@
 
         "provider_uuid": {
           "oneOf": [{ "$ref": "dcm-common.json#/$defs/uuid" }, { "type": "null" }],
-          "description": "The Meta Provider that orchestrated this composite."
+          "description": "The Service Provider that registered the Composite Service this composite was instantiated from."
         },
 
         "ttl":           { "oneOf": [{ "$ref": "dcm-common.json#/$defs/iso8601_duration" }, { "type": "null" }] },

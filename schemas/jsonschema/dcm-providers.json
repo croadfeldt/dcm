@@ -273,10 +273,10 @@
         }
       }
     },
-    "compound_service_capabilities": {
+    "composite_service_capabilities": {
       "type": "object",
-      "title": "Meta Provider Capability Extension",
-      "description": "Composes multiple sub-providers to deliver a higher-order composite service.",
+      "title": "Composite Service Capability Extension",
+      "description": "Declares the catalog-level composite services this provider registers — multi-resource catalog items composed of declared constituent resource types. See data-model/30-composite-service-model.md.",
       "required": [
         "offered_composite_types",
         "constituent_providers"
@@ -390,7 +390,7 @@
           "$ref": "#/$defs/information_provider_capabilities"
         },
         {
-          "$ref": "#/$defs/compound_service_capabilities"
+          "$ref": "#/$defs/composite_service_capabilities"
         },
         {
           "$ref": "#/$defs/auth_provider_capabilities"
