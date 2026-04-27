@@ -519,7 +519,7 @@
             "$ref": "dcm-common.json#/$defs/uuid"
           }
         },
-        "compound_service_ref": {
+        "composite_service_ref": {
           "$ref": "dcm-common.json#/$defs/uuid"
         }
       }

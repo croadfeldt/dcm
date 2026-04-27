@@ -14,7 +14,7 @@ Dependencies are declared at two levels:
 
 **Type-level** (in the Resource Type Specification): "Every VM requires exactly one IP address." These are portable, provider-agnostic, and apply to all implementations of the resource type. DCM automatically creates sub-requests for type-level dependencies.
 
-**Binding fields** (in compound service definitions): "The backend's db_host field gets its value from the database's realized ip_address." These connect resources via runtime values — the output of one resource becomes the input of another.
+**Binding fields** (in composite service definitions): "The backend's db_host field gets its value from the database's realized ip_address." These connect resources via runtime values — the output of one resource becomes the input of another.
 
 **How it works:**
 1. Request Processor reads the resource type spec and identifies dependencies
@@ -22,7 +22,7 @@ Dependencies are declared at two levels:
 3. When a dependency is realized, its output values are injected into dependent resources via dependency payload passing (with full provenance tracking)
 4. Dependent resources are dispatched after their dependencies are satisfied
 
-For compound services, the compound resource type spec declares the full dependency graph with binding fields.
+For composite services, the composite resource type spec declares the full dependency graph with binding fields.
 
 ## Consequences
 

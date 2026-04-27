@@ -33,13 +33,13 @@ The key property: **no single provider owns the pattern.** The PostgreSQL DB mig
 │                                                          │
 │  Authored by: Platform Engineers                         │
 │  Consumed by: Consumer Developers                        │
-│  Stored in: Resource Type Registry (compound types)      │
+│  Stored in: Resource Type Registry (composite types)      │
 ├─────────────────────────────────────────────────────────┤
 │                   SERVICE CATALOG                         │
 │  Provider-specific offerings of patterns + atomic items   │
 │  "EU-WEST Web App — Standard" · "APAC VM — Large"        │
 │                                                          │
-│  Populated by: Providers (atomic) + Patterns (compound)  │
+│  Populated by: Providers (atomic) + Patterns (composite)  │
 │  Consumed by: Consumer Developers                        │
 ├─────────────────────────────────────────────────────────┤
 │                   DCM CONTROL PLANE                       │
@@ -56,7 +56,7 @@ The key property: **no single provider owns the pattern.** The PostgreSQL DB mig
 └─────────────────────────────────────────────────────────┘
 ```
 
-**The Pattern Catalog is not a new architectural component.** It is a curated view of the Resource Type Registry filtered to compound resource types. DCM already has all the machinery to execute patterns — the compound service model, dependency graphs, binding fields, and constituent dispatch. What the Pattern Catalog adds is the **curation and consumer experience layer** on top of that machinery.
+**The Pattern Catalog is not a new architectural component.** It is a curated view of the Resource Type Registry filtered to composite resource types. DCM already has all the machinery to execute patterns — the composite service model, dependency graphs, binding fields, and constituent dispatch. What the Pattern Catalog adds is the **curation and consumer experience layer** on top of that machinery.
 
 ---
 
@@ -66,12 +66,12 @@ A single deployment pattern maps to these existing DCM concepts:
 
 | Pattern concept | DCM construct | Where it lives |
 |----------------|--------------|----------------|
-| The pattern itself | Compound Resource Type Specification | Resource Type Registry |
-| The constituents | Resource Type references with dependency declarations | `constituents[]` in the compound spec |
+| The pattern itself | Composite Resource Type Specification | Resource Type Registry |
+| The constituents | Resource Type references with dependency declarations | `constituents[]` in the composite spec |
 | How pieces connect | Binding fields — runtime values from one constituent injected into another | `binding_fields[]` on dependent constituents |
 | What the consumer fills in | Parameterized fields exposed at the pattern level | `fields_from_parent[]` mapping pattern params → constituent fields |
-| Who provides each piece | `provided_by: external` (DCM places) or `provided_by: self` (compound service handles) | Per-constituent declaration |
-| What happens on failure | Lifecycle policy on the compound spec | `on_constituent_failure: rollback_all | continue_degraded | notify` |
+| Who provides each piece | `provided_by: external` (DCM places) or `provided_by: self` (composite service handles) | Per-constituent declaration |
+| What happens on failure | Lifecycle policy on the composite spec | `on_constituent_failure: rollback_all | continue_degraded | notify` |
 | Operational policies | Standard DCM policies scoped to the pattern's resource type | Policy match on `resource_type = ApplicationStack.WebApp` |
 
 ---
@@ -81,7 +81,7 @@ A single deployment pattern maps to these existing DCM concepts:
 ### Pattern Definition (authored by Platform Engineer)
 
 ```yaml
-# Registered in Resource Type Registry as a compound resource type
+# Registered in Resource Type Registry as a composite resource type
 resource_type: ApplicationStack.WebApp
 version: "1.0.0"
 entity_type: composite_resource
@@ -242,7 +242,7 @@ Six fields. The consumer has no idea that this will produce 6 resources across p
 ```
 1. Intent captured — consumer's 6 fields stored
 
-2. Pattern decomposed — DCM reads the compound resource type spec
+2. Pattern decomposed — DCM reads the composite resource type spec
    → 6 constituents identified
    → Dependency graph resolved:
      Network Segment (no deps)
@@ -322,28 +322,28 @@ Resource Type Registry
 ├── Database.Managed (atomic)
 ├── DNS.Record (atomic)
 ├── Network.LoadBalancer (atomic)
-├── ApplicationStack.WebApp (compound ← this is a pattern)
-├── ApplicationStack.DataPipeline (compound ← this is a pattern)
-├── Environment.DevSandbox (compound ← this is a pattern)
-└── Platform.EdgeNode (compound ← this is a pattern)
+├── ApplicationStack.WebApp (composite ← this is a pattern)
+├── ApplicationStack.DataPipeline (composite ← this is a pattern)
+├── Environment.DevSandbox (composite ← this is a pattern)
+└── Platform.EdgeNode (composite ← this is a pattern)
 ```
 
 ### In the Service Catalog
 
-Provider catalog items can reference either atomic or compound resource types. For patterns, the catalog item represents the pattern itself — the consumer requests the pattern, not the individual constituents:
+Provider catalog items can reference either atomic or composite resource types. For patterns, the catalog item represents the pattern itself — the consumer requests the pattern, not the individual constituents:
 
 ```
 Service Catalog
 ├── "EU-WEST VM — Standard" → Compute.VirtualMachine (atomic, provider-specific)
 ├── "EU-WEST VM — Large" → Compute.VirtualMachine (atomic, provider-specific)
-├── "Standard Web Application" → ApplicationStack.WebApp (compound, multi-provider)
-├── "Secure Data Pipeline" → ApplicationStack.DataPipeline (compound, multi-provider)
-└── "Developer Sandbox" → Environment.DevSandbox (compound, multi-provider)
+├── "Standard Web Application" → ApplicationStack.WebApp (composite, multi-provider)
+├── "Secure Data Pipeline" → ApplicationStack.DataPipeline (composite, multi-provider)
+└── "Developer Sandbox" → Environment.DevSandbox (composite, multi-provider)
 ```
 
 ### In the Consumer API
 
-No API changes. The consumer requests a catalog item. Whether it's atomic or compound is transparent — the same `POST /api/v1/requests` endpoint handles both. The response includes constituent status for compound requests.
+No API changes. The consumer requests a catalog item. Whether it's atomic or compound is transparent — the same `POST /api/v1/requests` endpoint handles both. The response includes constituent status for composite requests.
 
 ### In RHDH
 
@@ -355,7 +355,7 @@ The RHDH catalog page shows patterns alongside atomic offerings. Patterns have a
 
 | Role | What they do with patterns |
 |------|--------------------------|
-| **Platform Engineer** | Authors pattern definitions (compound resource type specs). Defines constituents, dependencies, binding fields, parameters, lifecycle policies. Registers patterns in the Resource Type Registry. Creates service catalog items for patterns. |
+| **Platform Engineer** | Authors pattern definitions (composite resource type specs). Defines constituents, dependencies, binding fields, parameters, lifecycle policies. Registers patterns in the Resource Type Registry. Creates service catalog items for patterns. |
 | **Policy/Compliance Owner** | Writes policies that apply to pattern constituents. Does not need to know about patterns specifically — policies match on resource types, which patterns decompose into. May also write pattern-level policies (e.g., "all ApplicationStack.* types require monitoring on every constituent"). |
 | **Consumer Developer** | Browses the catalog, selects a pattern, fills in parameters, submits. Sees aggregate status. Can drill into constituent detail. Does not need to understand the decomposition. |
 | **Infrastructure Operator** | Provides the atomic services that patterns compose. Registers providers for Compute, Network, Database, DNS — not for the pattern itself. |

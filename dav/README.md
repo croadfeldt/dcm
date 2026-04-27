@@ -101,7 +101,7 @@ Dimension values are constrained. Valid values as of schema v1.0:
   rehydration_provider_portable | rehydration_historical_exact |
   rehydration_historical_portable | expiry_enforcement`
 - **resource_complexity**: `single_no_deps | hard_dependencies |
-  compound_service | conditional_soft_deps | process_resource |
+  composite_service | conditional_soft_deps | process_resource |
   cross_dependency_payload`
 - **policy_complexity**: `system_defaults_only | single_gatekeeper |
   multi_policy_chain | conflicting_policies | orchestration_flow_static |

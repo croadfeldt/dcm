@@ -100,7 +100,7 @@ The DCM taxonomy defines the precise vocabulary used throughout the architecture
 
 | Term | Definition |
 |------|-----------|
-| **Composite Service** | A catalog-level registration that declares a compound payload — multiple constituent resource types with declared dependencies and delivery requirements — fulfillable as a single request. Registered by an ordinary Service Provider; not a separate provider type. See doc 30 (Composite Service Composition Model). |
+| **Composite Service** | A catalog-level registration that declares a composite payload — multiple constituent resource types with declared dependencies and delivery requirements — fulfillable as a single request. Registered by an ordinary Service Provider; not a separate provider type. See doc 30 (Composite Service Composition Model). |
 | **Composite Entity** | A DCM entity produced by a Composite Service request. Exists across all four states as a single entity aggregating constituent Resource Entities. Has one entity UUID that links it through all states. |
 | **Constituent** | A sub-resource within a Composite Service. Declared with a `component_id`, `resource_type`, `depends_on`, `provided_by` (`self` or `external`), and `required_for_delivery` classification. |
 | **required_for_delivery** | Constituent delivery classification: `required` (failure halts the composite request and triggers compensation), `partial` (failure produces DEGRADED but not FAILED), `optional` (failure is noted but ignored). |
@@ -125,7 +125,7 @@ The DCM taxonomy defines the precise vocabulary used throughout the architecture
 | **External CA credential management service** | A credential management service backend that issues x509 certificates using standard protocols (ACME/RFC 8555, EST/RFC 7030, SCEP, CMP, or native API like HashiCorp Vault PKI). Recommended for fsi and sovereign profiles to maintain enterprise PKI chain. Registered trust anchor root cert must be installed in all component trust stores. |
 | **Trust Anchor** | The root or intermediate CA certificate installed in all DCM component trust stores. May be the built-in Internal CA or an external CA registered as a credential management service. ICOM-009: components only accept certificates from registered trust anchors. |
 | **Server-Sent Events (SSE)** | W3C standard HTTP/1.1 unidirectional event stream. DCM exposes `GET /api/v1/requests/{uuid}/stream` as an SSE endpoint for live request status updates without polling. Stream closes on terminal status. |
-| **Interim Status** | Provider-sent progress update during a long-running operation, via `POST /api/v1/provider/entities/{uuid}/status`. Includes step_current/step_total, step_label, and constituent_status array for compound operations. Triggers `request.progress_updated` event. |
+| **Interim Status** | Provider-sent progress update during a long-running operation, via `POST /api/v1/provider/entities/{uuid}/status`. Includes step_current/step_total, step_label, and constituent_status array for composite operations. Triggers `request.progress_updated` event. |
 | **constituent_status** | Array of named component statuses in a Composite Service request (e.g. `[{ref: "vm", status: "OPERATIONAL"}, {ref: "dns", status: "PROVISIONING"}]`). Surfaced in SSE stream and polling response so consumers can track multi-part operations. |
 
 
