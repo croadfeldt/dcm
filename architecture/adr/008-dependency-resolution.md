@@ -2,7 +2,7 @@
 
 **Status:** Accepted  
 **Date:** March 2026  
-**Docs:** Doc 07 (Service Dependencies), Doc 30 (Meta Provider Model)
+**Docs:** Doc 07 (Service Dependencies), Doc 30 (Composite Service Composition Model)
 
 ## Context
 
