@@ -20,10 +20,9 @@ The DCM taxonomy defines the precise vocabulary used throughout the architecture
 
 | Term | Definition |
 |------|-----------|
-| **Service Provider** | Typed Provider. Capability: realize infrastructure resources. Implements naturalization, realization, denaturalization, and discovery. |
+| **Service Provider** | Typed Provider. Capability: realize infrastructure resources. Implements naturalization, realization, denaturalization, and discovery. A Service Provider can additionally register Composite Services (catalog items composed of multiple constituent resource types) — see the Composite Service Composition Terms section below. |
 | **Information Provider** | Typed Provider. Capability: serve authoritative external data (CMDB, HR, Finance, identity). |
 | **Data Store Contract** | PostgreSQL store contract defining persistence requirements per data domain (Intent, Requested, Realized, Discovered, Audit). |
-| **Meta Provider** | Typed Provider. Capability: compose multiple child providers into a compound service delivered as a single catalog item. |
 | **External Policy Evaluator** | Typed Provider. Capability: evaluate policies externally. Modes 1–4; Mode 3–4 for OPA/Rego sidecar and black-box query enrichment. |
 | **credential management service** | Typed Provider. Capability: issue, rotate, and revoke secrets and credentials. |
 | **Auth Provider** | Typed Provider. Capability: authenticate actor identities and resolve role/group memberships. |
@@ -97,18 +96,19 @@ The DCM taxonomy defines the precise vocabulary used throughout the architecture
 | **key_usage** | Declared purpose of a credential: authentication, signing, or encryption. Non-overlapping — a credential issued for authentication cannot be used for signing even if the algorithm supports both. Validated at use time by credential management service. |
 
 
-### Meta Provider Composability Terms
+### Composite Service Composition Terms
 
 | Term | Definition |
 |------|-----------|
-| **Composite Entity** | A DCM entity produced by a Meta Provider. Exists across all four states as a single entity aggregating constituent Resource Entities. Has one entity UUID that links it through all states. |
-| **Constituent** | A sub-resource within a compound service that a Meta Provider provisions. Declared with a `component_id`, `resource_type`, `depends_on`, and `required_for_delivery` classification. |
-| **required_for_delivery** | Constituent delivery classification: `required` (failure halts the compound service and triggers compensation), `partial` (failure produces DEGRADED but not FAILED), `optional` (failure is noted but ignored). |
-| **Composite Status** | Top-level outcome of a compound service execution: `REALIZED` (all required constituents succeeded), `DEGRADED` (required succeeded; partial(s) failed; accepted if profile permits), `FAILED` (required constituent(s) failed; triggers compensation). |
-| **Compensation** | Ordered teardown of successfully realized constituents when a compound service cannot be delivered. Runs in dependency-reverse order. Best-effort; failures produce `PARTIALLY_COMPENSATED` with orphan detection. |
-| **Composition Visibility** | How a Meta Provider exposes its internal structure to DCM: `opaque` (top-level only), `transparent` (all constituents as DCM entities), `selective` (declared sub-set as DCM entities). |
+| **Composite Service** | A catalog-level registration that declares a compound payload — multiple constituent resource types with declared dependencies and delivery requirements — fulfillable as a single request. Registered by an ordinary Service Provider; not a separate provider type. See doc 30 (Composite Service Composition Model). |
+| **Composite Entity** | A DCM entity produced by a Composite Service request. Exists across all four states as a single entity aggregating constituent Resource Entities. Has one entity UUID that links it through all states. |
+| **Constituent** | A sub-resource within a Composite Service. Declared with a `component_id`, `resource_type`, `depends_on`, `provided_by` (`self` or `external`), and `required_for_delivery` classification. |
+| **required_for_delivery** | Constituent delivery classification: `required` (failure halts the composite request and triggers compensation), `partial` (failure produces DEGRADED but not FAILED), `optional` (failure is noted but ignored). |
+| **Composite Status** | Top-level outcome of a Composite Service request: `OPERATIONAL` (all required constituents succeeded), `DEGRADED` (required succeeded; partial(s) failed; accepted if profile permits), `FAILED` (required constituent(s) failed; triggers compensation). |
+| **Compensation** | Ordered teardown of successfully realized constituents when a Composite Service cannot be delivered. Runs in dependency-reverse order. Best-effort; failures produce `PARTIALLY_COMPENSATED` with orphan detection. |
+| **Composition Visibility** | How a Composite Service exposes its internal structure to consumers: `opaque` (top-level only), `transparent` (all constituents as DCM entities), `selective` (declared sub-set as DCM entities). |
 | **Dependency Round** | A batch of constituents that can execute in parallel because all their `depends_on` constituents are complete. Multiple rounds execute sequentially; constituents within a round execute in parallel. |
-| **MPX-001–MPX-008** | Meta Provider system policies. Key: MPX-001 (compensation required if partial delivery supported), MPX-002 (dependency-reverse decommission), MPX-006 (DEGRADED is a valid terminal state when accepted), MPX-008 (compound payload fully assembled by DCM before dispatch). |
+| **CMP-001–CMP-008** | Composite Service system policies. Key: CMP-001 (`self` constituents dispatched via standard Services API), CMP-002 (constituent ordering derived from `depends_on` by DCM), CMP-004 (composite status determined by DCM), CMP-005 (Recovery Policy governs failure handling), CMP-007 (deterministic constituent UUIDs in transparent mode), CMP-008 (max nesting depth 3). |
 
 
 
@@ -126,7 +126,7 @@ The DCM taxonomy defines the precise vocabulary used throughout the architecture
 | **Trust Anchor** | The root or intermediate CA certificate installed in all DCM component trust stores. May be the built-in Internal CA or an external CA registered as a credential management service. ICOM-009: components only accept certificates from registered trust anchors. |
 | **Server-Sent Events (SSE)** | W3C standard HTTP/1.1 unidirectional event stream. DCM exposes `GET /api/v1/requests/{uuid}/stream` as an SSE endpoint for live request status updates without polling. Stream closes on terminal status. |
 | **Interim Status** | Provider-sent progress update during a long-running operation, via `POST /api/v1/provider/entities/{uuid}/status`. Includes step_current/step_total, step_label, and constituent_status array for compound operations. Triggers `request.progress_updated` event. |
-| **constituent_status** | Array of named component statuses in a compound/Meta Provider request (e.g. `[{ref: "vm", status: "REALIZED"}, {ref: "dns", status: "PROVISIONING"}]`). Surfaced in SSE stream and polling response so consumers can track multi-part operations. |
+| **constituent_status** | Array of named component statuses in a Composite Service request (e.g. `[{ref: "vm", status: "OPERATIONAL"}, {ref: "dns", status: "PROVISIONING"}]`). Surfaced in SSE stream and polling response so consumers can track multi-part operations. |
 
 
 
@@ -203,7 +203,7 @@ The DCM taxonomy defines the precise vocabulary used throughout the architecture
 |------|-----------|
 | **Scheduled Request** | A DCM request with an explicit dispatch schedule (at a specific time, during a maintenance window, or recurring). Goes through the same pipeline as immediate requests; policy evaluates at declaration AND at dispatch time. |
 | **PENDING_DEPENDENCY** | Intent State status for a request in a dependency group waiting for its declared dependency to reach the required wait_for state before dispatch. |
-| **Request Dependency Group** | A consumer-declared set of requests with ordering constraints (depends_on) between them. Distinct from type-level dependencies (doc 07) and Meta Provider composition (doc 30). |
+| **Request Dependency Group** | A consumer-declared set of requests with ordering constraints (depends_on) between them. Distinct from type-level dependencies (doc 07) and Composite Service composition (doc 30). |
 | **Field Injection** | Mechanism for passing realized output fields from a dependency automatically into a dependent request's fields at dispatch time. Subject to Transformation policies. |
 | **Maintenance Window** | A reusable, named recurrence artifact declaring approved change windows. Consumers reference window_uuid in scheduled requests to slot into the next matching window. |
 | **SCH-001–SCH-006** | Scheduled requests system policies. Key: SCH-001 (dual policy evaluation: declaration + dispatch), SCH-003 (dispatch-time policy rejection → FAILED), SCH-005 (not_after deadline miss → FAILED, no retry). |
@@ -389,7 +389,7 @@ Terms to avoid because they introduce ambiguity. Use the precise alternatives in
 | DRC | Drift Reconciliation |
 | FCM | Federated Contribution Model |
 | SMX | Scoring Model |
-| MPX | Meta Provider Composability |
+| CMP | Composite Service Composition |
 | CPX | credential management service Model |
 | DPO | Design Priority Order |
 | ATM | Authority Tier Model |
