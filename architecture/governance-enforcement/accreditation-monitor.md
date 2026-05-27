@@ -494,3 +494,102 @@ The Accreditation Monitor is the operational implementation of the standards cat
 ---
 
 *Document maintained by the DCM Project. For questions or contributions see [GitHub](https://github.com/dcm-project).*
+
+---
+
+## 13. Accreditation Governance Enforcement
+
+> **Implements contracts defined in UDLM**:
+> [udlm/governance/accreditation-and-authorization-matrix.md](https://github.com/croadfeldt/udlm/blob/main/governance/accreditation-and-authorization-matrix.md).
+> UDLM defines the accreditation model, lifecycle, and authorization matrix.
+> This section operationalizes the governance enforcement DCM applies on
+> top of the Accreditation Monitor.
+
+### 13.1 Accreditation gap response
+
+When a required accreditation becomes missing, expired, or revoked, DCM
+enters an Accreditation Gap state for the affected provider:
+
+```yaml
+accreditation_gap_record:
+  uuid: <uuid>
+  provider_uuid: <uuid>
+  required_framework: hipaa
+  required_for: [phi data fields in active requests]
+  gap_type: missing | expired | revoked | suspended | verification_stale
+  detected_at: <ISO 8601>
+  severity: critical                    # accreditation gaps are always high or critical
+  affected_entity_uuids: [<list>]       # entities currently hosted at this provider
+  policy_response: <from Recovery Policy>
+  # Default: NOTIFY_AND_WAIT for fsi/sovereign; ESCALATE for standard/prod
+```
+
+The Recovery Policy evaluation runs through the standard
+[`../convergence-engine/recovery-and-retry.md`](../convergence-engine/recovery-and-retry.md)
+mechanism — accreditation gaps are first-class recovery triggers.
+
+### 13.2 Authorization evaluation at runtime
+
+The Governance Matrix evaluator (see
+[`../convergence-engine/policy-evaluation.md`](../convergence-engine/policy-evaluation.md))
+consults Accreditation Monitor data on every outbound interaction. The
+matrix evaluator:
+
+1. Resolves required accreditation from the data axis (e.g., PHI requires
+   HIPAA BAA)
+2. Queries the target's active accreditations via the Accreditation Monitor
+3. Verifies the accreditation is current and not suspended (via
+   `last_verified_at` and `last_result`)
+4. Returns ALLOW / DENY / STRIP_FIELD per the matrix rule
+
+The Accreditation Monitor's verification currency (Section 8) feeds into
+matrix evaluation: an accreditation with stale verification produces a
+weaker effective trust than one externally verified yesterday.
+
+### 13.3 DCM deployment accreditation
+
+DCM deployments themselves can carry accreditations (a FedRAMP-authorized
+DCM deployment, for example). DCM enforces:
+
+- `subject_type: dcm_deployment` accreditations registered as standard
+  accreditation artifacts
+- Federation peer DCMs verify each other's deployment accreditation before
+  accepting federation messages (see
+  [`../runtime-features/federation-runtime.md`](../runtime-features/federation-runtime.md))
+- Accreditation Monitor verifies deployment accreditations on the same
+  schedule as provider accreditations
+
+### 13.4 Profile-governed accreditation constraints
+
+```yaml
+accreditation_profile_config:
+  minimal:
+    verification_tier_minimum: expiry_only
+    air_gapped_fallback: expiry_only
+    stale_action_default: warn
+
+  dev:
+    verification_tier_minimum: expiry_only
+    stale_action_default: warn
+
+  standard:
+    verification_tier_minimum: document_currency
+    stale_action_default: warn
+
+  prod:
+    verification_tier_minimum: document_currency
+    stale_action_default: escalate
+
+  fsi:
+    verification_tier_minimum: external_registry
+    # ACM-004: expiry_only NOT permitted unless air_gapped_mode: true
+    stale_action_default: suspend
+
+  sovereign:
+    verification_tier_minimum: external_registry
+    stale_action_default: suspend
+```
+
+These are enforced at accreditation registration: an accreditation with
+`tier: expiry_only` in `fsi`/`sovereign` profile is rejected unless
+`air_gapped_mode: true` is explicitly configured (`ACM-004`).

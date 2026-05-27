@@ -590,3 +590,155 @@ Depth is measured as hops from the deepest instance to the Hub DCM. Depth 3 cove
 ---
 
 *Document maintained by the DCM Project. For questions or contributions see [GitHub](https://github.com/dcm-project).*
+
+---
+
+## 12. Federation Tunnel Establishment and Maintenance
+
+> **Implements contracts defined in UDLM**:
+> [udlm/governance/accreditation-and-authorization-matrix.md](https://github.com/croadfeldt/udlm/blob/main/governance/accreditation-and-authorization-matrix.md).
+> UDLM defines the Federation Tunnel Model as the contract for secure
+> inter-DCM channels. This section operationalizes the establishment and
+> maintenance of those tunnels.
+
+### 12.1 Tunnel as zero-trust boundary
+
+A federation tunnel is a mutually authenticated, encrypted, scoped channel —
+**not a VPN**. It establishes secure transport, not perimeter trust. Every
+message crossing the tunnel is authenticated, authorized, and subject to the
+five-check boundary model defined in
+[udlm/governance/accreditation-and-authorization-matrix.md](https://github.com/croadfeldt/udlm/blob/main/governance/accreditation-and-authorization-matrix.md).
+
+### 12.2 Tunnel structure
+
+```yaml
+federation_tunnel:
+  uuid: <uuid>
+  local_dcm_uuid: <uuid>
+  remote_dcm_uuid: <uuid>
+  tunnel_type: peer | parent_child | hub_spoke
+  trust_model: zero_trust               # always; non-negotiable
+
+  # Mutual authentication
+  authentication:
+    protocol: mtls
+    local_certificate_ref: <cert-uuid>
+    remote_certificate_pin: <fingerprint>  # pinned; not just chain-valid
+    trust_anchor: <CA-uuid>
+    certificate_rotation_interval: P90D
+    revocation_check: ocsp_stapling
+
+  # Per-message signing
+  message_integrity:
+    signing_algorithm: ed25519
+    local_signing_key_ref: <key-uuid>
+    remote_verification_key_ref: <key-uuid>
+    replay_protection: true               # nonce + timestamp window PT5M
+
+  # Inbound authorization — what remote may request from this DCM
+  inbound_authorization:
+    - operation: catalog_query
+      permitted_resource_types: [Compute.VirtualMachine, Network.VLAN]
+      requires_cross_tenant_authorization: true
+    - operation: allocation_request
+      permitted_resource_types: [Network.IPAddress]
+      max_allocations_per_request: 10
+      requires_cross_tenant_authorization: true
+
+  # Outbound authorization — what this DCM may request from remote
+  outbound_authorization:
+    - operation: placement_query
+      permitted_resource_types: [Compute.VirtualMachine]
+    - operation: realized_state_query
+      permitted_entity_uuids: [<uuid>]   # scoped to specific entities
+
+  # Data classification boundary (hard constraints)
+  data_boundary:
+    max_outbound_classification: restricted  # never send sovereign/classified
+    max_inbound_classification: restricted
+    # sovereign profile: max_*_classification: internal
+    # classified profile: no federation permitted
+
+  # Sovereignty scope
+  sovereignty_scope:
+    local_jurisdiction: EU
+    remote_jurisdiction: EU
+    cross_jurisdiction_permitted: false   # fsi/sovereign: always false
+```
+
+### 12.3 Federation credential scoping
+
+Federation credentials are scoped to specific tunnel operations:
+
+```yaml
+federation_credential:
+  credential_uuid: <uuid>
+  issued_by_dcm_uuid: <local-uuid>
+  issued_to_dcm_uuid: <remote-uuid>
+  expires_at: <ISO 8601>             # PT15M for fsi/sovereign
+  operation_scope: catalog_query
+  scoped_resource_types: [Compute.VirtualMachine]
+  non_transferable: true
+  tunnel_uuid: <uuid>                 # bound to specific tunnel
+```
+
+A federation credential issued for `catalog_query` cannot be used for
+`allocation_request`.
+
+### 12.4 Establishment flow
+
+```
+Local DCM initiates establishment with Remote DCM:
+  ▼ Mutual mTLS handshake
+  │   Validate remote certificate against trust_anchor and pin
+  │   OCSP stapling for real-time revocation check
+  ▼ Sovereignty compatibility check (hard pre-filter)
+  │   Local + remote sovereignty zones must satisfy declared requirements
+  │   Cross-jurisdiction blocked in fsi/sovereign
+  ▼ Accreditation verification
+  │   Remote DCM's accreditations checked via Accreditation Monitor
+  │   Required accreditations per profile
+  ▼ Tunnel record created (status: establishing)
+  ▼ Initial federation credential issued (scoped to limited ops)
+  ▼ Health probe exchange to verify bidirectional connectivity
+  ▼ Tunnel transitions to active
+  ▼ Audit record written: federation.tunnel_established
+```
+
+### 12.5 Tunnel maintenance
+
+DCM maintains tunnel health via:
+
+- **Health probes** every PT60S (configurable)
+- **Certificate rotation** independent per side with P30D overlap (DCM-009)
+- **Federation trust score** updated continuously per
+  [udlm/contracts/information-providers-advanced.md](https://github.com/croadfeldt/udlm/blob/main/contracts/information-providers-advanced.md)
+- **Sovereignty re-verification** on configurable cadence; tunnel suspended
+  if sovereignty becomes incompatible
+- **Federation depth enforcement** per DCM-013 (profile-governed max depth)
+
+On tunnel degradation:
+- Trust score drops below 60 → action per `action_on_score_below` config
+- Sovereignty incompatibility → tunnel suspended immediately; admin notified
+- Certificate revocation → tunnel suspended; new credential required
+
+### 12.6 Hub-spoke zero trust
+
+In hub-spoke federation, the Hub DCM coordinates Regional DCMs. Zero trust
+means:
+
+- The Hub DCM does not have root-level access to Regional DCMs — only
+  explicitly scoped federation credentials
+- A Regional DCM cannot impersonate the Hub to another Regional DCM
+- Cross-Regional-DCM operations route through the Hub with the **Hub's
+  authorization**, not the originating Regional DCM's authorization
+- The Hub DCM's accreditation is visible to Regional DCMs — they can verify
+  the Hub before accepting federation messages
+
+```
+RegionalDCM-A → HubDCM:  authenticated; scoped to allocation_request
+HubDCM → RegionalDCM-B:  authenticated; scoped to realization_request
+                          Hub presents its own credential to RegionalDCM-B
+                          Not RegionalDCM-A's credential
+RegionalDCM-B verifies:  Hub certificate; Hub accreditation; data boundary
+```
