@@ -1,6 +1,16 @@
 # DCM — Data Center Management
 
-DCM is a framework for sovereign private cloud management. It provides a declarative control plane for managing the lifecycle of arbitrary infrastructure resources across an enterprise — from bare metal and VMs to containers, applications, and managed services.
+DCM is a framework for sovereign private cloud management. It provides a
+declarative control plane for managing the lifecycle of arbitrary infrastructure
+resources across an enterprise — from bare metal and VMs to containers,
+applications, and managed services.
+
+**DCM is one realization of [UDLM](https://github.com/croadfeldt/udlm)**, the
+Universal Data Lifecycle Model. UDLM is the wire-compatible substrate
+(entity types, four-state lifecycle, contracts, identifiers, events). DCM is
+the operational platform built on it — convergence engine, control-plane
+components, deployment topology, persistence, runtime features, governance
+enforcement, credentials, and integrations.
 
 **Three foundational abstractions:** Data · Provider · Policy
 **License:** Apache 2.0
@@ -12,43 +22,60 @@ DCM is a framework for sovereign private cloud management. It provides a declara
 ```
 dcm/
 ├── architecture/
-│   ├── data-model/                         ← 57 architecture documents
-│   │   ├── 00-foundations.md               ← Start here — three abstractions
-│   │   ├── 01-entity-types.md
-│   │   ├── 02-four-states.md
-│   │   ├── ...
-│   │   ├── 50-subscription-lifecycle.md
-│   │   ├── 51-infrastructure-optimization.md
-│   │   ├── A-provider-contract.md
-│   │   └── B-policy-contract.md
-│   ├── ai/DCM-AI-PROMPT.md                ← AI knowledge base (104 sections)
-│   ├── DCM-Capabilities-Matrix.md         ← 331 capabilities across 39 domains
-│   └── DISCUSSION-TOPICS.md               ← Open and resolved discussion topics
+│   ├── overview.md                        ← Start here — DCM architecture entry point
+│   ├── layering.md                        ← UDLM/DCM boundary and how they relate
+│   ├── operator-perspective.md            ← Narrative operator/implementer handbook
+│   ├── design-principles.md               ← DCM-specific implementation choices
+│   ├── consistency-review.md
+│   ├── 00-split-manifest.md               ← Permanent record of the UDLM/DCM split
+│   ├── 00-layering-data-model-vs-dcm.md   ← Conceptual layering doc
+│   ├── control-plane/                     ← Components, self-health, internal auth,
+│   │                                        session revocation, API versioning
+│   ├── convergence-engine/                ← The intent→realized loop:
+│   │                                        overview, policy evaluation (matrix
+│   │                                        evaluator), scoring, recovery/retry,
+│   │                                        dependency orchestration
+│   ├── ingestion/                         ← Brownfield ingestion engine + workload analysis
+│   ├── credentials-and-auth/              ← Auth implementation, credentials,
+│   │                                        provider callback mechanism (mTLS + cred),
+│   │                                        authority enforcement
+│   ├── governance-enforcement/            ← Accreditation monitor, registry
+│   │                                        enforcement, contribution pipeline,
+│   │                                        policy profiles
+│   ├── runtime-features/                  ← Scheduling, notifications, webhooks/
+│   │                                        messaging, federation runtime,
+│   │                                        deployment redundancy
+│   ├── topology/                          ← DCM's canonical 9-layer location
+│   │                                        hierarchy + placement/priority bands
+│   ├── persistence/                       ← PostgreSQL mandate + implementation
+│   ├── integrations/                      ← ITSM, Kessel evaluation
+│   ├── adr/                               ← Architectural Decision Records
+│   ├── ai/DCM-AI-PROMPT.md                ← AI knowledge base
+│   ├── DCM-Capabilities-Matrix.md
+│   ├── DISCUSSION-TOPICS.md
+│   └── deployment/                        ← Deployment topology
+├── examples/
+│   └── orchestration-scenarios.md         ← DCM-specific orchestration (builds on
+│                                            UDLM canonical examples)
+├── reference/
+│   ├── implementation-standards.md        ← Specific algorithms, libs, configs DCM uses
+│   ├── implementation-specifications.md
+│   └── operational-reference.md
 ├── docs/
-│   ├── specifications/                     ← 15 prose specification documents
+│   ├── specifications/                    ← Prose specification documents
 │   └── engineering/
-│       └── ENGINEERING-ALIGNMENT.md        ← Per-repo mapping for engineering teams
-├── taxonomy/
-│   └── DCM-Taxonomy.md                    ← Vocabulary, anti-vocabulary, 39 domain prefixes
-├── schemas/
-│   ├── openapi/                           ← 4 AEP-compliant API specs
-│   │   ├── dcm-consumer-api.yaml          ← 74 consumer paths
-│   │   ├── dcm-admin-api.yaml             ← 61 admin paths
-│   │   ├── dcm-operator-api.yaml
-│   │   └── dcm-provider-callback-api.yaml
-│   ├── jsonschema/                        ← 6 JSON schemas
-│   │   ├── dcm-common.json
-│   │   ├── dcm-entities.json
-│   │   ├── dcm-events.json                ← 109 event payloads across 22 domains
-│   │   ├── dcm-policies.json
-│   │   ├── dcm-providers.json             ← 6 provider types
-│   │   └── resource-type-spec-template.json
-│   └── sql/
-│       └── 001-initial.sql                ← 18 tables, RLS, hash chain, LISTEN/NOTIFY
+├── taxonomy/DCM-Taxonomy.md
+├── schemas/                               ← OpenAPI, JSON Schema, SQL
+├── deployment/                            ← (existing deployment artifacts)
+├── dav/                                   ← DCM validation framework
 ├── project-overview.md
 ├── LICENSE
 └── README.md
 ```
+
+For the substrate (entity types, four states, wire contracts, identifiers,
+events, schema sharing, conformance), see
+**[github.com/croadfeldt/udlm](https://github.com/croadfeldt/udlm)**.
 
 ## Key Facts
 
@@ -66,11 +93,14 @@ dcm/
 
 ## Getting Started
 
-1. **Understand the design** — read [`architecture/data-model/00-foundations.md`](architecture/data-model/00-foundations.md)
-2. **Learn the vocabulary** — read [`taxonomy/DCM-Taxonomy.md`](taxonomy/DCM-Taxonomy.md)
-3. **See what DCM can do** — browse [`architecture/DCM-Capabilities-Matrix.md`](architecture/DCM-Capabilities-Matrix.md)
-4. **Build a service** — start with the OpenAPI specs in [`schemas/openapi/`](schemas/openapi/) and the engineering guide in [`docs/engineering/ENGINEERING-ALIGNMENT.md`](docs/engineering/ENGINEERING-ALIGNMENT.md)
-5. **Deploy an example** — see [dcm-examples](https://github.com/dcm-project/dcm-examples)
+1. **Understand the substrate first** — read [UDLM's README and CONFORMANCE.md](https://github.com/croadfeldt/udlm). DCM only makes sense if you know what it's a realization of.
+2. **Read DCM's architecture overview** — [`architecture/overview.md`](architecture/overview.md), then [`architecture/layering.md`](architecture/layering.md) for the UDLM/DCM boundary.
+3. **Read the operator perspective** — [`architecture/operator-perspective.md`](architecture/operator-perspective.md) — narrative handbook for running DCM.
+4. **Dive into the convergence engine** — [`architecture/convergence-engine/overview.md`](architecture/convergence-engine/overview.md) — the heart of DCM.
+5. **Learn the vocabulary** — read [`taxonomy/DCM-Taxonomy.md`](taxonomy/DCM-Taxonomy.md).
+6. **See what DCM can do** — browse [`architecture/DCM-Capabilities-Matrix.md`](architecture/DCM-Capabilities-Matrix.md).
+7. **Build a service** — start with the OpenAPI specs in [`schemas/openapi/`](schemas/openapi/) and the engineering guide in [`docs/engineering/ENGINEERING-ALIGNMENT.md`](docs/engineering/ENGINEERING-ALIGNMENT.md).
+8. **Deploy an example** — see [dcm-examples](https://github.com/dcm-project/dcm-examples).
 
 ## Related Repositories
 
