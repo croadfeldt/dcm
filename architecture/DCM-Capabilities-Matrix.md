@@ -206,12 +206,14 @@
 | ID | Capability | Consumer | Service Provider | Platform/Admin | Depends On |
 |----|-----------|---------|---------|---------------|-----------|
 | OBS-001 | Operational Dashboard | View health and status of own resources | — | Configure and manage observability dashboard | — |
-| OBS-002 | Metrics and Telemetry Export | — | Expose resource-level metrics to DCM | Configure observability export; integrate enterprise observability platform | — |
+| OBS-002 | Metrics and Telemetry Export | — | Expose resource-level metrics to DCM | Configure observability export; integrate enterprise observability platform, or deploy the packaged dcm-observability stack as the authoritative platform | — |
 | OBS-003 | Curated Event Stream Subscription | Subscribe to observability event types via Message Bus | — | Configure event stream publication policies; manage subscriber roles | OBS-002 |
 | OBS-004 | Alert and Notification Management | Receive resource and policy alerts via declared channels | — | Configure alert routing; manage notification channels and escalation | OBS-001 |
 
 | OBS-006 | SLA/SLO Declaration | View SLO status for owned resources (`GET /resources/{uuid}/slo-status`) | Declare resource_type SLOs in Resource Type Specification; report realization timing via callbacks | Configure SLO targets per resource type; view aggregate SLO performance report (`GET /admin/slo/report`) | RLM-001, LCM-001 |
-| OBS-007 | SLO Breach Detection and Notification | Receive `slo.breach_approaching` and `slo.breach_detected` events | — | Configure SLO breach routing and escalation; review aggregate breach reports | OBS-006, EVT-001 || OBS-005 | Cost Analysis and Attribution | View cost estimates and actuals for owned resources | Provide cost metadata; report utilization | Configure Cost Analysis component; manage cost attribution policies | PRV-006 |
+| OBS-007 | SLO Breach Detection and Notification | Receive `slo.breach_approaching` and `slo.breach_detected` events | — | Configure SLO breach routing and escalation; review aggregate breach reports | OBS-006, EVT-001 |
+| OBS-005 | Cost Analysis and Attribution | View cost estimates and actuals for owned resources | Provide cost metadata; report utilization | Configure Cost Analysis component; manage cost attribution policies | PRV-006 |
+| OBS-008 | Group-Scoped Observability | View dashboards, reports, and alerts scoped to the business/operational groups (DCMGroup) own resources belong to | Attribute telemetry to entity UUIDs so group scoping resolves from resource definitions | Scope dashboards, reporting, alerting, and their management to DCMGroups; scoping derives from data in the resource definitions themselves (group membership, ownership), never side-channel configuration | OBS-001, OBS-002, OBS-004 |
 
 ---
 
@@ -650,7 +652,7 @@
 | Information and Data Integration | 6 |
 | Ingestion and Brownfield Management | 4 |
 | Audit and Compliance | 5 |
-| Observability and Operations | 6 |
+| Observability and Operations | 8 |
 | Storage and State Management | 8 |
 | DCM Federation and Multi-Instance | 5 |
 | Platform Governance and Administration | 7 |
@@ -678,7 +680,7 @@
 | Accreditation Monitoring | 6 |
 | Location Topology Management | 7 |
 | Subscription Management | 10 |
-| **Total** | **309** |
+| **Total** | **311** |
 ---
 
 ## Dependency Map — Critical Path Capabilities

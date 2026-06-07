@@ -258,7 +258,7 @@ dcm/
 │   │   ├── provider-callback.md    # ← dcm parts of 43 (mTLS + interaction credential mechanism)
 │   │   └── authority-enforcement.md # ← dcm parts of 32
 │   ├── governance-enforcement/
-│   │   ├── matrix-evaluator.md     # ← dcm parts of 27
+│   │   │   # NOTE: matrix-evaluator content merged into convergence-engine/policy-evaluation.md (← dcm parts of 27)
 │   │   ├── accreditation-monitor.md  # ← 47, dcm parts of 26
 │   │   ├── registry-enforcement.md # ← dcm parts of 20
 │   │   ├── contribution-pipeline.md # ← dcm parts of 28
@@ -501,7 +501,7 @@ let dcm write its own orchestration-scenarios doc fresh.
 - *Soft vs Hard Enforcement* (the distinction as a contract)
 - *Field-Level Controls* (the granular policy contract)
 
-**dcm sections** → `dcm/architecture/governance-enforcement/matrix-evaluator.md`
+**dcm sections** → `dcm/architecture/convergence-engine/policy-evaluation.md` (matrix-evaluator content merged here; no separate matrix-evaluator.md)
 - *Evaluation Algorithm*
 - *Hard Enforcement Mechanics*
 - *Soft Enforcement Execution*
@@ -786,15 +786,15 @@ migrate to udlm during the split.
 
 - **Idempotency contract** — `33-event-catalog.md` already covers it at substrate quality (event_uuid as idempotency key, at-least-once semantics, consumer-supplied Idempotency-Key). Just needs to be cross-referenced from new related docs.
 
-### Perspective docs (the "handbooks") — still to be drafted
+### Perspective docs (the "handbooks") — authored
 
-Two complementary perspective docs, one per layer. **Not yet drafted** —
-authored during the split execution phase:
+Two complementary perspective docs, one per layer. **Authored** during the
+split execution phase:
 
 | Doc | Target path | Purpose | Status |
 |---|---|---|---|
-| **Consumer perspective (driver's handbook)** | `udlm/docs/consumer-perspective.md` | How a consumer sees the system: onboarding, mental models, request lifecycle, common patterns, troubleshooting — written from the user's POV against the substrate | ⏳ Pending |
-| **Operator perspective (DMV operator's manual)** | `dcm/architecture/operator-perspective.md` | How an implementer/operator sees the system: how DCM operationalizes udlm, where the realization choices live, deployment perspective, ops playbook entry point | ⏳ Pending |
+| **Consumer perspective (driver's handbook)** | `udlm/docs/consumer-perspective.md` | How a consumer sees the system: onboarding, mental models, request lifecycle, common patterns, troubleshooting — written from the user's POV against the substrate | ✅ Done |
+| **Operator perspective (DMV operator's manual)** | `dcm/architecture/operator-perspective.md` | How an implementer/operator sees the system: how DCM operationalizes udlm, where the realization choices live, deployment perspective, ops playbook entry point | ✅ Done |
 
 ### Sweep findings — what was checked and verdict
 
@@ -818,9 +818,9 @@ Mechanical work, in order:
 2. **Use `git filter-repo`** to extract `architecture/data-model/` history into the new repo, preserving commits. Reorganize into the LOCKED udlm layout in a single restructure commit (drop all numeric prefixes; move files into their target directories).
 3. **For each "both" file**: split into udlm + dcm fragments per the per-section blocks above. Apply the rename mapping at the same time. Single commit per file ("split N-foo.md: udlm/dcm portions").
 4. ~~Author the 6 new udlm contract docs + CONFORMANCE.md~~ ✅ **DONE** — drafted in `architecture/data-model/`. Execution moves them to their target paths in udlm during step 2.
-5. **Author the two perspective docs** (`udlm/docs/consumer-perspective.md` and `dcm/architecture/operator-perspective.md`). One commit each. Still pending.
+5. ~~Author the two perspective docs~~ ✅ **DONE** — authored at `udlm/docs/consumer-perspective.md` and `dcm/architecture/operator-perspective.md`.
 6. **Update cross-references**: add the `> Implements...` header to every dcm doc that has a udlm counterpart. Cross-link the new substrate docs from anywhere they're referenced. Update intra-doc references in the 7 new contract docs to drop their `(N-...)` legacy path hints.
-7. **Add `conformance.version_deprecated` federation event** to `udlm/contracts/event-catalog.md` (introduced by `CONFORMANCE.md` §9.2 but not yet wired into the event catalog).
+7. ~~Add `conformance.version_deprecated` federation event~~ ✅ **DONE** — wired into `udlm/contracts/event-catalog.md` (introduced by `CONFORMANCE.md` §9.2).
 8. **Delete migrated files from dcm** in one cleanup commit.
 9. **Update dcm `README.md` and `project-overview`** to reference udlm as the substrate spec.
 10. **Commit `00-layering-data-model-vs-dcm.md`** with concrete repo links now resolvable.
@@ -828,7 +828,7 @@ Mechanical work, in order:
 ## After split (Phase 4-5) — DAV plumbing
 
 - DAV MCP doc-fetcher gets two source repos (`udlm` + `dcm`).
-- UC YAML `spec_refs` use namespaced paths: `udlm/governance/governance-matrix.md` and `dcm/architecture/governance-enforcement/matrix-evaluator.md`.
+- UC YAML `spec_refs` use namespaced paths: `udlm/governance/governance-matrix.md` and `dcm/architecture/convergence-engine/policy-evaluation.md`.
 - Source ConfigMap split: separate mountpaths.
 - Run one sample UC eval to validate cross-repo resolution.
 
@@ -853,7 +853,7 @@ what was decided and why.
 - ✅ **Federated contribution**: split (wire-compat makes contributor types + artifact format a peer contract; GitOps PR is dcm's transport)
 - ✅ **Provider callback auth**: udlm = abstract two-layer auth contract; dcm = mTLS + interaction credential mechanism; peers declare their chosen mechanism via schema-sharing
 - ✅ **7 new udlm substrate docs drafted**: identifier-scheme, time-and-clock, error-model (with `conformance.*` namespace), retry-semantics, rate-limit-and-backpressure, schema-sharing, CONFORMANCE
-- ✅ **Consumer perspective + operator perspective**: paired narrative docs pending; targets are `udlm/docs/consumer-perspective.md` and `dcm/architecture/operator-perspective.md`
+- ✅ **Consumer perspective + operator perspective**: paired narrative docs authored at `udlm/docs/consumer-perspective.md` and `dcm/architecture/operator-perspective.md`
 - ✅ **Single narrative directory**: `docs/` (no separate `guides/`)
 
 ### Open items (cosmetic / non-blocking)
@@ -863,5 +863,5 @@ what was decided and why.
 ### Items deferred to execution phase
 
 - Path rename: per-section split blocks (1-21 above) reference legacy numeric paths. Execution will apply the mapping uniformly (drop numeric prefixes from directories and filenames).
-- `conformance.version_deprecated` federation event needs adding to `udlm/contracts/event-catalog.md` (introduced by CONFORMANCE.md §9.2).
-- Two perspective docs need authoring during execution (consumer-perspective.md, operator-perspective.md).
+- ✅ `conformance.version_deprecated` federation event wired into `udlm/contracts/event-catalog.md` (introduced by CONFORMANCE.md §9.2).
+- ✅ Two perspective docs authored (consumer-perspective.md, operator-perspective.md).

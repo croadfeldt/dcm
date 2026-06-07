@@ -11,7 +11,7 @@
 **Version:** 0.1.0-draft
 **Status:** Draft — Ready for implementation feedback
 **Document Type:** Technical Specification
-**Related Documents:** [Foundational Abstractions](../data-model/00-foundations.md) | [DCM Operator Interface Specification](dcm-operator-interface-spec.md) | [Four States](../data-model/02-four-states.md) | [Auth Providers](../data-model/19-auth-providers.md) | [Webhooks and Messaging](../data-model/18-webhooks-messaging.md)
+**Related Documents:** [Foundational Abstractions](https://github.com/croadfeldt/udlm/blob/main/foundations/foundations.md) | [DCM Operator Interface Specification](dcm-operator-interface-spec.md) | [Four States](https://github.com/croadfeldt/udlm/blob/main/foundations/four-states.md) | [Auth Providers](https://github.com/croadfeldt/udlm/blob/main/governance/auth-providers.md) | [Webhooks and Messaging](../../architecture/runtime-features/webhooks-messaging.md)
 
 ---
 
@@ -56,7 +56,7 @@ The Consumer API is accessible via three ingress surfaces. All three are authent
 | **Web UI** | Browser | Interactive PR-like review flow | Human consumers, Service Catalog browsing |
 | **Git PR Ingress** | Git + webhook | Full GitOps PR workflow | GitOps-native teams, infrastructure-as-code workflows |
 
-This specification primarily documents the REST API surface. The Git PR ingress YAML structure is documented in [Worked Examples](../data-model/04-examples.md), Section 2.
+This specification primarily documents the REST API surface. The Git PR ingress YAML structure is documented in [Worked Examples](https://github.com/croadfeldt/udlm/blob/main/foundations/examples.md), Section 2.
 
 ### 1.3 Base URL and Versioning
 
@@ -66,7 +66,7 @@ https://{dcm-instance}/api/v1/
 
 All Consumer API endpoints are versioned. Breaking changes increment the major version segment (`v1` → `v2`). Non-breaking additions do not change the version.
 
-> **Full versioning strategy:** See [API Versioning Strategy](../data-model/34-api-versioning-strategy.md) for the complete definition of breaking changes, deprecation timeline, version discovery, sunset behavior, deprecation headers, and VER-001–VER-009 system policies.
+> **Full versioning strategy:** See [API Versioning Strategy](../../architecture/control-plane/api-versioning.md) for the complete definition of breaking changes, deprecation timeline, version discovery, sunset behavior, deprecation headers, and VER-001–VER-009 system policies.
 
 **Key rules for Consumer API consumers:**
 - Pin to a specific version (`/api/v1/`) in production — do not use the `/api/latest/` alias
@@ -313,7 +313,7 @@ Response 200:
 }
 ```
 
-> **Session revocation model:** See [Session Token Revocation](../data-model/35-session-revocation.md) for the complete session lifecycle, revocation triggers, revocation registry, profile-governed TTLs, and AUTH-016–AUTH-022 system policies.
+> **Session revocation model:** See [Session Token Revocation](../../architecture/control-plane/session-revocation.md) for the complete session lifecycle, revocation triggers, revocation registry, profile-governed TTLs, and AUTH-016–AUTH-022 system policies.
 
 
 ## 3. Service Catalog
@@ -815,7 +815,7 @@ Response 200:
 }
 ```
 
-> **Request dependency graph model:** See [Request Dependency Graph](../data-model/38-request-dependency-graph.md) for cycle detection, partial failure handling, and RDG-001–RDG-006 system policies.
+> **Request dependency graph model:** See [Request Dependency Graph](https://github.com/croadfeldt/udlm/blob/main/lifecycle/request-dependency-graph.md) for cycle detection, partial failure handling, and RDG-001–RDG-006 system policies.
 
 
 ## 5. Resource Management
@@ -1617,7 +1617,7 @@ Response 200:
 
 ### 6b.3 Approve or Reject a Request
 
-This endpoint is used by reviewers with the appropriate role. It is designed to be callable by external systems (ServiceNow, Jira workflow integrations, Slack bots) that act on behalf of a reviewer — the `Authorization` header identifies which reviewer is recording the decision. DCM provides the gate and audit trail; the review process is the organization's responsibility. See [Design Priorities — Approval Tier Model](../data-model/00-design-priorities.md).
+This endpoint is used by reviewers with the appropriate role. It is designed to be callable by external systems (ServiceNow, Jira workflow integrations, Slack bots) that act on behalf of a reviewer — the `Authorization` header identifies which reviewer is recording the decision. DCM provides the gate and audit trail; the review process is the organization's responsibility. See [Design Priorities — Approval Tier Model](https://github.com/croadfeldt/udlm/blob/main/design-principles/design-priorities.md).
 
 ```
 POST /api/v1/approvals/{approval_uuid}
@@ -1970,7 +1970,7 @@ All error responses follow a consistent structure:
 
 ## 14. Consumer Contributions
 
-Consumers with `policy_author` or `tenant_admin` role can contribute tenant-scoped artifacts directly via the Consumer API. All contributions flow through the GitOps PR model — DCM generates a PR and activates the artifact after the required review period. See [Federated Contribution Model](../data-model/28-federated-contribution-model.md) for the complete contributor permission table.
+Consumers with `policy_author` or `tenant_admin` role can contribute tenant-scoped artifacts directly via the Consumer API. All contributions flow through the GitOps PR model — DCM generates a PR and activates the artifact after the required review period. See [Federated Contribution Model](https://github.com/croadfeldt/udlm/blob/main/governance/federated-contribution-model.md) for the complete contributor permission table.
 
 ### 9.1 Submit Policy Contribution
 

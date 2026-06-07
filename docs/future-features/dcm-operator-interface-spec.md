@@ -46,7 +46,7 @@ Operators conforming to this specification function as Service Providers within 
 
 ## 1. Introduction
 
-> **OIS Versioning:** Providers declare the OIS version they implement in capability registration (`ois_version`). DCM maintains dispatch compatibility with all supported OIS versions. See [API Versioning Strategy](../data-model/34-api-versioning-strategy.md) Section 7.
+> **OIS Versioning:** Providers declare the OIS version they implement in capability registration (`ois_version`). DCM maintains dispatch compatibility with all supported OIS versions. See [API Versioning Strategy](../../architecture/control-plane/api-versioning.md) Section 7.
 
 
 ### 1.1 Motivation

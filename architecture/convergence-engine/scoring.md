@@ -1,17 +1,29 @@
+---
+Document Status: ✅ Complete
+Document Type: Architecture Reference — Scoring Model Specification
+---
+
 # DCM Data Model — Hybrid Scoring Model
+
+> **DCM-native scoring engine; no single UDLM contract counterpart.**
+> The hybrid scoring model is a realization-layer extension of the Policy
+> abstraction — UDLM defines no scoring contract. A peer DCM realization could
+> use a different signal-weighting scheme and still satisfy every UDLM Policy
+> and Governance Matrix contract. The Governance Matrix remains a pure boolean
+> gate; scoring never applies to cross-boundary data decisions.
 
 
 **Document Status:** ✅ Complete
 **Document Type:** Architecture Reference — Scoring Model Specification
-**Related Documents:** [Foundational Abstractions](00-foundations.md) | [Provider Contract](A-provider-contract.md) | [Policy Contract](B-policy-contract.md) | [Policy Profiles](14-policy-profiles.md) | [Control Plane Components](25-control-plane-components.md) | [Governance Matrix](27-governance-matrix.md) | [Federated Contribution Model](28-federated-contribution-model.md)
+**Related Documents:** [Foundational Abstractions](https://github.com/croadfeldt/udlm/blob/main/foundations/foundations.md) | [Provider Contract](https://github.com/croadfeldt/udlm/blob/main/contracts/provider-contract.md) | [Policy Contract](https://github.com/croadfeldt/udlm/blob/main/contracts/policy-contract.md) | [Policy Profiles](../governance-enforcement/policy-profiles.md) | [Control Plane Components](../control-plane/components.md) | [Governance Matrix](https://github.com/croadfeldt/udlm/blob/main/governance/governance-matrix.md) | [Federated Contribution Model](https://github.com/croadfeldt/udlm/blob/main/governance/federated-contribution-model.md)
 
 > **This document maps to: DATA + POLICY**
 >
 > The Scoring Model is an extension of the Policy abstraction. Scored signals are Data artifacts with lifecycle and provenance. Profile thresholds are Policy-governed configuration. The Governance Matrix remains a pure boolean gate — scoring never applies to cross-boundary data decisions.
-> See also: [Provider Contract](A-provider-contract.md) | [Policy Contract](B-policy-contract.md)
-> > **See also:** [Authority Tier Model](32-authority-tier-model.md) — the ordered authority tier list, custom tier definition, dynamic threshold format, and ATM system policies.
+> See also: [Provider Contract](https://github.com/croadfeldt/udlm/blob/main/contracts/provider-contract.md) | [Policy Contract](https://github.com/croadfeldt/udlm/blob/main/contracts/policy-contract.md)
+> > **See also:** [Authority Tier Model](https://github.com/croadfeldt/udlm/blob/main/governance/authority-tier-model.md) — the ordered authority tier list, custom tier definition, dynamic threshold format, and ATM system policies.
 
-> **Design Priority:** The Scoring Model is the primary mechanism for Priority 2 (ease of use) in service of Priority 1 (security). The auto-approval threshold (SMX-008: ≤ 50) and compliance-class GateKeepers are non-negotiable security properties. Profile thresholds and signal weights are the ease-of-use scaling mechanism. See [Design Priorities](00-design-priorities.md).
+> **Design Priority:** The Scoring Model is the primary mechanism for Priority 2 (ease of use) in service of Priority 1 (security). The auto-approval threshold (SMX-008: ≤ 50) and compliance-class GateKeepers are non-negotiable security properties. Profile thresholds and signal weights are the ease-of-use scaling mechanism. See [Design Priorities](https://github.com/croadfeldt/udlm/blob/main/design-principles/design-priorities.md).
 
 ---
 
@@ -24,7 +36,7 @@ DCM uses a **hybrid scoring model**: some decisions are boolean gates (facts), o
 A secondary test for any ambiguous decision:
 > **Can a regulator accept "the score was below threshold" as a complete explanation? If not, the decision must be boolean.**
 
-This document specifies the scoring half of the hybrid. For boolean decisions, see [Governance Matrix](27-governance-matrix.md) and the compliance enforcement model in [Policy Contract](B-policy-contract.md).
+This document specifies the scoring half of the hybrid. For boolean decisions, see [Governance Matrix](https://github.com/croadfeldt/udlm/blob/main/governance/governance-matrix.md) and the compliance enforcement model in [Policy Contract](https://github.com/croadfeldt/udlm/blob/main/contracts/policy-contract.md).
 
 ### 1.1 What This Model Does
 
@@ -326,7 +338,7 @@ scoring_thresholds:
   # "authorized" means DCM holds the pipeline and notifies the declared DCMGroup;
   # the review process and deliberation are the organization's responsibility.
   # DCM records votes via Admin API; external systems (ServiceNow, Jira, Slack)
-  # may call the API on behalf of authorized group members. See [Design Priorities](00-design-priorities.md).
+  # may call the API on behalf of authorized group members. See [Design Priorities](https://github.com/croadfeldt/udlm/blob/main/design-principles/design-priorities.md).
   # Note: compliance-class GateKeeper deny always halts regardless of score
 ```
 

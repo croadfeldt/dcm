@@ -8,21 +8,21 @@
 >
 > This document is a detailed reference for a specific domain of the DCM architecture.
 > The three foundational abstractions — Data, Provider, and Policy — are defined in
-> [00-foundations.md](00-foundations.md). All concepts in this document map to one or
+> [udlm/foundations/foundations.md](https://github.com/croadfeldt/udlm/blob/main/foundations/foundations.md). All concepts in this document map to one or
 > more of those three abstractions.
-> See also: [Provider Contract](A-provider-contract.md) | [Policy Contract](B-policy-contract.md)
+> See also: [Provider Contract](https://github.com/croadfeldt/udlm/blob/main/contracts/provider-contract.md) | [Policy Contract](https://github.com/croadfeldt/udlm/blob/main/contracts/policy-contract.md)
 >
 > **This document maps to: PROVIDER + POLICY**
 >
 > Provider: notification service. Policy: audience resolution and subscription rules
 
 
-**Related Documents:** [Webhooks, Messaging, and External Integration](18-webhooks-messaging.md) | [Entity Relationships](09-entity-relationships.md) | [Resource/Service Entities](06-resource-service-entities.md) | [Auth Providers](19-auth-providers.md) | [Universal Audit](16-universal-audit.md)
+**Related Documents:** [Webhooks, Messaging, and External Integration](webhooks-messaging.md) | [Entity Relationships](https://github.com/croadfeldt/udlm/blob/main/entities/entity-relationships.md) | [Resource/Service Entities](https://github.com/croadfeldt/udlm/blob/main/entities/resource-service-entities.md) | [Auth Providers](https://github.com/croadfeldt/udlm/blob/main/governance/auth-providers.md) | [Universal Audit](https://github.com/croadfeldt/udlm/blob/main/observability/universal-audit.md)
 
 ---
 
 
-> **See [Event Catalog](33-event-catalog.md)** — authoritative source for all DCM event types and payload schemas.
+> **See [Event Catalog](https://github.com/croadfeldt/udlm/blob/main/contracts/event-catalog.md)** — authoritative source for all DCM event types and payload schemas.
 
 ## 1. Purpose
 

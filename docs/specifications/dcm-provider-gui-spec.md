@@ -5,7 +5,7 @@
 
 **Document Status:** 🔄 In Progress
 **Document Type:** Specification — Provider Management Interface
-**Related Documents:** [Unified Provider Contract](../data-model/A-provider-contract.md) | [OIS Specification](dcm-operator-interface-spec.md) | [Registration Specification](dcm-registration-spec.md) | [Admin GUI Specification](dcm-admin-gui-spec.md) | [credential management service Model](../data-model/31-credential-provider-model.md)
+**Related Documents:** [Unified Provider Contract](https://github.com/croadfeldt/udlm/blob/main/contracts/provider-contract.md) | [OIS Specification](dcm-operator-interface-spec.md) | [Registration Specification](dcm-registration-spec.md) | [Admin GUI Specification](dcm-admin-gui-spec.md) | [credential management service Model](https://github.com/croadfeldt/udlm/blob/main/governance/credentials.md)
 
 > **Status:** Draft — Ready for implementation feedback
 >

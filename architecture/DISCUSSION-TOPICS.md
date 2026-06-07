@@ -36,8 +36,12 @@
   observability domain; pairs OBS-002/OBS-003 with the UDLM event catalog and
   schema-sharing contracts. Validation use case:
   `dav/use-cases/observability/udlm-universal-telemetry-export.yaml`.
-  First consumer: the roadfeldt homelab observability stack, when the
-  homelab DCM build lands.
+  DCM does not have to be the arbiter of the data — but it MAY be: where no
+  platform exists or a canned solution is desired, a packaged
+  **dcm-observability** component serves as the authoritative
+  telemetry/monitoring platform (provider-contract §7 / PRV-007).
+  First consumer and reference-implementation test bed: the roadfeldt
+  homelab observability stack (`roadfeldt-observability`).
 
 
 ### 5. Kessel Integration (pre-implementation evaluation)

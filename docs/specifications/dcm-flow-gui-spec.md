@@ -11,7 +11,7 @@
 **Version:** 0.1.0-draft
 **Status:** Draft — Ready for implementation feedback
 **Document Type:** Technical Specification
-**Related Documents:** [Foundational Abstractions](../data-model/00-foundations.md) | [Control Plane Components](../data-model/25-control-plane-components.md) | [OPA Integration Specification](dcm-opa-integration-spec.md) | [Policy Profiles](../data-model/14-policy-profiles.md) | [Policy Contract](../data-model/B-policy-contract.md) | [Consumer API](consumer-api-spec.md) | [Admin API](dcm-admin-api-spec.md)
+**Related Documents:** [Foundational Abstractions](https://github.com/croadfeldt/udlm/blob/main/foundations/foundations.md) | [Control Plane Components](../../architecture/control-plane/components.md) | [OPA Integration Specification](dcm-opa-integration-spec.md) | [Policy Profiles](../../architecture/governance-enforcement/policy-profiles.md) | [Policy Contract](https://github.com/croadfeldt/udlm/blob/main/contracts/policy-contract.md) | [Consumer API](consumer-api-spec.md) | [Admin API](dcm-admin-api-spec.md)
 
 ---
 

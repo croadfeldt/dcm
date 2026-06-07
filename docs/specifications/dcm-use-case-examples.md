@@ -2,7 +2,7 @@
 
 **Document Status:** 📋 Draft — Ready for Implementation Feedback
 **Document Type:** Use Case Reference
-**Related Documents:** [Examples and Use Cases](dcm-examples.md) | [Provider Contract](../data-model/A-provider-contract.md) | [Four States](../data-model/02-four-states.md) | [Layering and Versioning](../data-model/03-layering-and-versioning.md) | [Governance Matrix](../data-model/27-governance-matrix.md) | [Scoring Model](../data-model/29-scoring-model.md)
+**Related Documents:** [Examples and Use Cases](dcm-examples.md) | [Provider Contract](https://github.com/croadfeldt/udlm/blob/main/contracts/provider-contract.md) | [Four States](https://github.com/croadfeldt/udlm/blob/main/foundations/four-states.md) | [Layering and Versioning](https://github.com/croadfeldt/udlm/blob/main/foundations/layering-and-versioning.md) | [Governance Matrix](https://github.com/croadfeldt/udlm/blob/main/governance/governance-matrix.md) | [Scoring Model](../../architecture/convergence-engine/scoring.md)
 
 > This document contains worked examples for every DCM provider type, data model, and specification
 > area not covered in [dcm-examples.md](dcm-examples.md). Examples use consistent fictitious actors,

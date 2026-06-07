@@ -16,7 +16,7 @@
 **Version:** 0.1.0-draft
 **Status:** Draft — Ready for implementation feedback
 **Document Type:** Technical Specification
-**Related Documents:** [Foundational Abstractions](../data-model/00-foundations.md) | [Control Plane Components](../data-model/25-control-plane-components.md) | [Governance Matrix](../data-model/27-governance-matrix.md) | [Accreditation and Authorization Matrix](../data-model/26-accreditation-and-authorization-matrix.md) | [Policy Profiles](../data-model/14-policy-profiles.md) | [DCM Operator Interface Specification](dcm-operator-interface-spec.md)
+**Related Documents:** [Foundational Abstractions](https://github.com/croadfeldt/udlm/blob/main/foundations/foundations.md) | [Control Plane Components](../../architecture/control-plane/components.md) | [Governance Matrix](https://github.com/croadfeldt/udlm/blob/main/governance/governance-matrix.md) | [Accreditation and Authorization Matrix](https://github.com/croadfeldt/udlm/blob/main/governance/accreditation-and-authorization-matrix.md) | [Policy Profiles](../../architecture/governance-enforcement/policy-profiles.md) | [DCM Operator Interface Specification](dcm-operator-interface-spec.md)
 
 ---
 
@@ -158,7 +158,7 @@ Token values are presented exactly once — at creation. They are never retrieva
 
 ## 3. Approval Method Configuration
 
-> **Authority Tier Model:** Approval methods (`reviewed`, `verified`, `authorized`) are defined in the [Authority Tier Model](../data-model/32-authority-tier-model.md) as a named, ordered list. Organizations may insert custom tiers. The effective method resolution (Section 3.2) uses tier names; DCM resolves numeric weight from the ordered list at evaluation time (ATM-001).
+> **Authority Tier Model:** Approval methods (`reviewed`, `verified`, `authorized`) are defined in the [Authority Tier Model](https://github.com/croadfeldt/udlm/blob/main/governance/authority-tier-model.md) as a named, ordered list. Organizations may insert custom tiers. The effective method resolution (Section 3.2) uses tier names; DCM resolves numeric weight from the ordered list at evaluation time (ATM-001).
 
 ### 3.1 The Four Approval Methods
 

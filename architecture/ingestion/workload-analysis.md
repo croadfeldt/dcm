@@ -1,8 +1,22 @@
+---
+Document Status: 📋 Draft — Specification in Progress
+Document Type: Capability Specification
+Maps to: udlm/lifecycle/ingestion-model.md
+---
+
 # DCM — Workload Analysis
+
+> **Implements contracts defined in UDLM**:
+> [udlm/lifecycle/ingestion-model.md](https://github.com/croadfeldt/udlm/blob/main/lifecycle/ingestion-model.md).
+> UDLM defines the ingestion model — how discovered resources enter the data
+> model and are classified through the ingestion lifecycle. DCM operationalizes
+> Workload Analysis as the active classification stage of that lifecycle:
+> results are delivered as Information Provider payloads and stored as
+> `process_resource_entity` instances of type `Analysis.WorkloadProfile`.
 
 **Document Status:** 📋 Draft — Specification in Progress
 **Document Type:** Capability Specification
-**Related Documents:** [Ingestion Model](13-ingestion-model.md) | [Information Providers](10-information-providers.md) | [Resource Type Hierarchy](05-resource-type-hierarchy.md) | [Discovery and Drift](25-control-plane-components.md) | [Kubernetes Compatibility](../specifications/kubernetes-compatibility.md)
+**Related Documents:** [Ingestion Model](https://github.com/croadfeldt/udlm/blob/main/lifecycle/ingestion-model.md) | [Information Providers](https://github.com/croadfeldt/udlm/blob/main/contracts/information-providers.md) | [Resource Type Hierarchy](https://github.com/croadfeldt/udlm/blob/main/entities/resource-type-hierarchy.md) | [Discovery and Drift](../control-plane/components.md) | [Kubernetes Compatibility](../../docs/specifications/kubernetes-compatibility.md)
 
 > **AEP Alignment:** API endpoints follow [AEP](https://aep.dev) conventions.
 > Workload analysis results are delivered as Information Provider payloads

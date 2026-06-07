@@ -1,4 +1,15 @@
+---
+Document Status: ✅ Complete
+Document Type: Architecture Reference
+---
+
 # DCM Data Model — Control Plane Components
+
+> **DCM-native control-plane runtime; no single UDLM contract counterpart.**
+> The control-plane components are runtime implementations of the three UDLM
+> abstractions (Data, Provider, Policy) — not a fourth abstraction and not a
+> distinct UDLM contract. A peer DCM realization could decompose its control
+> plane differently and still satisfy every UDLM contract.
 
 
 **Document Status:** ✅ Complete
@@ -8,16 +19,16 @@
 >
 > This document is a detailed reference for a specific domain of the DCM architecture.
 > The three foundational abstractions — Data, Provider, and Policy — are defined in
-> [00-foundations.md](00-foundations.md). All concepts in this document map to one or
+> [udlm/foundations/foundations.md](https://github.com/croadfeldt/udlm/blob/main/foundations/foundations.md). All concepts in this document map to one or
 > more of those three abstractions.
-> See also: [Provider Contract](A-provider-contract.md) | [Policy Contract](B-policy-contract.md)
+> See also: [Provider Contract](https://github.com/croadfeldt/udlm/blob/main/contracts/provider-contract.md) | [Policy Contract](https://github.com/croadfeldt/udlm/blob/main/contracts/policy-contract.md)
 >
 > **This document maps to: RUNTIME**
 >
 > Runtime implementations of the three abstractions — not a fourth abstraction
 
 
-**Related Documents:** [Internal Component Authentication](36-internal-component-auth.md) | [Context and Purpose](00-context-and-purpose.md) | [Four States](02-four-states.md) | [Resource/Service Entities](06-resource-service-entities.md) | [Operational Models](24-operational-models.md) | [Policy Profiles](14-policy-profiles.md)
+**Related Documents:** [Internal Component Authentication](internal-component-auth.md) | [Context and Purpose](https://github.com/croadfeldt/udlm/blob/main/foundations/context-and-purpose.md) | [Four States](https://github.com/croadfeldt/udlm/blob/main/foundations/four-states.md) | [Resource/Service Entities](https://github.com/croadfeldt/udlm/blob/main/entities/resource-service-entities.md) | [Operational Models](https://github.com/croadfeldt/udlm/blob/main/lifecycle/operational-models.md) | [Policy Profiles](../governance-enforcement/policy-profiles.md)
 
 ---
 
@@ -26,7 +37,7 @@ The DCM Control Plane consists of **nine components** that implement the three f
 
 ## 1. Purpose
 
-> **Internal component authentication:** See [Internal Component Authentication](36-internal-component-auth.md) for the mTLS and interaction credential model governing all component-to-component calls within the DCM control plane.
+> **Internal component authentication:** See [Internal Component Authentication](internal-component-auth.md) for the mTLS and interaction credential model governing all component-to-component calls within the DCM control plane.
 
 
 This document formally defines the DCM control plane components that are referenced throughout the data model documents. Two components are defined here:

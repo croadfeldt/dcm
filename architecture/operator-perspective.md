@@ -112,7 +112,7 @@ Use this map to find what you need.
 | Manage credentials lifecycle | [`credentials-and-auth/credentials.md`](credentials-and-auth/credentials.md) |
 | Set up provider callback auth (mTLS + interaction credential) | [`credentials-and-auth/provider-callback.md`](credentials-and-auth/provider-callback.md) |
 | Enforce authority tier on approvals | [`credentials-and-auth/authority-enforcement.md`](credentials-and-auth/authority-enforcement.md) |
-| Enforce the governance matrix | [`governance-enforcement/matrix-evaluator.md`](governance-enforcement/matrix-evaluator.md) |
+| Enforce the governance matrix | [`convergence-engine/policy-evaluation.md`](convergence-engine/policy-evaluation.md) |
 | Monitor accreditation status | [`governance-enforcement/accreditation-monitor.md`](governance-enforcement/accreditation-monitor.md) |
 | Govern registry contributions | [`governance-enforcement/registry-enforcement.md`](governance-enforcement/registry-enforcement.md) |
 | Run the contribution pipeline (GitOps PRs) | [`governance-enforcement/contribution-pipeline.md`](governance-enforcement/contribution-pipeline.md) |

@@ -1,8 +1,23 @@
+---
+Document Status: ✅ Complete
+Document Type: Architecture Reference — API Versioning and Lifecycle
+Maps to: udlm/governance/registry-governance.md
+---
+
 # DCM Data Model — API Versioning Strategy
+
+> **Implements contracts defined in UDLM**:
+> [udlm/governance/registry-governance.md](https://github.com/croadfeldt/udlm/blob/main/governance/registry-governance.md)
+> and [udlm/contracts/event-catalog.md](https://github.com/croadfeldt/udlm/blob/main/contracts/event-catalog.md).
+> UDLM defines the registry-governance versioning and deprecation lifecycle and
+> the event-catalog event-versioning contract. DCM operationalizes a concrete
+> versioning strategy across every public API surface — Consumer, Admin,
+> Operator Interface (Provider), and Flow GUI — including URL major versioning,
+> deprecation lead time, and event schema versioning.
 
 **Document Status:** ✅ Complete
 **Document Type:** Architecture Reference — API Versioning and Lifecycle
-**Related Documents:** [Consumer API Specification](../specifications/consumer-api-spec.md) | [Admin API Specification](../specifications/dcm-admin-api-spec.md) | [Operator Interface Specification](../specifications/dcm-operator-interface-spec.md) | [Event Catalog](33-event-catalog.md) | [Registry Governance](20-registry-governance.md) | [Design Priorities](00-design-priorities.md)
+**Related Documents:** [Consumer API Specification](../../docs/specifications/consumer-api-spec.md) | [Admin API Specification](../../docs/specifications/dcm-admin-api-spec.md) | [Operator Interface Specification](../../docs/specifications/dcm-operator-interface-spec.md) | [Event Catalog](https://github.com/croadfeldt/udlm/blob/main/contracts/event-catalog.md) | [Registry Governance](https://github.com/croadfeldt/udlm/blob/main/governance/registry-governance.md) | [Design Priorities](https://github.com/croadfeldt/udlm/blob/main/design-principles/design-priorities.md)
 
 > **This document governs all DCM API surfaces.** Every public API endpoint — Consumer, Admin, Operator Interface (Provider), Flow GUI — follows this versioning strategy. The strategy is designed to make the secure, compatible path the easy path: clients that do nothing get the version they requested; breaking changes are announced with sufficient lead time; the newest version is always the supported version.
 

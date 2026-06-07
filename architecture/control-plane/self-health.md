@@ -1,10 +1,24 @@
+---
+Document Status: ✅ Complete
+Document Type: Architecture Reference — Operational Health
+Maps to: udlm/contracts/provider-contract.md
+---
+
 # DCM Data Model — DCM Self-Health Endpoints
+
+> **Implements contracts defined in UDLM**:
+> [udlm/contracts/provider-contract.md](https://github.com/croadfeldt/udlm/blob/main/contracts/provider-contract.md).
+> UDLM defines the provider health contract that Service Providers must expose.
+> DCM operationalizes its own liveness, readiness, and component-health
+> endpoints — DCM exposes the same health contract it requires of the providers
+> it integrates, so it is itself a well-behaved provider to its operator and
+> load-balancer.
 
 **Document Status:** ✅ Complete
 **Document Type:** Architecture Reference — Operational Health
-**Related Documents:** [Deployment and Redundancy](17-deployment-redundancy.md) | [Internal Component Authentication](36-internal-component-auth.md) | [Operator Interface Specification](../specifications/dcm-operator-interface-spec.md) | [Admin API Specification](../specifications/dcm-admin-api-spec.md)
+**Related Documents:** [Deployment and Redundancy](../runtime-features/deployment-redundancy.md) | [Internal Component Authentication](internal-component-auth.md) | [Operator Interface Specification](../../docs/specifications/dcm-operator-interface-spec.md) | [Admin API Specification](../../docs/specifications/dcm-admin-api-spec.md)
 
-> **Events:** Health state change events fire as `provider.healthy` / `provider.unhealthy` for external systems, and `governance.profile_changed` when health thresholds are adjusted. See [Event Catalog](33-event-catalog.md).
+> **Events:** Health state change events fire as `provider.healthy` / `provider.unhealthy` for external systems, and `governance.profile_changed` when health thresholds are adjusted. See [Event Catalog](https://github.com/croadfeldt/udlm/blob/main/contracts/event-catalog.md).
 
 > **This document maps to: PROVIDER**
 >

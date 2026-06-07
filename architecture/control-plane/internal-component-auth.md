@@ -1,8 +1,18 @@
+---
+Maps to: udlm/governance/accreditation-and-authorization-matrix.md
+---
+
 # DCM Data Model — Internal Component Authentication
+
+> **Implements contracts defined in UDLM**:
+> [udlm/governance/accreditation-and-authorization-matrix.md](https://github.com/croadfeldt/udlm/blob/main/governance/accreditation-and-authorization-matrix.md).
+> UDLM defines the five-check boundary model and the "network position grants zero trust"
+> principle. This document specifies how DCM applies that boundary model to internal
+> control-plane component-to-component authentication.
 
 **Document Status:** ✅ Complete
 **Document Type:** Architecture Reference — Zero Trust Internal Auth
-**Related Documents:** [Accreditation and Zero Trust](26-accreditation-and-authorization-matrix.md) | [Deployment and Redundancy](17-deployment-redundancy.md) | [credential management service Model](31-credential-provider-model.md) | [Auth Providers](19-auth-providers.md) | [Session Revocation](35-session-revocation.md) | [Design Priorities](00-design-priorities.md)
+**Related Documents:** [Accreditation and Zero Trust](https://github.com/croadfeldt/udlm/blob/main/governance/accreditation-and-authorization-matrix.md) | [Deployment and Redundancy](../runtime-features/deployment-redundancy.md) | [credential management service Model](https://github.com/croadfeldt/udlm/blob/main/governance/credentials.md) | [Auth Providers](https://github.com/croadfeldt/udlm/blob/main/governance/auth-providers.md) | [Session Revocation](session-revocation.md) | [Design Priorities](https://github.com/croadfeldt/udlm/blob/main/design-principles/design-priorities.md)
 
 > **This document maps to: DATA + POLICY**
 >
@@ -100,7 +110,7 @@ Each DCM deployment uses a **registered Certificate Authority (CA)** for issuing
 
 **Option A — Built-in Internal CA (default):** DCM operates its own CA per deployment. Simple to configure; no external dependencies; suitable for minimal through standard profiles.
 
-**Option B — External CA via credential management service:** An enterprise CA registered as a credential management service (HashiCorp Vault PKI, Venafi TLS Protect, EJBCA, AWS ACM Private CA, Azure Key Vault). The external CA issues component certificates using the standard credential management service interface — DCM requests certificates via the provider's API (ACME/EST/SCEP/CMP). See [credential management service Model](31-credential-provider-model.md) for registration. Recommended for fsi and sovereign profiles where the enterprise PKI chain must be maintained.
+**Option B — External CA via credential management service:** An enterprise CA registered as a credential management service (HashiCorp Vault PKI, Venafi TLS Protect, EJBCA, AWS ACM Private CA, Azure Key Vault). The external CA issues component certificates using the standard credential management service interface — DCM requests certificates via the provider's API (ACME/EST/SCEP/CMP). See [credential management service Model](https://github.com/croadfeldt/udlm/blob/main/governance/credentials.md) for registration. Recommended for fsi and sovereign profiles where the enterprise PKI chain must be maintained.
 
 Both options satisfy ICOM-001 (mTLS required). The distinction is who issues the certificates, not whether mTLS is used.
 
@@ -362,7 +372,7 @@ Certificate compromise detected
 | `ICOM-006` | Component certificates are issued by the Internal CA with a maximum validity of P90D and renewed automatically P14D before expiry. Component certificates may not be issued by external CAs. |
 | `ICOM-007` | Bootstrap tokens are one-time-use and expire within PT1H. A bootstrap token that has been used is immediately invalidated. Unused tokens are invalidated at expiry. |
 | `ICOM-008` | Compromised internal component certificates are added to the Internal CA CRL immediately. All components refresh their CRL cache within the profile-governed SLA. |
-| `ICOM-009` | The trust anchor for internal component mTLS is a registered root or intermediate CA whose certificate is installed in all component trust stores at deployment time. The trust anchor may be the built-in Internal CA or an external CA registered as a Certificate Provider (e.g. HashiCorp Vault PKI, Venafi, EJBCA) — see [credential management service Model](31-credential-provider-model.md) Section on External CAs. Components do not accept certificates from unregistered trust anchors. |
+| `ICOM-009` | The trust anchor for internal component mTLS is a registered root or intermediate CA whose certificate is installed in all component trust stores at deployment time. The trust anchor may be the built-in Internal CA or an external CA registered as a Certificate Provider (e.g. HashiCorp Vault PKI, Venafi, EJBCA) — see [credential management service Model](https://github.com/croadfeldt/udlm/blob/main/governance/credentials.md) Section on External CAs. Components do not accept certificates from unregistered trust anchors. |
 
 ---
 

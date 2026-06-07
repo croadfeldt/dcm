@@ -2,7 +2,7 @@
 
 **Document Status:** 📋 Draft — Ready for Implementation Feedback
 **Document Type:** Implementation Reference
-**Related Documents:** [Control Plane Components](25-control-plane-components.md) | [data stores](11-storage-providers.md) | [Universal Audit](16-universal-audit.md) | [credential management service Model](31-credential-provider-model.md) | [Deployment Redundancy](17-deployment-redundancy.md) | [Session Revocation](35-session-revocation.md)
+**Related Documents:** [Control Plane Components](../architecture/control-plane/components.md) | [data stores](https://github.com/croadfeldt/udlm/blob/main/contracts/storage-providers.md) | [Universal Audit](https://github.com/croadfeldt/udlm/blob/main/observability/universal-audit.md) | [credential management service Model](https://github.com/croadfeldt/udlm/blob/main/governance/credentials.md) | [Deployment Redundancy](../architecture/runtime-features/deployment-redundancy.md) | [Session Revocation](../architecture/control-plane/session-revocation.md)
 
 > **AEP Alignment:** API endpoints follow [AEP](https://aep.dev) conventions.
 > See `schemas/openapi/dcm-admin-api.yaml` and `dcm-consumer-api.yaml` for normative specs.
@@ -103,7 +103,7 @@ The following are exempt from consumer rate limits:
 
 ## 3. Audit Log Hash Chain — Verification Schedule and Implementation
 
-The hash chain structure is defined in [Universal Audit](16-universal-audit.md) §8. This section specifies the verification schedule, triggering component, and response protocol.
+The hash chain structure is defined in [Universal Audit](https://github.com/croadfeldt/udlm/blob/main/observability/universal-audit.md) §8. This section specifies the verification schedule, triggering component, and response protocol.
 
 ### 3.1 Hash Computation
 
@@ -279,7 +279,7 @@ Platform admin endpoints that query across tenants use a separate database role 
 
 ## 5. Cross-Region Data Replication
 
-DCM's multi-region deployment model is specified in [Deployment Redundancy](17-deployment-redundancy.md). This section specifies the replication mechanics and sovereignty enforcement at the replication layer.
+DCM's multi-region deployment model is specified in [Deployment Redundancy](../architecture/runtime-features/deployment-redundancy.md). This section specifies the replication mechanics and sovereignty enforcement at the replication layer.
 
 ### 5.1 What Replicates Where
 
@@ -342,7 +342,7 @@ DCM uses a **last-write-wins with causality tracking** model for cross-region co
 
 ## 6. Secret Zero — Initial Credential Bootstrap
 
-The bootstrap sequence is specified in [Deployment Redundancy](17-deployment-redundancy.md) §6. This section specifies the credential bootstrap specifically — how DCM components authenticate to each other before the credential management service is running.
+The bootstrap sequence is specified in [Deployment Redundancy](../architecture/runtime-features/deployment-redundancy.md) §6. This section specifies the credential bootstrap specifically — how DCM components authenticate to each other before the credential management service is running.
 
 ### 6.1 The Bootstrap Credential Problem
 

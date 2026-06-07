@@ -7,7 +7,7 @@ Maps to: udlm/design-principles/infrastructure-optimization.md
 
 # PostgreSQL Mandate
 
-> **Implements the persistence contract in UDLM**:
+> **Implements contracts defined in UDLM**:
 > [udlm/design-principles/infrastructure-optimization.md](https://github.com/croadfeldt/udlm/blob/main/design-principles/infrastructure-optimization.md).
 > UDLM requires that all four data domains (Intent, Requested, Realized,
 > Discovered) be persistently queryable. The technology choice is not

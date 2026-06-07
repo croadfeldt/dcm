@@ -154,7 +154,7 @@ distinct questions:
 
 DAV's `spec_refs` use namespaced paths to disambiguate:
 - `udlm/contracts/event-catalog.md` — substrate reference
-- `dcm/architecture/governance-enforcement/matrix-evaluator.md` — realization reference
+- `dcm/architecture/convergence-engine/policy-evaluation.md` — realization reference
 
 The two repos are independently fetchable; DAV resolves cross-repo references
 during use-case evaluation.
