@@ -26,6 +26,18 @@
 - CMDB Provider type — dedicated contract for CMDB integration
 - Multi-cloud federation model — extending DCM federation to public cloud providers
 - GitOps PR UX improvements — better tooling for policy review workflow
+- **UDLM as the universal observability export** *(added 2026-06-07)* — make
+  UDLM-modeled data THE export surface for monitoring, alerting, logging, and
+  audit consumption: telemetry entities + the event catalog exposed with
+  discoverable schemas so *any* tool (metrics TSDB, log aggregator, SIEM,
+  alerting pipeline) subscribes through one uniform, policy-scoped,
+  retention-governed interface — no per-tool adapters. This is the UDLM goal
+  ("one universal way to export data, consumable by any tool") applied to the
+  observability domain; pairs OBS-002/OBS-003 with the UDLM event catalog and
+  schema-sharing contracts. Validation use case:
+  `dav/use-cases/observability/udlm-universal-telemetry-export.yaml`.
+  First consumer: the estate homelab observability stack, when the
+  homelab DCM build lands.
 
 
 ### 5. Kessel Integration (pre-implementation evaluation)
@@ -43,7 +55,7 @@
 
 ---
 
-*See [00-foundations.md](data-model/00-foundations.md) for the three-abstraction model that resolved the major architectural questions.*
+*See [00-foundations.md](https://github.com/croadfeldt/udlm/blob/main/foundations/foundations.md) for the three-abstraction model that resolved the major architectural questions.*
 
 
 ---
@@ -169,8 +181,8 @@ Webhook payloads should carry **provenance information** — the event payload s
 **Policy Engine integration** is particularly interesting — if the Policy Engine can fire webhooks as a response action, it enables real-time governance notifications without requiring consumers to poll DCM. This aligns with the DCM goal of getting actionable information to the right people as fast as possible.
 
 #### References
-- [Resource/Service Entities](data-model/06-resource-service-entities.md) — provider lifecycle events
-- [Service Dependencies](data-model/07-service-dependencies.md) — dependency failure notifications
+- [Resource/Service Entities](https://github.com/croadfeldt/udlm/blob/main/entities/resource-service-entities.md) — provider lifecycle events
+- [Service Dependencies](https://github.com/croadfeldt/udlm/blob/main/entities/service-dependencies.md) — dependency failure notifications
 - Architecture: Egress zone, Message Bus, API Gateway
 
 ---
@@ -198,9 +210,9 @@ The Intent State is captured when a consumer submits a request but the exact str
 6. How is the Intent payload versioned — does it carry a version or is it always a snapshot?
 
 #### References
-- [Context and Purpose](data-model/00-context-and-purpose.md) — four states
-- [Layering and Versioning](data-model/03-layering-and-versioning.md) — Request Layer
-- [Resource Grouping](data-model/08-resource-grouping.md) — Tenant and group membership
+- [Context and Purpose](https://github.com/croadfeldt/udlm/blob/main/foundations/context-and-purpose.md) — four states
+- [Layering and Versioning](https://github.com/croadfeldt/udlm/blob/main/foundations/layering-and-versioning.md) — Request Layer
+- [Resource Grouping](https://github.com/croadfeldt/udlm/blob/main/entities/resource-grouping.md) — Tenant and group membership
 
 ---
 
@@ -225,7 +237,7 @@ The distinction between GateKeeper and Validation policy categories needs better
 4. Should GateKeeper policies require explicit authorization (e.g., only CISO-owned policies can be GateKeeper)?
 
 #### References
-- [Layering and Versioning](data-model/03-layering-and-versioning.md) — Policy Layer section
+- [Layering and Versioning](https://github.com/croadfeldt/udlm/blob/main/foundations/layering-and-versioning.md) — Policy Layer section
 
 ---
 
@@ -408,8 +420,8 @@ The original data model discussion raised the question of whether the data model
 Field override control is implemented as a **standard Policy Engine mechanism** using a graduated three-level model: Level 1 (no declaration — fully overridable), Level 2 (simple `override: allow|constrained|immutable`), Level 3 (full actor matrix with per-actor permissions, trusted grants, and expansion rules). The Policy Engine is the sole authority for setting override control. The Request Payload Processor enforces structural layer rules only.
 
 #### Documented In
-- [Data Layers and Assembly Process](data-model/03-layering-and-versioning.md) — Section 5a
-- [Context and Purpose](data-model/00-context-and-purpose.md) — Section 4.4
+- [Data Layers and Assembly Process](https://github.com/croadfeldt/udlm/blob/main/foundations/layering-and-versioning.md) — Section 5a
+- [Context and Purpose](https://github.com/croadfeldt/udlm/blob/main/foundations/context-and-purpose.md) — Section 4.4
 
 ---
 
@@ -433,9 +445,9 @@ The conflict between the enhancement documents (storage bundled in VM schema) an
 - The dependency graph concept is unified into the Entity Relationship Graph
 
 #### Documented In
-- [Entity Relationships](data-model/09-entity-relationships.md) — complete relationship model
-- [Information Providers](data-model/10-information-providers.md) — external data relationships
-- [Service Dependencies](data-model/07-service-dependencies.md) — updated to reference entity relationships
+- [Entity Relationships](https://github.com/croadfeldt/udlm/blob/main/entities/entity-relationships.md) — complete relationship model
+- [Information Providers](https://github.com/croadfeldt/udlm/blob/main/contracts/information-providers.md) — external data relationships
+- [Service Dependencies](https://github.com/croadfeldt/udlm/blob/main/entities/service-dependencies.md) — updated to reference entity relationships
 
 ---
 
@@ -458,9 +470,9 @@ Information Providers are a first-class provider type in DCM. They follow the sa
 - Internal business data follows the standard resource entity model when DCM owns it; external references use the Information Provider model
 
 #### Documented In
-- [Information Providers](data-model/10-information-providers.md)
-- [Entity Relationships](data-model/09-entity-relationships.md) — external relationship structure
-- [Resource Type Hierarchy](data-model/05-resource-type-hierarchy.md) — information type categories added
+- [Information Providers](https://github.com/croadfeldt/udlm/blob/main/contracts/information-providers.md)
+- [Entity Relationships](https://github.com/croadfeldt/udlm/blob/main/entities/entity-relationships.md) — external relationship structure
+- [Resource Type Hierarchy](https://github.com/croadfeldt/udlm/blob/main/entities/resource-type-hierarchy.md) — information type categories added
 
 ---
 
