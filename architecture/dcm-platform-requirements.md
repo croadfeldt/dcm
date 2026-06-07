@@ -680,9 +680,9 @@ Each capability area maps to a measurable outcome:
 
 | **ID** | **Question** | **Status** |
 |--------|-------------|-----------|
-| **DQ-1** | Application definition language — How should consumers define multi-resource applications? YAML manifests, API composition, external DSL, or catalog-only? | Open — See [ADR-016](architecture/adr/016-application-definition-language.md) |
+| **DQ-1** | Application definition language — How should consumers define multi-resource applications? YAML manifests, API composition, external DSL, or catalog-only? | Open — See [ADR-016](adr/016-application-definition-language.md) |
 | **DQ-2** | RHDH integration depth — Is RHDH the sole frontend, or should DCM expose its own lightweight UI for environments without RHDH? | Open |
-| **DQ-3** | Spectral AEP linter — Should OpenAPI specs be linted in CI? Requires 3.1 compatibility verification. | Open — See [DISCUSSION-TOPICS item 7](architecture/DISCUSSION-TOPICS.md) |
+| **DQ-3** | Spectral AEP linter — Should OpenAPI specs be linted in CI? Requires 3.1 compatibility verification. | Open — See [DISCUSSION-TOPICS item 7](DISCUSSION-TOPICS.md) |
 | **DQ-4** | Kessel integration — What, if any, integration with Project Kessel for authorization? | Discussion only — See doc 44 |
 
 ---

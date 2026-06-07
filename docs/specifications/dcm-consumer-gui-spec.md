@@ -5,7 +5,7 @@
 
 **Document Status:** 🔄 In Progress
 **Document Type:** Specification — Consumer Web Interface
-**Related Documents:** [RHDH Integration Specification](dcm-rhdh-integration-spec.md) | [Consumer API Specification](consumer-api-spec.md) | [Admin GUI Specification](dcm-admin-gui-spec.md) | [Provider GUI Specification](dcm-provider-gui-spec.md) | [Flow GUI Specification](dcm-flow-gui-spec.md) | [Auth Providers](../data-model/19-auth-providers.md) | [Session Revocation](../data-model/35-session-revocation.md)
+**Related Documents:** [RHDH Integration Specification](dcm-rhdh-integration-spec.md) | [Consumer API Specification](consumer-api-spec.md) | [Admin GUI Specification](dcm-admin-gui-spec.md) | [Provider GUI Specification](dcm-provider-gui-spec.md) | [Flow GUI Specification](dcm-flow-gui-spec.md) | [Auth Providers](https://github.com/croadfeldt/udlm/blob/main/governance/auth-providers.md) | [Session Revocation](../../architecture/control-plane/session-revocation.md)
 
 > **Status:** Draft — Ready for implementation feedback
 >

@@ -2,7 +2,7 @@
 
 **Document Status:** 🔄 In Progress
 **Document Type:** Specification — RHDH / Backstage Integration Architecture
-**Related Documents:** [Consumer GUI Specification](dcm-consumer-gui-spec.md) | [Admin GUI Specification](dcm-admin-gui-spec.md) | [Provider GUI Specification](dcm-provider-gui-spec.md) | [Consumer API Specification](consumer-api-spec.md) | [Auth Providers](../data-model/19-auth-providers.md) | [Standards Catalog](../data-model/40-standards-catalog.md)
+**Related Documents:** [Consumer GUI Specification](dcm-consumer-gui-spec.md) | [Admin GUI Specification](dcm-admin-gui-spec.md) | [Provider GUI Specification](dcm-provider-gui-spec.md) | [Consumer API Specification](consumer-api-spec.md) | [Auth Providers](https://github.com/croadfeldt/udlm/blob/main/governance/auth-providers.md) | [Standards Catalog](https://github.com/croadfeldt/udlm/blob/main/reference/standards-catalog.md)
 
 > **Status:** Draft — Ready for implementation feedback
 >

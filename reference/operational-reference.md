@@ -2,7 +2,7 @@
 
 **Document Status:** 🔄 In Progress
 **Document Type:** SRE Reference — GitOps Scale, Store Migration, Disaster Recovery
-**Related Documents:** [data stores](11-storage-providers.md) | [Deployment and Redundancy](17-deployment-redundancy.md) | [Four States Model](02-four-states.md) | [Internal Component Authentication](36-internal-component-auth.md) | [DCM Self-Health Endpoints](39-dcm-self-health.md)
+**Related Documents:** [data stores](https://github.com/croadfeldt/udlm/blob/main/contracts/storage-providers.md) | [Deployment and Redundancy](../architecture/runtime-features/deployment-redundancy.md) | [Four States Model](https://github.com/croadfeldt/udlm/blob/main/foundations/four-states.md) | [Internal Component Authentication](../architecture/control-plane/internal-component-auth.md) | [DCM Self-Health Endpoints](../architecture/control-plane/self-health.md)
 
 > **Audience:** Platform engineers and SREs operating DCM in production. This document covers three operational concerns that require guidance beyond the architectural specifications: GitOps store partitioning at large scale, migrating between store implementations, and recovering from failure scenarios.
 

@@ -24,7 +24,7 @@ Items marked 🔴 are required for architecture compliance. Items marked 🟡 ar
 
 **Repo:** [dcm-project/catalog-manager](https://github.com/dcm-project/catalog-manager) (58 commits)
 **Enhancement source:** `catalog-item-schema`, `service-type-definitions`
-**Architecture docs:** [05-resource-type-hierarchy.md](docs/data-model/05-resource-type-hierarchy.md), [06-resource-service-entities.md](docs/data-model/06-resource-service-entities.md), [50-subscription-lifecycle.md](docs/data-model/50-subscription-lifecycle.md), [consumer-api-spec](docs/specifications/dcm-consumer-api-spec.md)
+**Architecture docs:** [05-resource-type-hierarchy.md](https://github.com/croadfeldt/udlm/blob/main/entities/resource-type-hierarchy.md), [06-resource-service-entities.md](https://github.com/croadfeldt/udlm/blob/main/entities/resource-service-entities.md), [50-subscription-lifecycle.md](https://github.com/croadfeldt/udlm/blob/main/lifecycle/subscription-lifecycle.md), [consumer-api-spec](../specifications/consumer-api-spec.md)
 
 ### What you built
 
@@ -85,7 +85,7 @@ Three-tier resource model: `ServiceType → CatalogItem → CatalogItemInstance`
 
 **Repo:** [dcm-project/service-provider-manager](https://github.com/dcm-project/service-provider-manager) (110 commits)
 **Enhancement source:** `sp-registration-flow`
-**Architecture docs:** [A-provider-contract.md](docs/data-model/A-provider-contract.md), [20-resource-type-registry.md](docs/data-model/20-resource-type-registry.md), [43-provider-callback-auth.md](docs/data-model/43-provider-callback-auth.md)
+**Architecture docs:** [A-provider-contract.md](https://github.com/croadfeldt/udlm/blob/main/contracts/provider-contract.md), [20-resource-type-registry.md](https://github.com/croadfeldt/udlm/blob/main/governance/registry-governance.md), [43-provider-callback-auth.md](https://github.com/croadfeldt/udlm/blob/main/contracts/provider-callback-auth.md)
 
 ### What you built
 
@@ -140,7 +140,7 @@ Provider registration CRUD (POST/GET/PUT/DELETE) with health endpoint. Go client
 
 **Repo:** [dcm-project/policy-manager](https://github.com/dcm-project/policy-manager) (~30 commits)
 **Enhancement source:** `policy-engine`
-**Architecture docs:** [B-policy-contract.md](docs/data-model/B-policy-contract.md), [29-scoring-model.md](docs/data-model/29-scoring-model.md), [03-layering-and-versioning.md](docs/data-model/03-layering-and-versioning.md)
+**Architecture docs:** [B-policy-contract.md](https://github.com/croadfeldt/udlm/blob/main/contracts/policy-contract.md), [29-scoring-model.md](../../architecture/convergence-engine/scoring.md), [03-layering-and-versioning.md](https://github.com/croadfeldt/udlm/blob/main/foundations/layering-and-versioning.md)
 
 ### What you built
 
@@ -188,7 +188,7 @@ Policy artifact CRUD. Stores policy definitions and provides retrieval API.
 ## 4. placement-manager
 
 **Repo:** [dcm-project/placement-manager](https://github.com/dcm-project/placement-manager) (~30 commits)
-**Architecture docs:** [29-scoring-model.md](docs/data-model/29-scoring-model.md), [48-location-topology-layers.md](docs/data-model/48-location-topology-layers.md)
+**Architecture docs:** [29-scoring-model.md](../../architecture/convergence-engine/scoring.md), [48-location-topology-layers.md](https://github.com/croadfeldt/udlm/blob/main/topology/location-topology-layers.md)
 
 ### What aligns
 
@@ -206,7 +206,7 @@ Policy artifact CRUD. Stores policy definitions and provides retrieval API.
 ## 5. api-gateway
 
 **Repo:** [dcm-project/api-gateway](https://github.com/dcm-project/api-gateway) (33 commits)
-**Architecture docs:** [consumer-api-spec](docs/specifications/dcm-consumer-api-spec.md), [admin-api-spec](docs/specifications/dcm-admin-api-spec.md)
+**Architecture docs:** [consumer-api-spec](../specifications/consumer-api-spec.md), [admin-api-spec](../specifications/dcm-admin-api-spec.md)
 
 ### What you built
 
@@ -248,7 +248,7 @@ KrakenD-based gateway. Config-driven routing to 4 backends (SPM, Catalog, Policy
 
 **Repo:** [dcm-project/kubevirt-service-provider](https://github.com/dcm-project/kubevirt-service-provider)
 **Enhancement source:** `kubevirt-sp`
-**Architecture docs:** [A-provider-contract.md](docs/data-model/A-provider-contract.md), [06-resource-service-entities.md](docs/data-model/06-resource-service-entities.md)
+**Architecture docs:** [A-provider-contract.md](https://github.com/croadfeldt/udlm/blob/main/contracts/provider-contract.md), [06-resource-service-entities.md](https://github.com/croadfeldt/udlm/blob/main/entities/resource-service-entities.md)
 
 ### What aligns
 
@@ -273,7 +273,7 @@ KrakenD-based gateway. Config-driven routing to 4 backends (SPM, Catalog, Policy
 ## 7. acm-cluster-service-provider
 
 **Repo:** [dcm-project/acm-cluster-service-provider](https://github.com/dcm-project/acm-cluster-service-provider)
-**Architecture docs:** [A-provider-contract.md](docs/data-model/A-provider-contract.md)
+**Architecture docs:** [A-provider-contract.md](https://github.com/croadfeldt/udlm/blob/main/contracts/provider-contract.md)
 
 ### Same pattern as kubevirt-service-provider
 
@@ -286,7 +286,7 @@ KrakenD-based gateway. Config-driven routing to 4 backends (SPM, Catalog, Policy
 ## 8. three-tier-app-demo-service-provider
 
 **Repo:** [dcm-project/three-tier-app-demo-service-provider](https://github.com/dcm-project/three-tier-app-demo-service-provider)
-**Architecture docs:** [30-meta-provider-composability.md](docs/data-model/30-meta-provider-composability.md)
+**Architecture docs:** [30-meta-provider-composability.md](https://github.com/croadfeldt/udlm/blob/main/entities/composite-service-model.md)
 
 ### What aligns
 

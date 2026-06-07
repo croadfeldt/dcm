@@ -2,7 +2,7 @@
 
 **Document Status:** 🔄 In Progress
 **Document Type:** Architecture Reference — ITSM integration Type and ITSM Policy Type
-**Related Documents:** [Provider Contract](A-provider-contract.md) | [Policy Contract](B-policy-contract.md) | [Notification Model](23-notification-model.md) | [Event Catalog](33-event-catalog.md) | [Authority Tier Model](32-authority-tier-model.md) | [Consumer API Specification](../specifications/consumer-api-spec.md)
+**Related Documents:** [Provider Contract](https://github.com/croadfeldt/udlm/blob/main/contracts/provider-contract.md) | [Policy Contract](https://github.com/croadfeldt/udlm/blob/main/contracts/policy-contract.md) | [Notification Model](../runtime-features/notifications.md) | [Event Catalog](https://github.com/croadfeldt/udlm/blob/main/contracts/event-catalog.md) | [Authority Tier Model](https://github.com/croadfeldt/udlm/blob/main/governance/authority-tier-model.md) | [Consumer API Specification](../../docs/specifications/consumer-api-spec.md)
 
 > **Design principle:** DCM is built to *replace* the infrastructure ticket as the primary provisioning mechanism. ITSM integration is additive — it enriches DCM entities with ITSM metadata, enables ITSM-initiated requests, and provides bidirectional lifecycle traceability for organizations that need it for compliance. **DCM never requires an ITSM system to function.**
 >

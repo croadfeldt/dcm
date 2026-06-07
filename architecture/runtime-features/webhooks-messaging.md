@@ -2,27 +2,27 @@
 
 
 **Document Status:** ✅ Complete
-**Related Documents (updated):** [Notification Model](23-notification-model.md) | [Entity Relationships](09-entity-relationships.md)  
+**Related Documents (updated):** [Notification Model](notifications.md) | [Entity Relationships](https://github.com/croadfeldt/udlm/blob/main/entities/entity-relationships.md)  
 
 > **Foundation Document Reference**
 >
 > This document is a detailed reference for a specific domain of the DCM architecture.
 > The three foundational abstractions — Data, Provider, and Policy — are defined in
-> [00-foundations.md](00-foundations.md). All concepts in this document map to one or
+> [udlm/foundations/foundations.md](https://github.com/croadfeldt/udlm/blob/main/foundations/foundations.md). All concepts in this document map to one or
 > more of those three abstractions.
-> See also: [Provider Contract](A-provider-contract.md) | [Policy Contract](B-policy-contract.md)
+> See also: [Provider Contract](https://github.com/croadfeldt/udlm/blob/main/contracts/provider-contract.md) | [Policy Contract](https://github.com/croadfeldt/udlm/blob/main/contracts/policy-contract.md)
 >
 > **This document maps to: PROVIDER**
 >
 > The Provider abstraction — Message Bus and webhook delivery channels
 
 
-**Related Documents:** [Universal Audit Model](16-universal-audit.md) | [Deployment and Redundancy](17-deployment-redundancy.md) | [Authentication and Authorization](19-auth-providers.md) | [Policy Organization](14-policy-profiles.md)
+**Related Documents:** [Universal Audit Model](https://github.com/croadfeldt/udlm/blob/main/observability/universal-audit.md) | [Deployment and Redundancy](deployment-redundancy.md) | [Authentication and Authorization](https://github.com/croadfeldt/udlm/blob/main/governance/auth-providers.md) | [Policy Organization](../governance-enforcement/policy-profiles.md)
 
 ---
 
 
-> **See [Event Catalog](33-event-catalog.md)** — authoritative source for all DCM event types and payload schemas.
+> **See [Event Catalog](https://github.com/croadfeldt/udlm/blob/main/contracts/event-catalog.md)** — authoritative source for all DCM event types and payload schemas.
 
 ## 1. Purpose
 
@@ -172,7 +172,7 @@ The network-level entry point for all inbound requests to the DCM control plane.
 The Ingress API is infrastructure — it is not directly defined in any consumer-facing specification.
 
 **Consumer API (application layer):**
-The logical REST API surface that consumers interact with, as defined in the [Consumer API Specification](../specifications/consumer-api-spec.md). The Consumer API is *served through* the Ingress API. When a consumer calls `POST /api/v1/requests`, that request enters through the Ingress API (which sets the ingress block) and is then handled by the Consumer API component.
+The logical REST API surface that consumers interact with, as defined in the [Consumer API Specification](../../docs/specifications/consumer-api-spec.md). The Consumer API is *served through* the Ingress API. When a consumer calls `POST /api/v1/requests`, that request enters through the Ingress API (which sets the ingress block) and is then handled by the Consumer API component.
 
 **Other APIs served through the Ingress API:**
 - **Provider API** — the callback and notification endpoints that Service Providers call (`/api/v1/provider/...`)

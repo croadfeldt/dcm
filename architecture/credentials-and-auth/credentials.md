@@ -361,7 +361,7 @@ algorithms vary per profile:
   permitted in standard)
 - `sovereign`: hsm_backed_only across all types
 
-See [`../reference/implementation-standards.md`](../reference/implementation-standards.md)
+See [`../reference/implementation-standards.md`](../../reference/implementation-standards.md)
 for the algorithm and FIPS-level decisions DCM makes.
 
 ---

@@ -74,7 +74,7 @@ Effective at the core mission · Easy to use · Easy to implement · Easy to ext
 
 ## SECTION 0b — DESIGN PRIORITY ORDER (applies to all decisions)
 
-> **Full specification:** [00-design-priorities.md](data-model/00-design-priorities.md) — includes decision framework, profile scaling table, and DPO-001–006 system policies.
+> **Full specification:** [00-design-priorities.md](https://github.com/croadfeldt/udlm/blob/main/design-principles/design-priorities.md) — includes decision framework, profile scaling table, and DPO-001–006 system policies.
 
 **Priority 1 — Security (industry best practices):** Security properties are architecturally present in ALL profiles. What profiles control is enforcement strictness, threshold values, and automation level — not whether security applies. A `minimal` profile is "security with minimal operational overhead" — not "minimal security."
 
@@ -264,7 +264,7 @@ All five provider types follow the same base contract (registration, health chec
 | **Information Provider** | Serves authoritative external data DCM references but does not own | No — external system is authoritative |
 
 
-The five provider types (service_provider, information_provider, auth_provider, peer_dcm, process_provider) all implement the same base contract. Capabilities that were formerly separate provider types (credentials, notifications, ITSM, message bus, storage, policy evaluation, registry) are now either internal to DCM or handled by service_providers with specialized resource types. See [A-provider-contract.md](data-model/A-provider-contract.md) for the unified contract.
+The five provider types (service_provider, information_provider, auth_provider, peer_dcm, process_provider) all implement the same base contract. Capabilities that were formerly separate provider types (credentials, notifications, ITSM, message bus, storage, policy evaluation, registry) are now either internal to DCM or handled by service_providers with specialized resource types. See [A-provider-contract.md](https://github.com/croadfeldt/udlm/blob/main/contracts/provider-contract.md) for the unified contract.
 
 ---
 
@@ -1065,7 +1065,7 @@ Webhooks are an **Egress capability** — outbound notifications from DCM to ext
 - Events should align with a **DCM Event Type Registry** — extensible, versioned, following the same registry model as Resource Types
 
 ### 14.5 Open Design Questions
-See [DISCUSSION-TOPICS.md — TOPIC-001](DISCUSSION-TOPICS.md) for the full list of design questions. Key unresolved items:
+See [DISCUSSION-TOPICS.md — TOPIC-001](../DISCUSSION-TOPICS.md) for the full list of design questions. Key unresolved items:
 - Webhook registration model and API
 - Full event taxonomy and registry structure
 - Payload format — full state vs reference + event type
@@ -4397,7 +4397,7 @@ CPX-001: values never in DCM stores. CPX-002: every provider interaction must pr
 
 ## SECTION 64 — AUTHORITY TIER MODEL (doc 32 — 32-authority-tier-model.md)
 
-> **Full specification:** [32-authority-tier-model.md](data-model/32-authority-tier-model.md) — ordered tier list, custom tier contribution, dynamic threshold format, impact detection pipeline, ATM-001–ATM-012.
+> **Full specification:** [32-authority-tier-model.md](https://github.com/croadfeldt/udlm/blob/main/governance/authority-tier-model.md) — ordered tier list, custom tier contribution, dynamic threshold format, impact detection pipeline, ATM-001–ATM-012.
 
 ### Core Model
 Authority tiers are a **named, ordered list**. Names are stable references; numeric weight is derived from list position at evaluation time — never hardcoded. Organizations can insert custom tiers between existing ones without breaking any existing name references.
@@ -4458,7 +4458,7 @@ Peer DCM instances may have different custom tier lists. Resolution strategy: `g
 
 ## SECTION 65 — EVENT CATALOG (doc 33 — 33-event-catalog.md)
 
-> **Full specification:** [33-event-catalog.md](data-model/33-event-catalog.md) — authoritative source for all 82 DCM event types, payload schemas, urgency levels, EVT-001–EVT-007 system policies.
+> **Full specification:** [33-event-catalog.md](https://github.com/croadfeldt/udlm/blob/main/contracts/event-catalog.md) — authoritative source for all 82 DCM event types, payload schemas, urgency levels, EVT-001–EVT-007 system policies.
 
 ### Base Envelope (all events share this)
 event_uuid (idempotency key — EVT-002: consumers must treat duplicates as already-processed) · event_type · event_schema_version · timestamp (from Commit Log — authoritative) · dcm_version · dcm_instance_uuid · subject (entity_uuid, entity_type, entity_handle, tenant_uuid, actor_uuid) · urgency (critical/high/medium/low/info) · payload (event-specific) · links (self, audit_record)
@@ -4498,7 +4498,7 @@ EVT-001: all events must include base envelope. EVT-002: event_uuid is idempoten
 
 ## SECTION 66 — API VERSIONING STRATEGY (doc 34 — 34-api-versioning-strategy.md)
 
-> **Full specification:** [34-api-versioning-strategy.md](data-model/34-api-versioning-strategy.md) — breaking change definition, deprecation lifecycle, version discovery, sunset behavior, VER-001–VER-009.
+> **Full specification:** [34-api-versioning-strategy.md](../control-plane/api-versioning.md) — breaking change definition, deprecation lifecycle, version discovery, sunset behavior, VER-001–VER-009.
 
 ### Versioning Model
 URL path versioning: `/api/v1/`, `/api/v2/`, etc. Version is per-API surface (Consumer, Admin, Provider/OIS, Flow GUI) — NOT per-endpoint. All endpoints in a surface share the same major version. Non-breaking changes do not change the URL.
@@ -4543,7 +4543,7 @@ VER-001: URL path versioning only. VER-002: breaking change definition. VER-003:
 
 ## SECTION 67 — SESSION TOKEN REVOCATION (doc 35 — 35-session-revocation.md)
 
-> **Full specification:** [35-session-revocation.md](data-model/35-session-revocation.md) — session lifecycle, revocation triggers, revocation registry, token introspection, AUTH-016–AUTH-022.
+> **Full specification:** [35-session-revocation.md](../control-plane/session-revocation.md) — session lifecycle, revocation triggers, revocation registry, token introspection, AUTH-016–AUTH-022.
 
 ### Session Record
 session_uuid · actor_uuid · auth_provider_uuid · auth_method · mfa_verified · created_at · expires_at · status (active/refreshing/revoked/expired) · revocation_reason · revoked_at · revoked_by
@@ -4577,7 +4577,7 @@ AUTH-016: deprovisioning fires session + credential revocation in parallel. AUTH
 
 ## SECTION 68 — INTERNAL COMPONENT AUTHENTICATION (doc 36 — 36-internal-component-auth.md)
 
-> **Full specification:** [36-internal-component-auth.md](data-model/36-internal-component-auth.md) — component identity, Internal CA, bootstrap tokens, communication graph, ICOM-001–ICOM-009.
+> **Full specification:** [36-internal-component-auth.md](../control-plane/internal-component-auth.md) — component identity, Internal CA, bootstrap tokens, communication graph, ICOM-001–ICOM-009.
 
 ### Two-Layer Enforcement
 Mesh layer (Istio/mTLS): prevents impersonation at transport. Application layer (DCM): enforces what each component is permitted to do. BOTH required. Network position grants zero trust — internal calls receive same boundary checks as external.
@@ -4614,7 +4614,7 @@ ICOM-001: mTLS required ALL internal calls, no exceptions. ICOM-002: interaction
 
 ## SECTION 69 — SCHEDULED AND DEFERRED REQUESTS (doc 37 — 37-scheduled-requests.md)
 
-> **Full specification:** [37-scheduled-requests.md](data-model/37-scheduled-requests.md) — scheduling model, dual policy evaluation, maintenance windows, Request Scheduler component, SCH-001–SCH-006.
+> **Full specification:** [37-scheduled-requests.md](https://github.com/croadfeldt/udlm/blob/main/lifecycle/scheduled-requests.md) — scheduling model, dual policy evaluation, maintenance windows, Request Scheduler component, SCH-001–SCH-006.
 
 ### Scheduling Model
 schedule.dispatch: immediate (default) | at (specific time with not_before/not_after) | window (maintenance window reference) | recurring (cron expression). Added as optional field on POST /api/v1/requests — no new submission endpoint.
@@ -4638,7 +4638,7 @@ request.scheduled · request.schedule_cancelled · request.schedule_deadline_mis
 
 ## SECTION 70 — REQUEST DEPENDENCY GRAPH (doc 38 — 38-request-dependency-graph.md)
 
-> **Full specification:** [38-request-dependency-graph.md](data-model/38-request-dependency-graph.md) — consumer-declared cross-request ordering, field injection, PENDING_DEPENDENCY status, RDG-001–RDG-006.
+> **Full specification:** [38-request-dependency-graph.md](https://github.com/croadfeldt/udlm/blob/main/lifecycle/request-dependency-graph.md) — consumer-declared cross-request ordering, field injection, PENDING_DEPENDENCY status, RDG-001–RDG-006.
 
 ### What This Is
 Consumer-declared ordering of INDEPENDENT requests. Distinct from: type-level deps (doc 07, resolved automatically) and Composite Service composition (doc 30, platform team defines). Use when no Composite Service exists for the composite deployment.
@@ -4665,7 +4665,7 @@ request.pending_dependency · request.dependency_met · request.group_completed 
 
 ## SECTION 71 — DCM SELF-HEALTH ENDPOINTS (doc 39 — 39-dcm-self-health.md)
 
-> **Full specification:** [39-dcm-self-health.md](data-model/39-dcm-self-health.md) — liveness, readiness, component health, Prometheus metrics, HLT-001–HLT-006.
+> **Full specification:** [39-dcm-self-health.md](../control-plane/self-health.md) — liveness, readiness, component health, Prometheus metrics, HLT-001–HLT-006.
 
 ### Three Endpoints
 GET /livez (liveness — PT5S max, no external calls, unauthenticated, Kubernetes restarts on fail) ·
@@ -4693,7 +4693,7 @@ startupProbe: /readyz PT10S timeout, 10s period, 30 failures (allows 300s startu
 
 ## SECTION 72 — STANDARDS AND COMPLIANCE CATALOG (doc 40 — 40-standards-catalog.md)
 
-> **Full specification:** [40-standards-catalog.md](data-model/40-standards-catalog.md) — authoritative source for all RFCs, protocols, cryptographic standards, CNCF projects, and compliance frameworks used in DCM.
+> **Full specification:** [40-standards-catalog.md](https://github.com/croadfeldt/udlm/blob/main/reference/standards-catalog.md) — authoritative source for all RFCs, protocols, cryptographic standards, CNCF projects, and compliance frameworks used in DCM.
 
 ### Internet Standards (IETF RFCs) — Normative
 Auth/AuthZ: RFC 7519 (JWT) · RFC 7517 (JWK) · RFC 7662 (Token Introspection) · RFC 6749 (OAuth 2.0) · RFC 4511 (LDAP) · RFC 7643/7644 (SCIM 2.0)
@@ -4732,7 +4732,7 @@ AUTH → RFC 6749/7519/7662/OIDC/SCIM · CPX → FIPS 140/RFC 5280/8555/7030/889
 
 ## SECTION 73 — OPERATIONAL REFERENCE (doc 41 — 41-operational-reference.md)
 
-> **Full specification:** [41-operational-reference.md](data-model/41-operational-reference.md) — GitOps store partitioning, store migration playbook, disaster recovery scenarios, OPS-001–007.
+> **Full specification:** [41-operational-reference.md](../../reference/operational-reference.md) — GitOps store partitioning, store migration playbook, disaster recovery scenarios, OPS-001–007.
 
 ### GitOps Store Partitioning (Section 1)
 Three strategies: tenant-shard (hash(tenant_uuid) % N shards — recommended), per-tenant (one repo per tenant — MSP/strict isolation), time-based archiving (active vs cold archive repos). Triggers: >50k entities, clone time >PT30S, >500 tenants, repo >10GB. Layer Store partitioned by resource domain (Compute.*, Network.*, etc.). Shallow clones for read-only consumers; read mirrors for audit/drift.
@@ -4757,9 +4757,9 @@ OPS-001: partitioning declared in deployment manifest. OPS-002: audit chain cont
 
 ## SECTION 74 — WEB INTERFACE SPECIFICATIONS (3 specs)
 
-> **Consumer GUI:** [dcm-consumer-gui-spec.md](specifications/dcm-consumer-gui-spec.md) — Consumer Portal wrapping all 16 Consumer API sections, bounded by tenancy
-> **Admin GUI:** [dcm-admin-gui-spec.md](specifications/dcm-admin-gui-spec.md) — Admin Panel wrapping all Admin API sections, role-gated
-> **Provider GUI:** [dcm-provider-gui-spec.md](specifications/dcm-provider-gui-spec.md) — Provider management shell + 11 type-specific extension sets
+> **Consumer GUI:** [dcm-consumer-gui-spec.md](../../docs/specifications/dcm-consumer-gui-spec.md) — Consumer Portal wrapping all 16 Consumer API sections, bounded by tenancy
+> **Admin GUI:** [dcm-admin-gui-spec.md](../../docs/specifications/dcm-admin-gui-spec.md) — Admin Panel wrapping all Admin API sections, role-gated
+> **Provider GUI:** [dcm-provider-gui-spec.md](../../docs/specifications/dcm-provider-gui-spec.md) — Provider management shell + 11 type-specific extension sets
 
 ### Unified Shell Architecture (GUI-010)
 ONE application, THREE role-gated surfaces: Consumer Portal (all actors) + Admin Panel (platform_admin/sre/auditor/security/policy_owner/finops) + Provider Management (provider_owner role). One login, one session token — navigation adapts to highest privilege level. Flow GUI (policy authoring) is linked/embeddable within Admin Panel.
@@ -4803,7 +4803,7 @@ Migration: Standalone SPA → RHDH via Dynamic Plugin loading only; no data migr
 
 ## SECTION 75 — ITSM INTEGRATION (doc 42 — 42-itsm-integration.md)
 
-> **Full specification:** [42-itsm-integration.md](data-model/42-itsm-integration.md) — 12th provider type, 8th policy type, 6 example policies, ITSM-001–007, ITSM-POL-001–004.
+> **Full specification:** [42-itsm-integration.md](../integrations/itsm.md) — 12th provider type, 8th policy type, 6 example policies, ITSM-001–007, ITSM-POL-001–004.
 
 ### Design Principle
 DCM replaces the infrastructure ticket as the provisioning mechanism. ITSM integration is ADDITIVE — never required for DCM to function. Non-blocking by default. Organizations opt into blocking gates explicitly.

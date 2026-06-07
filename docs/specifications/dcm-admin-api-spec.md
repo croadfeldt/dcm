@@ -13,7 +13,7 @@
 **Version:** 0.1.0-draft
 **Status:** Draft — Ready for implementation feedback
 **Document Type:** Technical Specification
-**Related Documents:** [Foundational Abstractions](../data-model/00-foundations.md) | [Consumer API Specification](consumer-api-spec.md) | [DCM Operator Interface Specification](dcm-operator-interface-spec.md) | [Control Plane Components](../data-model/25-control-plane-components.md) | [Accreditation and Authorization Matrix](../data-model/26-accreditation-and-authorization-matrix.md)
+**Related Documents:** [Foundational Abstractions](https://github.com/croadfeldt/udlm/blob/main/foundations/foundations.md) | [Consumer API Specification](consumer-api-spec.md) | [DCM Operator Interface Specification](dcm-operator-interface-spec.md) | [Control Plane Components](../../architecture/control-plane/components.md) | [Accreditation and Authorization Matrix](https://github.com/croadfeldt/udlm/blob/main/governance/accreditation-and-authorization-matrix.md)
 
 ---
 
@@ -41,7 +41,7 @@ All Admin API endpoints require Bearer token authentication (same as Consumer AP
 
 Base URL: `/api/v1/admin/`
 
-> **Versioning:** See [API Versioning Strategy](../data-model/34-api-versioning-strategy.md). Breaking changes increment the major version. The Admin API follows the same deprecation lifecycle as the Consumer API, with profile-governed support windows.
+> **Versioning:** See [API Versioning Strategy](../../architecture/control-plane/api-versioning.md). Breaking changes increment the major version. The Admin API follows the same deprecation lifecycle as the Consumer API, with profile-governed support windows.
 
 Step-up MFA is required for destructive operations (Tenant decommission, accreditation revocation, bootstrap credential rotation) regardless of session MFA status.
 
@@ -549,7 +549,7 @@ GET /metrics
 # Returns Prometheus text format metrics.
 ```
 
-> **Full model:** See [DCM Self-Health](../data-model/39-dcm-self-health.md) — HLT-001–HLT-006.
+> **Full model:** See [DCM Self-Health](../../architecture/control-plane/self-health.md) — HLT-001–HLT-006.
 
 
 ## 12. Session Management (Admin)
@@ -602,7 +602,7 @@ Response 200:
 | `actor_not_found` | 404 | Actor UUID not found |
 | `no_active_sessions` | 404 | Actor has no active sessions |
 
-> **Full model:** See [Session Token Revocation](../data-model/35-session-revocation.md) — AUTH-016–AUTH-022.
+> **Full model:** See [Session Token Revocation](../../architecture/control-plane/session-revocation.md) — AUTH-016–AUTH-022.
 
 
 ## 11. Error Model
@@ -636,7 +636,7 @@ All error responses include `X-DCM-Request-ID` and `X-DCM-Correlation-ID` header
 
 ## Scoring Model Administration
 
-> Approval routing thresholds use named-tier dynamic format. See [Authority Tier Model](../data-model/32-authority-tier-model.md) for the complete specification.
+> Approval routing thresholds use named-tier dynamic format. See [Authority Tier Model](https://github.com/croadfeldt/udlm/blob/main/governance/authority-tier-model.md) for the complete specification.
 
 ### Get Scoring Thresholds for Profile
 
@@ -867,7 +867,7 @@ Response 200:
 
 ## Authority Tier Registry Management
 
-> **Implementation note:** The tier registry change impact detection pipeline is specified in [Authority Tier Model](../data-model/32-authority-tier-model.md) Section 7. The endpoints below are the Admin API surface for proposing, reviewing, and activating tier registry changes. The detection mechanism (tier impact diff computation, affected item query, degradation gate) is an implementation responsibility.
+> **Implementation note:** The tier registry change impact detection pipeline is specified in [Authority Tier Model](https://github.com/croadfeldt/udlm/blob/main/governance/authority-tier-model.md) Section 7. The endpoints below are the Admin API surface for proposing, reviewing, and activating tier registry changes. The detection mechanism (tier impact diff computation, affected item query, degradation gate) is an implementation responsibility.
 
 ### Propose a Tier Registry Change
 

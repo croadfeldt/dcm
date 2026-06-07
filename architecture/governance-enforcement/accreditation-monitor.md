@@ -1,8 +1,20 @@
+---
+Document Status: 📋 Draft — Ready for Implementation Feedback
+Document Type: Capability Specification
+Maps to: udlm/governance/accreditation-and-authorization-matrix.md
+---
+
 # DCM Data Model — Accreditation Monitor
+
+> **Implements contracts defined in UDLM**:
+> [udlm/governance/accreditation-and-authorization-matrix.md](https://github.com/croadfeldt/udlm/blob/main/governance/accreditation-and-authorization-matrix.md).
+> UDLM defines the accreditation entity, the authorization matrix, and the
+> validity model. DCM operationalizes continuous external verification of
+> accreditation status against authoritative sources.
 
 **Document Status:** 📋 Draft — Ready for Implementation Feedback
 **Document Type:** Capability Specification
-**Related Documents:** [Accreditation and Authorization Matrix](26-accreditation-and-authorization-matrix.md) | [Information Providers](10-information-providers.md) | [Advanced Information Providers](21-information-providers-advanced.md) | [Standards Catalog](40-standards-catalog.md) | [Scoring Model](29-scoring-model.md) | [Event Catalog](33-event-catalog.md) | [Governance Matrix](27-governance-matrix.md)
+**Related Documents:** [Accreditation and Authorization Matrix](https://github.com/croadfeldt/udlm/blob/main/governance/accreditation-and-authorization-matrix.md) | [Information Providers](https://github.com/croadfeldt/udlm/blob/main/contracts/information-providers.md) | [Advanced Information Providers](https://github.com/croadfeldt/udlm/blob/main/contracts/information-providers-advanced.md) | [Standards Catalog](https://github.com/croadfeldt/udlm/blob/main/reference/standards-catalog.md) | [Scoring Model](../convergence-engine/scoring.md) | [Event Catalog](https://github.com/croadfeldt/udlm/blob/main/contracts/event-catalog.md) | [Governance Matrix](https://github.com/croadfeldt/udlm/blob/main/governance/governance-matrix.md)
 
 > **AEP Alignment:** API endpoints follow [AEP](https://aep.dev) conventions.
 > Custom methods use colon syntax. Async operations return `Operation` resources.

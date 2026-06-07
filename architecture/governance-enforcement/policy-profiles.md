@@ -1,18 +1,31 @@
+---
+Document Status: ✅ Complete
+Document Type: Architecture Reference — Policy Organization
+Maps to: udlm/observability/universal-groups.md
+---
+
 # DCM Data Model — Policy Organization: Groups, Profiles, and External Policy Evaluators
 
+> **Implements contracts defined in UDLM**:
+> [udlm/observability/universal-groups.md](https://github.com/croadfeldt/udlm/blob/main/observability/universal-groups.md).
+> UDLM defines the Universal Group Model — composable, cross-type group
+> membership and the profile/collection grouping contract. DCM operationalizes
+> Policy Groups (`group_class: policy_collection`) and Policy Profiles
+> (`group_class: policy_profile`) as concrete expressions of that model, plus
+> the external policy evaluator integration.
 
-> **Universal Group Model:** Policy Groups (`group_class: policy_collection`) and Policy Profiles (`group_class: policy_profile`) are expressions of the [Universal Group Model](15-universal-groups.md). The structures defined in this document remain authoritative for policy-specific behavior; the universal model adds composability, cross-type membership, and the ability to include policy groups within composite groups.
+> **Universal Group Model:** Policy Groups (`group_class: policy_collection`) and Policy Profiles (`group_class: policy_profile`) are expressions of the [Universal Group Model](https://github.com/croadfeldt/udlm/blob/main/observability/universal-groups.md). The structures defined in this document remain authoritative for policy-specific behavior; the universal model adds composability, cross-type membership, and the ability to include policy groups within composite groups.
 
 **Document Status:** ✅ Complete  
-**Related Documents:** [Scoring Model](29-scoring-model.md) | [Context and Purpose](00-context-and-purpose.md) | [Data Layers and Assembly](03-layering-and-versioning.md) | [Entity Relationships](09-entity-relationships.md) | [data stores](11-storage-providers.md)
+**Related Documents:** [Scoring Model](../convergence-engine/scoring.md) | [Context and Purpose](https://github.com/croadfeldt/udlm/blob/main/foundations/context-and-purpose.md) | [Data Layers and Assembly](https://github.com/croadfeldt/udlm/blob/main/foundations/layering-and-versioning.md) | [Entity Relationships](https://github.com/croadfeldt/udlm/blob/main/entities/entity-relationships.md) | [data stores](https://github.com/croadfeldt/udlm/blob/main/contracts/storage-providers.md)
 
 > **Foundation Document Reference**
 >
 > This document is a detailed reference for a specific domain of the DCM architecture.
 > The three foundational abstractions — Data, Provider, and Policy — are defined in
-> [00-foundations.md](00-foundations.md). All concepts in this document map to one or
+> [foundations.md](https://github.com/croadfeldt/udlm/blob/main/foundations/foundations.md). All concepts in this document map to one or
 > more of those three abstractions.
-> See also: [Provider Contract](A-provider-contract.md) | [Policy Contract](B-policy-contract.md)
+> See also: [Provider Contract](https://github.com/croadfeldt/udlm/blob/main/contracts/provider-contract.md) | [Policy Contract](https://github.com/croadfeldt/udlm/blob/main/contracts/policy-contract.md)
 >
 > **This document maps to: DATA + POLICY**
 >
@@ -22,7 +35,7 @@
 
 ---
 
-> **Standards and Compliance Reference:** See [Standards and Compliance Catalog](40-standards-catalog.md) for the complete mapping of compliance frameworks (HIPAA, PCI DSS, FedRAMP, NIST SP 800-53, GDPR, DoD IL4) to DCM profiles and system requirements.
+> **Standards and Compliance Reference:** See [Standards and Compliance Catalog](https://github.com/croadfeldt/udlm/blob/main/reference/standards-catalog.md) for the complete mapping of compliance frameworks (HIPAA, PCI DSS, FedRAMP, NIST SP 800-53, GDPR, DoD IL4) to DCM profiles and system requirements.
 
 ## 1. Purpose
 
@@ -53,7 +66,7 @@ External Policy Evaluators   — external authoritative policy sources
 
 ## 1a. Design Priority Order in Policy Profiles
 
-Profiles implement the DCM design priority order (see [Foundational Abstractions](00-foundations.md)):
+Profiles implement the DCM design priority order (see [Foundational Abstractions](https://github.com/croadfeldt/udlm/blob/main/foundations/foundations.md)):
 
 1. **Security:** Profile defaults implement security correctly. Lower profiles have less strict enforcement — not absent security.
 2. **Ease of use:** Profile defaults minimize configuration burden. `standard` profile should work for most deployments without customization.
@@ -73,7 +86,7 @@ Policies in DCM are not exclusively authored by platform admins. The DCM federat
 - **Service Providers** — provider-domain GateKeeper and Validation policies for their resource types
 - **Peer DCM instances** — policy templates contributed through verified federation relationships
 
-This is not a special case — it is the standard GitOps PR model applied to all contributor types. Consumer-authored policies go through the same lifecycle (developing → proposed → active) with appropriate review requirements per the active profile. See [Federated Contribution Model](28-federated-contribution-model.md) for the complete specification.
+This is not a special case — it is the standard GitOps PR model applied to all contributor types. Consumer-authored policies go through the same lifecycle (developing → proposed → active) with appropriate review requirements per the active profile. See [Federated Contribution Model](https://github.com/croadfeldt/udlm/blob/main/governance/federated-contribution-model.md) for the complete specification.
 
 ---
 
@@ -1230,7 +1243,7 @@ external_evaluation_airgap:
 
 Recovery posture groups contain Recovery Policies — a formal DCM policy type that maps trigger conditions (DISPATCH_TIMEOUT, PARTIAL_REALIZATION, etc.) to response actions (DRIFT_RECONCILE, DISCARD_AND_REQUEUE, NOTIFY_AND_WAIT, etc.).
 
-See [Operational Models](24-operational-models.md) Section 5 for the complete Recovery Policy model, trigger vocabulary, and action vocabulary.
+See [Operational Models](https://github.com/croadfeldt/udlm/blob/main/lifecycle/operational-models.md) Section 5 for the complete Recovery Policy model, trigger vocabulary, and action vocabulary.
 
 ### 9.2 Four Built-in Recovery Posture Groups
 
@@ -1279,7 +1292,7 @@ Resource-type override wins over Tenant override wins over profile default.
 
 `zero_trust_posture` is the sixth Policy Group concern type. It governs authentication requirements, credential lifetime, revocation check frequency, and hardware attestation requirements for all DCM interactions.
 
-See [Accreditation and Authorization Matrix](26-accreditation-and-authorization-matrix.md) Section 5 for the complete zero trust model.
+See [Accreditation and Authorization Matrix](https://github.com/croadfeldt/udlm/blob/main/governance/accreditation-and-authorization-matrix.md) Section 5 for the complete zero trust model.
 
 ### 10.2 Four Zero Trust Posture Levels
 

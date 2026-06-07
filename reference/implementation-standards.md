@@ -197,7 +197,7 @@ DCM uses OpenAPI 3.1 (OpenAPI Initiative 3.1) for all REST APIs.
 | Consumer API | `schemas/openapi/dcm-consumer-api.yaml` |
 | Admin API | `schemas/openapi/dcm-admin-api.yaml` |
 | Provider Callback API | `schemas/openapi/dcm-provider-callback-api.yaml` |
-| Operator Interface | `schemas/openapi/dcm-operator-interface.yaml` |
+| Operator Interface | `schemas/openapi/dcm-operator-api.yaml` |
 
 ### 4.2 Endpoint conventions
 

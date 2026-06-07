@@ -1,8 +1,18 @@
+---
+Maps to: udlm/governance/auth-providers.md
+---
+
 # DCM Data Model — Session Token Revocation
+
+> **Implements contracts defined in UDLM**:
+> [udlm/governance/auth-providers.md](https://github.com/croadfeldt/udlm/blob/main/governance/auth-providers.md).
+> UDLM defines the Auth Provider model and authenticated-session contract. This document
+> extends that model with the explicit session-token revocation lifecycle, triggers, and
+> the Session Revocation Registry that UDLM leaves unspecified.
 
 **Document Status:** ✅ Complete
 **Document Type:** Architecture Reference — Session Lifecycle and Revocation
-**Related Documents:** [Auth Providers](19-auth-providers.md) | [credential management service Model](31-credential-provider-model.md) | [Accreditation and Zero Trust](26-accreditation-and-authorization-matrix.md) | [Event Catalog](33-event-catalog.md) | [Design Priorities](00-design-priorities.md)
+**Related Documents:** [Auth Providers](https://github.com/croadfeldt/udlm/blob/main/governance/auth-providers.md) | [credential management service Model](https://github.com/croadfeldt/udlm/blob/main/governance/credentials.md) | [Accreditation and Zero Trust](https://github.com/croadfeldt/udlm/blob/main/governance/accreditation-and-authorization-matrix.md) | [Event Catalog](https://github.com/croadfeldt/udlm/blob/main/contracts/event-catalog.md) | [Design Priorities](https://github.com/croadfeldt/udlm/blob/main/design-principles/design-priorities.md)
 
 > **This document maps to: DATA + POLICY**
 >

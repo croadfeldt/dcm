@@ -1,16 +1,30 @@
+---
+Document Status: ✅ Complete
+Document Type: Architecture Reference — Federation Runtime
+Maps to: udlm/governance/federated-contribution-model.md
+---
+
 # DCM Data Model — DCM Federation, Peering, and Cross-Instance Coordination
+
+> **Implements contracts defined in UDLM**:
+> [udlm/governance/federated-contribution-model.md](https://github.com/croadfeldt/udlm/blob/main/governance/federated-contribution-model.md).
+> UDLM defines the federated contribution model — how peer DCM instances
+> contribute, share, and govern data across instance boundaries, including
+> the contribution authority and cross-instance trust contracts. DCM
+> operationalizes peer DCMs as typed Providers, the peering and tunnel
+> runtime, and the cross-instance coordination of contributed data.
 
 
 **Document Status:** ✅ Complete  
-**Related Documents:** [Federated Contribution Model](28-federated-contribution-model.md) | [Universal Group Model](15-universal-groups.md) | [data stores](11-storage-providers.md) | [Auth Providers](19-auth-providers.md) | [Information Providers Advanced](21-information-providers-advanced.md)
+**Related Documents:** [Federated Contribution Model](https://github.com/croadfeldt/udlm/blob/main/governance/federated-contribution-model.md) | [Universal Group Model](https://github.com/croadfeldt/udlm/blob/main/observability/universal-groups.md) | [data stores](https://github.com/croadfeldt/udlm/blob/main/contracts/storage-providers.md) | [Auth Providers](https://github.com/croadfeldt/udlm/blob/main/governance/auth-providers.md) | [Information Providers Advanced](https://github.com/croadfeldt/udlm/blob/main/contracts/information-providers-advanced.md)
 
 > **Foundation Document Reference**
 >
 > This document is a detailed reference for a specific domain of the DCM architecture.
 > The three foundational abstractions — Data, Provider, and Policy — are defined in
-> [00-foundations.md](00-foundations.md). All concepts in this document map to one or
+> [udlm/foundations/foundations.md](https://github.com/croadfeldt/udlm/blob/main/foundations/foundations.md). All concepts in this document map to one or
 > more of those three abstractions.
-> See also: [Provider Contract](A-provider-contract.md) | [Policy Contract](B-policy-contract.md)
+> See also: [Provider Contract](https://github.com/croadfeldt/udlm/blob/main/contracts/provider-contract.md) | [Policy Contract](https://github.com/croadfeldt/udlm/blob/main/contracts/policy-contract.md)
 >
 > **This document maps to: PROVIDER + POLICY**
 >
@@ -20,7 +34,7 @@
 
 ---
 
-> **Federated Contribution:** Federation contribution follows the [Federated Contribution Model](28-federated-contribution-model.md) — peer DCMs are contributors to each other's artifact stores, scoped by their federation trust posture.
+> **Federated Contribution:** Federation contribution follows the [Federated Contribution Model](https://github.com/croadfeldt/udlm/blob/main/governance/federated-contribution-model.md) — peer DCMs are contributors to each other's artifact stores, scoped by their federation trust posture.
 
 ## 1. Purpose
 

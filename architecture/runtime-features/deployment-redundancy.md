@@ -1,16 +1,27 @@
+---
+Document Status: ✅ Complete
+Document Type: Architecture Reference — Deployment and Redundancy
+---
+
 # DCM Data Model — Deployment and Redundancy Model
+
+> **DCM-native runtime feature; no single UDLM contract counterpart.**
+> Deployment topology and redundancy are realization-layer concerns. UDLM
+> does not mandate a deployment model — a peer DCM realization could choose a
+> different redundancy strategy and still satisfy every UDLM contract. This
+> document specifies DCM's own deployment and redundancy approach.
 
 
 **Document Status:** ✅ Complete  
-**Related Documents:** [Context and Purpose](00-context-and-purpose.md) | [data stores](11-storage-providers.md) | [Universal Audit Model](16-universal-audit.md) | [Policy Organization](14-policy-profiles.md)
+**Related Documents:** [Context and Purpose](https://github.com/croadfeldt/udlm/blob/main/foundations/context-and-purpose.md) | [data stores](https://github.com/croadfeldt/udlm/blob/main/contracts/storage-providers.md) | [Universal Audit Model](https://github.com/croadfeldt/udlm/blob/main/observability/universal-audit.md) | [Policy Organization](../governance-enforcement/policy-profiles.md)
 
 > **Foundation Document Reference**
 >
 > This document is a detailed reference for a specific domain of the DCM architecture.
 > The three foundational abstractions — Data, Provider, and Policy — are defined in
-> [00-foundations.md](00-foundations.md). All concepts in this document map to one or
+> [udlm/foundations/foundations.md](https://github.com/croadfeldt/udlm/blob/main/foundations/foundations.md). All concepts in this document map to one or
 > more of those three abstractions.
-> See also: [Provider Contract](A-provider-contract.md) | [Policy Contract](B-policy-contract.md)
+> See also: [Provider Contract](https://github.com/croadfeldt/udlm/blob/main/contracts/provider-contract.md) | [Policy Contract](https://github.com/croadfeldt/udlm/blob/main/contracts/policy-contract.md)
 >
 > **This document maps to: DATA + PROVIDER**
 >
@@ -20,7 +31,7 @@
 
 ---
 
-> **Operational guidance:** GitOps the disaster recovery runbook and RTO/RPO tables are in [Operational Reference](41-operational-reference.md) Section 3.
+> **Operational guidance:** GitOps the disaster recovery runbook and RTO/RPO tables are in [Operational Reference](../../reference/operational-reference.md) Section 3.
 
 ## 1. Purpose
 
@@ -448,7 +459,7 @@ Read from any surviving Commit Log replica
 
 ## 8. Network Architecture
 
-> **Full internal auth specification:** See [Internal Component Authentication](36-internal-component-auth.md) for component identity model, Internal CA, bootstrap protocol, and ICOM-001–ICOM-009 system policies.
+> **Full internal auth specification:** See [Internal Component Authentication](../control-plane/internal-component-auth.md) for component identity model, Internal CA, bootstrap protocol, and ICOM-001–ICOM-009 system policies.
 
 ### 8.1 Service Mesh
 

@@ -3,7 +3,7 @@
 **Document Status:** ✅ Complete
 **Status:** Draft — Examples document - no WIP status needed; always current with architecture.
 **Document Type:** Reference Examples
-**Related Documents:** [Foundational Abstractions](../data-model/00-foundations.md) | [Provider Contract](../data-model/A-provider-contract.md) | [Policy Contract](../data-model/B-policy-contract.md) | [Consumer API](consumer-api-spec.md) | [Admin API](dcm-admin-api-spec.md) | [Registration](dcm-registration-spec.md) | [OPA Integration](dcm-opa-integration-spec.md)
+**Related Documents:** [Foundational Abstractions](https://github.com/croadfeldt/udlm/blob/main/foundations/foundations.md) | [Provider Contract](https://github.com/croadfeldt/udlm/blob/main/contracts/provider-contract.md) | [Policy Contract](https://github.com/croadfeldt/udlm/blob/main/contracts/policy-contract.md) | [Consumer API](consumer-api-spec.md) | [Admin API](dcm-admin-api-spec.md) | [Registration](dcm-registration-spec.md) | [OPA Integration](dcm-opa-integration-spec.md)
 
 ---
 
