@@ -42,6 +42,20 @@
   telemetry/monitoring platform (provider-contract §7 / PRV-007).
   First consumer and reference-implementation test bed: the roadfeldt
   homelab observability stack (`roadfeldt-observability`).
+- **Brownfield inventory ingestion — adopt, don't recreate** *(added
+  2026-06-07)* — migrating existing configuration-management estates (Ansible
+  inventory) into DCM. Patterns established from live homelab migrations:
+  (1) inventory groups → DCMGroups, host vars → entity attributes, with
+  brownfield provenance; (2) **adopt-in-place is a hard requirement** — a
+  Quay bucket migration to claim-based provisioning forced a data copy
+  because the provisioner could not adopt the existing bucket; at estate
+  scale that is prohibitive, so DCM ingestion must adopt resources where
+  they stand; (3) embedded plaintext credentials (real finding: inventory
+  carried jump-host/Pi/PiKVM passwords in cleartext) convert to vault-backed
+  credential resources and get flagged for rotation; (4) coexistence —
+  legacy-tool changes surface as drift, and ingestion stays reversible until
+  cutover. Validation use case:
+  `dav/use-cases/cross-domain/ansible-inventory-brownfield-ingestion.yaml`.
 
 
 ### 5. Kessel Integration (pre-implementation evaluation)
