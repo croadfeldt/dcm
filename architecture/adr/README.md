@@ -6,6 +6,16 @@ Short, reviewable summaries of the major architectural decisions in DCM. Each AD
 
 **Reading order:** ADRs 001-003 establish the foundations. Read those first, then jump to whichever ADRs are relevant to your area.
 
+> **ADRs and the UDLM `DecisionRecord`.** These ADRs are the human-authored, prose form of "why the architecture
+> is the way it is." UDLM defines that same WHY as a first-class, machine-trackable record type — the
+> **`DecisionRecord`** in the Knowledge entity-type family (`udlm/entities/knowledge-family.md` §4.5) — anchored to
+> the capability/decision it justifies, paired with [Audit & Tamper Evidence](010-audit-tamper-evidence.md) and
+> field-level provenance ([ADR-012](012-data-assembly-layering.md)). A `DecisionRecord` is the substrate-level,
+> **validation-backed** counterpart of an ADR (it reaches `CANONICAL` only with passing use-case validation); DAV
+> realizes the authoring/validation loop (`dav/docs/findings-resolution-design.md`). Adopt-by-reference per
+> [ADR-017](017-adopting-external-standards.md): DCM records its decisions *as* UDLM DecisionRecords rather than a
+> parallel form.
+
 | ADR | Decision | One-Line Summary |
 |-----|----------|-----------------|
 | [001](001-why-dcm-exists.md) | Why DCM Exists | Unified management plane for on-prem infrastructure — the governance layer above provisioning tools |
