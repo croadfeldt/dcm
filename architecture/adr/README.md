@@ -22,3 +22,4 @@ Short, reviewable summaries of the major architectural decisions in DCM. Each AD
 | [014](014-multi-tenancy-isolation.md) | Multi-Tenancy & Isolation | PostgreSQL RLS enforces tenant isolation at the database layer |
 | [015](015-minimal-infrastructure.md) | Minimal Infrastructure | PostgreSQL is the only required dependency; everything else is optional |
 | [016](016-application-definition-language.md) | Application Definition Language | **OPEN** — How should consumers define multi-resource applications? Options under evaluation |
+| [017](017-brownfield-greening-discovered-ingestion.md) | Brownfield Greening / Discovered Ingestion | Bring existing resources into the four states — two discovery avenues (provider / 3rd-party), Discovered store holds unclaimed, reverse placement → claim → Realized, optional Intent backport; correlation IDs dedup the same resource across sources |
