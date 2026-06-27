@@ -76,3 +76,15 @@ This builds on the §27 component `Identity` block (serial/wwn/mac/location) but
 - **Reverse placement** is a new engine alongside the forward placement engine (ADR-007).
 - Requires the UDLM `four-states.md` clarification in Decision A (#222).
 - The dependency graph stays **emergent** from per-resource Discovered records (#219), never a hand-authored file.
+
+## Best practices
+
+These govern every discovered-ingestion flow:
+
+1. **Minimize unclaimed resources — they are an anti-pattern.** A resource stuck in `Discovered`/unclaimed has **no owning provider**, so it gets no lifecycle management, no authoritative drift reconciliation, and cannot be rehydrated for DR. Lingering unclaimed resources are a tracked **gap**: surface the unclaimed count, alert on it, and drive it toward zero — every discovered resource should converge to **claimed** (a provider owns it) or be explicitly **retired/excluded**. Recorded as a UDLM **Antipattern** (`entities/knowledge-family.md` §4.4): *"long-lived unclaimed discovered resource → claim it (reverse-place + adopt) or retire it."*
+2. **Prefer provider-generated discovery (Avenue 1) over third-party (Avenue 2).** Provider discovery arrives already attributed (effectively claimed), skipping the unclaimed limbo and most correlation work. Third-party is the bootstrap/interim — migrate sources onto real providers as they come online (how the homelab graduates from probes to the Kea/Ceph/libvirt providers).
+3. **Every discovery source MUST emit correlation identifiers** (Decision C). No identifiers → no reliable entity resolution → duplicates.
+4. **One real resource, one entity UUID.** On a correlation match, merge into the existing entity; never mint a second.
+5. **Reconcile, don't overwrite.** A discovered value that contradicts Realized is **drift** — surfaced (OBS-001), never silently merged.
+6. **Backport Intent for anything that must survive DR.** Claimed-but-no-Intent can't be rebuilt; synthesize provider-agnostic Intent (`provenance: discovered-derived`).
+7. **Unclaimed = inventoried, not managed.** Unclaimed resources are queryable for inventory but excluded from lifecycle operations until claimed — they describe reality, they don't yet control it.
