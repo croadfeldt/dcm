@@ -40,8 +40,8 @@
   platform exists or a canned solution is desired, a packaged
   **dcm-observability** component serves as the authoritative
   telemetry/monitoring platform (provider-contract §7 / PRV-007).
-  First consumer and reference-implementation test bed: the roadfeldt
-  homelab observability stack (`roadfeldt-observability`).
+  First consumer and reference-implementation test bed: a homelab
+  observability stack.
 - **Brownfield inventory ingestion — adopt, don't recreate** *(added
   2026-06-07)* — migrating existing configuration-management estates (Ansible
   inventory) into DCM. Patterns established from live homelab migrations:
