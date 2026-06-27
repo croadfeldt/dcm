@@ -13,7 +13,7 @@ Short, reviewable summaries of the major architectural decisions in DCM. Each AD
 > field-level provenance ([ADR-012](012-data-assembly-layering.md)). A `DecisionRecord` is the substrate-level,
 > **validation-backed** counterpart of an ADR (it reaches `CANONICAL` only with passing use-case validation); DAV
 > realizes the authoring/validation loop (`dav/docs/findings-resolution-design.md`). Adopt-by-reference per
-> [ADR-017](017-adopting-external-standards.md): DCM records its decisions *as* UDLM DecisionRecords rather than a
+> [ADR-021](021-adopting-external-standards.md): DCM records its decisions *as* UDLM DecisionRecords rather than a
 > parallel form.
 
 | ADR | Decision | One-Line Summary |
@@ -38,3 +38,4 @@ Short, reviewable summaries of the major architectural decisions in DCM. Each AD
 | [018](018-wire-serialization-event-conventions.md) | Wire Serialization & Event Conventions | snake_case payloads end-to-end (AEP-conformant; Go json tags, Python Pydantic native — no alias generator); CloudEvents envelope; event topics use lowercase dot-notation for broker wildcard routing — the runtime side of UDLM's data-model casing |
 | [019](019-placement-policy.md) | Placement Policy | The 8th typed policy — declarative affinity/anti-affinity/spread/co-locate/pin over abstract `Topology` kinds; engine evaluates; enforces portability. Consumes UDLM ADR-001/002/004 |
 | [020](020-migration-and-operational-gating.md) | Migration & Operational Gating | Migration permission (Governance-Matrix) + sequence (Orchestration-Flow) + freshness gating (GateKeeper) + rehearsal scheduling — reuses existing policy types; control-plane side of UDLM ADR-003/004 |
+| [021](021-adopting-external-standards.md) | Adopting External Standards | Adopt (reference) standards like FOCUS/OpenCost/OSCAL/SCIM — don't absorb; providers declare version support, DCM negotiates |
