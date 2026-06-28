@@ -134,6 +134,8 @@ Event published: { type: "request.initiated", payload: {...}, entity_uuid: X }
 
 **Parallel execution:** Policies that have no data dependencies on each other evaluate concurrently. The Request Orchestrator tracks dependency declarations between policies and executes in parallel where safe.
 
+**Why policy evaluation is event-driven but provider dispatch is synchronous REST.** Policy evaluation is **one-to-many**: a single lifecycle event (e.g. `request.layers_assembled`) may match any number of policies — gating, transformation, recovery — that the orchestrator does not know in advance and that fire independently. That fan-out is exactly what an event bus is for; modeling it as a chain of REST calls would hard-wire a caller↔callee coupling the policy model is designed to avoid. **Provider dispatch is the opposite shape**: it is **point-to-point** (one entity → one selected provider) and the orchestrator needs the realized result *before* it can advance the request, so it is a synchronous REST call ([Provider Contract](../../contracts/provider-contract.md)). The rule across the control plane: *fan-out / "who cares about this happening?"* → events; *point-to-point / "I need this result to continue"* → REST.
+
 ### 2.5 Static Flow Support
 
 Organizations that require guaranteed sequential flows express them as ordered policy sets:
@@ -159,6 +161,22 @@ static_flow_policy_group:
 ```
 
 A static flow is a Policy Group with `concern_type: orchestration_flow` and `ordered: true`. The Request Orchestrator respects the declared order. Static flows integrate with dynamic policies — a dynamic policy can fire alongside the static flow steps.
+
+#### Match-condition grammar
+
+The `condition:` field above is a **match-condition expression** — the same grammar every policy uses to decide whether it fires. It is a boolean expression over the current payload and context:
+
+```
+condition := term (("AND" | "OR") term)*  |  "always"
+term      := <operand> <comparator> <operand>  |  <event_type>
+operand   := <variable-path>  |  <literal>
+comparator:= "=" | "!=" | ">" | ">=" | "<" | "<=" | "IN"
+```
+
+- **`always`** is a **reserved keyword** meaning the condition is unconditionally true — the policy fires on every evaluation of its event. It is the explicit form of "no guard"; use it instead of a tautology so the intent is visible. (Other reserved tokens: `AND`, `OR`, `IN`, `true`, `false`.)
+- **Variable paths** (e.g. `resource_type`, `tenant.profile`, `request.cost_estimated`) resolve **by reference** against the current payload + request context at evaluation time. A bare `request.initiated`-style token is an **event-type match** (true when the triggering event is that type).
+- **Literals** are values, not references: an unquoted number (`500`) or boolean is a literal; `resource_type=Compute.VirtualMachine` compares the resolved `resource_type` variable to the literal enum value. To compare two variables, both sides are paths (`a.x = b.y`); to compare a variable to a fixed value, the right side is a literal. Quote a literal that contains spaces.
+- Evaluation is **side-effect-free** and short-circuits left to right; an unresolvable variable path evaluates the term to `false` (it never errors the request).
 
 ### 2.5a Named Workflows vs Dynamic Policies — How They Compose
 
@@ -269,6 +287,8 @@ cost_estimation_response:
         per_hour: 0.04
   cost_data_timestamp: <ISO 8601>
 ```
+
+**Field reference.** `assembled_fields` — the post-layer-assembly resource spec the estimate is computed from (the cost-relevant subset; provider-agnostic). `requested_duration` — optional ISO-8601 duration; when present, `lifecycle_estimate` = projected total over that duration. `confidence` — provenance of the figure, not a probability: `high` = live Cost Analysis data, `medium` = data older than PT1H, `low` = static fallback table. `breakdown[]` — per-cost-component contribution (`component` is a free-form cost driver such as `compute`/`ip_allocation`; the sum reconciles to `per_hour`). `cost_data_timestamp` — when the underlying rate data was sourced (drives the `confidence` downgrade). On the attribution side, `billing_state` governs whether accrual is charged (`billable` | `non_billable` | `reduced_rate`) and `cost_data_source` records whether the rate came from live `cost_analysis`, a `static` table, or is `unknown`.
 
 ### 3.5 Cost Attribution for Realized Entities
 
