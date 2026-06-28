@@ -321,7 +321,7 @@
 
 | ID | Capability | Consumer | Service Provider | Platform/Admin | Depends On |
 |----|-----------|---------|---------|---------------|-----------|
-| FCM-001 | Consumer Policy Authoring | Author and submit tenant-domain policies (GateKeeper, Transformation, Recovery, Lifecycle, Orchestration Flow, Governance Matrix rules) via API or Flow GUI; receive PR URL and shadow mode results | — | Configure consumer policy authoring permissions (policy_author role); manage review requirements per profile | POL-001, IAM-003, IAM-007 |
+| FCM-001 | Consumer Policy Authoring | Author and submit tenant-domain policies (Gating Policy, Transformation, Recovery, Lifecycle, Orchestration Flow, Governance Matrix rules) via API or Flow GUI; receive PR URL and shadow mode results | — | Configure consumer policy authoring permissions (policy_author role); manage review requirements per profile | POL-001, IAM-003, IAM-007 |
 | FCM-002 | Provider Resource Type Publication | — | Publish Resource Type Specifications and Catalog Items for offered resource types via provider contribution API; receive registry PR for platform admin review | Manage provider contribution registry; configure review requirements for provider specs; manage Organization-tier registry | PRV-001, GOV-003 |
 | FCM-003 | Provider Service Layer Contribution | — | Contribute Service Layers for offered resource types; layers applied during request assembly for all consumers requesting that resource type | Review and activate provider-contributed layers; manage layer compatibility | PRV-001, LAY-002 |
 | FCM-004 | Consumer Resource Group and Definition Contribution | Author and manage resource groups, notification subscriptions, webhook registrations, and cross-tenant authorization records within own Tenant | — | Configure contribution permissions per role; manage Tenant-scoped artifact lifecycle | IAM-007, GOV-002 |
@@ -336,7 +336,7 @@
 
 | ID | Capability | Consumer | Service Provider | Platform/Admin | Depends On |
 |----|-----------|---------|---------|---------------|-----------|
-| SMX-001 | Operational GateKeeper Scoring | Receive risk score and score_drivers with request acknowledgment; understand why score is at its level | Declare `enforcement_class: operational` and `scoring_weight` on contributed GateKeeper policies | Configure operational GateKeeper policies with appropriate weights; manage per-policy enforcement class | POL-001, REQ-004 |
+| SMX-001 | Operational Gating Policy Scoring | Receive risk score and score_drivers with request acknowledgment; understand why score is at its level | Declare `enforcement_class: operational` and `scoring_weight` on contributed Gating policies | Configure operational Gating policies with appropriate weights; manage per-policy enforcement class | POL-001, REQ-004 |
 | SMX-002 | Advisory Validation and Completeness Score | Receive advisory_warnings list with request acknowledgment; understand what optional improvements exist | Declare `output_class: advisory` on advisory Validation policies | Configure advisory Validation policies; manage completeness score thresholds | POL-001, REQ-004 |
 | SMX-003 | Actor Risk History Tracking | View own risk history score and contributing events via Consumer API | — | Monitor actor risk history; reset scores for trusted automation accounts; configure decay parameters | AUD-001, IAM-001 |
 | SMX-004 | Quota Pressure Scoring | Receive quota_pressure as a score driver when approaching Tenant quota limits | — | Configure per-resource-type quota limits; manage free_threshold parameter | IAM-007, REQ-004 |
@@ -344,7 +344,7 @@
 | SMX-006 | Profile Scoring Threshold Management | — | — | Configure approval routing thresholds per profile (auto/reviewed/verified/authorized + custom tiers via named-tier list); manage signal weights; enforce SMX-008 (max auto_approve_below: 50) | POL-005, REQ-004 |
 | SMX-007 | Policy Enforcement Class Override | — | Contribute policies with declared enforcement_class; receive notification when profile overrides enforcement class | Declare per-profile enforcement class overrides; manage regulatory_mandate flag to protect compliance-class policies from demotion | POL-004, POL-005 |
 | SMX-008 | Score Audit Trail | Query risk score and routing decision for own requests; view score_drivers and advisory_warnings | — | Query full Score Record detail including signal breakdown and actor risk history; manage score audit retention | AUD-001, REQ-004 |
-| SMX-009 | Scoring Weight Range Enforcement | — | Declare operational GateKeeper scoring_weight between 1 and 100 | Enforce weight range at policy activation; reject out-of-range weights | SMX-001 |
+| SMX-009 | Scoring Weight Range Enforcement | — | Declare operational Gating Policy scoring_weight between 1 and 100 | Enforce weight range at policy activation; reject out-of-range weights | SMX-001 |
 | SMX-010 | Score Breakdown Audit Inclusion | View score breakdown in request audit record | — | Configure score breakdown storage in Audit Store for all scored requests | SMX-001, AUD-001 |
 
 ---
@@ -477,7 +477,7 @@
 |----|-----------|---------|---------|---------------|-----------|
 | SCH-001 | Request Scheduling | Submit requests with schedule.dispatch: at/window/recurring; SCHEDULED requests visible in GET /api/v1/requests; cancellable before dispatch; receive request.scheduled event | — | Manage Maintenance Windows; configure Request Scheduler; monitor scheduled queue depth | REQ-001 |
 | SCH-002 | Maintenance Windows | Reference maintenance windows in scheduled requests; view available windows at GET /api/v1/maintenance-windows | — | Create/manage/suspend maintenance windows; approve window schedules; configure platform-wide windows | SCH-001, GOV-001 |
-| SCH-003 | Dual Policy Evaluation | — | — | Understand that scheduled requests run GateKeeper at declaration AND at dispatch; dispatch-time failure → FAILED with schedule_policy_rejection (SCH-003) | SCH-001, POL-001 |
+| SCH-003 | Dual Policy Evaluation | — | — | Understand that scheduled requests run Gating Policy at declaration AND at dispatch; dispatch-time failure → FAILED with schedule_policy_rejection (SCH-003) | SCH-001, POL-001 |
 | SCH-004 | Deadline Enforcement | Set not_after on scheduled requests; receive request.failed(schedule_deadline_missed) if deadline passes without dispatch | — | Monitor deadline miss rates; configure alerting on deadline misses | SCH-001, EVT-001 |
 | SCH-005 | Not-After Expiry Failure | Receive FAILED status when scheduled request expires before dispatch | — | Configure not_after enforcement; manage SCHEDULE_EXPIRED recovery policy | SCH-001 |
 | SCH-006 | Maintenance Window Platform Authorization | — | — | Require platform_admin or tenant_admin authority to create/modify Maintenance Windows | SCH-004 |

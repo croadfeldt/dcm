@@ -43,7 +43,7 @@ scenario:
     interaction: policy engine determines which policy groups apply based on tenant's
       profile (minimal) — FSI-scoped groups are excluded by construction
   - domain: policy
-    interaction: any gatekeepers bound to minimal-profile group evaluate (system
+    interaction: any gatings bound to minimal-profile group evaluate (system
       defaults only for this profile)
   - domain: provider
     interaction: service provider allocates VM in the minimal tenant
