@@ -23,7 +23,7 @@ architecture/      Core architecture. ADRs (adr/, 001–016 + README index), the
                    governance-enforcement/, runtime-features/, topology/, persistence/, integrations/).
                    Entry docs: overview.md, layering.md, operator-perspective.md, design-principles.md.
 docs/              Prose specifications/ (consumer-api-spec, dcm-admin-api-spec), engineering/
-                   (ENGINEERING-ALIGNMENT.md), future-features/, holistic-vision.md.
+                   (ENGINEERING-ALIGNMENT.md), holistic-vision.md.
 schemas/           Machine-readable contracts: openapi/ (consumer/admin/provider-callback/operator),
                    jsonschema/ (events, providers, entities, policies, resource-type template),
                    sql/001-initial.sql (18 tables).
