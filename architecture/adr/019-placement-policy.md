@@ -11,7 +11,7 @@ The Placement Engine (ADR-007) tie-breaks on `affinity`/`cost`/`load`, but nothi
 
 ## Decision
 
-Introduce **Placement Policy** — the **8th typed Policy** (alongside GateKeeper, Validation, Transformation, Recovery, Orchestration-Flow, Governance-Matrix, Lifecycle).
+Introduce **Placement Policy** — the **8th typed Policy** (alongside Gating Policy, Validation, Transformation, Recovery, Orchestration-Flow, Governance-Matrix, Lifecycle).
 
 - **Authors declarative placement constraints**: affinity / anti-affinity / co-locate / spread / prefer / avoid / pin, plus weights — keyed on abstract `Topology` **`kind`s** (`zone`/`host`/`power-domain`/…), never provider-native ids.
 - **Declarative only** (no embedded expressions); the **Placement Engine evaluates** it. Output feeds the engine's scoring/tie-break stage.

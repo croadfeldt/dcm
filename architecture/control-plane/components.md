@@ -166,7 +166,7 @@ The Request Orchestrator does not distinguish between named workflows and dynami
 
 **Named Workflow Artifacts** (Orchestration Flow Policies with `ordered: true`) declare an explicit step sequence. An operator reading the workflow can see every step in order. Steps reference payload types from the closed vocabulary. Named workflows are the *explicit, visible skeleton* of a process.
 
-**Dynamic Policies** (GateKeeper, Transformation, Recovery) fire when their match conditions are satisfied, regardless of workflow position. They are not declared in the workflow artifact. They are the *conditional behavior* that fills in the skeleton.
+**Dynamic Policies** (Gating Policy, Transformation, Recovery) fire when their match conditions are satisfied, regardless of workflow position. They are not declared in the workflow artifact. They are the *conditional behavior* that fills in the skeleton.
 
 **Example — request lifecycle:**
 ```
@@ -177,7 +177,7 @@ Named workflow "system/workflows/request-lifecycle" declares:
   Step 4: request.placement_complete → dispatch
 
 Dynamic policies also fire:
-  GateKeeper "vm-size-limits" fires on request.layers_assembled
+  Gating Policy "vm-size-limits" fires on request.layers_assembled
     if cpu_count > 32 → deny
   Transformation "inject-monitoring" fires on request.layers_assembled
     → adds monitoring_endpoint field
@@ -185,7 +185,7 @@ Dynamic policies also fire:
     → NOTIFY_AND_WAIT action
 ```
 
-The named workflow and the dynamic policies are independent artifacts. Adding a new GateKeeper does not modify the workflow. Modifying the workflow does not affect dynamic policies. They compose through the same Policy Engine evaluation on the same events.
+The named workflow and the dynamic policies are independent artifacts. Adding a new Gating Policy does not modify the workflow. Modifying the workflow does not affect dynamic policies. They compose through the same Policy Engine evaluation on the same events.
 
 ### 2.6 Request Orchestrator Responsibilities
 
