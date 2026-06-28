@@ -6,6 +6,8 @@
 **Related:** ADR-010 (Audit & Tamper Evidence), ADR-011 (Sovereignty & Data Residency), ADR-021 (Adopting External Standards by Reference), **ADR-022 (Credential API Selection)**; Internal/External CA + Trust Anchor (ICOM-009); Provider Callback Auth (PCA-001…010); Component Identity; Token Introspection (RFC 7662); Accreditation; Session Revocation
 **Tracking:** "We must uphold, participate in, and expose a full trust model (TLS certs, OAuth, etc.)."
 
+**Flows:** the operational sequences for this are in [`architecture/trust-flows.md`](../trust-flows.md).
+
 ## Context
 
 Trust in DCM cannot be self-declared ("trust me, I'm the control plane") any more than a provider's capability can. DCM operates across organizational and sovereign boundaries, so it must be a **first-class participant in the established, standard trust fabric** — PKI/TLS, OAuth2/OIDC, attestation/accreditation — not a bespoke trust island. Three obligations, each non-negotiable across profiles (strictness varies, existence does not):

@@ -6,6 +6,8 @@
 **Related:** ADR-005 (Provider Abstraction), ADR-007 (Placement Engine), ADR-021 (Adopting External Standards by Reference); UDLM ADR-004 (Provider capability declaration); `governance/credentials.md`; CPX-001…012; AAL (NIST 800-63B)
 **Supersedes (in part):** the `value_retrieval_endpoint` passthrough in `governance/credentials.md`
 
+**Flows:** the operational sequences for this are in [`architecture/trust-flows.md`](../trust-flows.md).
+
 ## Context
 
 A Credential Provider's retrieval path was specified as a `value_retrieval_endpoint` the consumer calls directly. Direct provider→consumer retrieval is **correct and required** — CPX-001 forbids credential *values* from transiting DCM stores. But if that endpoint is the provider's **native** API (Vault, AWS Secrets Manager, a KMS), DCM leaks a **vendor-specific API** to consumers, breaking the vendor-neutrality the rest of the contract guarantees.
