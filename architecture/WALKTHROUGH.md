@@ -124,18 +124,18 @@ backup_policy:
 
 The Policy Engine evaluates all matching policies against the assembled payload. Evaluation follows a three-phase model:
 
-### Phase 1: GateKeeper + Validation (pass/fail, no mutations)
+### Phase 1: Gating Policy + Validation (pass/fail, no mutations)
 
 ```
-Policy: vm-size-limits (GateKeeper)
+Policy: vm-size-limits (Gating Policy)
   Match: resource_type = Compute.VirtualMachine, lifecycle_scope = initial_provisioning
   Result: APPROVED — 4 CPU within AppTeam's 16 CPU quota
 
-Policy: approved-os-images (GateKeeper, tenant-scoped)
+Policy: approved-os-images (Gating Policy, tenant-scoped)
   Match: resource_type = Compute.VirtualMachine, tenant_uuid = AppTeam
   Result: APPROVED — rhel is in AppTeam's approved images list
 
-Policy: eu-data-residency (GateKeeper, hard enforcement)
+Policy: eu-data-residency (Gating Policy, hard enforcement)
   Match: data_residency = EU-WEST
   Result: APPROVED — data_center value "EU-WEST-DC1" is within EU-WEST zone
 ```
@@ -155,7 +155,7 @@ Policy: inject-monitoring-endpoint (Transformation)
 
 The transformation pass runs again to check for convergence. No new mutations — converged in 1 pass.
 
-### Phase 3: Post-mutation GateKeeper
+### Phase 3: Post-mutation Gating Policy
 
 ```
 Policy: vm-size-limits — re-evaluated after transformations
@@ -221,12 +221,12 @@ The IP sub-request goes through its own policy evaluation pipeline — the same 
 ### Core Policies (system-scoped, apply to all IP allocations)
 
 ```
-Policy: ip-sovereignty-zone (GateKeeper, hard enforcement)
+Policy: ip-sovereignty-zone (Gating Policy, hard enforcement)
   Match: resource_type = Network.IPAddress, data_residency = EU-WEST
   Check: IP pool must be in EU-WEST sovereignty zone
   Result: APPROVED — only EU-WEST pools will be considered
 
-Policy: ip-subnet-isolation (GateKeeper, system-scoped)
+Policy: ip-subnet-isolation (Gating Policy, system-scoped)
   Match: resource_type = Network.IPAddress, environment = production
   Check: Production IPs must come from production-designated subnets
   Result: APPROVED — filters candidate pools to production subnets only

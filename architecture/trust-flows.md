@@ -7,7 +7,7 @@ The operational flows behind ADR-022 (DCM Trust Model, incl. Credential API Sele
 |---|---|
 | **Request Orchestrator** (event bus) | carries `credential.requested` / lifecycle events to subscribers |
 | **Placement Engine** (sovereignty pre-filter → accreditation filter → capability filter → score → select) | **is** the credential-API selection engine — credential capability is the capability dimension, attestation is the accreditation filter |
-| **Policy Engine** — GateKeeper / Validation / Transformation / Recovery | profile gating, requirement validation, provenance on mutations, failure handling |
+| **Policy Engine** — Gating Policy / Validation / Transformation / Recovery | profile gating, requirement validation, provenance on mutations, failure handling |
 | **Governance Matrix** (`boundary_control`) | evaluated at the consumer↔producer boundary crossing |
 | **Accreditation** artifact (versioned, time-bounded) | carries `attestation[]`; the accreditation filter reads it |
 | **Audit & Tamper Evidence** (ADR-010) + field provenance | every match/gate/introduction/issuance recorded |
@@ -20,7 +20,7 @@ The operational flows behind ADR-022 (DCM Trust Model, incl. Credential API Sele
 ## Flow 1 — Broker introduction (request → direct issuance)
 1. Consumer submits `credential_requirements` → `credential.requested` on the **Request Orchestrator**. *[reuse]*
 2. **Placement Engine** runs as the selection engine: **sovereignty pre-filter** → **accreditation filter** (= attestation gate, ADR-022) → **capability filter** (credential_capability match) → **score** (credential scoring profile — *new, §P4*) → select producer + spec. *[reuse + P4]*
-3. **GateKeeper/Governance-Matrix** gate the selection on the profile floor (tier/frameworks/FIPS/AAL/residency; vendor-native opt-in). *[reuse]*
+3. **Gating Policy/Governance-Matrix** gate the selection on the profile floor (tier/frameworks/FIPS/AAL/residency; vendor-native opt-in). *[reuse]*
 4. DCM mints an **Introduction Grant** (*new, §P1*) — short-lived, audience-scoped to (consumer, producer, request) — and returns it + producer endpoint + trust anchors. *[P1]*
 5. Consumer connects **directly** to the producer's selected-spec endpoint, presents the Grant; producer validates it against DCM's **JWKS/introspection** (DCM's "expose"). *[reuse + P1]*
 6. Producer issues the credential **direct to consumer** over the standard spec (ACME/EST/OAuth/KMIP). **Value never transits DCM** (CPX-001). *[reuse]*
@@ -59,7 +59,7 @@ DCM, needing a credential for its own identity/user-auth, is just another **cons
 A short-lived, audience-scoped, signed token DCM mints to authorize a **direct** consumer↔producer credential exchange — DCM's "introduction," then it steps out (ADR-022 broker boundary).
 - **Why new:** the existing **DCM Interaction Credential** authorizes *DCM→provider dispatch* (PCA); there is no token for brokering a *consumer↔producer* direct channel. This is that.
 - **Basis:** OAuth 2.0 / **Token Exchange (RFC 8693)** + audience-restricted JWT; producer validates against DCM JWKS — standard, and reuses DCM's existing JWKS/introspection. Conceptually a capability token (cf. macaroons, SPIFFE JWT-SVID).
-- **Fits:** minted in Flow 1.4; a Validation/GateKeeper-class artifact; audited.
+- **Fits:** minted in Flow 1.4; a Validation/Gating Policy-class artifact; audited.
 
 ### P2 — Attestation Verifier + Accreditation Authority registry
 A verifier that turns a *claimed* attestation into a *trusted* one, and a registry of recognized authorities per framework/market.
