@@ -1,6 +1,6 @@
 # Trust & Credential Flows — expressed via existing DCM primitives
 
-The operational flows behind ADR-022 (Credential API Selection) and ADR-023 (DCM Trust Model). **Design intent: express every flow in terms of primitives DCM already has; where a primitive is genuinely missing, propose one that follows DCM's own methodology and industry best practice.** This is the layer between the requirements (ADR-022/023) and engineering — engineering implements *named flows over named primitives*, it does not invent them.
+The operational flows behind ADR-022 (DCM Trust Model, incl. Credential API Selection). **Design intent: express every flow in terms of primitives DCM already has; where a primitive is genuinely missing, propose one that follows DCM's own methodology and industry best practice.** This is the layer between the requirements (ADR-022) and engineering — engineering implements *named flows over named primitives*, it does not invent them.
 
 ## Primitives reused (no change)
 | Primitive | Role in trust/credential flows |
@@ -47,14 +47,16 @@ The operational flows behind ADR-022 (Credential API Selection) and ADR-023 (DCM
 The **Placement Engine scoring model** with a **credential scoring profile** (*new, §P4*): hard **filter/gate** = security + trust(attestation) + fit-for-purpose; **score/tie-break** = portability (standardized > vendor-native) + attestation-strength + lifetime fit. Portability is a tiebreak weight, never a gate (ADR-022 inversion). *[reuse + P4]*
 
 ## Flow 6 — DCM as participant (its own credentials)
-DCM, needing a credential for its own identity/user-auth, is just another **consumer**: it runs Flow 1 through the same orchestrator/placement/gating (no privileged bypass), obtaining from a registered producer or its **Internal CA** (self-producer, own components only). DCM-operational secrets are held + protected per profile (ADR-023). *[reuse]*
+DCM, needing a credential for its own identity/user-auth, is just another **consumer**: it runs Flow 1 through the same orchestrator/placement/gating (no privileged bypass), obtaining from a registered producer or its **Internal CA** (self-producer, own components only). DCM-operational secrets are held + protected per profile (ADR-022). *[reuse]*
 
 ---
 
 ## Proposed NEW primitives (the genuine gaps)
 
+> **v1 scope (ADR-022):** only **P1** is required for v1. **P2** ships thin (self/vendor tiers; accredited + RATS deferred), **P3** is small, **P4** is configuration. Accredited/hardware mechanisms are *declared-but-deferred* until a market needs them (fail-safe rule).
+
 ### P1 — Introduction Grant
-A short-lived, audience-scoped, signed token DCM mints to authorize a **direct** consumer↔producer credential exchange — DCM's "introduction," then it steps out (ADR-023 broker boundary).
+A short-lived, audience-scoped, signed token DCM mints to authorize a **direct** consumer↔producer credential exchange — DCM's "introduction," then it steps out (ADR-022 broker boundary).
 - **Why new:** the existing **DCM Interaction Credential** authorizes *DCM→provider dispatch* (PCA); there is no token for brokering a *consumer↔producer* direct channel. This is that.
 - **Basis:** OAuth 2.0 / **Token Exchange (RFC 8693)** + audience-restricted JWT; producer validates against DCM JWKS — standard, and reuses DCM's existing JWKS/introspection. Conceptually a capability token (cf. macaroons, SPIFFE JWT-SVID).
 - **Fits:** minted in Flow 1.4; a Validation/GateKeeper-class artifact; audited.
