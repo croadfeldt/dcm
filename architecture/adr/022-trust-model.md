@@ -25,6 +25,20 @@ DCM/UDLM **broker** trust; they do **not** custody, pass, or negotiate brokered 
 | **Managed** (brokered consumer↔producer) | the parties | **CPX-001 — value never in DCM** |
 | **DCM-operational** (own TLS/JWKS/component keys) | DCM | DCM **must** hold these — protected per profile (sw → HSM), attested, rotated |
 
+## Broker model — capability boundaries (does brokering limit us?)
+
+**No — brokering *preserves* more capability than the alternatives, because DCM stays out of the path.**
+
+- **Full protocol, not a normalized subset.** The exchange runs **directly** over the *selected* standard spec (OIDC/SCIM for auth; ACME/EST/CMP/KMIP for credentials), so the consumer gets the provider's/protocol's **complete** feature set. The thing that *would* cap capability is the opposite — DCM-as-intermediary forcing a lowest-common-denominator API. Brokering avoids that ceiling; add a more capable provider and consumers can select it immediately.
+- **DCM-as-consumer is symmetric** — for its own needs DCM runs the same flow and gets the same full capability (only special case: its Internal CA for its *own* component identity — a convenience, not a cap).
+
+**What *is* limited — all deliberate:**
+- **DCM's own exposure** — never holds the value / never in the negotiation (CPX-001). A limit on DCM's *trust surface*, not on consumer capability — and the whole security win.
+- **Selection is gated to the market's attestation/security floor** — governance, by design, and overridable within bounds (the request may tighten; `vendor-native` is explicit opt-in).
+- **Composition across capabilities** (identity + credential + compute together) is handled one layer up (Composite Service / orchestration-flow), each capability brokered — not limited.
+
+**The one genuine boundary:** brokering excludes DCM being a **live man-in-the-middle** of the exchange. A future need to *mediate* (centralized live policy-enforcement on every credential *use*, or DCM as a token-exchange intermediary) would need an explicit, narrow, **gated "mediated" mode** that reintroduces the trust-surface/CPX-001 cost — never the default. Most things people reach for here (rotation, revocation, usage audit) are already covered *without* mediation (registries + scheduler; producer + audit trail).
+
 ## Decision — one trust model across five planes (adopt-by-reference, ADR-021)
 
 Each plane is **upheld** (enforced on every interaction), **participated-in** (DCM is a member of the standard system), and **exposed** (DCM publishes its own verifiable posture). DCM's posture across all five is *broker*.
