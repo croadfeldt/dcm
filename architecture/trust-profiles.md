@@ -18,6 +18,16 @@ Profiles (existing DCM ladder; **homelab** = the relaxed end of `minimal`):
 | fsi | mTLS mandatory; enterprise PKI w/ documented chain; OCSP stapling; cert lifetimes ≤ 90d; HSM-protected CA keys |
 | sovereign | mTLS mandatory; **accredited** PKI; in-jurisdiction CA; hardware-protected CA (FIPS L3 HSM); RATS remote attestation of endpoints (RFC 9334) |
 
+### Anchor — root of trust (`anchor_type`, ADR-022)
+*Suggested methods + the settable minimum per profile. `anchor_type` is a pluggable, declared dimension (ADR-022) — public-acme, internal-ca, private-acme, enterprise-pki, authority-list, hardware-rats, transparency-log, spiffe-bundle, tofu, did/ledger, threshold.*
+| | suggested anchor(s) | minimum requirement |
+|---|---|---|
+| homelab/dev | **`public-acme` (Let's Encrypt → ISRG root) for the public TLS edge** + **`internal-ca` or `private-acme` (step-ca) for the mesh/mTLS**; `tofu` bootstrap OK | any rooted anchor (internal-ca / private-acme / public-acme). *Note: a Let's Encrypt **leaf** can root the public edge but **cannot issue** mesh/client certs (CA:FALSE) — use step-ca/internal CA for mTLS.* self-signed only for throwaway dev |
+| minimal | `internal-ca` or `private-acme` (step-ca) mesh; `public-acme` edge optional | a real issuing root (internal-ca / private-acme) — no bare self-signed for the mesh |
+| standard | internal/enterprise PKI or `private-acme` mesh + `public-acme` edge; **`transparency-log` (CT/Sigstore)** recommended; `spiffe-bundle` optional | real CA + CRL/OCSP; transparency-logging recommended |
+| fsi | `enterprise-pki` (documented chain) with **HSM-protected issuing root**; `authority-list` for attestation; CT | HSM-protected issuing CA **+** external `authority-list` for assurance claims |
+| sovereign | **accredited, in-jurisdiction, HSM-L3 issuing root**, root key **`threshold`/ceremony-protected**; external authority roots (CMVP/eIDAS) **+ `hardware-rats`**; disconnected = import + re-anchor | accredited + HSM-L3 issuing root, external-authority attestation, hardware-attested (top tier), quorum-protected root key |
+
 ### Authorization (what they may do)
 | | method |
 |---|---|
@@ -74,6 +84,9 @@ Cross-cutting baseline (ALL profiles, including homelab — strictness scales, e
 profile: sovereign
 region: eu
 trust_floor:                      # default per profile; request may tighten only
+  anchor:        { allowed_types: [accredited-pki, hardware-rats],   # the pluggable anchor_type set
+                   root_protection: threshold, in_jurisdiction: true,
+                   external_authority_required: true }               # homelab e.g.: { allowed_types: [public-acme, internal-ca, private-acme, tofu] }
   identity:      { mtls: required, ca: accredited, endpoint_attestation: required }
   authorization: { min_aal: aal3, step_up: required }
   attestation:   { min_tier: accredited, require_hardware_attested: true,

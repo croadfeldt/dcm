@@ -60,6 +60,25 @@ Credentials are brokered like **placement** (ADR-007): providers **declare** a g
 
 **Summary:** internal TLS root = the universal anchor for *identity/transport/brokering* (and the homelab-everything anchor); external roots are *added* for *attestation* as the market bar rises.
 
+### Anchor methods (`anchor_type` — pluggable, extensible)
+
+The root of trust is **not** fixed to PKI. The trust anchor is declared data (ICOM-009), so **`anchor_type` is a pluggable dimension**: support a small core now, extend by configuration (adopt-by-reference, profile-gated) without redesign. Each profile lists *suggested* methods + a *settable minimum* (see `trust-profiles.md`).
+
+| Family | `anchor_type` | Anchor = trust in… | Tier |
+|---|---|---|---|
+| Hierarchical PKI | `internal-ca`, `public-acme` (LE/ISRG), `private-acme` (step-ca), `enterprise-pki` | a root cert chained to | **v1 core** |
+| Federated identity | `spiffe-bundle`, OIDC/JWKS | node/platform attestation + bundle | core (OIDC) / deferred (SPIFFE) |
+| Out-of-band | `tofu` (pin/PSK) | first-seen key / manual install | **v1 core** (bootstrap) |
+| Authority / trust-list | `authority-list` (eIDAS Trusted Lists, CMVP, root stores) | a curated, signed authority list | deferred (= attestation plane) |
+| Hardware / silicon | `hardware-rats` (TPM/HSM/TEE: SGX/SEV-SNP/TDX/CCA) | manufacturer root, appraised via RATS (RFC 9334) | deferred (fsi/sovereign) |
+| Transparency-backed | `transparency-log` (Certificate Transparency, **Sigstore** Fulcio/Rekor) | append-only public logs + auditability | deferred (recommended standard+) |
+| Decentralized | `did` / `ledger` (W3C DIDs+VCs), web-of-trust | distributed proofs / peer endorsement | declare-extensible only (not built) |
+| Quorum | `threshold` (m-of-n / MPC / key ceremony) | N parties must agree | **root-protection** (sovereign root key), not a general anchor |
+
+**Core (v1):** `internal-ca` / `public-acme` / `private-acme` + OIDC + `tofu` bootstrap. **Deferred (declared, built when a market needs it):** `authority-list`, `hardware-rats`, `transparency-log`, `spiffe-bundle`. **Declare-extensible only:** `did`/`ledger`, web-of-trust. **`threshold`** is the answer to "a single root is a single point of compromise" — used to protect the sovereign root key (cf. DNSSEC root KSK ceremony), not as a day-to-day anchor.
+
+Caveat (homelab): a **`public-acme` (Let's Encrypt) leaf can root the public TLS edge but cannot issue mesh/client certs** (`CA:FALSE`) — pair it with `internal-ca` or `private-acme` (step-ca) for mTLS/workload identity.
+
 ## v1 mandated core vs declared-but-deferred (minimization)
 
 The model is comprehensive; the **mandated v1 implementation is small**, and unbuilt mechanisms are *declared but deferred* — gated by the fail-safe rule: **a profile may require a framework only if the mechanism to verify it exists.**
