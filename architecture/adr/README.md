@@ -16,6 +16,8 @@ Short, reviewable summaries of the major architectural decisions in DCM. Each AD
 > [ADR-021](021-adopting-external-standards.md): DCM records its decisions *as* UDLM DecisionRecords rather than a
 > parallel form.
 
+**DecisionRecord scope & validation.** A `DecisionRecord` is **scoped** (Data·Policy·Provider): **architecture-scoped** records are these ADRs; **policy-scoped** and **provider-scoped** records capture the *why* of a policy or a provider/capability adoption. A record reaches `CANONICAL` via **scope-appropriate validation** — *architecture:* use-case / conformance validation; *policy:* Policy-Engine validation + **Shadow Mode** (a `proposed` policy evaluated against real traffic, never applied); *provider:* attestation verification + conformance. This is **distinct from runtime decisions** (a policy firing, a provider selection), which are captured as **Audit + provenance** ([ADR-010](010-audit-tamper-evidence.md)), **not** DecisionRecords — a DecisionRecord is the deliberate *why* (authoring time, any scope); audit is *what happened* (runtime). The validation runner is therefore not one component but the scope's existing mechanism (conformance / Shadow Mode / attestation verification) — DCM-owned, no external dependency.
+
 | ADR | Decision | One-Line Summary |
 |-----|----------|-----------------|
 | [001](001-why-dcm-exists.md) | Why DCM Exists | Unified management plane for on-prem infrastructure — the governance layer above provisioning tools |
