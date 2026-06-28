@@ -2,7 +2,7 @@
 
 Short, reviewable summaries of the major architectural decisions in DCM. Each ADR answers **"Why does this exist and what does it do?"** — not implementation details.
 
-**Required lens (every ADR / DecisionRecord).** Each decision MUST state its **Data · Policy · Provider** aspects — the three foundational abstractions (ADR-002). *Data* = what's modeled/held (UDLM); *Policy* = what's decided/computed/governed (DCM); *Provider* = what's declared as possible and what executes the mechanism. A decision that can't name all three (or explicitly say "n/a, because…") isn't fully scoped. This is foundational across UDLM, DCM, and DAV.
+**Required lens (every ADR / DecisionRecord).** Each decision MUST state its **Data · Policy · Provider** aspects — the three foundational abstractions (ADR-002). *Data* = what's modeled/held (UDLM); *Policy* = what's decided/computed/governed (DCM); *Provider* = what's declared as possible and what executes the mechanism. A decision that can't name all three (or explicitly say "n/a, because…") isn't fully scoped. This is foundational across UDLM and DCM (and any consumer).
 
 **Reading order:** ADRs 001-003 establish the foundations. Read those first, then jump to whichever ADRs are relevant to your area.
 
@@ -11,8 +11,8 @@ Short, reviewable summaries of the major architectural decisions in DCM. Each AD
 > **`DecisionRecord`** in the Knowledge entity-type family (`udlm/entities/knowledge-family.md` §4.5) — anchored to
 > the capability/decision it justifies, paired with [Audit & Tamper Evidence](010-audit-tamper-evidence.md) and
 > field-level provenance ([ADR-012](012-data-assembly-layering.md)). A `DecisionRecord` is the substrate-level,
-> **validation-backed** counterpart of an ADR (it reaches `CANONICAL` only with passing use-case validation); DAV
-> realizes the authoring/validation loop (`dav/docs/findings-resolution-design.md`). Adopt-by-reference per
+> **validation-backed** counterpart of an ADR (it reaches `CANONICAL` only with passing use-case validation); the
+> authoring/validation loop is realized by a conformant assessment realization (non-normative; nothing here depends on a specific tool). Adopt-by-reference per
 > [ADR-021](021-adopting-external-standards.md): DCM records its decisions *as* UDLM DecisionRecords rather than a
 > parallel form.
 
