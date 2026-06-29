@@ -67,7 +67,7 @@ dcm/
 ├── taxonomy/DCM-Taxonomy.md
 ├── schemas/                               ← OpenAPI, JSON Schema, SQL
 ├── deployment/                            ← (existing deployment artifacts)
-├── dav/                                   ← DCM validation framework
+├── dav/                                   ← validation/assessment testbed (non-normative consumer)
 ├── project-overview.md
 ├── LICENSE
 └── README.md
