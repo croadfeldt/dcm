@@ -30,13 +30,13 @@ A signed, versioned record any party can fetch and verify, composed of six parts
 DCM runs its **own** trust model **on itself**: its trust posture is declared, attested, and verified by the *same* machinery and at the *same* tiers it demands of producers. This is the strongest possible attestation — we are not exempt from our own rules. It also means a producer or customer evaluating DCM uses the *same* tooling they'd use to evaluate any provider (no special case).
 
 ## Per-audience projection (one source, scoped views)
-Same record, audience-scoped lenses (the DAV persona-lens pattern — one source, many projections):
+Same record, audience-scoped lenses (one source, many projections):
 - **Customer** (regulated): the accreditation evidence + conformity assessments for *their* market (FedRAMP/eIDAS/PCI…).
 - **User**: the identity + authorization posture (how they're authenticated, session/revocation guarantees).
 - **Producer**: what DCM requires to register + how DCM authenticates the introductions it brokers.
 - **Consumer**: what's brokered, the CPX-001 guarantee (DCM never sees the value), and the selection/attestation guarantees.
 
-**DAV is the natural renderer/assessor:** DAV is the assessment realization of UDLM — it can **self-assess DCM's trust posture against the trust model** and render the per-audience views (ties to DAV #184: apply DCM's ideals to DAV/DCM themselves). The trust attestation is produced by the same find→track→validate→record loop DAV already implements.
+**Renderer/assessor is an abstract role — non-normative.** The Trust Posture Statement is rendered/verified by **any conformant, independent assessor**; the model names no specific tool and depends on none. An external assessment consumer or testbed *may* exercise this role to produce/validate the views, but that is illustrative, not a structural dependency.
 
 ## Adopt-by-reference for the *form* of attestation too (don't invent)
 Even the *shape* of the attestation follows established forms — **SOC 2 / ISO conformity assessment**, **eIDAS conformity**, **C2PA / in-toto / SLSA** provenance, **RATS** runtime attestation, and the **trust-center / well-known-endpoint** publication pattern. We map onto these, we don't define a new attestation language.
