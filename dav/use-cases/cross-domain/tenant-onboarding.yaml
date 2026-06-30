@@ -31,7 +31,7 @@ scenario:
   - The instance profile's policies are active on the tenant before its first request
   dimensions:
     lifecycle_phase: new_request
-    resource_complexity: compound_service
+    resource_complexity: composite_service
     policy_complexity: cross_domain_constraint
     provider_landscape: mixed
     governance_context: compliance_gated
