@@ -17,7 +17,7 @@ scenario:
   - Profiles are capability sets compared by content set-containment, not by rank
   dimensions:
     lifecycle_phase: new_request
-    resource_complexity: compound_service
+    resource_complexity: composite_service
     policy_complexity: orchestration_flow_static
     provider_landscape: mixed
     governance_context: compliance_gated

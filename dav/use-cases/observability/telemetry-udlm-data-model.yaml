@@ -17,7 +17,7 @@ scenario:
   - Retention governance for exported telemetry is representable
   dimensions:
     lifecycle_phase: new_request
-    resource_complexity: compound_service
+    resource_complexity: composite_service
     policy_complexity: system_defaults_only
     provider_landscape: multiple_eligible
     governance_context: audit_heavy
