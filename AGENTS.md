@@ -61,8 +61,43 @@ README.md, project-overview.md, LICENSE
   - SQL tables → `schemas/sql/001-initial.sql` (18)
   - events → the §65 Event Catalog / UDLM event-catalog (82 across 26 domains)
   - API paths → `schemas/openapi/dcm-consumer-api.yaml` (75) / `dcm-admin-api.yaml` (admin spec)
-  - provider types → 5 (unified provider model: service / information / auth / peer_dcm / process)
-  - policy types → 8, with 2 evaluation modes (Internal via OPA / External via provider)
+  - provider types → 11 (unified provider model; see taxonomy/DCM-Taxonomy.md Part 1 "Provider Types")
+  - policy types → 7, with 2 evaluation modes (Internal via OPA / External via provider)
+
+## Terminology decisions (locked 2026-06-30)
+
+These decisions are settled. Apply them in all documentation and use case authoring.
+
+### Provider hierarchy
+
+**Provider** is the generic interface — any external component that provides capabilities to DCM.
+**Service provider** is one typed provider within that hierarchy (not the top-level name).
+Other provider types include: information, credential, auth, peer_dcm, process, etc.
+Each provider registers with the generic provider interface and declares its capabilities.
+Do NOT use "resource provider" — that rename was proposed but reversed.
+
+### Validation policy (merged)
+
+**Gating Policy has been merged into Validation Policy.** There is no longer a separate "Gating Policy"
+type. Validation Policy now carries two orthogonal properties:
+- `enforcement_class`: `compliance` (boolean deny — halts request) or `operational` (contributes risk score)
+- `output_class`: `structural` (boolean pass/fail) or `advisory` (warnings without blocking)
+
+A validation policy with `enforcement_class: compliance` is what was previously called a "gating policy."
+Do NOT use "gatekeeper policy" (OPA Gatekeeper collision) or "gating policy" as a standalone type.
+
+### Composite service / resource
+
+**Composite service** is DCM's native concept for multi-component architectural patterns.
+Do NOT use "likeC4" as a DCM-native concept — likeC4 is a customer-specific format (PNC).
+A *process provider* can convert likeC4 → composite service, but DCM does not natively speak
+any customer-specific format. UDLM is the core design language; customer format converters
+live outside the core.
+
+### Realized (not fulfilled)
+
+The lifecycle state where a resource exists and is provider-confirmed is called **Realized**.
+Do NOT use "fulfilled."
 
 ## The DCM AI prompt — conversational architecture exploration
 
