@@ -45,7 +45,7 @@ README.md, project-overview.md, LICENSE
 
 ## Operating rules
 
-- **Commits:** `--no-gpg-sign`, author `Chris <chris@estate.com>`, trailer
+- **Commits:** `--no-gpg-sign`, author = the repo owner's public git identity (match `git log -1 --format='%an <%ae>'`), trailer
   `Co-Authored-By: Claude Opus 4.8 <noreply@anthropic.com>`. Commit subjects use a lowercase
   `scope: short description` prefix (`sov:`, `use-cases:`, `docs:`, `observability:`, …) where scope =
   the doc area touched.
