@@ -534,8 +534,8 @@
 | GUI-005 | Admin Panel — Platform Dashboard | Control plane component health grid; provider health summary; pending approvals count; open drift records by severity; request throughput; all driven by GET /api/v1/admin/health | — | Platform Admins, SREs configure dashboard widgets; role-gated sections | HLT-003 |
 | GUI-006 | Admin Panel — Governance and Approvals | Approval queue (all tenants); approval detail with risk score breakdown; authority tier registry editor (drag-and-drop reordering, impact report visualization, degradation acceptance flow); scoring threshold editor (auto_approve_below ≤ 50 hard-stop) | — | Policy Owners and Platform Admins | ATM-004, SMX-001 |
 | GUI-007 | Admin Panel — Audit and Compliance | Platform-wide cross-tenant audit trail; pre-built compliance reports (SOC 2, FedRAMP, HIPAA); audit chain integrity status; correlation ID trace; session and security event feed | — | Auditors, Security team, Platform Admins | AUD-001, SES-003 |
-| GUI-008 | Provider Management — Common Shell | Overview, configuration, health history, audit trail, and notification tabs for all 11 provider types; provider owner role gates access; Platform Admins see all providers | — | Provider owners manage own providers; Platform Admins manage all | PRV-001, IAM-001 |
-| GUI-009 | Provider Management — Type Extensions | Service Provider: capacity, managed entities, naturalization mapping, realization history; secrets management: inventory, rotation, revocation, external CA config, algorithm compliance; Auth Provider: session stats, SCIM sync, connection status; external policy evaluation: trust level, contribution pipeline | — | Provider owners access type-specific tabs for their provider type | GUI-008, PRV-001 |
+| GUI-008 | Provider Management — Common Shell | Overview, configuration, health history, audit trail, and notification tabs per provider, organized by declared CAPABILITY (not a fixed 11-type taxonomy — ADR-005); provider owner role gates access; Platform Admins see all providers | — | Provider owners manage own providers; Platform Admins manage all | PRV-001, IAM-001 |
+| GUI-009 | Provider Management — Type Extensions | Service Provider: capacity, managed entities, naturalization mapping, realization history; secrets management: inventory, rotation, revocation, external CA config, algorithm compliance; authentication capability: session stats, SCIM sync, connection status (auth is a capability, not a standalone provider type — ADR-005); external policy evaluation: trust level, contribution pipeline | — | Provider owners access type-specific tabs for their provider type | GUI-008, PRV-001 |
 | GUI-011 | RHDH Plugin Suite | Use DCM capabilities within Red Hat Developer Hub (RHDH) or Backstage via Dynamic Plugins (@dcm/backstage-plugin-*); no RHDH rebuild required for updates | — | Configure RHDH app-config.yaml with DCM connection; configure Dynamic Plugin loading |
 | GUI-012 | Scaffolder Template Auto-Generation | DCM catalog items automatically generate Backstage Software Templates; new resource types appear as templates without UI code; field schema → JSON Schema → Scaffolder form | — | Configure @dcm/backstage-plugin-catalog-backend; template generation is automatic |
 | GUI-013 | DCM Entity Provider | DCMService (catalog items) and DCMResource (realized entities) appear in RHDH Software Catalog; entities sync every PT5M; search-indexed; tenancy enforced via namespace | — | Service account credential configuration; sync interval configuration |
@@ -663,7 +663,7 @@
 | Federated Contribution Model | 7 |
 | Scoring Model | 10 |
 | Composite Service Composition | 8 |
-| secrets management Model | 12 |
+| Credential Management (CPX) | 12 |
 | Authority Tier Model | 12 |
 | Event Catalog | 7 |
 | API Versioning | 8 |
@@ -707,6 +707,18 @@ PRV-001 (Provider Registration) — parallel critical path
 **Minimum viable DCM capability set (to demonstrate end-to-end lifecycle):**
 
 IAM-001 → IAM-002 → IAM-003 → IAM-007 → CAT-001 → REQ-001 → REQ-002 → REQ-003 → REQ-004 → REQ-005 → REQ-006 → REQ-007 → PRV-001 → PRV-002 → PRV-003 → PRV-004 → PRV-005 → LCM-001 → DRF-001 → DRF-002 → AUD-001
+
+### Findings-review additions (2026-07-07) — capability domains flagged as absent
+
+These domains have ADR backing but were missing from the matrix (consistency review). Rows are
+intentionally concise pointers pending the DCM team's detailed capability breakdown:
+
+| ID | Capability | Description | ADR |
+|----|-----------|-------------|-----|
+| PLP-001 | Placement Policy | Declarative affinity/anti-affinity/spread/co-locate/pin over abstract Topology kinds; the 8th typed policy; engine evaluates + enforces portability | ADR-019 |
+| MIG-001 | Migration & Operational Gating | Migration permission (Governance-Matrix) + sequence (Orchestration-Flow) + freshness gating + rehearsal scheduling | ADR-020 |
+| TRU-001 | Trust Model / Introduction Grant | Five trust planes; credential-API selection; the Introduction Grant primitive for provider onboarding | ADR-022 |
+| ING-005 | Ingestion — claim/adoption + backport | Reverse placement, provider claim (Discovered→Realized), correlation-id entity resolution, Intent backport | ADR-017 |
 
 **21 capabilities for a functional end-to-end demonstration.**
 
