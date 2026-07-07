@@ -2,7 +2,7 @@
 
 **Status:** Accepted  
 **Date:** March 2026  
-**Docs:** Doc 11 (Data Store Contracts), Doc 15 (Universal Groups)
+**Docs:** Data Store Contracts (UDLM), Universal Groups (UDLM)
 
 ## Context
 
