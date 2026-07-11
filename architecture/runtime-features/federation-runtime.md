@@ -280,11 +280,14 @@ dcm_provider_registration:
     audit_forwarding: true         # forward audit records to local Audit Store
     observability_forwarding: true
 
-  # Sovereignty — must be compatible with local requirements
+  # Sovereignty — must be compatible with local requirements. NOTE: these are the peer's CLAIMS.
+  # The tunnel-establishment gate reads Accreditation-Monitor-VERIFIED certification/sovereignty
+  # status (sovereignty_declaration_ref verified at registration; certifications_current in the
+  # Federation Trust Score), never the raw self-declared values below (ADR-022).
   sovereignty_declaration:
     remote_jurisdiction: eu-west
     data_residency_guarantee: true
-    certifications: [ISO-27001, GDPR-compliant]
+    certifications: [ISO-27001, GDPR-compliant]   # claimed; gate uses the verified status, not this
 
   # Health check
   health_check:
