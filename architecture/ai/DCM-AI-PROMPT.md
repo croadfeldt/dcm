@@ -3535,7 +3535,7 @@ The **single enforcement point** for all cross-boundary data and capability deci
 
 **Axis 2 — Data (what):** classification (exact/in/minimum/maximum), resource_type, field_paths (allowlist/blocklist/any with dot-notation paths including wildcards `fields.phi_*`), capability (read/write/store/replicate/export/notify/execute/discover/query/federate).
 
-**Axis 3 — Target (where):** type, specific provider/peer UUID, sovereignty_zone (match/not_in), jurisdiction (includes/excludes/intersects country codes), trust_posture (minimum), accreditation_held (includes/not_includes).
+**Axis 3 — Target (where):** capability (verb × domain) and capability_category (e.g. `realize_resources/Storage`, non-exclusive) — REPLACING the old provider `type` match (ADR-PROV-002; a provider is not a type, a resolved `provider_type` label is derived + non-authoritative), specific provider/peer UUID, sovereignty_zone (match/not_in), jurisdiction (includes/excludes/intersects country codes), trust_posture (minimum), accreditation_held (includes/not_includes).
 
 **Axis 4 — Context (under what conditions):** profile (posture/compliance_domains), zero_trust_posture (minimum level), tls_mutual, hardware_attestation, federated, cross_jurisdiction, cross_tenant.
 

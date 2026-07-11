@@ -818,6 +818,38 @@ POST /api/v1/provider/capabilities/update
 → ACTIVE (capability declarations updated)
 ```
 
+### 7.4a Capability Admission (platform-admin disposition — ADR-PROV-003)
+
+**Default-deny** (`provider-contract.md` PRV-009): by default no use of a provider is allowed — a provider's declared capabilities are **unusable until admitted**, and `effective_capabilities` starts empty. Admission is the platform-admin surface for approving / provisioning / denying each *declared* capability/category at **platform level** — the mechanism and the data that let an admin act on them. (Granular per-tenant/zone/context approval is **policy**, not this surface — see the Governance Matrix.)
+
+**Data — the worklist.** At activation, DCM records every declared capability/category in the DCM-assigned registration verdict's `capability_admissions[]` with `disposition: pending`. A `pending` entry is the admin's to-do item and is **not usable** (default-deny); `effective_capabilities` excludes anything not `approved`/`provisional`. The Admin API and Flow GUI list pending admissions per provider so an admin has an explicit queue.
+
+**Mechanism — the admin action.** A platform admin dispositions a capability via the Admin API:
+
+```
+POST /api/v1/admin/providers/{provider_uuid}/capabilities/{capability}:admit
+{
+  "disposition": "approved | provisional | denied",   # PLATFORM-LEVEL (coarse). Granular per-tenant/zone/
+                                                       # context approval is POLICY (Governance Matrix), not here.
+  "reason": "<required justification>"
+}
+Role: platform_admin (RBAC). Approver requirements are PROFILE-GOVERNED ("default safe"), per PROF-010/PROF-007:
+  standard → 1 platform admin; prod → + security_owner; fsi/sovereign → dual approval + compliance_officer.
+`provisional` runs in shadow (AUDIT_ONLY) for P7D before it may be promoted to `approved`.
+```
+
+Each call:
+- writes an **immutable** `CAPABILITY_ADMIT` audit record (actor + reason + resulting disposition; append-only, current = LIFO-newest);
+- updates `capability_admissions[]` and recomputes `effective_capabilities = declared ∩ admitted ∩ registry-enabled ∩ Governance-Matrix-permitted`;
+- sources the Governance-Matrix rule (`approved`→ALLOW / `provisional`→AUDIT_ONLY / `denied`→DENY / `scope`→ALLOW_WITH_CONDITIONS).
+
+A provider can **never self-admit** — the disposition is admin-owned, never in the provider submission (mirrors trust, ADR-022). Re-scoping or revoking is a new `:admit` call resolving to an explicit disposition (e.g. `denied`), never a destructive edit.
+
+**Easy / streamlined approval (ADR-PROV-003 §h) — so default-deny empowers, not blocks.** The audited-admission floor always holds, but the admission *step* is frictionless three ways:
+- **Profile-default auto-admit.** A low-stringency profile (`minimal`/`dev`/homelab) auto-admits a registered provider's declared capabilities, recording an automatic `CAPABILITY_ADMIT` (`actor: system`, `disposition: approved`, `reason: "<profile> default"`) — audited, not manual. `prod`/`fsi`/`sovereign` still require explicit admin admission. Governed by the profile ("default safe"); the floor (audited admission) is never weakened.
+- **Bulk admit-all.** `POST /api/v1/admin/providers/{provider_uuid}/capabilities:admit-all { "disposition": "approved | provisional", "reason": "<...>" }` admits every `pending` declared capability in one action (each still emits its own `CAPABILITY_ADMIT`), gated `platform_admin`.
+- **Trusted-provider fast-path.** A provider whose attestation yields `trust_posture: verified` may be auto-admitted at registration where the profile permits — the admission decision keys on the DCM-computed trust verdict.
+
 ### 7.4 Deregistration
 
 **Graceful deregistration:**
