@@ -39,6 +39,8 @@ All Admin API endpoints require Bearer token authentication (same as Consumer AP
 | `platform_admin` | All Admin API operations across all Tenants |
 | `tenant_admin` | Tenant-scoped Admin API operations for their own Tenant only |
 
+> **Governed RBAC (ADR-RBAC-001).** These role names are governed **access-role** TaxonomyTerms — the full set (`platform_admin`, `tenant_admin`, `sre`, `auditor`, `security`, `policy_owner`, `finops`, `provider_owner`, `consumer`, `system`) lives in `udlm/registry/instances/access-role-taxonomy.yaml`, not ad-hoc strings. Each endpoint's `Role:` gate resolves to a **dcm-function** permission (e.g. `provider.capability.admit`, `provider.register.approve`), and the role→function grant is the `FunctionCapabilityMatrix` (`udlm/registry/function-capability-matrix.schema.json`). Authorization is **default-deny**, enforced by the one Governance Matrix: an actor holds a function only via a `role_assignment` binding it — an `Identity.Person`/`ServiceAccount` actor, or an `access_grouping` DCMGroup, → role.
+
 Base URL: `/api/v1/admin/`
 
 > **Versioning:** See [API Versioning Strategy](../../architecture/control-plane/api-versioning.md). Breaking changes increment the major version. The Admin API follows the same deprecation lifecycle as the Consumer API, with profile-governed support windows.
