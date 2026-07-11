@@ -17,8 +17,7 @@ JSON Schema / SQL), ADRs, and a taxonomy. **Apache-2.0.**
 ## Layout
 
 ```
-architecture/      Core architecture. ADRs (adr/, 001–016 + README index), the AI prompt
-                   (ai/DCM-AI-PROMPT.md), DCM-Capabilities-Matrix.md, and subsystem folders
+architecture/      Core architecture. ADRs (adr/ + README index), DCM-Capabilities-Matrix.md, and subsystem folders
                    (control-plane/, convergence-engine/, ingestion/, credentials-and-auth/,
                    governance-enforcement/, runtime-features/, topology/, persistence/, integrations/).
                    Entry docs: overview.md, layering.md, operator-perspective.md, design-principles.md.
@@ -54,14 +53,14 @@ README.md, project-overview.md, LICENSE
   number, one decision each) — that is this repo's document-the-why mechanism.
 - **Remotes:** GitHub `croadfeldt/dcm` (origin) + `dcm-project/dcm` (upstream — the canonical project
   home; promote scoped PRs upstream). Default branch `main`; use `gh`.
-- **Counts come from source artifacts, never summary blocks.** Three summary blocks in this repo
-  (README "Key Facts", the AI prompt's self-report, and the old onboarding doc) disagree with each other
-  and with the actual files. When you need a number, read the artifact:
+- **Counts come from source artifacts, never summary blocks.** Summary blocks in this repo (e.g. README
+  "Key Facts", the old onboarding doc) disagree with each other and with the actual files. When you need a
+  number, read the artifact:
   - capabilities → `architecture/DCM-Capabilities-Matrix.md` total (311 across 39 domains)
   - SQL tables → `schemas/sql/001-initial.sql` (18)
   - events → the §65 Event Catalog / UDLM event-catalog (82 across 26 domains)
   - API paths → `schemas/openapi/dcm-consumer-api.yaml` (75) / `dcm-admin-api.yaml` (admin spec)
-  - provider types → 11 (unified provider model; see taxonomy/DCM-Taxonomy.md Part 1 "Provider Types")
+  - providers → declared **capabilities** `(verb × domain)`, not fixed types (ADR-PROV-002); the legacy "provider types" are convenience labels for capability profiles — see `croadfeldt/udlm` capability-discovery.md
   - policy types → 7, with 2 evaluation modes (Internal via OPA / External via provider)
 
 ## Terminology decisions (locked 2026-06-30)
@@ -75,6 +74,11 @@ These decisions are settled. Apply them in all documentation and use case author
 Other provider types include: information, credential, auth, peer_dcm, process, etc.
 Each provider registers with the generic provider interface and declares its capabilities.
 Do NOT use "resource provider" — that rename was proposed but reversed.
+
+> **Refined by ADR-PROV-002 (2026-07-11):** a provider is **not a type** — it declares **capabilities**
+> `(verb × domain)` and occupies non-exclusive **capability categories**; the "typed provider" names above
+> are convenience labels for capability profiles, and policy targets a capability/category, never a provider
+> type. See `croadfeldt/udlm` `capability-discovery.md` + ADR-PROV-002/003/004 + ADR-RBAC-001.
 
 ### Validation policy (merged)
 
@@ -99,16 +103,10 @@ live outside the core.
 The lifecycle state where a resource exists and is provider-confirmed is called **Realized**.
 Do NOT use "fulfilled."
 
-## The DCM AI prompt — conversational architecture exploration
+## Exploring the architecture
 
-`architecture/ai/DCM-AI-PROMPT.md` (~5,950 lines, plain Markdown) is a comprehensive knowledge base of
-every architectural decision, capability, contract, and cross-reference. Load it into Claude (or any
-128K+ context LLM) to explore the architecture conversationally — faster than reading the docs piecemeal.
-
-- **Claude Projects** (best for ongoing use): add the file to a Project's knowledge base; every
-  conversation then has full context.
-- **claude.ai / other LLMs:** attach the file to a conversation; it stays active for the session.
-
-Ask specific questions ("How does the override model work?", "What endpoints does a new service provider
-implement?", "How does the three-tier app example resolve dependencies end to end?"). The prompt grew
-cumulatively, so trust its **section content**, not any fixed section-number index.
+Read the specs directly — the **Layout** and **Read first** sections above route you, and each concern has
+one authoritative doc. The former `architecture/ai/DCM-AI-PROMPT.md` (a 5,950-line full-architecture
+snapshot) was **retired**: it duplicated the specs and drifted stale — it still taught the pre-ADR-PROV-002
+typed-provider model, among other things. Load the specific spec docs you need into context; nothing an
+agent needs is more than one hop away via the map above.
