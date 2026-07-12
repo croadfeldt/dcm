@@ -185,7 +185,7 @@ The logical REST API surface that consumers interact with, as defined in the [Co
 
 ### 2.6 Consumer Rate Limiting and Quota Model
 
-Consumer-side rate limiting and resource quotas are enforced by Gating policies — not hardcoded limits. This keeps quota enforcement consistent with DCM's policy-driven model.
+Consumer-side rate limiting and resource quotas are enforced by compliance validation policies — not hardcoded limits. This keeps quota enforcement consistent with DCM's policy-driven model.
 
 **Request rate limiting (per actor):**
 
@@ -701,7 +701,7 @@ ingress:
    │  "✅ Schema valid"
    │  "✅ All policies pass"
    │  "⚠️  Will be placed in eu-west-1 per sovereignty policy"
-   │  "❌ Gating Policy: VM size exceeds quota — reduce cpu_count"
+   │  "❌ Validation Policy (compliance): VM size exceeds quota — reduce cpu_count"
    │
 7. Human review and approval (standard Git PR workflow)
    │  Branch protection enforces required reviewers
@@ -794,7 +794,7 @@ ingress_surface_taxonomy:
 | `GIT-002` | DCM trusts the Git server's authentication assertion — not user-declared Git configuration. DCM resolves the Git server's verified identity through the registered Auth Provider to produce a fully-resolved DCM actor with the same role, group, and tenant scope mappings as any other user authenticated via the same Auth Provider. |
 | `GIT-003` | Unresolvable Git actor identities are rejected with an actionable PR comment. PRs are never silently ignored. |
 | `GIT-004` | The resolved Git PR actor must have the target Tenant UUID in their tenant_scope. PRs targeting Tenants outside the actor's scope are rejected — same enforcement as API tenant scope checks. |
-| `GIT-005` | DCM posts shadow policy evaluation results as PR review comments on git_pr_open. Gating Policy failures should be surfaced via repository branch protection integration. |
+| `GIT-005` | DCM posts shadow policy evaluation results as PR review comments on git_pr_open. Compliance Validation Policy failures should be surfaced via repository branch protection integration. |
 | `GIT-006` | PR approval status may be declared as an authorization requirement by policy. DCM checks declared reviewer approvals against the PR's actual approval record before processing a merged PR. |
 | `GIT-007` | The Git Request Watcher component is policy-governed: which repositories it monitors, which branches trigger processing, and which resource types may be submitted via Git PR are declared via Policy Group. |
 | `GIT-008` | Actor identity is re-verified at merge time — not assumed from PR open time. A user whose DCM actor is suspended between PR open and merge will be rejected at merge. |

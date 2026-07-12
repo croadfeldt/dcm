@@ -162,7 +162,7 @@ Policy artifact CRUD. Stores policy definitions and provides retrieval API.
 - 🔴 **OPA/Rego integration** — policies are expressed as Rego rules (doc B §4). The policy-manager should embed an OPA engine or delegate to an OPA sidecar for evaluation.
   - **How:** Add OPA Go library as dependency. Load Rego policies from stored artifacts. Evaluate against input payloads.
 
-- 🔴 **Scoring model** — Gating policies produce compliance scores; Validation policies produce completeness scores. The scoring model (doc 29) aggregates these into an approval routing decision.
+- 🔴 **Scoring model** — compliance validation policies produce compliance scores; advisory validation policies produce completeness scores. The scoring model (doc 29) aggregates these into an approval routing decision.
   - **How:** Policy evaluation response includes `score`, `enforcement_class`, and `output_class` fields.
 
 - 🔴 **Provenance on mutations** — Transformation policies modify request payloads. Every modification must record provenance (who, when, which policy, what changed).
