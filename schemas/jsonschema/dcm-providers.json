@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://dcm-project.io/schemas/providers/v1",
   "title": "DCM Provider Schemas",
-  "description": "JSON Schema for DCM Provider registration and capability declarations. 5 provider types: service, information, auth, peer_dcm, process (composite services are a Data concept orchestrated by the Control Plane, not a provider type — see DCM-AI-PROMPT.md). Two policy evaluation modes: Internal (DCM evaluates via OPA) and External (external provider evaluates).",
+  "description": "JSON Schema for DCM Provider registration and capability declarations. A provider is not a fixed type — it declares capabilities (verb × domain) and occupies non-exclusive capability categories (ADR-PROV-002; croadfeldt/udlm capability-discovery.md); the legacy labels service/information/auth/peer_dcm/process are convenience profiles. Composite services are a Data concept orchestrated by the Control Plane, not a provider type. Two policy evaluation modes: Internal (DCM evaluates via OPA) and External (external provider evaluates).",
   "$defs": {
     "provider_type": {
       "type": "string",
