@@ -208,15 +208,15 @@ POST /api/v1/contribute/policy
 Authorization: Bearer <token>
 X-DCM-Tenant: <tenant-uuid>
 {
-  "policy_type": "gating",
+  "policy_type": "validation",
   "handle": "tenant/payments/gating/cost-ceiling",
   "domain": "tenant",
-  "concern_type": "operational",
-  "enforcement": "soft",
+  "enforcement_class": "operational",
+  "output_class": "advisory",
   "match": {...},
   "output": {...},
   "shadow_mode": true,
-  "commit_message": "Add monthly cost ceiling Gating Policy for Payments Tenant"
+  "commit_message": "Add monthly cost ceiling compliance Validation Policy for Payments Tenant"
 }
 
 Response 202:

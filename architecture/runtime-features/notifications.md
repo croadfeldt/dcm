@@ -141,7 +141,7 @@ The notification event taxonomy is a **closed vocabulary** — a finite, version
 | `request.completed` | Provider confirmed realization; Realized State written | Owner |
 | `request.failed` | Request failed at any stage | Owner |
 | `request.cancelled` | Consumer cancelled; request terminated | Owner |
-| `request.gating_rejected` | Gating policy rejected the request | Owner, Policy Owner |
+| `request.gating_rejected` | A compliance Validation Policy rejected the request | Owner, Policy Owner |
 
 ### 4.2 Resource Lifecycle Events
 

@@ -56,7 +56,7 @@ Policy Profile     — complete use-case configuration
 Policy Groups      — single-concern policy collections
   │  composed of
   ▼
-Policies           — individual Transformation / Validation / Gating Policy rules
+Policies           — individual Transformation / Validation rules
   │  optionally sourced from
   ▼
 External Policy Evaluators   — external authoritative policy sources
@@ -82,8 +82,8 @@ Profiles implement the DCM design priority order (see [Foundational Abstractions
 Policies in DCM are not exclusively authored by platform admins. The DCM federated contribution model enables all actor types to author policies within their permitted domain scope:
 
 - **Platform admins** — all domains, all policy types
-- **Consumers / Tenant admins** — tenant domain policies (Gating Policy, Transformation, Recovery, Lifecycle, Orchestration Flow, Governance Matrix rules scoped to their Tenant)
-- **Service Providers** — provider-domain Gating Policy and Validation policies for their resource types
+- **Consumers / Tenant admins** — tenant domain policies (Validation, Transformation, Recovery, Lifecycle, Orchestration Flow, Governance Matrix rules scoped to their Tenant)
+- **Service Providers** — provider-domain Validation policies for their resource types
 - **Peer DCM instances** — policy templates contributed through verified federation relationships
 
 This is not a special case — it is the standard GitOps PR model applied to all contributor types. Consumer-authored policies go through the same lifecycle (developing → proposed → active) with appropriate review requirements per the active profile. See [Federated Contribution Model](https://github.com/croadfeldt/udlm/blob/main/governance/federated-contribution-model.md) for the complete specification.
@@ -784,13 +784,13 @@ policy:
     format: rego                            # or: xacml, custom_json (naturalized to rego)
   activation: active                        # or: proposed (shadow mode)
   # trust_level is DCM-ASSIGNED, not accepted from this payload. Registration defaults to `untrusted`;
-  # raising it to `verified`/`trusted` (Gating Policy = deny authority) requires the PROF-007 formal
+  # raising it to `verified`/`trusted` (compliance Validation Policy = deny authority) requires the PROF-007 formal
   # elevation workflow (dual-approval + P7D shadow). A trust_level supplied in the submission is ignored.
   trust_level: untrusted                    # DCM-assigned default; trusted/verified only via PROF-007
 ```
 
 **Trust levels (Internal mode):**
-- `trusted` — Gating Policy authority (can deny requests)
+- `trusted` — compliance Validation Policy authority (can deny requests)
 - `verified` — Transformation and Validation authority only
 - `untrusted` — advisory only (shadow mode enforcement)
 
@@ -831,8 +831,8 @@ External evaluation introduces governance concerns that Internal mode does not:
 | BBQ-005 | Default failure behavior is `gate` — if the external system is unavailable, the request is denied (fail-closed) |
 | BBQ-006 | Cached results must include the original query timestamp and validity period in provenance |
 | BBQ-007 | Fields injected by external enrichment carry standard field-level provenance: `source_type: external_external_policy_evaluator`, `source_uuid`, and `audit_token` |
-| BBQ-008 | The override control model applies to enrichment-injected fields — a Gating policy may restrict or refuse external enrichment on specific fields |
-| BBQ-009 | External enrichment requires minimum `verified` trust level; Gating Policy authority requires `trusted` with dual-approval elevation |
+| BBQ-008 | The override control model applies to enrichment-injected fields — a compliance Validation Policy may restrict or refuse external enrichment on specific fields |
+| BBQ-009 | External enrichment requires minimum `verified` trust level; compliance Validation Policy authority requires `trusted` with dual-approval elevation |
 
 ### 4.4 Policy Sources and Policy Groups
 
@@ -916,10 +916,10 @@ Request Layer (consumer declared TTL)
   ↓
 Transformation Policy (enrich TTL from business context)
   ↓
-Gating Policy (highest — may lock TTL as immutable)
+Compliance Validation Policy (highest — may lock TTL as immutable)
 ```
 
-A consumer can declare `ttl: P14D` in their request. A Gating policy can override this to `P7D` and lock it immutable if organizational policy mandates shorter maximum lifetimes. A Core Layer can set default TTLs for resource classes. The provenance chain records every modification.
+A consumer can declare `ttl: P14D` in their request. A compliance Validation Policy can override this to `P7D` and lock it immutable if organizational policy mandates shorter maximum lifetimes. A Core Layer can set default TTLs for resource classes. The provenance chain records every modification.
 
 ### 5.5 Expiry Enforcement
 
@@ -936,7 +936,7 @@ Expiry enforcement is a DCM concern — not a provider concern. The provider doe
 | Policy | Rule |
 |--------|------|
 | `LTC-001` | Lifecycle time constraints follow standard data model precedence — layers, request, policies |
-| `LTC-002` | Gating policies may lock lifecycle constraints as `override: immutable` or `immutable_ceiling: absolute` |
+| `LTC-002` | Compliance validation policies may lock lifecycle constraints as `override: immutable` or `immutable_ceiling: absolute` |
 | `LTC-003` | Expiry enforcement is a DCM control plane function — not a provider concern |
 | `LTC-004` | When multiple time constraints exist on an entity, the earliest expiry wins |
 | `LTC-005` | Expired entities that fail to execute their `on_expiry` action enter `PENDING_EXPIRY_ACTION` state and trigger an escalation |

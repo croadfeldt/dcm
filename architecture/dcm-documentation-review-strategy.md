@@ -1,6 +1,6 @@
 # DCM Architecture Documentation — Review Strategy
 
-**Author:** Chris Roadfeldt, Principal Architect  
+**Author:** Chris, Principal Architect  
 **Date:** April 2026  
 **Audience:** DCM Engineering Team
 
