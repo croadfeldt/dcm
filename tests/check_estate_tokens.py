@@ -6,7 +6,7 @@ estate-data repo. This gate scans every tracked text file, tokenizes on [a-z0-9]
 and compares each token's sha256 against a denylist of HASHES (so the denylist itself leaks
 nothing). A hit fails CI with the file/line; the plaintext token is NOT printed.
 
-Wired into .github/workflows/validate.yml. Gate added 2026-07-05. NOTE: unlike the udlm copy, the author surname is NOT denylisted here — architecture docs carry deliberate author attribution; only infrastructure identifiers are gated.
+Wired into .github/workflows/validate.yml. Purge performed + gate added 2026-07-05.
 """
 import hashlib
 import re
@@ -24,6 +24,7 @@ DENY = {
     "4f56851c1b69a1ee591be7f525910fb1bfaee89095c06ef1a90e9cfbe7ac20c9",
     "6cadf2f0f34dc55acde751c0f5e4b7cae56694f304c41bbd77ae351421884008",
     "7e7d8c699ee576ce17f16a12a4eae22b8b01a4e64ce15128c796e0a96c9cb704",
+    "81ca6e9019679c4cf5073ede5f8a28527c869565b5d4725466978d459ae82d65",
     "9078e43e365a0d2849587c33e1623ccdbd92ad1ea81c5762414e9fbee6f20c03",
     "9f566c001b95e0357886c0a7dd79cadbde47a87fc5ed8c5137c9c939b6d5bf3c",
     "b1bf957a6f16444d406d7ff4e261dec297850777e865298822a19a7c9a78d4a3",

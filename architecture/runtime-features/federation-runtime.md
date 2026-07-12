@@ -131,7 +131,7 @@ provider_registration:
 
 ### 3.3 Layer-Defined Federation Defaults
 
-Federation eligibility defaults live in a `platform` domain layer — static organizational knowledge inherited by all providers unless overridden. Individual provider registrations may be **more restrictive** than the layer default (always permitted); **less restrictive** requires Gating policy approval.
+Federation eligibility defaults live in a `platform` domain layer — static organizational knowledge inherited by all providers unless overridden. Individual provider registrations may be **more restrictive** than the layer default (always permitted); **less restrictive** requires compliance Validation Policy approval.
 
 ```yaml
 layer:
@@ -307,7 +307,7 @@ These are non-negotiable on every DCM-to-DCM connection:
 | **Authorization** | Local DCM policies govern ALL resources obtained through a tunnel; remote DCM's policies do not override local |
 | **Audit** | All cross-DCM operations produce audit records in BOTH DCM instances; shared `correlation_id` links the two trails |
 | **Observability** | Cross-DCM resource allocation visible in both instances' observability stores |
-| **Governance** | Local Gating policies apply to all resources from any tunnel source |
+| **Governance** | Local compliance validation policies apply to all resources from any tunnel source |
 
 ---
 
@@ -425,7 +425,7 @@ DCM ships built-in federation policy groups activated by default per profile:
 | `DCM-003` | Local DCM policies govern all resources obtained through DCM tunnels. Cross-DCM operations produce audit records in both DCM instances with a shared correlation_id. |
 | `DCM-004` | DCM state is exportable as a signed package. Imported packages carry a trust score (0-100) computed from source verification, sovereignty compatibility, data completeness, schema compatibility, and audit trail integrity. |
 | `DCM-005` | Resources obtained through DCM tunnels carry compound confidence scores: source_resource_confidence × (tunnel_trust_score / 100). |
-| `DCM-006` | Every provider registration must declare federation_eligibility (mode: none, selective, or open). Federation eligibility defaults are declared in platform domain layers. Individual provider registrations may be more restrictive — never more permissive without Gating policy approval. |
+| `DCM-006` | Every provider registration must declare federation_eligibility (mode: none, selective, or open). Federation eligibility defaults are declared in platform domain layers. Individual provider registrations may be more restrictive — never more permissive without compliance Validation Policy approval. |
 | `DCM-007` | Provider federation scope declares: permitted resource types, permitted operations per type, data sharing permissions, and allocation limits. Remote DCMs cannot decommission local resources through a federation tunnel. |
 | `DCM-008` | Storage providers default to federation_eligibility.mode: none. Data sovereignty constraints prohibit storage federation unless explicitly authorized by sovereign policy with full justification. |
 

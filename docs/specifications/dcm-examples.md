@@ -36,9 +36,9 @@ Orchestration Flow Policy: system/workflows/request-lifecycle
           request.dispatched]
 
 # Dynamic policies (Level 2 orchestration)
-Gating Policy:      org/gating/vm-size-limits         (fires on request.layers_assembled)
+Validation Policy:   org/gating/vm-size-limits         (fires on request.layers_assembled)
 Transformation:  org/transformation/inject-monitoring  (fires on request.layers_assembled)
-Gating Policy:      system/gating/sovereignty-check   (fires on request.placement_complete)
+Validation Policy:   system/gating/sovereignty-check   (fires on request.placement_complete)
 ```
 
 ### Step-by-step
@@ -76,7 +76,7 @@ Event: request.intent_captured
 Event: request.layers_assembled
 → [PARALLEL] All policies matching this payload type evaluate simultaneously:
 
-  Gating Policy vm-size-limits evaluates:
+  Validation Policy vm-size-limits evaluates:
     input.payload.fields.cpu_count.value = 4
     4 <= 32 → allow: true
 
@@ -86,7 +86,7 @@ Event: request.layers_assembled
       operation: "set",
       value: "https://metrics.internal.prod.example.com" }
 
-→ All Gating Policies: allow
+→ All compliance validation policies: allow
 → Transformations applied to payload
 → New event: request.policies_evaluated
 ```
@@ -132,12 +132,12 @@ Consumer polls: GET /api/v1/requests/req-001/status
 
 ## 1.2 Human Approval Gate (Conditional Step Insertion)
 
-A production VM request that requires manager approval before dispatch. Shows how a Gating policy inserts a waiting step without modifying the named workflow.
+A production VM request that requires manager approval before dispatch. Shows how a Validation Policy (enforcement_class: compliance) inserts a waiting step without modifying the named workflow.
 
 ### Setup: Additional active policy
 
 ```rego
-# Gating Policy fires on request.policies_evaluated for prod VMs over $100/month
+# Compliance validation policy fires on request.policies_evaluated for prod VMs over $100/month
 package dcm.gating.prod_vm_approval_gate
 
 deny contains reason if {
@@ -157,11 +157,11 @@ approval_type := "manager_approval" if count(deny) > 0
 
 ```
 After Step 3 (dynamic policies evaluate):
-→ Gating Policy prod_vm_approval_gate fires
+→ Validation Policy prod_vm_approval_gate fires
 → deny: ["Production VMs over $100/month require manager approval"]
 → requires_approval: true, approval_type: "manager_approval"
 
-→ Policy Engine sees Gating Policy deny WITH requires_approval flag
+→ Policy Engine sees the compliance validation policy deny WITH requires_approval flag
 → Entity enters AWAITING_APPROVAL state (not FAILED)
 → Notification dispatched:
     audience: manager (from actor's group membership via relationship graph)
@@ -174,7 +174,7 @@ POST /api/v1/requests/req-001:approve
 { "approval_type": "manager_approval", "approver_uuid": "mgr-001" }
 
 → payload.approvals["manager_approval"] = { approved: true, by: "mgr-001" }
-→ Gating Policy re-evaluates: approval present → allow
+→ Validation Policy re-evaluates: approval present → allow
 → Pipeline resumes from request.policies_evaluated
 → Placement → Dispatch → Realization (same as 1.1 Steps 4-5)
 ```
@@ -183,7 +183,7 @@ POST /api/v1/requests/req-001:approve
 
 ## 1.3 Policy-Gated Request — Hard Block with Clear Error
 
-Shows a request blocked by a hard Gating Policy with a consumer-visible error message.
+Shows a request blocked by a hard Validation Policy (enforcement_class: compliance) with a consumer-visible error message.
 
 ```rego
 package dcm.gating.approved_os_images
@@ -202,7 +202,7 @@ deny contains reason if {
 Consumer submits: { "os_family": "windows-server" }
 
 → request.layers_assembled fires
-→ Gating Policy approved_os_images: deny
+→ Validation Policy approved_os_images: deny
 → Entity → FAILED (no requires_approval flag → hard block)
 
 Consumer response:
@@ -1398,7 +1398,7 @@ itsm_provider_registration:
 1. Consumer: POST /api/v1/requests
      fields: { ... VM configuration ... }
 
-2. Gating policy fires (prod tenant + restricted network):
+2. Compliance validation policy fires (prod tenant + restricted network):
      action: require_itsm_approval
      itsm_provider_uuid: <servicenow-provider-uuid>
      change_type: standard
@@ -1844,7 +1844,7 @@ authority_tiers:
     description: "CISO office — for high-impact or compliance-relevant changes"
 ```
 
-**Gating policy requiring CISO approval:**
+**Compliance validation policy requiring CISO approval:**
 
 ```rego
 package dcm.policy.gate.sovereign_decommission
@@ -1870,7 +1870,7 @@ output := {
 ```
 Request: Decommission VM (restricted data, sovereign profile)
 
-Gating Policy fires:
+Compliance validation policy fires:
   Request → AWAITING_APPROVAL (tier: platform_admin)
   Notification → Platform Admin audience (urgency: high)
 
@@ -1922,7 +1922,7 @@ DCM pipeline:
      (DC2 data center layer, current security baseline, current network config)
 
   3. Policy evaluation runs fresh
-     (current Gating Policy, Validation, Transformation, Placement policies)
+     (current Validation, Transformation, Placement policies)
      Note: Placement constraint: exclude DC1, require DC2
 
   4. Placement Engine selects DC2 provider
@@ -2582,7 +2582,7 @@ resource_type_specification:
         - type: enum
           allowed_values: [tier_1, tier_2, tier_3]
           # Static enum — tier names are intrinsic to the resource type.
-          # Each tier carries policy implications enforced by Gating policies.
+          # Each tier carries policy implications enforced by compliance validation policies.
 
     web_replica_count:
       type: integer
@@ -3011,7 +3011,7 @@ Assembled payload at this point (before policies):
 
 Step 4 — POLICY EVALUATION
 ────────────────────────────
-  Gating Policy — Sovereignty Check:
+  Validation Policy (compliance) — Sovereignty Check:
     PASS: location.sovereignty_zone = eu-west-sovereign
           tenant data classification ≤ restricted
           No cross-border transfer
@@ -3030,7 +3030,7 @@ Step 4 — POLICY EVALUATION
     ADD: fqdn = payments-api-01.fra-dc1.eu-west.corp.example.com
     Provenance: { source: policy/transform/naming-convention }
 
-  Gating Policy — Cost Gate (if estimate > threshold):
+  Validation Policy (compliance) — Cost Gate (if estimate > threshold):
     Estimated cost: $0.38/hour → $274/month
     Tenant monthly budget: $5,000 remaining
     PASS: within budget
@@ -3150,7 +3150,7 @@ composite service definition decomposes the request into constituent requests:
     location: loc-fra-dc1
     db_engine: postgresql
     storage_gb: 500
-    high_availability: true            // enforced by tier_1 Gating policy
+    high_availability: true            // enforced by tier_1 compliance validation policy
     backup_enabled: true               // injected by environment layer
 
 Environment layer injection (env-layer-production):
@@ -3162,7 +3162,7 @@ Environment layer injection (env-layer-production):
   monitoring: mandatory
   log_retention_days: 90
 
-Tier 1 Gating policies fire:
+Tier 1 compliance validation policies fire:
   → Minimum 3 web VMs enforced (3 requested ✓)
   → HA required on database (high_availability: true injected)
   → LTM required in front of web tier (LoadBalancer constituent ✓)
@@ -3242,7 +3242,7 @@ Step 3 — LAYER ASSEMBLY (fresh — current layers used, not original)
      reflects DC2 infrastructure, not DC1)
 
 Step 4 — POLICY EVALUATION (fresh — current policies applied)
-  Gating Policy — Sovereignty Check:
+  Validation Policy (compliance) — Sovereignty Check:
     PASS: loc-ams-dc2 in eu-west-sovereign zone
           Same regulatory scope — GDPR/NIS2 still applies
 
@@ -3334,12 +3334,12 @@ Layer Resolution — key changes since original provisioning:
 
 Policy changes since original provisioning:
 
-  New Gating Policy: "vulnerability_scan_on_rehydrate" (added 2026-06-01)
+  New Validation Policy (enforcement_class: compliance): "vulnerability_scan_on_rehydrate" (added 2026-06-01)
     → Requires: vulnerability_scan_schedule declared before realization
     → Transformation: adds vulnerability_scan_enabled: true, schedule: weekly
 
   Tier 1 minimum web replicas: increased from 3 to 4 (policy updated 2026-08-01)
-    → Gating Policy fires: current request has web_replica_count: 3
+    → Validation Policy fires: current request has web_replica_count: 3
     → Policy action: AUTO_ADJUST (adds one more VM to constituent requests)
     → Consumer notified: "web_replica_count adjusted from 3 to 4 per updated Tier 1 policy"
     → New VM constituent added to rehydration dispatch

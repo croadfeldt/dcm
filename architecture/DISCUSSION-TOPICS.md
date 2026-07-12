@@ -153,7 +153,7 @@ DCM needs a webhook integration model that allows external systems to be notifie
 - Notify an external ITSM system (ServiceNow, Jira) when a request is created, updated, or completed
 - Notify a monitoring system when Entity lifecycle state changes
 - Notify a FinOps platform when new Resource/Service Entities are realized or decommissioned
-- Notify a compliance system when Gating policies fire or sovereignty constraints are applied
+- Notify a compliance system when compliance validation policies fire or sovereignty constraints are applied
 
 **Operational Notifications**
 - Notify SRE teams when provider capacity falls below threshold
@@ -176,7 +176,7 @@ DCM needs a webhook integration model that allows external systems to be notifie
 
 7. **Filtering** — can webhook registrations declare filters — only receive events of specific types, for specific Resource Types, for specific Tenants, or for specific Resource Groups?
 
-8. **Policy Engine integration** — should Gating Policy and other policy types be able to trigger webhook notifications as a policy action? This would make webhooks a first-class policy response alongside ALERT, REVERT, etc.
+8. **Policy Engine integration** — should Validation Policy and other policy types be able to trigger webhook notifications as a policy action? This would make webhooks a first-class policy response alongside ALERT, REVERT, etc.
 
 9. **Provider webhook obligations** — should providers be required to support webhook endpoints as part of their Provider Contract? Or is webhook support optional for providers?
 
@@ -235,6 +235,8 @@ The Intent State is captured when a consumer submits a request but the exact str
 ---
 
 ### TOPIC-003 — Gating Policy vs Validation Policy Distinction
+
+> **⚠️ Superseded (2026-06-30):** this topic's 2026-03 resolution predates the decision to **merge Gating Policy into Validation Policy**. There is no longer a separate "Gating Policy" type — "gating" is now the `enforcement_class: compliance` property of a Validation Policy. The historical text below is retained as a record of the pre-merge distinction; see `taxonomy/DCM-Taxonomy.md` and `AGENTS.md` for the current model.
 
 **Area:** Policy Engine  
 **Priority:** P2  
@@ -351,7 +353,7 @@ The dependency model currently assumes dependencies are resolved within a single
 2. What authorization is required for a cross-tenant dependency? Does the owning Tenant need to approve?
 3. How does cost attribution work for cross-tenant service consumption?
 4. How does drift detection work when a dependency is in another Tenant?
-5. Can a Gating policy block cross-tenant dependencies?
+5. Can a compliance validation policy block cross-tenant dependencies?
 
 ---
 

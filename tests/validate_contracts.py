@@ -42,13 +42,9 @@ USE_FULL = STRICT_OPENAPI and HAVE_OPENAPI_VALIDATOR
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 
 # Contracts with a tracked pre-existing defect — reported, not fatal. Fix + remove.
-KNOWN_BROKEN = {
-    # dcm-admin-api.yaml: broken since its only commit (72afcd9 "Restructure #2",
-    # 2026-04-07) — a duplicate top-level `components:` with a header-less orphaned
-    # schema. Needs reconstruction (owner decision). Tracked here so the gate stays
-    # green on the other contracts until it is repaired.
-    "schemas/openapi/dcm-admin-api.yaml": "duplicate components: block + orphaned schema (never valid)",
-}
+# (dcm-admin-api.yaml — broken since 72afcd9 "Restructure #2" 2026-04-07 — was
+# reconstructed in this change and removed from this list; the gate now validates it.)
+KNOWN_BROKEN = {}
 
 failures = 0
 warnings = 0

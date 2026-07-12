@@ -16,7 +16,7 @@ Migration and operational gating **reuse the existing typed policies** (no new t
 - **Migration *permission*** → **Governance-Matrix** policy: every cross-boundary move is evaluated (sovereignty/jurisdiction — ADR-011); cross-jurisdiction migrations `DENY` / `ALLOW_WITH_CONDITIONS` / dual-approval (ADR-013).
 - **Migration *sequence*** → **Orchestration-Flow** policy: the ordered cutover steps (provision target → replicate → verify → switch → drain) — provider executes each.
 - **Capability match** → **Placement Policy** (ADR-019) extends to require a provider whose `mobility` (ADR-004) satisfies the resource's `data_mobility` (RTO/RPO/online).
-- **Process-validation gating (T6)** → **Gating Policy** policy: `gate_on_stale` ⇒ deny placing/depending-on a critical workload whose `mobility_validation` is `stale`/`failing`. Compliance-class (fail-safe).
+- **Process-validation gating (T6)** → **Validation Policy** (`enforcement_class: compliance`): `gate_on_stale` ⇒ deny placing/depending-on a critical workload whose `mobility_validation` is `stale`/`failing`. Compliance-class (fail-safe).
 - **Rehearsal scheduling** → an operational policy fires `simulated`/`rehearsal` runs on the `process_validation.cadence`; the provider runs them (`operational_capability.rehearsal_support`), evidence is recorded, freshness refreshed.
 
 **A real incident executes the same validated path (T6)** — it validates the outcome; the gates above just ensure the path was proven first.
@@ -24,11 +24,11 @@ Migration and operational gating **reuse the existing typed policies** (no new t
 ## Data · Policy · Provider (required lens)
 
 - **Data (UDLM):** `data_mobility`, `process_validation`, `mobility_validation` evidence (ADR-003) — requirements + observed proof.
-- **Policy (DCM, this ADR):** permission (Governance-Matrix), sequence (Orchestration-Flow), gating (Gating Policy), scheduling (operational) — when/whether/how-gated.
+- **Policy (DCM, this ADR):** permission (Governance-Matrix), sequence (Orchestration-Flow), gating (compliance Validation), scheduling (operational) — when/whether/how-gated.
 - **Provider:** declares `mobility` + `operational_capability` (ADR-004); **executes** the migration mechanism and the rehearsals (naturalization) — unmodeled "how."
 
 ## Options considered
-- **A bespoke "migration policy" type** — rejected: migration permission/sequence/gating are already expressible as Governance-Matrix / Orchestration-Flow / Gating Policy configurations; minimal-core.
+- **A bespoke "migration policy" type** — rejected: migration permission/sequence/gating are already expressible as Governance-Matrix / Orchestration-Flow / Validation configurations; minimal-core.
 - **Reuse existing typed policies + Placement Policy capability match** — **chosen.**
 
 ## Consequences

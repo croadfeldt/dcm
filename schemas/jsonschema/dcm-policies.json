@@ -78,7 +78,7 @@
     "model_a_match": {
       "type": "object",
       "title": "Model A Match — Payload type and field conditions",
-      "description": "Used by pipeline policies: Gating Policy, Validation, Transformation, Recovery, Orchestration Flow.",
+      "description": "Used by pipeline policies: Validation, Transformation, Recovery, Orchestration Flow.",
       "required": ["payload_type"],
       "additionalProperties": false,
       "properties": {
@@ -216,7 +216,7 @@
 
     "gating_output": {
       "type": "object",
-      "title": "Gating Policy Output Schema",
+      "title": "Validation Policy Output Schema (compliance/operational enforcement_class)",
       "description": "Binary allow/deny decision. Compliance enforcement_class: always fail-safe (deny on error). Operational enforcement_class: contributes risk_score_contribution to aggregate score.",
       "required": ["decision", "enforcement_class"],
       "additionalProperties": false,
