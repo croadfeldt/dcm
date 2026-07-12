@@ -38,9 +38,14 @@ same rule set on every interaction. No parallel enforcement paths exist.
 
 ```
 Interaction attempt arrives at boundary:
-  subject  = { type, identity, accreditation_level, tenant }
-  data     = { classification, resource_type, field_paths, capability }
-  target   = { type, identity, sovereignty_zone, accreditation_held, trust_posture }
+  subject  = { type, identity, accreditation_level, tenant,
+               capabilities, capability_categories }      # provider-as-subject matched by capability/category (ADR-PROV-002)
+  data     = { classification, resource_type, field_paths, capability }   # capability here = the INVOKED capability this interaction
+  target   = { identity, sovereignty_zone, accreditation_held, trust_posture,
+               capabilities, capability_categories }      # REPLACES target.type: a provider is matched by its declared
+                                                          # capabilities (verb × domain) and the NON-EXCLUSIVE categories they
+                                                          # form (e.g. realize_resources/Storage), never a provider type. A
+                                                          # resolved provider_type label, if present, is derived + non-authoritative.
   context  = { profile, zero_trust_posture, federated, cross_jurisdiction, ... }
 
 Step 1: Collect matching rules
@@ -89,6 +94,17 @@ Step 7: Enforce decision
   REDACT → interaction proceeds with redacted field values
   AUDIT_ONLY → interaction proceeds; flagged audit record written
 ```
+
+### 1.1 Capability admission sources matrix rules (ADR-PROV-003)
+
+A platform admin's disposition of a provider's *declared* capabilities (`capability_admissions` in the DCM-assigned registration verdict) is authored upstream and enforced **here** — the admission record **sources** Governance-Matrix rules; there is no second "admission matrix" (single enforcement surface, §7). Now that `capability` and `capability_category` are target-axis match sources (§1), each disposition maps onto the existing decision vocabulary:
+
+Two levels, separated by concern:
+
+- **Platform-level admission (admin, coarse):** `approved` → an `ALLOW` rule matching `target.provider_uuid` + `target.capability_category`; `provisional` → `AUDIT_ONLY` (shadow — exercised but non-binding) until promoted (the same shadow mechanism as PROF-007 elevation); `denied` → a `DENY` rule for that provider + capability category. **Default-deny:** absent an `approved`/`provisional` admission, no rule ALLOWs the capability — a provider is unusable until admitted.
+- **Granular approval (policy, conditional):** per-tenant / zone / resource-type / context narrowing is authored as *additional policy rules* (`ALLOW_WITH_CONDITIONS`) — the `matrix-permitted` term. This is the **policy** layer that refines an admitted capability further; it is not an admin-disposition field (ADR-PROV-003). Domain granularity needs no rule — a category *is* verb × domain.
+
+DCM enforces only the **intersecting ceiling** `effective_capabilities = declared ∩ admitted ∩ registry-enabled ∩ Governance-Matrix-permitted` (mirrors `effective_accepts_roles`) — a rule may only *narrow*, never widen, what was declared and admitted. No new evaluation path is added.
 
 ---
 

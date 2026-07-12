@@ -178,7 +178,7 @@ HIPAA/HITECH controls for Protected Health Information (PHI):
 - Encryption at rest: AES-256 required for all PHI storage
 - Transmission security: TLS 1.3 minimum for PHI in transit
 - Breach notification workflow: sovereignty_violation_record triggers HIPAA breach assessment
-- Business Associate Agreement (BAA) tracking: providers handling PHI must declare `baa_in_place: true` in sovereignty_declaration
+- Business Associate Agreement (BAA): providers handling PHI must hold a **verified** BAA accreditation (Accreditation-Monitor-checked) — the HIPAA gate keys on the presence of that verified record (`baa_active`), never on a self-declared `baa_in_place` boolean
 - Right to Access: consumer data export capability required for PHI entities
 - Minimum Necessary standard: data_request_spec on Mode 4 providers limited to minimum PHI fields
 
@@ -190,7 +190,7 @@ General government and public sector controls:
 - Audit retention: P10Y minimum
 - Air-gap capability required for Sensitive compartments
 - Actor authentication must declare clearance level in external_identity claims
-- All provider sovereignty_declarations must declare government_access_risk
+- government_access_risk must be established from the provider's verified jurisdiction/attestation (Accreditation-Monitor / sovereignty accreditation), not a self-declared field — a provider cannot self-attest away foreign-government access exposure
 
 #### `system/group/compliance-fedramp-moderate`
 
@@ -215,7 +215,7 @@ DoD Impact Level 4 — Controlled Unclassified Information:
 
 Sovereign and classified deployment controls:
 - All data must remain within declared sovereignty boundary
-- Air-gap capability: provider air_gap_capable: true required
+- Air-gap capability: required via a **verified** air-gap attestation (accreditation record), not a self-declared `air_gap_capable` boolean
 - Signed bundle import only — no live registry connectivity
 - deny_all cross-tenant cross-boundary data flows
 - Hardware security module (HSM) required for key management
@@ -783,7 +783,10 @@ policy:
     source_url: "https://git.corp/policies" # for pull/bundle modes
     format: rego                            # or: xacml, custom_json (naturalized to rego)
   activation: active                        # or: proposed (shadow mode)
-  trust_level: trusted                      # trusted, verified, untrusted
+  # trust_level is DCM-ASSIGNED, not accepted from this payload. Registration defaults to `untrusted`;
+  # raising it to `verified`/`trusted` (Gating Policy = deny authority) requires the PROF-007 formal
+  # elevation workflow (dual-approval + P7D shadow). A trust_level supplied in the submission is ignored.
+  trust_level: untrusted                    # DCM-assigned default; trusted/verified only via PROF-007
 ```
 
 **Trust levels (Internal mode):**
@@ -1230,6 +1233,7 @@ external_evaluation_airgap:
 | `PROF-007` | External Policy Evaluator trust elevation requires a formal approval workflow (standard: 1 platform admin; prod: platform admin + security owner; fsi/sovereign: dual approval + compliance officer). Elevated providers run in shadow mode for P7D before activation. All elevations produce a POLICY_PROVIDER_ELEVATED audit record. |
 | `PROF-008` | The default TTL for dev profile resources is declared in the system domain layer and overridable at the platform domain level. Per-resource-type TTL overrides are supported. The on_expiry action is configurable. |
 | `PROF-009` | External Policy Evaluator delivery in air-gapped deployments uses signed bundles identical to the registry bundle model. Mode 4 providers in sovereign profiles may only call endpoints within the sovereignty boundary. |
+| `PROF-010` | Platform-admin **capability admission** (ADR-PROV-003) — approving / provisioning / denying a provider's *declared* capabilities/categories at **platform level** (coarse) — reuses the PROF-007 approval structure with **profile-governed** stringency ("default safe": standard → 1 platform admin; prod → + security owner; fsi/sovereign → dual approval + compliance officer). A `provisional` disposition runs in shadow (`AUDIT_ONLY`) for P7D before promotion to `approved`. The action is gated on the `platform_admin` role. **Default-deny**: by default no provider use is allowed — a declared capability is unusable until admitted (`effective_capabilities` starts empty), and no profile weakens this. **Granular / conditional approval** (per tenant/zone/resource/context) is **policy** (Governance-Matrix `ALLOW_WITH_CONDITIONS`), not an admin field. DCM enforces only `effective_capabilities` = declared ∩ admitted ∩ registry-enabled ∩ Governance-Matrix-permitted (the intersecting ceiling, mirroring `accepts_roles`). Every admission change produces an immutable, append-only `CAPABILITY_ADMIT` audit record (actor + reason + resulting disposition); the current disposition is the LIFO-newest such record — never a destructive edit. |
 
 
 

@@ -25,7 +25,7 @@ Define a **discovered-resource ingestion pipeline**:
    - **Third-party-generated**: a non-provider observer (probes, scanners, CMDB, import tools — e.g. the homelab's `virsh`/`oc`/`ceph`/ansible probes) emits Discovered records with **no provider attribution** — **unclaimed**.
 2. The **Discovered store** holds both, durably and queryably (see Decision A).
 3. **Reverse placement** (the inverse of the ADR-007 placement engine): given an unclaimed discovered resource, identify the provider(s) that own or can claim it — by `resourceType` + attributes + provider capability / adopted-standard matrices.
-4. **Provider claim / adoption**: the identified provider asserts control → the record moves **Discovered → Realized**, preserving the entity UUID (UDLM SPEC-DESIGN-REQUIREMENTS §28 (raw/unallocated lifecycle entry) adopt-then-append).
+4. **Provider claim / adoption**: the identified provider asserts control → the record moves **Discovered → Realized**, preserving the entity UUID (UDLM SPEC-DESIGN-REQUIREMENTS §28 (raw/unallocated lifecycle entry) adopt-then-append). A claim on a **third-party-discovered (unclaimed)** resource is not accepted on the provider's word alone — the provider must demonstrate reachability/control (an Avenue-1 provider-generated enumeration that returns the resource), so the assertion is backed by observed control, not a bare declaration. (Provider-generated Discovered records from step 1 are already self-attributed and need no further proof.)
 5. **Intent backport / synthesis** (optional): derive Intent from the Realized/Discovered state so the resource becomes rebuildable (see Decision B).
 
 ```
