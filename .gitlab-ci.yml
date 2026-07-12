@@ -1,0 +1,15 @@
+# GitLab CI mirror of .github/workflows/validate.yml — architecture contract gate.
+# Same check as GitHub Actions so the repo validates wherever it is hosted
+# (croadfeldt/dcm on GitHub; a GitLab mirror if used).
+stages: [validate]
+
+contracts:
+  stage: validate
+  image: python:3.12-slim
+  before_script:
+    - pip install jsonschema pyyaml
+  script:
+    - python3 tests/validate_contracts.py
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+    - if: $CI_COMMIT_BRANCH == "main"
