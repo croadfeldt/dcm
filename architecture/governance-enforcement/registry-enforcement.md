@@ -363,7 +363,10 @@ consumer action.
 DCM enforces the Resource Type Authority model:
 
 - The PR submitter becomes the Resource Type Authority unless `owned_by` is
-  declared otherwise
+  declared otherwise — authority is **conferred by the tier approval** that merges the
+  spec, not self-granted by the declaration in the PR (Tier-1 = 2 DCM maintainers; the
+  submitter is bound to `subject.declared_resource_types`). The PR field records the
+  intended authority; the approval is what makes it effective.
 - The authority is the required approver for all future version PRs
 - No new version of a spec activates without the authority's approval
 - Authority transfer requires a formal transfer PR

@@ -173,6 +173,8 @@ DCM's `authorized` tier approval requires N of M members of a declared DCMGroup 
 
 This is a clean boundary: Kessel answers the structural question ("is this actor authorized to vote?"); DCM answers the state question ("how many valid votes have been recorded?").
 
+> **ADR-RBAC-001 alignment.** DCM's roles, DCM-functions, the role→function matrix, and role-assignments are authored as UDLM **data** (governed `access-role` / `dcm-function` TaxonomyTerms + `FunctionCapabilityMatrix` + `role_assignment`) precisely so they **project onto** this Kessel/SpiceDB model — roles→relations, functions→computed permissions, assignments→relationships — without DCM depending on Kessel. The Auth Provider abstraction is the seam (register Kessel Relations as an auth provider handling checks 1–2). This document stays frozen until Kessel alignment; ADR-RBAC-001 keeps the path open, not required.
+
 #### 4.1.3 DCM's Entity Relationship Graph is NOT an Authorization Graph
 
 This is a critical distinction. DCM's entity relationships — `requires`, `constituent`, `shareable`, `allocated_from`, `peer` — are **operational relationships between infrastructure resources**, not access control relationships. They express: "VM X requires Storage Y", "Composite C has constituent VM X."

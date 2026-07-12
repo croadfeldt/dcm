@@ -141,6 +141,8 @@ This is lower priority than proposals 1-4 but would be a strong differentiator f
 **Effort:** Zero (already built)  
 **Impact:** Immediate for anyone willing to use it  
 
+> **Note (2026-07-11): the AI prompt has since been RETIRED** — it duplicated the specs and drifted stale (it taught the pre-ADR-PROV-002 typed-provider model). Orientation now routes through `AGENTS.md` → the authoritative spec docs. The paragraph below is retained for historical context only.
+
 The AI prompt (DCM-AI-PROMPT.md) is the most comprehensive single document in the project: 5,768 lines covering every architectural decision, every capability, every data structure, and every cross-reference. When loaded into Claude (or any capable LLM), it enables conversational exploration:
 
 - "How does the override model work?" → 2-paragraph answer with doc references

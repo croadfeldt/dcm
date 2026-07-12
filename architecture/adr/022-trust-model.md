@@ -109,12 +109,12 @@ DCM/UDLM earn trust by **self-application** — running this model on themselves
 - **Capability-declared / requirement-selected, value direct, broker-mediated, attestation-gated, market-graded** — **chosen.**
 
 ## Data · Policy · Provider
-- **Data (UDLM):** `credential_capability` + `attestation[]` + `trust_posture` on the provider declaration; `credential_requirements` on the request; the Trust Posture projection.
+- **Data (UDLM):** `credential_capability` + `attestation[]` on the provider declaration; `credential_requirements` on the request. `trust_posture` is **not** on the provider declaration — DCM computes it from the verified `attestation[]` (the attestation ladder above) and records it in the **DCM-assigned registration verdict**; a provider-supplied value is rejected. The Trust Posture projection reads that verdict.
 - **Policy (DCM):** selection (filter/gate/score/select/negotiate) + the five-plane enforcement + profile gating, all audited; broker — never in the value/negotiation path.
 - **Provider:** declares the matrix, furnishes market-required attestation, implements the selected spec, issues **direct** to the consumer under the Introduction Grant.
 
 ## Consequences
 - One coherent model over mostly-existing primitives (Placement, Policy Engine, Governance Matrix, Accreditation, revocation, PCA/Trust-Anchors, OIDC/introspection, Audit). Net-new ≈ P1 + thin P2.
-- New UDLM data: provider capability declaration gains `credential_capability` + `trust_posture`; request gains `credential_requirements`.
+- New UDLM data: provider capability declaration gains `credential_capability` + `attestation[]`; request gains `credential_requirements`. `trust_posture` is DCM-assigned (registration verdict), never a submitted field — it is consumed as an authorization input (Governance Matrix target axis, `convergence-engine/policy-evaluation.md`), so a self-declared value would be self-granted authorization.
 - New conformance: a realization **exposes** its trust posture and **upholds** validation on every plane; a Credential Provider implements each spec it declares + furnishes market-required attestation.
 - Trust becomes **provably** market-appropriate (gated on attested, validatable data) and **self-attested** (we hold ourselves to the same bar).

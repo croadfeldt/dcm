@@ -50,7 +50,6 @@ dcm/
 │   ├── persistence/                       ← PostgreSQL mandate + implementation
 │   ├── integrations/                      ← ITSM, Kessel evaluation
 │   ├── adr/                               ← Architectural Decision Records
-│   ├── ai/DCM-AI-PROMPT.md                ← AI knowledge base
 │   ├── DCM-Capabilities-Matrix.md
 │   ├── DISCUSSION-TOPICS.md
 │   └── deployment/                        ← Deployment topology

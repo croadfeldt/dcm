@@ -257,7 +257,7 @@
 | GOV-003 | Registry Management | — | Register and maintain Resource Type Specifications in organization registry | Manage registry sync; configure registry policies; manage Tier 3 types | PRV-001 |
 | GOV-004 | Resource Type Lifecycle | — | Manage deprecation notices; declare successor types; maintain migration guidance | Enforce deprecation timelines; manage sunset periods | GOV-003 |
 | GOV-005 | Platform Configuration Management | — | — | Manage platform-wide layers; configure profiles; manage deployment manifest | LAY-001, POL-005 |
-| GOV-006 | Bootstrap and Self-Hosting | — | — | Manage DCM self-deployment; verify bootstrap manifest; handle repave scenarios | STO-001 |
+| GOV-006 | Bootstrap and Self-Hosting | — | — | Manage DCM self-deployment; verify bootstrap manifest; handle repave scenarios; at first-run the built-in bootstrap account receives a `platform_admin` `role_assignment` (ADR-RBAC-001) so the admin gate exists before any capability admission | STO-001 |
 
 | GOV-008 | Tenant Onboarding Workflow | Trigger onboarding completion: receive `tenant.onboarding_complete` when first entity OPERATIONAL | — | Execute full provisioning sequence: tenant entity, default groups, quota, admin actor, GitOps namespace, audit stream; dispatch `tenant.created` and member invitation events | IAM-001, STO-008 || GOV-007 | Sovereign Deployment Management | — | — | Manage air-gapped DCM instances; configure signed bundle import; manage offline registry | FED-001, STO-001 |
 
