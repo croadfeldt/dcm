@@ -46,8 +46,10 @@ reflects the live model:
    `depends_on` a node that carries shared dependencies) are ordinary edges; the dependents inherit
    the shared deps as secondary dependencies by graph traversal alone. There is no bundle-expansion
    pass and no bundle type — see the anti-pattern note.
-7. **Detect cycles**; a cycle is a resolution error surfaced to the operator (an orderable estate is
-   a DAG). Report cyclic members rather than guessing an order.
+7. **Detect cycles and emit them as data** (core capability — see below). An orderable estate is a
+   DAG; detection runs on *every* resolution and, rather than only erroring, emits each cycle as a
+   structured `DependencyCycle` finding on the effective graph. The resolver never guesses an order
+   for cyclic members.
 
 ### Anti-pattern: a dedicated bundle type / expansion pass
 
@@ -63,6 +65,36 @@ The result is a DAG of typed edges. Consumers run over it directly:
   start), with control-plane resources held last;
 - **visualizers** — render the resolved graph, distinguishing authored vs derived vs discovered;
 - **impact analysis** — "what breaks if X goes down" is reachability over the same graph.
+
+## Dependency-cycle detection — a first-class, policy-addressable output
+
+A dependency cycle is not merely a resolver error to log — every consumer above *requires* a DAG, so
+a cycle is a platform-level signal. It is exposed as **data** and governed by **policy**, decomposed
+across the Data·Policy·Provider triad:
+
+- **Data (UDLM).** Acyclicity is the declared invariant of the dependency graph (see the UDLM
+  graph-integrity spec). A violation is exposed as a `DependencyCycle` diagnostic —
+  `{members[], edge_chain[], severity, contributing_mechanisms[], detector}`. **Severity is derived
+  from the cycle's own edges:** a cycle whose every edge is `hard` is **blocking** — no safe order
+  exists; a cycle that a `soft` edge closes is **degraded** — orderable by dropping the soft edge, but
+  flagged. UDLM defines the shape; it does not compute it.
+- **Provider (DCM resolution).** The resolution engine computes cycles from the **effective** graph
+  (so derived, discovered, and policy-injected edges are all in scope, not just authored ones):
+  Kahn's longest-path leaves cyclic members with non-zero in-degree, and a DFS then extracts the
+  actual chain for each. Detection is a **core, always-run** step, and every cycle is tagged with the
+  insertion mechanisms that contributed its edges — so "authored ⇄ authored" is distinguishable from
+  "authored ⇄ discovered" (an intent/reality conflict) or "… ⇄ policy-injected" (a rule that closed a
+  loop). Provenance turns a cycle from a dead end into a diagnosable one.
+- **Policy (DCM policy engine).** `DependencyCycle` findings are **policy inputs**. Admission
+  default-denies a **blocking** (all-hard) cycle — a cyclic estate does not realize — while a
+  **degraded** cycle is configurable: warn, quarantine the members, or auto-relax the soft edge with a
+  recorded resolution. Policies match on `graph.cycles` / `graph.cycle_severity` (UDLM policy match
+  sources), so the response is authored, not hard-coded in the engine.
+
+The payoff: "the estate won't order" stops being an opaque failure and becomes a first-class,
+severity-ranked, provenance-tagged, policy-governed signal — the same shape as any other finding the
+platform acts on. Reference realizations already exist: the estate CI's **CYCLE-001** gate (reports
+the offending chain) and the estate-explorer `/api/order` `cycles[]` output.
 
 ## Choosing an authoring pattern (best practice)
 
