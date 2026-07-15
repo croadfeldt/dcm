@@ -5,6 +5,8 @@
 
 Companion to the original working note (June 2026) and to UDLM's schema-sharing, layering, and data-mobility contracts. This version adds the reuse map, the UDLM/DCM boundary, and the value/gating call.
 
+**Provenance.** The **Core·Petal / mBase (modernizationBase)** model originates with **Kevin** — the canonical-Core + per-editor-Petal framing, the retrieval views, governed staged movement ("touch-it-move-it"), and lineage are his. This note does not claim the model; it assesses how it maps onto DCM/UDLM, marks what is reuse versus net-new, and gates the build on a real use case. Credit for the idea is Kevin's; the integration analysis and boundary discipline here are the contribution.
+
 ---
 
 ## 1. Thesis — a re-cast, not a bolt-on
