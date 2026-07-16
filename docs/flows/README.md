@@ -28,8 +28,15 @@ here links its UDLM counterpart.
 |---|---|---|
 | [Request realization](request-realization.md) | An abstract, portable request becomes provider-ready — assembled, enriched, validated, then built | [udlm `docs/flows/request-realization.md`](https://github.com/croadfeldt/udlm/tree/main/docs/flows/request-realization.md) |
 
-**Planned** (same shape): decommission & teardown ordering · drift detection → reconcile · rehydration
-(faithful / provider-portable) · dependency brokering (fulfillment: provider).
+**[request-realization](request-realization.md) is the foundational flow** — it walks the whole model end
+to end. Every other flow is intentionally **lighter and uses it as its base**: it assumes request-realization
+and *references* the shared steps (assemble, place, enrich, reserve, converge) rather than re-explaining
+them, so each use-case flow stays short and specific to what makes that case different. Read
+request-realization first.
+
+**Planned** (same shape): the 21 September-release use cases (each labeled by its Use Case number, grouped by
+persona) · decommission & teardown ordering · drift detection → reconcile · rehydration (faithful /
+provider-portable) · dependency brokering (fulfillment: provider).
 
 ---
 
