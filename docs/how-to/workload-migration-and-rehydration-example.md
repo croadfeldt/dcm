@@ -4,7 +4,7 @@
 (UDLM `four-states.md` §5), shown as **one mechanism** with a **complete** part list — not just compute and a
 disk, but the **IP allocation, network connection, and DNS** a workload actually needs to come back to life.
 
-The honest answer to *"can you cast a VMware VM to an OpenShift VM?"* is **"the model enables it, and DCM can
+The answer to *"can you cast a VMware VM to an OpenShift VM?"* is **"the model enables it, and DCM can
 orchestrate it end-to-end — but DCM never moves the bytes itself (a third-party mover does), and how much ports
 is a function of the requirements, not a promise."**
 
@@ -18,10 +18,10 @@ only in *circumstance*, not mechanism:
 | | **Migration (re-port)** | **Rehydration** |
 |---|---|---|
 | **Trigger** | a planned move — new provider, consolidation, exit | loss / DR event / scheduled rebuild |
-| **Target** | a *different* provider (VMware → OCPVirt) | usually the same provider class; may differ |
+| **Target** | a *different* provider — requirements or provider state changed | a *different* provider — the one that held the original is offline |
 | **Intent source** | the workload's stored requirement set (its original request) | the same stored Intent/Requested/Realized record |
 | **Data source** | a third-party mover from the source (MTV, `virt-v2v`) | a DR replica / backup already staged near the target |
-| **Identity** | a **new** entity (the source may still exist) | the **same UUID preserved** (`RHY-005`); only the provider-side id changes (`provider_entity_id_history`, `REHYDRATE` audit) |
+| **Identity** | a **new** entity (the source may still exist) | a **new** realized entity, new UUID — the original is gone, so the workload is re-realized from intent. *(A faithful restore from the **Realized** record while its provider is still available can instead preserve the UUID — `RHY-005`, four-states §5.1 — a different scenario than this one.)* |
 | **Sovereignty/tenancy** | evaluated for the target | **re-evaluated under *current* policy** (`RHY-001`) — may land in `PENDING_REVIEW` |
 | **Ordering** | the dependency graph | the same dependency graph (`entities/service-dependencies.md`) |
 
@@ -31,15 +31,15 @@ mechanism below is written once; migration and rehydration are two entry points 
 
 ---
 
-## Set expectations first (the caveats)
+## Set expectations first
 
 - **Enablement, not execution — but automatable end-to-end.** DCM + the model give you the *data framework* to
   plan and drive the rebuild. **DCM never moves the bytes itself** — a **third-party mover** does (MTV,
   `virt-v2v`, backup/restore, storage replication). But that mover is a **Process DCM can orchestrate**: where it
   exposes an automatable interface and a provider/automation naturalizes it, DCM sequences the whole flow as
-  **one unattended run**. *"Third party" means not DCM's own byte-mover — not a manual human step.* The caveat is
-  real: the providers, the mover's process, and the automation must be built for it, or the data step falls back
-  to a manual mover.
+  **one unattended run**. *"Third party" means not DCM's own byte-mover — not a manual human step.* This requires
+  that the providers, the mover's process, and the automation are built for it; absent that, the data step falls
+  back to a manual mover.
 - **A rebuild, not a lift-and-shift.** You re-realize the workload from its *requirements* on the target's native
   services. The substrate never carries the source's native form across (naturalization boundary, DCM ADR-023).
 - **Portability is not 100 %.** Source-specific features with no target equivalent don't port; a
@@ -205,11 +205,15 @@ you expressed as requirements* portable, and tells you honestly what's left.
 
 ## Rehydration — the same flow, a different trigger
 
-Rehydration reuses **Example A's flow verbatim**, with three deltas that fall straight out of the table above:
+Rehydration reuses **Example A's flow verbatim**, with these deltas that fall straight out of the table above:
 
-- **Same UUID, not a new entity** (`RHY-005`) — the entity identity is preserved; only the provider-side id
-  changes, recorded in `provider_entity_id_history` under a `REHYDRATE` audit action. The `Network.IPAddress` and
-  `hostname` are often **reserved** so the workload returns to the same coordinates.
+- **A new resource on a new provider** — the scenario here is that the provider holding the original is
+  **offline**, so there is nothing to restore in place: the workload is **re-realized from its stored intent** as
+  a **new entity with a new UUID**, placed on a currently-available provider. Lineage is preserved — the new
+  Intent records the source it was rehydrated from (`source_store` / `source_record_uuid`, a `rehydration`
+  provenance source, four-states §5.2) — and relationships that pointed at the lost entity re-point to the
+  replacement. *(The other case — a faithful restore from the **Realized** record while its provider is still
+  available — preserves the same UUID per `RHY-005`; that is a different scenario than this one.)*
 - **The DR data is already staged** — the "mover" step is a **replica/backup activation** near the target rather
   than a cross-provider pull, so it is typically faster and lower-loss than a migration's mover.
 - **Sovereignty/tenancy re-evaluated under *current* policy** (`RHY-001`) — a rehydration into today's estate may
@@ -218,11 +222,11 @@ Rehydration reuses **Example A's flow verbatim**, with three deltas that fall st
   outage, not a plan) differs.
 
 Everything else — placement, IP allocation, private-network attach, gateway, DNS, reconcile — is the identical
-dependency-ordered sequence. That is the point: **one enabled solution serves both.**
+dependency-ordered sequence — **one enabled solution serves both.**
 
 ---
 
-## What DCM orchestrates vs. what genuinely needs a human
+## What DCM orchestrates vs. what needs a human
 
 - **Data movement / repopulation** — never DCM's own bytes; always a **third-party mover** (MTV, `virt-v2v`,
   backup/restore, replication). But an automatable mover is **DCM-orchestrated automation, not a human step** —
