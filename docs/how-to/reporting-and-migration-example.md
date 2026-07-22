@@ -33,6 +33,26 @@ So a re-port is: **take the original requirement set → re-scope it against the
 automation) rebuilds.** Scoping an element *higher* (Base/Type) is how you extend portability wherever a target
 can honor it — that is the whole reason `SharedDataElement` carries a scope.
 
+## Portability lives at the *intent* level — which is the whole game
+
+Everything above turns on one thing: **portability is a property of the *intent* (the abstracted requirement),
+not of the native construct.** Two consequences — and they are the same coin:
+
+- **Intent is the pivot; it dissolves the "NSX vs OVN" debate.** You never translate the source construct to the
+  target's. You ask what the workload *needs* — `isolation: private` — and let each provider satisfy it natively:
+  NSX with a security group, OVN with a `NetworkPolicy`. So each provider maps to **intent**, once (source →
+  intent at capture; intent → target at realization) — **N mappings, not N²**. The abstracted requirement is the
+  canonical middle, so the pairwise-translation problem never arises because it is never attempted. The focus is
+  *what is needed from* NSX and OVN respectively, not how one maps to the other.
+- **So the starting point is everything — captured intent vs brownfield.** The clean case assumes the intent *is
+  available*. A workload realized *through* DCM has it (the request **is** the intent). A **brownfield** resource
+  discovered in the field carries only the native construct — the NSX group, not the `isolation` behind it — so
+  **greening** (DCM ADR-017) must first **reverse-derive** the requirement, and that recovery is **imperfect**.
+
+These are the same statement: the model ports *intent*, so a re-port is only ever as good as the intent you
+have. Green / intent-based → clean rebuild-per-requirement. Raw brownfield → recover-intent-first, partial. **Be
+honest about which starting point you're on** — it, not the target provider, sets the ceiling.
+
 ## Example A — portable migration (Base/Type only)
 
 A VM requested at the **Type Class** with portable requirements only:
@@ -90,8 +110,11 @@ expressed as requirements* portable, and tells you honestly what's left.
 - **Data movement / repopulation** — a mover (MTV, `virt-v2v`, backup/restore). Never DCM.
 - **The non-portable remainder** — provider-specific features with no target equivalent; surfaced, not silently
   dropped.
-- **Advanced rebuilds** — where even the requirements need reshaping; the original request is still the starting
-  point, not a blank page.
+- **Brownfield intent recovery** — a resource discovered in the field carries the native construct, not the
+  intent behind it; greening (ADR-017) reverse-derives the requirement, imperfectly. The re-port can't be better
+  than the recovered intent.
+- **Advanced rebuilds** — where even the requirements need reshaping; the original request (or the recovered
+  intent) is still the starting point, not a blank page.
 
 ## References
 - UDLM **ADR-038** — the scoped-Class model + *Re-porting* + *Operational expectations* (this doc is the "how" it
