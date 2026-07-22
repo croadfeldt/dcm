@@ -1,14 +1,20 @@
 # Re-porting a workload across providers — a worked example (and its limits)
 
 **What this is.** The concrete migration process behind the model's "re-porting" (UDLM ADR-038). It exists
-because the honest answer to *"can you cast a VMware VM to an OpenShift VM?"* is **"the model enables it; it does
-not perform it — and how much ports is a function of the requirements, not a promise."**
+because the honest answer to *"can you cast a VMware VM to an OpenShift VM?"* is **"the model enables it, and DCM
+can orchestrate it end-to-end — but DCM never moves the bytes itself (a third-party mover does), and how much
+ports is a function of the requirements, not a promise."**
 
 ## Set expectations first (the caveats)
 
-- **Enablement, not execution.** DCM + the model give you the *data framework* to plan and drive a re-port — the
-  requirements, the dependency set, the eligible targets, and what won't fit. **Moving or repopulating the data
-  is always a third party** (e.g. **MTV** for VMware→OCPVirt disk migration). DCM alone cannot move a disk.
+- **Enablement, not execution — but automatable end-to-end.** DCM + the model give you the *data framework* to
+  plan and drive a re-port — the requirements, the dependency set, the eligible targets, and what won't fit.
+  **DCM never moves the bytes itself** — a **third-party mover** does (e.g. **MTV** for VMware→OCPVirt disk
+  migration). But that mover is just a **Process DCM can orchestrate**: where it exposes an automatable interface
+  and a provider/automation naturalizes it, DCM sequences the whole re-port — plan → provision target → invoke
+  the mover → reconcile — as **one fully-automated flow**. "Third party" means *not DCM's own byte-mover* —
+  **not** *a manual human step*. The caveat is real: the providers, the mover's process, and the automation must
+  be built for it; where they aren't, the data step falls back to a manual mover.
 - **A re-port is a rebuild, not a lift-and-shift.** You re-realize the workload from its *requirements* on the
   target's native services — the same as redeploying to a new cloud. The substrate never carries the source's
   native form across (naturalization boundary, ADR-023).
@@ -99,15 +105,20 @@ requirements:
    intent behind it was captured as a Type-class requirement (above); the raw NSX group name does **not** cross.
    `distributed_switch` has no OCPVirt equivalent and is dropped, **flagged as non-portable** in the re-port
    report — a human decides whether it mattered.
-3. **A third party moves the disk** — MTV performs the VMware→OCPVirt disk migration; DCM re-realizes the spec
-   around it. Partial/assisted success — expected and made explicit.
+3. **The mover moves the disk — DCM orchestrating it.** MTV performs the VMware→OCPVirt disk migration; DCM
+   **invokes and tracks it as a Process** (naturalized like any provider call) and re-realizes the spec around
+   it. Wired that way, the disk step runs *inside* the automated flow, not as a manual pause; only an
+   un-automatable mover forces a hand-off. Assisted success on the non-portable remainder — expected and explicit.
 
 The difference between A and B is **not** the mechanism; it's how much of the requirement set was expressed
 portably (Base/Type) vs locked to the provider. The model doesn't make NSX portable — it makes the *portion you
 expressed as requirements* portable, and tells you honestly what's left.
 
-## What always needs a human or a third party
-- **Data movement / repopulation** — a mover (MTV, `virt-v2v`, backup/restore). Never DCM.
+## What DCM orchestrates vs. what genuinely needs a human
+- **Data movement / repopulation** — never DCM's own bytes; always a **third-party mover** (MTV, `virt-v2v`,
+  backup/restore). But an automatable mover is **DCM-orchestrated automation, not a human step** — the whole
+  re-port runs unattended when the mover, its provider, and the automation exist. Only an *un-automatable* mover
+  forces a human.
 - **The non-portable remainder** — provider-specific features with no target equivalent; surfaced, not silently
   dropped.
 - **Brownfield intent recovery** — a resource discovered in the field carries the native construct, not the
