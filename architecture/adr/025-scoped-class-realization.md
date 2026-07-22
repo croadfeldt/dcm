@@ -24,19 +24,20 @@ This ADR records **where that engine half lives in DCM**. The important finding:
 | Ingest / promote vocabularies (`proposed → canonical`) | Brownfield greening / discovered ingestion (ADR-017) — extended per UDLM ADR-039 |
 | Audit records; sovereignty gate at resolve | Audit & tamper-evidence (ADR-010); sovereignty & residency (ADR-011) |
 
-**2. DCM is the domain for the Provider-Class and data-layer *definitions*.**
+**2. DCM is the domain for the non-canonical *definitions* — classes and layers — as a policy/profile feature.**
 
-UDLM defines Base + Type classes and the *grammar* for the layers below; the **definitions that fill that grammar are not UDLM's** (UDLM ADR-038, *Authorship & domain*). DCM is where they live and are governed:
+UDLM defines the Base/Type Class **spec** and the layer contract, ships the **canonical** Base/Type library, and **instructs DCM** what to do with instances of them (UDLM ADR-038, *Authorship & domain*). The definitions that fill those specs — provider- and org-authored — live and are governed here:
 
-- **Provider Classes are provider-authored.** A `Compute.VM.OCPVirt` definition is a provider-created artifact. DCM **registers** the provider-contributed Class, **validates** it against the UDLM Type-class grammar (Liskov — add/refine, never contradict; the contribution gate), and exposes it for Class-path resolution and capability matching. Registration + validation extend the naturalization boundary (ADR-023) and the trust model (ADR-022 — who may contribute).
+- **Provider Classes are provider-authored.** A `Compute.VM.OCPVirt` definition is a provider-created artifact. DCM registers it, validates it Liskov-conforms to its Type Class (the contribution gate), and exposes it for Class-path resolution and capability matching (extends ADR-023 + ADR-022).
+- **Organizations may author their own Base, Type, and Provider classes — a policy/profile feature.** When the canonical library lacks a type, an org authors its own class (any layer) **under its own authority** (`acme.example/Compute.VM`), never shadowing canon; portability is authority-scoped, promotable to canon when proven. DCM accepts it through the **same** contribution path, **governed by org policy/profile** — who may author and promote (ADR-006/013 + ADR-022). UDLM defines the spec and instructs; **DCM implements the feature.**
 - **Data-layer definitions are organization-level.** The layer *contract* (`covers`/`skip`/precedence/`narrow_only`) is UDLM; *which* layers exist and what they hold — an org compliance overlay, a Data-Center info bundle — are org implementation details DCM stores, **binds** to groups/tenants/requests, and assembles (ADR-012/013).
-- **DCM MAY ship examples or defaults** — a starter Provider Class, a default compliance layer — as conveniences, never as canon; an org overrides them. This is DCM content, not UDLM content.
+- **One contribution lifecycle over all of them.** Classes (any layer), data layers, and `SharedDataElement`/vocabularies run through **one** DCM pipeline — **register → validate against the UDLM spec for that kind → bind/resolve → promote (`proposed → canonical`)** — the same process, differing only in the **data spec** (Class spec, layer contract, element spec). This **subsumes vocab ingest (ADR-039) and Provider-Class registration into one engine**; policy/profile-driven, trust-gated (ADR-022).
+- **DCM MAY ship examples or defaults** — a starter class, a default compliance layer — as conveniences, never as canon; an org overrides them. This is DCM content, not UDLM content.
 
 **3. Net-new DCM work (small):**
-- **Provider-Class registration + contribution-gate validation** — accept a provider-authored Provider Class, validate it Liskov-conforms to its Type Class, register it for resolution/matching (extends ADR-023 + ADR-022).
+- **The one contribution lifecycle** — register → validate-against-the-UDLM-spec-for-that-kind → bind/resolve → promote (`proposed → canonical`, incl. the ≥2-adopter promotion), applied uniformly to **classes (any layer), data layers, and `SharedDataElement`/vocabularies**; policy/profile-driven, trust-gated. **One engine, parameterized by data spec** — subsumes the former per-kind registration and vocab-ingest (extends ADR-017 + ADR-023 + ADR-006/013 + ADR-022).
 - **Class-path resolution** — Placement resolves a Base/Type Class request down to a concrete Provider Class + instance across the eligible *set*, by requirements + advertised capability + policy (extends ADR-007/019).
 - **Requirements ↔ capability matching** — for requirements-based selection (storage, UDLM ADR-036) and portable-vocabulary membership (UDLM ADR-035).
-- **Promotion / canonicalization** — `proposed → canonical` for `SharedDataElement`s and upward contributions; the ≥2-adopter promotion (extends ADR-017 + the trust model ADR-022 for who may promote).
 - **The governed federation resolver** — resolving rooted addresses across peers/tenants/jurisdictions with the sovereignty gate at the wire (UDLM **ADR-040** stub; extends ADR-011 + ADR-024). Demand-driven, `peer` root first.
 
 **4. The wire stays flat.** DCM exchanges the **resolved effective schema** (Base ⊕ Type ⊕ Provider, flattened) with peers, never the layered form — consistent with the compatibility rule (ADR-021, UDLM ADR-008).
