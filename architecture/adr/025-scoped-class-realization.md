@@ -24,13 +24,22 @@ This ADR records **where that engine half lives in DCM**. The important finding:
 | Ingest / promote vocabularies (`proposed → canonical`) | Brownfield greening / discovered ingestion (ADR-017) — extended per UDLM ADR-039 |
 | Audit records; sovereignty gate at resolve | Audit & tamper-evidence (ADR-010); sovereignty & residency (ADR-011) |
 
-**2. Net-new DCM work (small):**
+**2. DCM is the domain for the Provider-Class and data-layer *definitions*.**
+
+UDLM defines Base + Type classes and the *grammar* for the layers below; the **definitions that fill that grammar are not UDLM's** (UDLM ADR-038, *Authorship & domain*). DCM is where they live and are governed:
+
+- **Provider Classes are provider-authored.** A `Compute.VM.OCPVirt` definition is a provider-created artifact. DCM **registers** the provider-contributed Class, **validates** it against the UDLM Type-class grammar (Liskov — add/refine, never contradict; the contribution gate), and exposes it for Class-path resolution and capability matching. Registration + validation extend the naturalization boundary (ADR-023) and the trust model (ADR-022 — who may contribute).
+- **Data-layer definitions are organization-level.** The layer *contract* (`covers`/`skip`/precedence/`narrow_only`) is UDLM; *which* layers exist and what they hold — an org compliance overlay, a Data-Center info bundle — are org implementation details DCM stores, **binds** to groups/tenants/requests, and assembles (ADR-012/013).
+- **DCM MAY ship examples or defaults** — a starter Provider Class, a default compliance layer — as conveniences, never as canon; an org overrides them. This is DCM content, not UDLM content.
+
+**3. Net-new DCM work (small):**
+- **Provider-Class registration + contribution-gate validation** — accept a provider-authored Provider Class, validate it Liskov-conforms to its Type Class, register it for resolution/matching (extends ADR-023 + ADR-022).
 - **Class-path resolution** — Placement resolves a Base/Type Class request down to a concrete Provider Class + instance across the eligible *set*, by requirements + advertised capability + policy (extends ADR-007/019).
 - **Requirements ↔ capability matching** — for requirements-based selection (storage, UDLM ADR-036) and portable-vocabulary membership (UDLM ADR-035).
 - **Promotion / canonicalization** — `proposed → canonical` for `SharedDataElement`s and upward contributions; the ≥2-adopter promotion (extends ADR-017 + the trust model ADR-022 for who may promote).
 - **The governed federation resolver** — resolving rooted addresses across peers/tenants/jurisdictions with the sovereignty gate at the wire (UDLM **ADR-040** stub; extends ADR-011 + ADR-024). Demand-driven, `peer` root first.
 
-**3. The wire stays flat.** DCM exchanges the **resolved effective schema** (Base ⊕ Type ⊕ Provider, flattened) with peers, never the layered form — consistent with the compatibility rule (ADR-021, UDLM ADR-008).
+**4. The wire stays flat.** DCM exchanges the **resolved effective schema** (Base ⊕ Type ⊕ Provider, flattened) with peers, never the layered form — consistent with the compatibility rule (ADR-021, UDLM ADR-008).
 
 ## Consequences
 - No new engine is required — the paradigm is realized by extending existing DCM engines, plus the federation resolver (its own follow-on, demand-driven).
@@ -38,6 +47,6 @@ This ADR records **where that engine half lives in DCM**. The important finding:
 - Amends nothing structural in DCM; it *organizes* existing realization responsibilities under the paradigm and names the incremental work.
 
 ## Data · Policy · Provider
-- **Data** — DCM consumes the UDLM Class model / coordinate / layer data; it authors none of it.
+- **Data** — DCM consumes the UDLM Base/Type model, coordinate grammar, and layer contract; it authors none of *those*. But the **Provider-Class and data-layer definitions are DCM-domain** — provider- and org-authored, registered and governed here (Decision 2).
 - **Policy** — placement, policy-fill, assembly, promotion, matching, skip/repoint gating, sovereignty.
 - **Provider** — naturalization at the Provider-Class edge; capability advertisement.
