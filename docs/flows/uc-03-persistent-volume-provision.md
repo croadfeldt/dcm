@@ -11,7 +11,7 @@ in request-realization.
 - **A dependency in the payload.** The request carries a reference to an existing `Compute.VirtualMachine`
   (`resource_complexity: cross_dependency_payload`). Placement and reserve must resolve that reference before
   the volume can be attached.
-- **Tenant-isolation gate.** A gating policy checks the request against the tenant's storage-class eligibility
+- **Tenant-isolation gate.** A Validation Policy checks the request against the tenant's storage-class eligibility
   before allocation — and the attach must not expose the volume across tenants.
 - **Two provider interactions.** The storage provider allocates the volume; a service provider attaches it to
   the VM. Reserve confirms both are satisfiable before either commits.

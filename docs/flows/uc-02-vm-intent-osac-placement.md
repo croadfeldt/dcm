@@ -10,7 +10,7 @@ request-realization.
 ## What's different in the engine
 - **OSAC is a registered provider.** It appears in the provider registry with its required-data like any
   other. Placement selecting it is the ordinary selection step, not a special integration.
-- **Validation gates before placement.** A single gating policy runs before the placement engine selects
+- **Validation gates before placement.** A single Validation Policy runs before the placement engine selects
   (`policy_complexity: single_gating`).
 - **Provenance names OSAC.** On commit, DCM records the `Realized` state with provider provenance identifying
   the OSAC-backed provider — a checked outcome, not just a log.
