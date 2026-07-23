@@ -38,7 +38,7 @@ scenario:
     interaction: the pass count and converged value set are recorded
 generated_by:
   mode: authoring
-  source: ai-assisted
+  source: llm-guided
   model: claude
   prompt_version: recent-model-2026-07-22
   timestamp: '2026-07-22T12:00:00.000000+00:00'
