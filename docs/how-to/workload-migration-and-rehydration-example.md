@@ -33,22 +33,18 @@ mechanism below is written once; migration and rehydration are two entry points 
 
 ## What to expect
 
-- **Enablement, not execution — but automatable end-to-end.** DCM + the model give you the *data framework* to
-  plan and drive the rebuild. **DCM never moves the bytes itself** — a **third-party mover** does (MTV,
-  `virt-v2v`, backup/restore, storage replication). But that mover is a **Process DCM can orchestrate**: where it
-  exposes an automatable interface and a provider/automation naturalizes it, DCM sequences the whole flow as
-  **one unattended run**. *"Third party" means not DCM's own byte-mover — not a manual human step.* This requires
-  that the providers, the mover's process, and the automation are built for it; absent that, the data step falls
-  back to a manual mover.
-- **A rebuild, not a lift-and-shift.** You re-realize the workload from its *requirements* on the target's native
-  services. The substrate never carries the source's native form across (naturalization boundary, DCM ADR-023).
-- **Portability is not 100 %.** Source-specific features with no target equivalent don't port; a
-  partial/assisted result is normal. The model's job is to make the *achievable* part automatic and **surface the
-  remainder**, not hide it.
-- **The starting point sets the ceiling — captured intent vs brownfield.** A workload realized *through* DCM has
-  its intent (the request **is** the intent). A **brownfield** resource discovered in the field carries only the
-  native construct, so **greening** (DCM ADR-017) must reverse-derive the requirement first, imperfectly. A
-  re-port or rehydration is only ever as good as the intent you have.
+- **DCM orchestrates the rebuild; a third-party mover moves the data.** DCM plans and drives every step and
+  invokes the data mover (MTV, `virt-v2v`, backup/restore, replication) as a Process it tracks — so a pipeline
+  wired with the right providers, mover, and automation re-ports end-to-end unattended. DCM itself does not move
+  bytes; a mover that can't be automated leaves that one step manual.
+- **A re-port rebuilds from requirements.** The workload re-realizes on the target's native services from its own
+  requirements — each provider naturalizes them in its own form (DCM ADR-023), like a fresh deployment.
+- **Portability follows what you expressed as requirements.** Whatever is stated portably (Base/Type intent)
+  re-realizes automatically; source-specific features with no target equivalent are surfaced for a decision. A
+  partial or assisted result is normal.
+- **The result tracks the intent you have.** A workload realized through DCM carries its intent (the request
+  **is** the intent) and rebuilds cleanly. A brownfield resource carries only its native form, so **greening**
+  (DCM ADR-017) recovers the requirement first — the rebuild is as good as that recovered intent.
 
 ---
 
