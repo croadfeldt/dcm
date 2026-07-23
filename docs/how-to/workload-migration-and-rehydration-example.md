@@ -1,12 +1,12 @@
 # Workload migration and rehydration — a worked example (and its limits)
 
-**What this is.** Some examples of migration and rehydration using UDLM and DCM — shown as **one mechanism** with
-a **complete** part list, not just compute and a disk but the **IP allocation, network connection, and DNS** a
-workload actually needs to come back to life.
+**What this is.** Examples of migrating and rehydrating workloads by **replaying their stored intent**, using
+UDLM and DCM — shown as **one mechanism** with a **complete** part list: not just compute and a disk, but the
+**IP allocation, network connection, and DNS** a workload needs to come back to life.
 
-The answer to *"can you cast a VMware VM to an OpenShift VM?"* is **"the model enables it, and DCM orchestrates
-it end-to-end — calling capable providers to do the work, including one that migrates the data — and
-how much carries over is a function of the requirements, not a promise."**
+Because both **replay intent** rather than translate one provider's constructs into another's, DCM can
+orchestrate the rebuild end-to-end — calling capable providers to do the work, including one that migrates the
+data. How much of a workload carries over is a function of its requirements, not a promise.
 
 ---
 
