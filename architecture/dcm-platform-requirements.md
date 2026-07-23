@@ -396,250 +396,34 @@ The consumer monitors aggregate progress ("4 of 6 constituents realized") and ca
 
 **Success criteria:** Single request produces a complete, wired application environment. Runtime values flow correctly between constituents. Each constituent is independently managed (own entity_uuid, audit trail, drift detection, lifecycle). Decommission reverses dependency order. No new control plane services, policy types, or API endpoints required — patterns use existing DCM machinery.
 
-### Pattern Catalog — Architectural Overlay
+### Architectural overlay — canonical doc
 
-A deployment pattern is a reusable, provider-agnostic blueprint that defines a collection of resources, their dependencies, their runtime wiring, and their operational policies — together delivering a service that no single provider offers.
-
-**Example patterns:**
-
-| Pattern | Constituents | What it delivers |
-|---------|-------------|-----------------|
-| Standard Web Application | 2 app VMs, 1 DB, 1 LB, 1 network, 3 DNS | Production web app with HA, monitoring, DNS |
-| Secure Data Pipeline | 1 Kafka cluster, 2 workers, 1 object store, 1 network policy, 1 key | Encrypted ingest pipeline with data residency |
-| Developer Sandbox | 1 VM, 1 namespace, 1 ephemeral DB, 1 port forward | Disposable dev environment with TTL auto-cleanup |
-| Regulated Database Service | 1 PostgreSQL (HA), 1 backup, 1 key, 1 audit sink, 2 DNS | Database meeting FSI data handling requirements |
-| Edge Compute Node | 1 bare metal, 1 MicroShift, 1 VPN, 1 monitor agent, 1 cert | Self-contained edge node with central management |
-
-**The key property:** No single provider owns the pattern. The database might come from one provider, the VMs from another, the load balancer from a third. The pattern defines *what* is needed and *how the pieces connect* — DCM figures out *who* provides each piece.
-
-### How Patterns Layer on DCM
-
-```
-┌──────────────────────────────────────────────────────┐
-│                  PATTERN CATALOG                      │
-│  Curated library of reusable deployment blueprints    │
-│  Authored by: Platform Engineers                      │
-│  Consumed by: Consumer Developers                     │
-│  Stored in: Resource Type Registry (composite types)   │
-├──────────────────────────────────────────────────────┤
-│                  SERVICE CATALOG                       │
-│  Provider-specific offerings + pattern offerings       │
-│  Populated by: Providers (atomic) + Patterns (composite)│
-├──────────────────────────────────────────────────────┤
-│                  DCM CONTROL PLANE                     │
-│  Decompose → Policy → Placement → Dispatch → Audit    │
-│  Each constituent → full pipeline independently        │
-├──────────────────────────────────────────────────────┤
-│                  SERVICE PROVIDERS                     │
-│  VM · Network · Database · DNS · Storage · Container   │
-│  Fulfill individual constituents of a pattern          │
-└──────────────────────────────────────────────────────┘
-```
-
-**The Pattern Catalog is not a new architectural component.** It is a curated view of the Resource Type Registry filtered to composite resource types. DCM already has all the machinery — the composite service definition model, dependency graphs, binding fields, and constituent dispatch. The Pattern Catalog adds the curation and consumer experience layer.
-
-### How a Pattern Maps to DCM Constructs
-
-| Pattern concept | DCM construct | Where it lives |
-|----------------|--------------|----------------|
-| The pattern itself | Composite Resource Type Specification | Resource Type Registry |
-| The constituents | Resource Type references with dependency declarations | `constituents[]` in the composite spec |
-| How pieces connect | Binding fields — runtime values from one constituent injected into another | `binding_fields[]` on dependent constituents |
-| What the consumer fills in | Parameterized fields exposed at the pattern level | `fields_from_parent[]` mapping pattern params to constituent fields |
-| Who provides each piece | `provided_by: external` (DCM places) or `provided_by: self` (composite service definition handles) | Per-constituent declaration |
-| What happens on failure | Lifecycle policy on the composite spec | `on_constituent_failure: rollback_all` or `continue_degraded` or `notify` |
-| Operational policies | Standard DCM policies scoped to constituent resource types | Policy match on resource_type per constituent |
-
-### Pattern Definition Example — Standard Web Application
-
-```yaml
-resource_type: ApplicationStack.WebApp
-version: "1.0.0"
-entity_type: composite_resource
-
-# Consumer-facing parameters
-parameters:
-  app_name: { type: string, required: true }
-  environment: { type: string, required: true, constraint: { layer_reference: "environment" } }
-  db_engine: { type: string, default: postgresql, constraint: { enum: [postgresql, mysql] } }
-  db_storage_gb: { type: integer, default: 50, constraint: { min: 10, max: 1000 } }
-  app_replicas: { type: integer, default: 2, constraint: { min: 1, max: 10 } }
-  expose_public: { type: boolean, default: false }
-
-constituents:
-  - name: network_segment
-    resource_type: Network.Segment
-    provided_by: external
-    depends_on: []
-    required_for_delivery: required
-    fields_from_parent:
-      - { source: "environment", target: "environment" }
-      - { source: "app_name", target: "segment_name_prefix" }
-
-  - name: database
-    resource_type: Database.Managed
-    provided_by: external
-    depends_on: [network_segment]
-    required_for_delivery: required
-    binding_fields:
-      - { source: "network_segment.subnet_cidr", target: "database.network_cidr" }
-      - { source: "network_segment.security_group_id", target: "database.security_group_id" }
-    fields_from_parent:
-      - { source: "db_engine", target: "engine" }
-      - { source: "db_storage_gb", target: "storage_gb" }
-
-  - name: app_server
-    resource_type: Compute.VirtualMachine
-    provided_by: external
-    depends_on: [database, network_segment]
-    required_for_delivery: required
-    binding_fields:
-      - { source: "database.ip_address", target: "app_server.config.db_host" }
-      - { source: "database.port", target: "app_server.config.db_port" }
-      - { source: "database.credentials_ref", target: "app_server.config.db_credentials_ref" }
-      - { source: "network_segment.subnet_cidr", target: "app_server.network_cidr" }
-    fields_from_parent:
-      - { source: "app_name", target: "hostname_prefix" }
-      - { source: "app_replicas", target: "replicas" }
-
-  - name: load_balancer
-    resource_type: Network.LoadBalancer
-    provided_by: external
-    depends_on: [app_server]
-    required_for_delivery: required
-    binding_fields:
-      - { source: "app_server.ip_addresses", target: "load_balancer.backend_pool" }
-      - { source: "app_server.port", target: "load_balancer.backend_port" }
-    fields_from_parent:
-      - { source: "expose_public", target: "public_listener" }
-
-  - name: dns_internal
-    resource_type: DNS.Record
-    provided_by: external
-    depends_on: [load_balancer]
-    required_for_delivery: partial
-    binding_fields:
-      - { source: "load_balancer.vip_address", target: "dns_internal.target_address" }
-    fields_from_parent:
-      - { source: "app_name", target: "hostname" }
-
-  - name: dns_public
-    resource_type: DNS.Record
-    provided_by: external
-    depends_on: [load_balancer]
-    required_for_delivery: optional
-    condition: "parent.expose_public == true"
-    binding_fields:
-      - { source: "load_balancer.public_vip_address", target: "dns_public.target_address" }
-    fields_from_parent:
-      - { source: "app_name", target: "hostname" }
-
-lifecycle_policy:
-  on_constituent_failure: rollback_all
-  decommission_order: reverse_dependency
-```
-
-### What the Consumer Submits
-
-```json
-POST /api/v1/requests
-{
-  "catalog_item_uuid": "webapp-standard-uuid",
-  "fields": {
-    "app_name": "pet-clinic",
-    "environment": "production",
-    "db_engine": "postgresql",
-    "db_storage_gb": 100,
-    "app_replicas": 3,
-    "expose_public": true
-  }
-}
-```
-
-Six fields. The consumer has no idea this produces 6 resources across 4 different providers.
-
-### What DCM Executes
-
-```
-Round 1: Network Segment (no deps)
-  → Placed with EU-WEST network provider
-  → Realized: subnet_cidr=10.5.0.0/24, security_group_id=sg-abc123
-
-Round 2: Database (binding: network values injected)
-  → config.network_cidr = 10.5.0.0/24, security_group_id = sg-abc123
-  → Placed with EU-WEST database provider
-  → Realized: ip_address=10.5.0.50, port=5432, credentials_ref=vault:secret/pet-clinic-db
-
-Round 3: App Server (binding: DB + network values injected)
-  → config.db_host=10.5.0.50, db_port=5432, db_credentials_ref=vault:secret/pet-clinic-db
-  → Placed with EU-WEST compute provider, 3 replicas
-  → Realized: ip_addresses=[10.5.0.10, 10.5.0.11, 10.5.0.12], port=8080
-
-Round 4: Load Balancer (binding: app server IPs injected)
-  → config.backend_pool=[10.5.0.10, 10.5.0.11, 10.5.0.12], backend_port=8080
-  → Placed with EU-WEST network provider
-  → Realized: vip_address=10.5.0.100, public_vip_address=203.0.113.50
-
-Round 5: DNS records (binding: LB addresses injected)
-  → Internal: pet-clinic.internal → 10.5.0.100
-  → Public: pet-clinic.example.com → 203.0.113.50 (expose_public=true)
-
-All 6 constituents realized → composite status: OPERATIONAL
-```
-
-### Policy Interaction with Patterns
-
-No new policy types are needed. Each constituent is a standard resource type, and existing policies match naturally:
-
-| Policy | Fires on | What it does |
-|--------|---------|-------------|
-| Sovereignty Validation Policy (compliance) | All 6 constituents | Ensures everything lands in EU-WEST |
-| VM sizing limits | App Server | Validates replicas and VM size within tenant tier |
-| DB storage limits | Database | Validates db_storage_gb within allowed range |
-| Network naming | Network Segment, DNS | Enforces naming conventions |
-| Monitoring injection | App Server, Database | Injects monitoring agent config |
-| Backup policy injection | Database | Injects backup schedule based on environment |
-
-### Who Authors Patterns vs Who Consumes Them
-
-| Role | Responsibility |
-|------|---------------|
-| **Platform Engineer** | Authors pattern definitions as compound Resource Type Specs. Defines constituents, dependencies, binding fields, exposed parameters, lifecycle policies. Registers in Resource Type Registry. Creates service catalog items. |
-| **Policy/Compliance Owner** | Writes policies that apply to pattern constituents. Does not need pattern-specific awareness — policies match on resource types, which patterns decompose into. May write pattern-level policies (e.g., "all ApplicationStack types require monitoring on every constituent"). |
-| **Consumer Developer** | Browses catalog, selects a pattern, fills in parameters, submits. Sees aggregate status. Can drill into constituent detail. Does not need to understand the decomposition. |
-| **Infrastructure Operator** | Provides the atomic services that patterns compose. Registers providers for Compute, Network, Database, DNS — not for the pattern itself. |
-
-### Pattern Interaction with Other DCM Features
-
-| Feature | How it works with patterns |
-|---------|--------------------------|
-| **Drift detection** | Each constituent independently discoverable. Drift attributed per-constituent. |
-| **Decommission** | Reverse-dependency-order teardown. Individual constituents can also be removed independently. |
-| **Rehydration** | All constituents rebuilt in dependency order with current policies. Binding fields resolve against newly realized values. |
-| **Sovereignty** | Every constituent independently sovereignty-checked. A pattern cannot span zones unless every constituent passes. |
-| **Cost estimation** | Pattern cost = sum of constituent costs from provider catalog items. |
-| **Audit** | Each constituent has its own Merkle audit trail. Composite entity links all constituent entity_uuids. |
-| **Override** | Block on any constituent blocks the pattern. Consumer resolves per-constituent. Escalation routes to the responsible policy domain owner. |
-| **Federation** | Constituents can be placed across DCM instances. Database local, app servers federated — if sovereignty permits. |
-
-### Pattern Lifecycle
-
-Patterns follow the standard DCM artifact lifecycle: `developing → proposed → active → deprecated → retired`. Adding an optional constituent (e.g., a cache layer) is a minor version bump — existing deployments unaffected, new requests get the new constituent. Removing a required constituent is a major version bump.
+The pattern architecture lives in
+[`dcm-pattern-catalog-overlay.md`](dcm-pattern-catalog-overlay.md). The gist: patterns are
+compound Resource Type Specifications in the existing Resource Type Registry — a catalog
+overlay, not a new subsystem. No new policy types; constituents are standard resource types
+policed by existing policies. Platform engineers author patterns; consumers select them as
+catalog items with a small parameter surface; runtime values flow between constituents via
+binding fields. Patterns follow the standard artifact lifecycle
+(`developing → proposed → active → deprecated → retired`).
 
 ---
 
-# Architecture Principles
+# Architecture Principles (summary)
 
-- **Management plane, not provisioning tool.** DCM orchestrates lifecycle and enforces governance. Provisioning is delegated to service providers that implement the provider contract.
-- **Three abstractions.** Everything in DCM is Data, Provider, or Policy. No exceptions. If a new concept doesn't map to one of these three, the abstraction model needs revision.
-- **Provider-agnostic.** Any infrastructure platform is consumable through the same interface via naturalization/denaturalization. Providers declare capabilities (realize_resources, serve_data, authenticate, federate, execute_workflows) rather than being assigned rigid types. Multi-capability providers register once. No lock-in to any platform.
-- **Discoverable.** DCM advertises its capabilities via a machine-readable endpoint. External systems query what DCM offers and subscribe to data streams without reading documentation. Providers declare what they need from DCM at registration; DCM matches needs to capabilities automatically.
-- **Policy-mandatory.** Every request is policy-evaluated. This is not optional. Governance is the value proposition, not a feature toggle.
-- **Tamper-evident audit.** Every mutation is recorded in a Merkle tree with Ed25519 signatures. Auditors can verify integrity without trusting DCM.
-- **Sovereignty first-class.** Data residency is enforced at request time on every lifecycle operation, not discovered after deployment.
-- **Minimal infrastructure.** PostgreSQL is the only required dependency. Everything else (Kafka, Vault, Keycloak) is optional and follows the Internal/External delegation pattern.
-- **Declarative and idempotent.** Consumers declare desired state. DCM converges toward it. Resubmitting the same request produces the same result.
-- **API-first.** All capabilities are accessible via API. The Web UI (RHDH) is a consumer of the same API. AEP conventions (snake_case, JSON, flat REST).
+> Non-normative summary — each principle is owned by the ADR/doc it cites; this list carries
+> the gist for requirements readers and changes only when the owning decision does.
+
+- **Management plane, not provisioning tool.** DCM orchestrates lifecycle and enforces governance. Provisioning is delegated to service providers that implement the provider contract. *(owner: [ADR-001](adr/001-why-dcm-exists.md))*
+- **Three abstractions.** Everything in DCM is Data, Provider, or Policy. No exceptions. If a new concept doesn't map to one of these three, the abstraction model needs revision. *(owner: [ADR-002](adr/002-three-abstractions.md))*
+- **Provider-agnostic.** Any infrastructure platform is consumable through the same interface via naturalization/denaturalization. Providers declare capabilities (realize_resources, serve_data, authenticate, federate, execute_workflows) rather than being assigned rigid types. Multi-capability providers register once. No lock-in to any platform. *(owner: [ADR-005](adr/005-provider-abstraction.md) + [ADR-023](adr/023-provider-naturalization-boundary.md))*
+- **Discoverable.** DCM advertises its capabilities via a machine-readable endpoint. External systems query what DCM offers and subscribe to data streams without reading documentation. Providers declare what they need from DCM at registration; DCM matches needs to capabilities automatically. *(owner: [ADR-005](adr/005-provider-abstraction.md); the surface: [DCM-Capabilities-Matrix.md](DCM-Capabilities-Matrix.md))*
+- **Policy-mandatory.** Every request is policy-evaluated. This is not optional. Governance is the value proposition, not a feature toggle. *(owner: [ADR-006](adr/006-policy-engine.md))*
+- **Tamper-evident audit.** Every mutation is recorded in a Merkle tree with Ed25519 signatures. Auditors can verify integrity without trusting DCM. *(owner: [ADR-010](adr/010-audit-tamper-evidence.md))*
+- **Sovereignty first-class.** Data residency is enforced at request time on every lifecycle operation, not discovered after deployment. *(owner: [ADR-011](adr/011-sovereignty-data-residency.md))*
+- **Minimal infrastructure.** PostgreSQL is the only required dependency. Everything else (Kafka, Vault, Keycloak) is optional and follows the Internal/External delegation pattern. *(owner: [ADR-015](adr/015-minimal-infrastructure.md))*
+- **Declarative and idempotent.** Consumers declare desired state. DCM converges toward it. Resubmitting the same request produces the same result. *(owner: [ADR-003](adr/003-four-lifecycle-states.md))*
+- **API-first.** All capabilities are accessible via API. The Web UI (RHDH) is a consumer of the same API. AEP conventions (snake_case, JSON, flat REST). *(owner: [ADR-009](adr/009-api-gateway-control-plane.md) + [ADR-018](adr/018-wire-serialization-event-conventions.md))*
 
 ---
 
@@ -683,7 +467,7 @@ Each capability area maps to a measurable outcome:
 | **DQ-1** | Application definition language — How should consumers define multi-resource applications? YAML manifests, API composition, external DSL, or catalog-only? | Open — See [ADR-016](adr/016-application-definition-language.md) |
 | **DQ-2** | RHDH integration depth — Is RHDH the sole frontend, or should DCM expose its own lightweight UI for environments without RHDH? | Open |
 | **DQ-3** | Spectral AEP linter — Should OpenAPI specs be linted in CI? Requires 3.1 compatibility verification. | Open — See [DISCUSSION-TOPICS item 7](DISCUSSION-TOPICS.md) |
-| **DQ-4** | Kessel integration — What, if any, integration with Project Kessel for authorization? | Discussion only — See doc 44 |
+| **DQ-4** | Kessel integration — What, if any, integration with Project Kessel for authorization? | Discussion only — See [`integrations/kessel-evaluation.md`](integrations/kessel-evaluation.md) |
 
 ---
 
