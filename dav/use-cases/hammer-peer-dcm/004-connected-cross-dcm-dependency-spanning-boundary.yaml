@@ -31,7 +31,7 @@ scenario:
     interaction: the peer owns the depended-on resource
 generated_by:
   mode: authoring
-  source: ai-assisted
+  source: llm-guided
   model: claude
   prompt_version: peer-dcm-2026-07-23
   timestamp: '2026-07-23T08:00:00.000000+00:00'
