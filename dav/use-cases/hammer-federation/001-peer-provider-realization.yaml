@@ -18,7 +18,7 @@ scenario:
   - Realization request is dispatched across the federation boundary to the peer
   - Peer realizes the resource in its own estate and returns a realized handle
   - Local realized state records the resource with a reference to the owning peer
-  - Ownership boundary is explicit: local DCM does not claim direct control of the peer-owned resource
+  - 'Ownership boundary is explicit: local DCM does not claim direct control of the peer-owned resource'
   - Audit trail records the cross-boundary dispatch and the peer's acknowledgement
   dimensions:
     lifecycle_phase: new_request
