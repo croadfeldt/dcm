@@ -101,11 +101,13 @@ curation state — and it attaches at one of three scopes:
     state:   curated
   ```
 
-> **Status.** Scoped classes are **ADR-038 (accepted), not yet a live registry construct** — UDLM ships *no*
-> concrete Provider Class (they are provider-authored). So the elements above are the **pattern a provider
-> authors**, and the portable `isolation` intent is a greenfield Type-Class candidate. Both are tracked in
-> **udlm#199**; until they land, the today-mechanism is `provider_extensions` on the realized entity
-> (ADR-PROV-004). Whoever authors the Provider Class does so per the one contribution lifecycle (dcm#60).
+> **Status.** Scoped classes are defined in **UDLM ADR-038** (accepted) but are not yet a live registry
+> construct, and UDLM ships *no* concrete Provider Class — Provider Classes are **provider-authored**. So the
+> elements above are the **pattern a provider authors**, and a portable `isolation` intent at the Type Class is a
+> greenfield candidate under that pattern. Until scoped classes are realized in the schema, the mechanism in use
+> is **`provider_extensions`** on the realized entity (**UDLM ADR-PROV-004**). Realizing these classes and the
+> contribution lifecycle for org-authored ones are the DCM engine's domain (**DCM ADR-025**, scoped-class
+> realization).
 
 ---
 
@@ -188,7 +190,7 @@ flowchart TD
    because it was stated at the **Type Class** as *what must hold* — OVN naturalizes it to a `NetworkPolicy`,
    exactly as NSX naturalized it to a security group.
 2. **The Provider Class element is surfaced** — `nsx_security_group` maps to the OVN equivalent
-   (`network_policy_ref`) *iff* the intent behind it was captured as the Type-class requirement above; the raw
+   (`network_policy_ref`) *only if* the intent behind it was captured as the Type-class requirement above; the raw
    NSX group name does **not** cross. `distributed_switch` has no OCPVirt equivalent and is dropped, **flagged
    non-portable** — a human decides whether it mattered.
 3. **A data-migration provider migrates the data — DCM orchestrating it.** MTV performs the
@@ -241,6 +243,8 @@ dependency-ordered sequence — **one enabled solution serves both.**
 
 ## References
 - UDLM **ADR-038** — the scoped-Class model (Base/Type/Provider Class + `SharedDataElement`) + migration.
+- UDLM **ADR-PROV-004** (`registry/instances/adr-resource-type-extension.json`) — `provider_extensions`, the
+  mechanism for provider-specific data until scoped classes are realized in the schema.
 - UDLM **`four-states.md` §5** — rehydration: replay the stored record through the dependency graph, preserve the
   UUID (`RHY-005`), re-evaluate sovereignty under current policy (`RHY-001`).
 - UDLM **`entities/service-dependencies.md`** — the dependency graph that supplies the rebuild order for both
@@ -248,7 +252,6 @@ dependency-ordered sequence — **one enabled solution serves both.**
 - UDLM network types — `Network.IPAddress`, `Network.IPAddressPool`, `Network.DHCPScope`, `Network.DNSZone`,
   `Network.VirtualNetwork`, `Network.ConnectionProfile`, `Network.Gateway`, `Network.AddressService`.
 - DCM **ADR-020** (migration & operational gating), **ADR-023** (provider naturalization boundary),
-  **ADR-007/019** (placement), **ADR-017** (greening / brownfield discovery).
-- **udlm#199** — the greenfield the private-networking example needs backed by real types (portable `isolation`
-  intent + the private-networking Provider Class element). **MTV** — the third-party data mover a data-migration
-  provider wraps.
+  **ADR-007/019** (placement), **ADR-017** (greening / brownfield discovery), **ADR-025** (scoped-class
+  realization + the contribution lifecycle for org-authored classes).
+- **MTV** — the third-party data mover a data-migration provider wraps.
