@@ -13,14 +13,14 @@ capabilities enterprises actually demand — find the corners the spec quietly d
 
 ## The exemplar
 
-The **21 September-release UCs** (DAV **set 29**, tagged **`ff extended`**) are the quality and style bar —
-scenario depth, the Data·Policy·Provider decomposition, dimension coverage, concrete capability. **Every
-generated UC is modeled on their shape.** Read a handful before generating so the corpus stays coherent, not
-a pile of shallow one-liners.
+Your **canonical hand-authored UC set** — the reference set your architects curated — is the quality and style
+bar: scenario depth, the Data·Policy·Provider decomposition, dimension coverage, concrete capability. **Every
+generated UC is modeled on its shape.** Read a handful before generating so the corpus stays coherent, not a
+pile of shallow one-liners.
 
 ## The process
 
-1. **Baseline — run the canonical sets.** Run set 29 (`ff extended`) plus every scoping set tagged
+1. **Baseline — run the canonical sets.** Run your **canonical reference set** plus every scoping set tagged
    **`hammer`** through the gap engine. Capture the verdict distribution (`supported` /
    `partially_supported` / `unsupported`) and the gap factors. This is the "where do we stand today" snapshot
    and the regression baseline for future runs.
@@ -65,7 +65,7 @@ should be closing, and nothing previously `supported` should regress.
 
 ## Discipline checklist
 
-- [ ] Generated UCs modeled on the 21's depth (read a few first).
+- [ ] Generated UCs modeled on the reference set's depth (read a few first).
 - [ ] Every generated UC carries `generated_by` provenance.
 - [ ] Gaps ranked foundational-first (most UCs unblocked), not by raw count.
 - [ ] New types are standards-first with a concrete field diff — no ceremony adopts.
