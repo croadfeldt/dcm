@@ -1,1 +1,4 @@
 docs/internal/
+
+# macOS noise
+.DS_Store

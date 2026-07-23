@@ -85,7 +85,7 @@ No external API, no document currency check, no contract integration. DCM monito
 
 ## 3. Accreditation Record Additions
 
-The existing accreditation record (doc 26 Section 3.3) is extended with three new fields to support automated monitoring:
+The existing accreditation record ([accreditation-and-authorization-matrix.md](https://github.com/croadfeldt/udlm/blob/main/governance/accreditation-and-authorization-matrix.md) §3.3) is extended with three new fields to support automated monitoring:
 
 ```yaml
 accreditation:
@@ -124,7 +124,7 @@ accreditation:
     verification_failure_threshold: 3
 ```
 
-The `last_verified_at` field on the existing accreditation record (doc 26) is updated by the Accreditation Monitor on each successful verification. It remains the canonical "last confirmed active" timestamp used by the Governance Matrix and Scoring Model.
+The `last_verified_at` field on the existing accreditation record (the five-check boundary model) is updated by the Accreditation Monitor on each successful verification. It remains the canonical "last confirmed active" timestamp used by the Governance Matrix and Scoring Model.
 
 ---
 
@@ -294,7 +294,7 @@ stale_action: escalate → Fire: accreditation.verification_stale (urgency: crit
 
 ---
 
-## 6. New Event Types (additions to doc 33)
+## 6. New Event Types (additions to [event-catalog.md](https://github.com/croadfeldt/udlm/blob/main/contracts/event-catalog.md))
 
 These events are added to the event catalog as domain `accreditation.*`:
 
@@ -310,13 +310,13 @@ These events are added to the event catalog as domain `accreditation.*`:
 
 ---
 
-## 7. Accreditation Record Additions to doc 26
+## 7. Accreditation Record Additions to [accreditation-and-authorization-matrix.md](https://github.com/croadfeldt/udlm/blob/main/governance/accreditation-and-authorization-matrix.md)
 
-The following fields are added to the accreditation record structure in doc 26 Section 3.3.
+The following fields are added to the accreditation record structure in [accreditation-and-authorization-matrix.md](https://github.com/croadfeldt/udlm/blob/main/governance/accreditation-and-authorization-matrix.md) §3.3.
 These are non-breaking additions — existing records without these fields default to `tier: expiry_only`.
 
 ```yaml
-# Additions to existing accreditation record (doc 26 Section 3.3)
+# Additions to existing accreditation record ([accreditation-and-authorization-matrix.md](https://github.com/croadfeldt/udlm/blob/main/governance/accreditation-and-authorization-matrix.md) §3.3)
 
   verification:
     tier: external_registry | document_currency | contract_webhook | expiry_only
@@ -353,14 +353,14 @@ These are non-breaking additions — existing records without these fields defau
 
 ---
 
-## 8. Impact on Scoring Model (doc 29)
+## 8. Impact on Scoring Model ([scoring.md](../convergence-engine/scoring.md))
 
-The Scoring Model's Signal 5 (Provider Accreditation Richness, doc 29 Section 4.5) is
+The Scoring Model's Signal 5 (Provider Accreditation Richness, [scoring.md](../convergence-engine/scoring.md) §4.5) is
 enhanced with a verification currency dimension. An accreditation that has been externally
 verified recently is worth more than one that has only ever been manually submitted.
 
 ```yaml
-# Addition to accreditation_weights in doc 29:
+# Addition to accreditation_weights in [scoring.md](../convergence-engine/scoring.md):
 verification_multipliers:
   # Applied to each accreditation's weight based on verification currency
   external_registry_verified_within_P1D:  1.0    # full weight
@@ -488,19 +488,19 @@ accreditation_monitor_config:
 
 ## 12. Relationship to Existing Architecture
 
-### doc 26 — Accreditation and Authorization Matrix
-The Accreditation Monitor extends but does not replace the accreditation lifecycle model in doc 26. The existing `proposed → active → expired/revoked` lifecycle is preserved. The Monitor adds automated transitions into `pending_review` and `pending_renewal` states, and provides the data that drives the existing `ACCREDITATION_GAP` logic.
+### [accreditation-and-authorization-matrix.md](https://github.com/croadfeldt/udlm/blob/main/governance/accreditation-and-authorization-matrix.md) — Accreditation and Authorization Matrix
+The Accreditation Monitor extends but does not replace the accreditation lifecycle model in [accreditation-and-authorization-matrix.md](https://github.com/croadfeldt/udlm/blob/main/governance/accreditation-and-authorization-matrix.md). The existing `proposed → active → expired/revoked` lifecycle is preserved. The Monitor adds automated transitions into `pending_review` and `pending_renewal` states, and provides the data that drives the existing `ACCREDITATION_GAP` logic.
 
-### doc 27 — Governance Matrix
+### [governance-matrix.md](https://github.com/croadfeldt/udlm/blob/main/governance/governance-matrix.md) — Governance Matrix
 The Governance Matrix already evaluates accreditation status as part of Check 3 of the five-check boundary model. The Monitor improves the quality of that check: instead of relying solely on the declared `expires_at` date, the Governance Matrix now has access to externally verified current status via `last_verified_at` and `last_result`.
 
-### doc 29 — Scoring Model
+### [scoring.md](../convergence-engine/scoring.md) — Scoring Model
 The `verification_multipliers` addition to Signal 5 (Provider Accreditation Richness) means placement decisions can prefer providers whose accreditations have been recently externally verified over those relying on self-declared or stale verifications. This is a conservative, progressive enhancement — it does not block placement, only refines tie-breaking.
 
-### doc 33 — Event Catalog
+### [event-catalog.md](https://github.com/croadfeldt/udlm/blob/main/contracts/event-catalog.md) — Event Catalog
 Seven new `accreditation.*` events are added (Section 6 of this document). These follow the same envelope and urgency model as all other DCM events.
 
-### doc 40 — Standards Catalog
+### [standards-catalog.md](https://github.com/croadfeldt/udlm/blob/main/reference/standards-catalog.md) — Standards Catalog
 The Accreditation Monitor is the operational implementation of the standards catalog's compliance framework entries. The standards catalog says *what* DCM recognizes; the Accreditation Monitor says *how* DCM verifies that recognition is still current.
 
 ---

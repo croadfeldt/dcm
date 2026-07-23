@@ -254,7 +254,7 @@ quota_policy:
 >
 > The outbound webhook model described in Section 3 has been one delivery channel within the Notification Model. Outbound webhooks are now one delivery channel type within the notification service model rather than a parallel mechanism.
 >
-> **For new implementations:** Use the notification service subscription model (doc 23, Section 6) with a webhook-type notification service.
+> **For new implementations:** Use the notification service subscription model ([notifications.md](notifications.md), §6) with a webhook-type notification service.
 >
 >
 > The key improvement in the new model: audience is derived from the **entity relationship graph**, not from a manually maintained subscriber list. A webhook subscription for VLAN drift events will now automatically include all VMs attached to that VLAN as audience context.

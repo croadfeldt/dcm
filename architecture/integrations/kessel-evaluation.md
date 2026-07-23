@@ -69,9 +69,9 @@ Before evaluating integration, it is important to characterize what DCM already 
 
 DCM's current authorization model has five components working together:
 
-**Auth Providers** (doc 19) — DCM delegates authentication to registered Auth Providers (LDAP, OIDC, FreeIPA, Active Directory, mTLS). Auth Providers are registered through the standard Provider contract. Multiple Auth Providers can be active simultaneously. Auth Providers return: authenticated actor identity, group memberships, roles.
+**Auth Providers** ([auth-providers.md](https://github.com/croadfeldt/udlm/blob/main/governance/auth-providers.md)) — DCM delegates authentication to registered Auth Providers (LDAP, OIDC, FreeIPA, Active Directory, mTLS). Auth Providers are registered through the standard Provider contract. Multiple Auth Providers can be active simultaneously. Auth Providers return: authenticated actor identity, group memberships, roles.
 
-**Universal Group Model** (doc 15) — DCM groups (`DCMGroup`) are typed by `group_class`. The classes relevant to authorization:
+**Universal Group Model** ([universal-groups.md](https://github.com/croadfeldt/udlm/blob/main/observability/universal-groups.md)) — DCM groups (`DCMGroup`) are typed by `group_class`. The classes relevant to authorization:
 - `tenant_boundary` — the ownership and isolation boundary; every resource entity belongs to exactly one tenant
 - `cross_tenant_authorization` — the formal mechanism for Tenant A to grant Tenant B access to a specific resource
 - `policy_collection` — groups that activate policy sets
@@ -79,7 +79,7 @@ DCM's current authorization model has five components working together:
 
 **RBAC via role mapping** — Auth Providers map external groups to DCM roles (`consumer`, `platform_admin`, `sre`, etc.). The Policy Engine uses roles + group membership to evaluate access.
 
-**Five-check boundary model** (doc 26) — Every interaction crosses five checks in sequence: identity verification → authorization → accreditation → data/capability matrix → sovereignty. Checks 1 and 2 are RBAC. Checks 3–5 are DCM-specific and involve accreditation records, data classification, and sovereignty zones.
+**Five-check boundary model** (the five-check boundary model) — Every interaction crosses five checks in sequence: identity verification → authorization → accreditation → data/capability matrix → sovereignty. Checks 1 and 2 are RBAC. Checks 3–5 are DCM-specific and involve accreditation records, data classification, and sovereignty zones.
 
 **Cross-tenant authorization records** — When Tenant A grants Tenant B access to a resource, a `cross_tenant_authorization` DCMGroup is created. The Policy Engine checks for the existence of this record when evaluating cross-tenant requests.
 
@@ -92,7 +92,7 @@ DCM's current authorization model has five components working together:
 
 ### 3.2 DCM's Inventory Model
 
-DCM's inventory is the **Four States model** (doc 02). This is meaningfully different from a general-purpose resource inventory.
+DCM's inventory is the **Four States model** ([four-states.md](https://github.com/croadfeldt/udlm/blob/main/foundations/four-states.md)). This is meaningfully different from a general-purpose resource inventory.
 
 **Intent State** — The consumer's declared desired state. Stored as a GitOps artifact (PR-based workflow). Immutable after creation. Not a snapshot — it is the authoritative record of what was requested and why.
 
@@ -105,7 +105,7 @@ DCM's inventory is the **Four States model** (doc 02). This is meaningfully diff
 **What DCM asks for in inventory decisions:**
 1. What is the current lifecycle state of entity UUID X? (Realized State read)
 2. What resources does tenant T own? (indexed query over Realized State)
-3. What entities have relationship R to entity X? (Entity Relationship Graph, doc 09)
+3. What entities have relationship R to entity X? (Entity Relationship Graph, [entity-relationships.md](https://github.com/croadfeldt/udlm/blob/main/entities/entity-relationships.md))
 4. What is the field-level provenance of field F on entity X? (Realized State metadata)
 5. What entities are currently drifted? (Drift Record Store, DRC component output)
 6. What did we discover vs what do we have as realized? (Drift comparison)
@@ -184,7 +184,7 @@ These must **not** be stored in Kessel Relations. They are:
 - DCM-specific (not meaningful to any other system consuming Kessel)
 - Owned by DCM's entity lifecycle model
 
-DCM's Entity Relationship Graph (doc 09) remains entirely in DCM regardless of Kessel integration.
+DCM's Entity Relationship Graph ([entity-relationships.md](https://github.com/croadfeldt/udlm/blob/main/entities/entity-relationships.md)) remains entirely in DCM regardless of Kessel integration.
 
 #### 4.1.4 Checks 3–5 of the Five-Check Boundary Model
 
@@ -198,7 +198,7 @@ None of checks 3–5 can be delegated to Kessel Relations. They remain in DCM's 
 
 #### 4.1.5 Integration Path via Auth Provider Abstraction
 
-DCM's Auth Provider abstraction (doc 19) is the natural integration point. Kessel Relations would register as a DCM Auth Provider or External Policy Evaluator:
+DCM's Auth Provider abstraction ([auth-providers.md](https://github.com/croadfeldt/udlm/blob/main/governance/auth-providers.md)) is the natural integration point. Kessel Relations would register as a DCM Auth Provider or External Policy Evaluator:
 
 ```yaml
 kessel_relations_auth_provider:
@@ -253,7 +253,7 @@ For standard resource types (Compute, Network, Storage that map to well-known in
 
 #### 4.2.3 Drift Detection Logic Stays in DCM
 
-Kessel Inventory is a state store, not a drift detection system. Even if DCM uses Kessel Inventory as the Discovered State store, the Drift Reconciliation Component (doc 25, DRC domain) remains entirely in DCM:
+Kessel Inventory is a state store, not a drift detection system. Even if DCM uses Kessel Inventory as the Discovered State store, the Drift Reconciliation Component (the Drift Reconciliation Component) remains entirely in DCM:
 
 - DRC queries Kessel Inventory for current discovered state
 - DRC compares discovered state against DCM's Realized State
@@ -265,7 +265,7 @@ Kessel Inventory's role is purely as the data source for the "what currently exi
 
 #### 4.2.4 Integration Path via data store Abstraction
 
-DCM's data store abstraction (doc 11) is the natural integration point. The Discovered Store would be implemented as a `storage_sub_type: snapshot_store` data store backed by Kessel Inventory:
+DCM's data store abstraction ([data-store-contracts.md](https://github.com/croadfeldt/udlm/blob/main/contracts/data-store-contracts.md)) is the natural integration point. The Discovered Store would be implemented as a `storage_sub_type: snapshot_store` data store backed by Kessel Inventory:
 
 ```yaml
 kessel_inventory_(prescribed infrastructure):
@@ -303,7 +303,7 @@ DCM's `sovereign` profile requires air-gapped operation with no external depende
 
 ### 5.2 Multi-Instance Federation
 
-DCM supports federation between multiple DCM instances (doc 22). A federated deployment may have multiple Kessel Relations instances (one per region or sovereignty zone) or a single shared instance.
+DCM supports federation between multiple DCM instances ([federation-runtime.md](../runtime-features/federation-runtime.md)). A federated deployment may have multiple Kessel Relations instances (one per region or sovereignty zone) or a single shared instance.
 
 **Open question for Kessel team:** How does Kessel Relations handle multi-region replication? Can SpiceDB schema and relationship data be replicated across sovereignty boundaries? What are the consistency guarantees in a federated topology?
 
@@ -382,7 +382,7 @@ DCM Request Pipeline:
 ```
 
 **Impact on DCM architecture:**
-- Auth Provider registration: new `auth_mode: kessel_rebac` in doc 19
+- Auth Provider registration: new `auth_mode: kessel_rebac` in [auth-providers.md](https://github.com/croadfeldt/udlm/blob/main/governance/auth-providers.md)
 - Cross-tenant authorization DCMGroup: writes to both DCM Group Registry AND Kessel Relations tuple store
 - RBAC evaluation: replaced by Kessel Relations CheckPermission call for checks 1–2
 - Group membership sync: DCM Auth Providers (LDAP, OIDC) continue to manage authentication; group memberships are mirrored to Kessel Relations for use in permission evaluation

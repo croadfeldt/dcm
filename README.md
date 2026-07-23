@@ -28,7 +28,7 @@ dcm/
 │   ├── design-principles.md               ← DCM-specific implementation choices
 │   ├── consistency-review.md
 │   ├── 00-split-manifest.md               ← Permanent record of the UDLM/DCM split
-│   ├── 00-layering-data-model-vs-dcm.md   ← Conceptual layering doc
+│   ├── 00-layering-data-model-vs-dcm.md   ← Superseded stub — see layering.md
 │   ├── control-plane/                     ← Components, self-health, internal auth,
 │   │                                        session revocation, API versioning
 │   ├── convergence-engine/                ← The intent→realized loop:
@@ -52,7 +52,6 @@ dcm/
 │   ├── adr/                               ← Architectural Decision Records
 │   ├── DCM-Capabilities-Matrix.md
 │   ├── DISCUSSION-TOPICS.md
-│   └── deployment/                        ← Deployment topology
 ├── examples/
 │   └── orchestration-scenarios.md         ← DCM-specific orchestration (builds on
 │                                            UDLM canonical examples)
@@ -60,12 +59,13 @@ dcm/
 │   ├── implementation-standards.md        ← Specific algorithms, libs, configs DCM uses
 │   ├── implementation-specifications.md
 │   └── operational-reference.md
-├── docs/
+├── docs/                                  ← Index: docs/README.md
 │   ├── specifications/                    ← Prose specification documents
-│   └── engineering/
+│   ├── flows/                             ← Stage/play flow docs (request-realization, by-persona)
+│   ├── how-to/                            ← How-to guides (profiles, migration/rehydration)
+│   └── engineering/                       ← Engineering alignment + reconciliation
 ├── taxonomy/DCM-Taxonomy.md
 ├── schemas/                               ← OpenAPI, JSON Schema, SQL
-├── deployment/                            ← (existing deployment artifacts)
 ├── dav/                                   ← validation/assessment testbed (non-normative consumer)
 ├── project-overview.md
 ├── LICENSE

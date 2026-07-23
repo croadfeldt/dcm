@@ -44,7 +44,7 @@ This specification covers:
 It does not cover:
 - Platform administration operations (covered by future Admin API spec)
 - Service Provider registration and management (covered by Operator Interface Spec)
-- Webhook and Message Bus subscription management (covered by doc 18)
+- Webhook and Message Bus subscription management (covered by [webhooks-messaging.md](../../architecture/runtime-features/webhooks-messaging.md))
 
 ### 1.2 Ingress Surfaces
 

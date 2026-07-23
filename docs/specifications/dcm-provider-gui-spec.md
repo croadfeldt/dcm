@@ -163,7 +163,7 @@ Service Providers (the most common type — realize infrastructure resources) ha
 - Algorithms in use across managed credentials
 - Forbidden algorithm violations (should be zero — highlighted red if any found)
 - Algorithm distribution chart: ECDSA P-384 vs P-256 vs RSA vs other
-- Upcoming algorithm deprecations from doc 40 forbidden list
+- Upcoming algorithm deprecations from [standards-catalog.md](https://github.com/croadfeldt/udlm/blob/main/reference/standards-catalog.md) forbidden list
 
 ---
 
@@ -250,7 +250,7 @@ Service Providers (the most common type — realize infrastructure resources) ha
 
 - Storage utilization by store type (Intent, Requested, Realized, Audit)
 - Retention policy status: records approaching retention deadline
-- Partition / shard status (for GitOps stores using partitioning strategies from doc 41)
+- Partition / shard status (for GitOps stores using partitioning strategies from [operational-reference.md](../../reference/operational-reference.md))
 
 ---
 

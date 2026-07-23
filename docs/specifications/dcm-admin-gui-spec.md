@@ -236,7 +236,7 @@ Visible to `sre` and `platform_admin` roles.
 - Prometheus metrics viewer (embedded Grafana or linked)
 - Manual operations: trigger discovery, rebuild search index, rotate bootstrap credential
 - Deployment info: DCM version, instance UUID, profile, uptime
-- **Runbook links**: direct links to doc 41 (Operational Reference) scenarios from health page
+- **Runbook links**: direct links to [operational-reference.md](../../reference/operational-reference.md) (Operational Reference) scenarios from health page
 
 ---
 

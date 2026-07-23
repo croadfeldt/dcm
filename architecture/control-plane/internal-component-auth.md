@@ -16,13 +16,13 @@ Maps to: udlm/governance/accreditation-and-authorization-matrix.md
 
 > **This document maps to: DATA + POLICY**
 >
-> Internal component identities are Data — each component has a UUID, certificate, and service account. Internal auth is Policy — the same five-check boundary model from doc 26 applies at every internal call boundary, with no exceptions for "trusted internal network." This document specifies how DCM's control plane components authenticate to each other in a distributed deployment.
+> Internal component identities are Data — each component has a UUID, certificate, and service account. Internal auth is Policy — the same five-check boundary model from [accreditation-and-authorization-matrix.md](https://github.com/croadfeldt/udlm/blob/main/governance/accreditation-and-authorization-matrix.md) applies at every internal call boundary, with no exceptions for "trusted internal network." This document specifies how DCM's control plane components authenticate to each other in a distributed deployment.
 
 ---
 
 ## 1. The Core Principle
 
-**Network position grants zero trust.** This is stated in doc 26 for external interactions. It applies equally to internal component communication. A call from the Policy Engine to the Placement Engine receives the same boundary checks as a call from an external consumer. The service mesh enforces this at the infrastructure level; DCM enforces it at the application level.
+**Network position grants zero trust.** This is stated in [accreditation-and-authorization-matrix.md](https://github.com/croadfeldt/udlm/blob/main/governance/accreditation-and-authorization-matrix.md) for external interactions. It applies equally to internal component communication. A call from the Policy Engine to the Placement Engine receives the same boundary checks as a call from an external consumer. The service mesh enforces this at the infrastructure level; DCM enforces it at the application level.
 
 **Two-layer enforcement:**
 1. **Mesh layer (infrastructure):** mTLS mutual authentication (RFC 8446 TLS 1.3), certificate validation (RFC 5280), traffic policies — enforced by the service mesh (Istio or equivalent)

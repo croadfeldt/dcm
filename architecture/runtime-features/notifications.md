@@ -534,7 +534,7 @@ notification_delivery_record:
 
 ## 9. Provider Update Notification Integration
 
-Provider Update Notifications (doc 06, Section 7a) integrate with the notification model at two points:
+Provider Update Notifications ([provider-contract.md](https://github.com/croadfeldt/udlm/blob/main/contracts/provider-contract.md), §7a) integrate with the notification model at two points:
 
 **When provider submits update notification:**
 - `provider_update.submitted` fires → Owner notified (informational)
@@ -555,13 +555,13 @@ Provider Update Notifications (doc 06, Section 7a) integrate with the notificati
 
 ### 10.1 Webhooks as a Notification Channel
 
-Outbound webhooks (doc 18) are now **one delivery channel type within the notification service model** rather than a parallel mechanism. A notification service with `channel_type: webhook` delivers notifications to configured HTTP endpoints using the unified notification envelope.
+Outbound webhooks ([webhooks-messaging.md](webhooks-messaging.md)) are now **one delivery channel type within the notification service model** rather than a parallel mechanism. A notification service with `channel_type: webhook` delivers notifications to configured HTTP endpoints using the unified notification envelope.
 
-The webhook registration model (doc 18, Section 3.2) is implemented as actor-level subscriptions (Section 6.1, Tier 3) with a webhook-type notification service. 
+The webhook registration model ([webhooks-messaging.md](webhooks-messaging.md), §3.2) is implemented as actor-level subscriptions (Section 6.1, Tier 3) with a webhook-type notification service. 
 
 ### 10.2 Message Bus as Notification Infrastructure
 
-The event routing service (doc 18, Section 5) is the **internal transport** for the notification pipeline. The Notification Router publishes notification events to the Message Bus. notification services subscribe to their assigned topics. This decouples event generation from delivery and enables high-throughput notification processing.
+The event routing service ([webhooks-messaging.md](webhooks-messaging.md), §5) is the **internal transport** for the notification pipeline. The Notification Router publishes notification events to the Message Bus. notification services subscribe to their assigned topics. This decouples event generation from delivery and enables high-throughput notification processing.
 
 ```
 DCM Event → Notification Router → Message Bus → notification service subscription
@@ -593,7 +593,7 @@ The Message Bus is infrastructure — not a notification channel. Consumers do n
 - **Audience Resolution** — deriving notification recipients from the entity relationship graph
 - **Notification Subscription** — actor or Tenant declaration of notification preferences
 - **Notification Delivery Store** — lightweight store tracking delivery status
-- **Provider Update Notification** — formal provider mechanism for reporting authorized state changes (see doc 06, Section 7a)
+- **Provider Update Notification** — formal provider mechanism for reporting authorized state changes (see [provider-contract.md](https://github.com/croadfeldt/udlm/blob/main/contracts/provider-contract.md), Section 7a)
 - **Outbound Webhook** — one delivery channel type within the notification service model
 
 ---

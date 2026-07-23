@@ -53,7 +53,7 @@ non-normative gists; the owner is the [udlm repo](https://github.com/croadfeldt/
 | Term | Definition |
 |------|-----------|
 | **Entity** | A Resource Entity, Process Entity, or Composite Entity — the primary managed thing in DCM. Has a UUID that is stable across all four lifecycle states. |
-| **Four States** | Intent (consumer declaration), Requested (assembled/policy-validated), Realized (provider-confirmed), Discovered (independently observed). Same entity at four lifecycle stages in four data domains within a single PostgreSQL-compatible database (doc 51). |
+| **Four States** | Intent (consumer declaration), Requested (assembled/policy-validated), Realized (provider-confirmed), Discovered (independently observed). Same entity at four lifecycle stages in four data domains within a single PostgreSQL-compatible database. |
 | **Data Layer** | A versioned data artifact that contributes fields to request payload assembly. Types: Base, Core, Intermediate, Service, Request. Each has a declared contributor type. |
 | **Resource Type Specification** | The schema definition for a resource type. Declares fields, constraints, portability class, dependency graph, and field criticality. |
 | **Provider Catalog Item** | A provider-specific instantiation of a Resource Type Specification. What consumers actually request from the service catalog. |
@@ -105,7 +105,7 @@ non-normative gists; the owner is the [udlm repo](https://github.com/croadfeldt/
 
 | Term | Definition |
 |------|-----------|
-| **Composite Service** | A catalog-level registration that declares a composite payload — multiple constituent resource types with declared dependencies and delivery requirements — fulfillable as a single request. Registered by an ordinary Service Provider; not a separate provider type. See doc 30 (Composite Service Composition Model). |
+| **Composite Service** | A catalog-level registration that declares a composite payload — multiple constituent resource types with declared dependencies and delivery requirements — fulfillable as a single request. Registered by an ordinary Service Provider; not a separate provider type. See [composite-service-model.md](https://github.com/croadfeldt/udlm/blob/main/entities/composite-service-model.md) (Composite Service Composition Model). |
 | **Composite Entity** | A DCM entity produced by a Composite Service request. Exists across all four states as a single entity aggregating constituent Resource Entities. Has one entity UUID that links it through all states. |
 | **Constituent** | A sub-resource within a Composite Service. Declared with a `component_id`, `resource_type`, `depends_on`, `provided_by` (`self` or `external`), and `required_for_delivery` classification. |
 | **required_for_delivery** | Constituent delivery classification: `required` (failure halts the composite request and triggers compensation), `partial` (failure produces DEGRADED but not FAILED), `optional` (failure is noted but ignored). |
@@ -178,7 +178,7 @@ non-normative gists; the owner is the [udlm repo](https://github.com/croadfeldt/
 
 | Term | Definition |
 |------|-----------|
-| **GitOps Store Partitioning** | For deployments using Git as an ingress adapter (doc 51 — optional): splitting the intent repository into multiple repositories to manage scale. Three strategies: tenant-shard (hash of tenant_uuid), per-tenant (one repo per tenant), and time-based archiving (active vs cold). Git is not a required DCM infrastructure component — it is one of several ingress paths (alongside API, CLI, and message bus). |
+| **GitOps Store Partitioning** | For deployments using Git as an ingress adapter (Git ingress adapter — optional): splitting the intent repository into multiple repositories to manage scale. Three strategies: tenant-shard (hash of tenant_uuid), per-tenant (one repo per tenant), and time-based archiving (active vs cold). Git is not a required DCM infrastructure component — it is one of several ingress paths (alongside API, CLI, and message bus). |
 | **Dual-Write Mode** | Standard store-cutover safety pattern (adopt-by-reference, not redefined here) — DCM writes to both source and target store before cutover. DCM-specific: duration is profile-governed (P1D minimal → P60D sovereign). |
 | **Burn-In Period** | Post-cutover period during which the source store remains accessible in read-only mode for rollback. Profile-governed: P7D minimal → P90D fsi/sovereign. Source must NOT be decommissioned before burn-in completes. |
 | **Repave** | The complete recovery scenario: all DCM infrastructure lost but Git remotes intact. DCM bootstraps from Git, restores operational stores from backup, and rehydrates managed resources. OPS-005 requires post-recovery validation checklist completion. |
@@ -192,7 +192,7 @@ non-normative gists; the owner is the [udlm repo](https://github.com/croadfeldt/
 |------|-----------|
 | **Scheduled Request** | A DCM request with an explicit dispatch schedule (at a specific time, during a maintenance window, or recurring). Goes through the same pipeline as immediate requests; policy evaluates at declaration AND at dispatch time. |
 | **PENDING_DEPENDENCY** | Intent State status for a request in a dependency group waiting for its declared dependency to reach the required wait_for state before dispatch. |
-| **Request Dependency Group** | A consumer-declared set of requests with ordering constraints (depends_on) between them. Distinct from type-level dependencies (doc 07) and Composite Service composition (doc 30). |
+| **Request Dependency Group** | A consumer-declared set of requests with ordering constraints (depends_on) between them. Distinct from type-level dependencies ([service-dependencies.md](https://github.com/croadfeldt/udlm/blob/main/entities/service-dependencies.md)) and Composite Service composition ([composite-service-model.md](https://github.com/croadfeldt/udlm/blob/main/entities/composite-service-model.md)). |
 | **Field Injection** | Mechanism for passing realized output fields from a dependency automatically into a dependent request's fields at dispatch time. Subject to Transformation policies. |
 | **Maintenance Window** | A reusable, named recurrence artifact declaring approved change windows. Consumers reference window_uuid in scheduled requests to slot into the next matching window. |
 | **SCH-001–SCH-006** | Scheduled requests system policies. Key: SCH-001 (dual policy evaluation: declaration + dispatch), SCH-003 (dispatch-time policy rejection → FAILED), SCH-005 (not_after deadline miss → FAILED, no retry). |
