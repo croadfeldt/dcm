@@ -4,6 +4,11 @@ The DCM taxonomy defines the precise vocabulary used throughout the architecture
 
 **Purpose:** Eliminate ambiguity. When two people use the same word to mean different things, architecture breaks down. This taxonomy prevents that.
 
+**Ownership:** DCM-specific vocabulary is normative here. Terms owned by the UDLM data model —
+the entity families and shapes, the four states, relationship/edge vocabulary, rehydration — are
+non-normative gists; the owner is the [udlm repo](https://github.com/croadfeldt/udlm)
+(`foundations/`, `entities/`), and on any divergence the UDLM text wins.
+
 ---
 
 ## Part 1 — Core Vocabulary

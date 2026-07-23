@@ -2,7 +2,7 @@
 
 **Status:** Accepted  
 **Date:** March 2026  
-**Docs:** Four States (UDLM)
+**Docs:** [Four States (UDLM)](https://github.com/croadfeldt/udlm/blob/main/foundations/four-states.md) — the normative owner
 
 ## Context
 
@@ -12,7 +12,9 @@ These four questions are the foundation of governance, audit, compliance, and dr
 
 ## Decision
 
-Every resource entity flows through four immutable states:
+DCM **adopts the UDLM four-state model by reference** — the normative definitions and rules live
+in [udlm foundations/four-states.md](https://github.com/croadfeldt/udlm/blob/main/foundations/four-states.md); this ADR records the adoption and DCM's
+realization consequences. The gist — every resource entity flows through four immutable states:
 
 1. **Intent** — What the consumer asked for (raw declaration, no processing)
 2. **Requested** — What was approved after layer assembly and policy evaluation (write-once)
