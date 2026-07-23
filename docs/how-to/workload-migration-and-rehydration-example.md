@@ -1,12 +1,12 @@
 # Workload migration and rehydration — a worked example (and its limits)
 
-**What this is.** The concrete process behind the model's *re-porting* (UDLM ADR-038) and *rehydration*
+**What this is.** The concrete process behind the model's *migration* (UDLM ADR-038) and *rehydration*
 (UDLM `four-states.md` §5), shown as **one mechanism** with a **complete** part list — not just compute and a
 disk, but the **IP allocation, network connection, and DNS** a workload actually needs to come back to life.
 
-The answer to *"can you cast a VMware VM to an OpenShift VM?"* is **"the model enables it, and DCM can
-orchestrate it end-to-end — but DCM never moves the bytes itself (a third-party mover does), and how much ports
-is a function of the requirements, not a promise."**
+The answer to *"can you cast a VMware VM to an OpenShift VM?"* is **"the model enables it, and DCM orchestrates
+it end-to-end — calling capable providers to do the work, including one that migrates the data — and
+how much carries over is a function of the requirements, not a promise."**
 
 ---
 
@@ -15,12 +15,12 @@ is a function of the requirements, not a promise."**
 Both **replay stored intent against a target and activate a DR data source to repopulate the data.** They differ
 only in *circumstance*, not mechanism:
 
-| | **Migration (re-port)** | **Rehydration** |
+| | **Migration** | **Rehydration** |
 |---|---|---|
 | **Trigger** | a planned move — new provider, consolidation, exit | loss / DR event / scheduled rebuild |
 | **Target** | a *different* provider — requirements or provider state changed | a *different* provider — the one that held the original is offline |
 | **Intent source** | the workload's stored requirement set (its original request) | the same stored Intent/Requested/Realized record |
-| **Data source** | a third-party mover from the source (MTV, `virt-v2v`) | a DR replica / backup already staged near the target |
+| **Data source** | a data-migration provider pulls from the source (MTV, `virt-v2v`) | a DR replica / backup already staged near the target |
 | **Identity** | a **new** entity (the source may still exist) | a **new** realized entity, new UUID — the original is gone, so the workload is re-realized from intent. *(A faithful restore from the **Realized** record while its provider is still available can instead preserve the UUID — `RHY-005`, four-states §5.1 — a different scenario than this one.)* |
 | **Sovereignty/tenancy** | evaluated for the target | **re-evaluated under *current* policy** (`RHY-001`) — may land in `PENDING_REVIEW` |
 | **Ordering** | the dependency graph | the same dependency graph (`entities/service-dependencies.md`) |
@@ -33,11 +33,12 @@ mechanism below is written once; migration and rehydration are two entry points 
 
 ## What to expect
 
-- **DCM orchestrates the rebuild; a third-party mover moves the data.** DCM plans and drives every step and
-  invokes the data mover (MTV, `virt-v2v`, backup/restore, replication) as a Process it tracks — so a pipeline
-  wired with the right providers, mover, and automation re-ports end-to-end unattended. DCM itself does not move
-  bytes; a mover that can't be automated leaves that one step manual.
-- **A re-port rebuilds from requirements.** The workload re-realizes on the target's native services from its own
+- **DCM orchestrates; providers do the work.** DCM plans and drives the steps a migration needs and calls a
+  provider capable of each — including a provider that migrates the **data** (using MTV, `virt-v2v`,
+  backup/restore, or replication). DCM coordinates the sequence end-to-end; the providers execute it, so a
+  workload with the capable providers wired in migrates unattended. Where no provider automates a step, it falls
+  to a human.
+- **A migration rebuilds from requirements.** The workload re-realizes on the target's native services from its own
   requirements — each provider naturalizes them in its own form (DCM ADR-023), like a fresh deployment.
 - **Portability follows what you expressed as requirements.** Whatever is stated portably (Base/Type intent)
   re-realizes automatically; source-specific features with no target equivalent are surfaced for a decision. A
@@ -54,10 +55,10 @@ A workload is not one resource — it is a small graph. A *complete enabled solu
 a real UDLM Resource with its own provider. All types below **exist in the registry today**
 (`registry/resource-types/`).
 
-| Part | UDLM type | Portable requirement (Base/Type intent) | Provider realizes | DR / mover role | Migration vs rehydration |
+| Part | UDLM type | Portable requirement (Base/Type intent) | Provider realizes | DR / data-migration role | Migration vs rehydration |
 |---|---|---|---|---|---|
 | **Compute** | `Compute.VirtualMachine` | `cpu`, `memory`, `os_image` (by standard identity, ADR-035) | a VM provider builds the guest | — (rebuilt from intent) | identical |
-| **Disk / data** | `Storage.Volume` (+ DR replica) | `tier`, `min_gib` | storage provider provisions the target volume | **the byte step** — a mover (MTV / replication), a **Process DCM orchestrates** | migration: mover pulls from source · rehydration: replica already staged |
+| **Disk / data** | `Storage.Volume` (+ DR replica) | `tier`, `min_gib` | storage provider provisions the target volume | **the data step** — a **data-migration provider** (MTV / replication / backup) DCM calls | migration: provider pulls from source · rehydration: replica already staged |
 | **IP allocation** | `Network.IPAddress` from `Network.IPAddressPool` (or `Network.DHCPScope`) | `ip_family`, `allocation: dynamic\|static` | an IPAM/DHCP provider (`Network.AddressService`) leases an address | — | migration: **new** address · rehydration: often **reserved/preserved** for the same UUID |
 | **Network connection** | `Compute.VM.networks[]` → `Network.VirtualNetwork` (+ `Network.ConnectionProfile` NMstate) | **`isolation: private`, `egress: restricted`** (the private-networking intent) | network provider naturalizes: NSX portgroup **↔** OVN NAD + `NetworkPolicy` | — | reattach to the target segment |
 | **Egress / gateway** | `Network.Gateway` | `egress: restricted` | gateway provider programs NAT/edge; emits `external_address` | — | re-establish egress |
@@ -70,8 +71,9 @@ network steps consume — the dependency graph passes them downstream in order.
 
 ## Scoped classes — portable intent vs. the provider element
 
-The example turns on where a datum sits in the **scoped-Class** hierarchy (ADR-038). A `SharedDataElement`
-(`{scope, element, schema, values, state}`) attaches at one of three scopes:
+Whether a given piece of data carries across comes down to **where it sits** in the scoped-Class hierarchy
+(ADR-038). Each piece is a **`SharedDataElement`** — a named element with its own schema, allowed values, and
+curation state — and it attaches at one of three scopes:
 
 - **Base Class** (`Compute`, `Network`) — universal primitives; every provider honors them.
 - **Type Class** (`Compute.VM`, the network connection) — the **portable requirement**:
@@ -123,7 +125,7 @@ requirements:                                # all Base/Type SharedDataElements 
 ```
 
 Every requirement is Base/Type-scoped, so the set carries **wholesale**. The flow — DCM orchestrating each part,
-the mover included:
+the data-migration provider included:
 
 ```mermaid
 flowchart TD
@@ -132,17 +134,17 @@ flowchart TD
     VM --> IP[Allocate Network.IPAddress<br/>from Network.IPAddressPool / DHCPScope]
     IP --> NET[Attach Network.VirtualNetwork<br/>naturalize isolation: private → NetworkPolicy<br/>+ Network.ConnectionProfile NMstate]
     NET --> GW[Program Network.Gateway<br/>egress: restricted]
-    VM --> DATA[[Move the disk — 3rd-party mover<br/>MTV / replication, a Process DCM invokes + tracks]]
+    VM --> DATA[[Migrate data<br/>data-migration provider MTV / replication, DCM calls]]
     IP --> DNS[Write Network.DNSZone record<br/>hostname → allocated address]
     DATA --> REC[Reconcile + health-check<br/>REALIZED → OPERATIONAL]
     GW --> REC
     DNS --> REC
 ```
 
-**Parts / providers needed:** a VM provider, a storage provider + an automatable **mover** (MTV), an IPAM/DHCP
-provider (`Network.AddressService`), a network provider (naturalizes `isolation`), a gateway provider, a DNS
-provider. Wire all of them and the re-port runs unattended; the *requirements* port with no loss, and only the
-disk **contents** need the mover.
+**Parts / providers needed:** a VM provider, a storage provider + a **data-migration provider** (MTV), an
+IPAM/DHCP provider (`Network.AddressService`), a network provider (naturalizes `isolation`), a gateway provider,
+a DNS provider. Wire all of them and the migration runs unattended; the *requirements* carry over with no loss,
+and only the data **contents** need the migration provider.
 
 ---
 
@@ -171,7 +173,7 @@ flowchart TD
     NET --> PC{Provider Class element:<br/>nsx_security_group?}
     PC -->|intent captured at Type| MAP[Map → OVN network_policy_ref]
     PC -->|only the raw NSX name| DROP[Surface as non-portable remainder]
-    VM --> DATA[[MTV moves the disk<br/>Process DCM orchestrates]]
+    VM --> DATA[[Migrate data<br/>provider MTV, DCM orchestrates]]
     IP --> DNS[Update Network.DNSZone record]
     NET --> DS[distributed_switch → no OCPVirt equivalent<br/>dropped, flagged non-portable]
     MAP --> REC[Reconcile → OPERATIONAL]
@@ -189,9 +191,9 @@ flowchart TD
    (`network_policy_ref`) *iff* the intent behind it was captured as the Type-class requirement above; the raw
    NSX group name does **not** cross. `distributed_switch` has no OCPVirt equivalent and is dropped, **flagged
    non-portable** — a human decides whether it mattered.
-3. **The mover moves the disk — DCM orchestrating it.** MTV performs the VMware→OCPVirt disk migration; DCM
-   **invokes and tracks it as a Process** (naturalized like any provider call) and re-realizes the spec around
-   it. Wired that way, the disk step runs *inside* the automated flow, not as a manual pause.
+3. **A data-migration provider migrates the data — DCM orchestrating it.** MTV performs the
+   VMware→OCPVirt data migration as a provider DCM calls; DCM sequences it with the rest and
+   re-realizes the spec around it. Wired that way, the data step runs *inside* the automated flow, not a pause.
 
 The difference between A and B is **not** the mechanism; it's how much of the requirement set was expressed
 portably (Base/Type) vs locked to a Provider Class. The model doesn't make NSX portable — it makes the *portion
@@ -210,8 +212,8 @@ Rehydration reuses **Example A's flow verbatim**, with these deltas that fall st
   provenance source, four-states §5.2) — and relationships that pointed at the lost entity re-point to the
   replacement. *(The other case — a faithful restore from the **Realized** record while its provider is still
   available — preserves the same UUID per `RHY-005`; that is a different scenario than this one.)*
-- **The DR data is already staged** — the "mover" step is a **replica/backup activation** near the target rather
-  than a cross-provider pull, so it is typically faster and lower-loss than a migration's mover.
+- **The DR data is already staged** — the data-migration step is a **replica/backup activation** near the target
+  rather than a cross-provider pull, so it is typically faster and lower-loss than a migration's.
 - **Sovereignty/tenancy re-evaluated under *current* policy** (`RHY-001`) — a rehydration into today's estate may
   hit a residency/tenancy rule that did not exist at original realization, so the entity can land in
   `PENDING_REVIEW` before it proceeds. Migration evaluates target policy the same way; only the *timing* (an
@@ -224,10 +226,9 @@ dependency-ordered sequence — **one enabled solution serves both.**
 
 ## What DCM orchestrates vs. what needs a human
 
-- **Data movement / repopulation** — never DCM's own bytes; always a **third-party mover** (MTV, `virt-v2v`,
-  backup/restore, replication). But an automatable mover is **DCM-orchestrated automation, not a human step** —
-  the whole flow runs unattended when the mover, its provider, and the automation exist. Only an *un-automatable*
-  mover forces a human.
+- **Data + storage migration** — done by a **capable provider** (wrapping MTV, `virt-v2v`, backup/restore, or
+  replication) that DCM orchestrates — not DCM's own bytes, and not a human step. The whole flow runs unattended
+  where such a provider and its automation exist; only where none does it fall to a human.
 - **The non-portable remainder** — provider-specific features with no target equivalent (`distributed_switch`);
   surfaced, not silently dropped.
 - **Brownfield intent recovery** — a resource discovered in the field carries the native construct, not the
@@ -238,7 +239,7 @@ dependency-ordered sequence — **one enabled solution serves both.**
 ---
 
 ## References
-- UDLM **ADR-038** — the scoped-Class model (Base/Type/Provider Class + `SharedDataElement`) + *re-porting*.
+- UDLM **ADR-038** — the scoped-Class model (Base/Type/Provider Class + `SharedDataElement`) + migration.
 - UDLM **`four-states.md` §5** — rehydration: replay the stored record through the dependency graph, preserve the
   UUID (`RHY-005`), re-evaluate sovereignty under current policy (`RHY-001`).
 - UDLM **`entities/service-dependencies.md`** — the dependency graph that supplies the rebuild order for both
@@ -248,4 +249,5 @@ dependency-ordered sequence — **one enabled solution serves both.**
 - DCM **ADR-020** (migration & operational gating), **ADR-023** (provider naturalization boundary),
   **ADR-007/019** (placement), **ADR-017** (greening / brownfield discovery).
 - **udlm#199** — the greenfield the private-networking example needs backed by real types (portable `isolation`
-  intent + the private-networking Provider Class element). **MTV** — the third-party disk mover.
+  intent + the private-networking Provider Class element). **MTV** — the third-party data mover a data-migration
+  provider wraps.
