@@ -114,4 +114,4 @@ edge silently drops the second rail.
 
 Storage of dependencies (the patterns, the types) is UDLM's; resolution and the insertion mechanisms
 are DCM's. This keeps the data model free of computed state and lets an estate be authored coarsely,
-finely, or in a mix without changing the model. See `architecture/00-layering-data-model-vs-dcm.md`.
+finely, or in a mix without changing the model. See [`architecture/layering.md`](layering.md).

@@ -264,25 +264,10 @@ the most specific declaration wins.
 
 ## 4. Priority band allocation
 
-Location layers occupy a dedicated band in the Core Layer priority space:
-
-```
-100.xx.0 — Country layers
-200.xx.0 — Region layers
-300.xx.0 — Zone / Availability Zone layers
-400.xx.0 — Site / Campus layers
-500.xx.0 — Data Center layers
-600.xx.0 — Hall / Pod / Row layers
-700.xx.0 — Cage / Enclosure layers
-800.xx.0 — Rack layers
-900.xx.0 — Unit / Slot layers (provider-managed)
-
-xx = sequence number within the level (01, 02, ... 99)
-```
-
-This ensures Country always has lower precedence than Region, which always
-has lower precedence than Zone, etc. The specific location is always the
-most specific (highest precedence) contributor to location data.
+Location layers occupy a dedicated 100–900 band in the Core Layer priority space, one
+hundred-band per level (Country lowest, Unit/Slot highest), so precedence always follows
+specificity. The band table and allocation rules are owned by
+[`placement-and-priority-bands.md`](placement-and-priority-bands.md) §2.
 
 ---
 
