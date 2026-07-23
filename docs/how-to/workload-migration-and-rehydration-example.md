@@ -6,7 +6,7 @@ UDLM and DCM — shown as **one mechanism** with a **complete** part list: not j
 
 Because both **replay intent** rather than translate one provider's constructs into another's, DCM can
 orchestrate the rebuild end-to-end — calling capable providers to do the work, including one that migrates the
-data. How much of a workload carries over is a function of its requirements, not a promise.
+data. How much of a workload carries over is a function of its requirements.
 
 ---
 
