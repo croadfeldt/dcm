@@ -62,7 +62,7 @@ Adjacent top-level directories:
 |---|---|
 | [`../examples/`](../examples/) | DCM-specific orchestration scenarios that build on UDLM canonical examples |
 | [`../reference/`](../reference/) | Implementation standards, operational reference, implementation specifications |
-| [`../deployment/`](../deployment/) | Deployment topology, Kubernetes manifests |
+| `deployment/` *(planned — not yet in the repo)* | Deployment topology, Kubernetes manifests |
 
 ---
 
