@@ -131,23 +131,11 @@ internal_ca:
   ocsp_endpoint: <url>
 ```
 
-```yaml
-internal_ca:
-  ca_uuid: <uuid>
-  deployment_uuid: <uuid>
-  root_cert_fingerprint: <sha256>
-  certificate_lifetime: P90D           # all component certs valid 90 days
-  renewal_trigger: P14D                # renew 14 days before expiry
-  algorithm: ECDSA-P-384               # FIPS-compliant for all profiles
-  crl_endpoint: <internal-url>         # revocation list for component certs
-  ocsp_endpoint: <internal-url>        # online status check
-```
-
 ### 3.2 Profile-Governed Certificate Configuration
 
 | Profile | Cert lifetime | Renewal trigger | Bootstrap token TTL | Min key algorithm |
 |---------|--------------|-----------------|--------------------|--------------------|
-| `minimal` | P180D | P30D | PT4H | RSA-2048 (min) |
+| `homelab` | P180D | P30D | PT4H | RSA-2048 (min) |
 | `dev` | P90D | P14D | PT1H | RSA-2048 (min) |
 | `standard` | P90D | P14D | PT1H | ECDSA-P-256 (min) |
 | `prod` | P90D | P14D | PT1H | ECDSA-P-384 |
@@ -200,7 +188,7 @@ Component A prepares to call Component B
   │   issued_to.component_uuid: <component_a_uuid>
   │   scope.operations: [<specific_operation>]
   │   scope.target_component: <component_b_uuid>
-  │   expires_at: <now + PT5M>
+  │   expires_at: <now + PT5M>   (explicit narrowing of the provider-callback §3.3 ladder for internal calls)
   │
   ▼ Call Component B with:
   │   mTLS certificate (transport identity)
@@ -369,7 +357,7 @@ Certificate compromise detected
 | `ICOM-003` | Internal endpoints reject calls from components not in their `allowed_sources` list with 403 and an `ICOM_UNAUTHORIZED_SOURCE` audit record (urgency: high). |
 | `ICOM-004` | Components may only call components declared in their `allowed_targets` list. Attempts to call unauthorized components are rejected at the mesh layer (traffic policy) and, if they reach the application layer, at the application layer. |
 | `ICOM-005` | All internal component calls are audited: source component, target component, operation, interaction credential UUID, outcome. Internal audit records are written to the same Audit Store as external interactions. |
-| `ICOM-006` | Component certificates are issued by the Internal CA with a maximum validity of P90D and renewed automatically P14D before expiry. Component certificates may not be issued by external CAs. |
+| `ICOM-006` | Component certificates are issued by the **registered trust-anchor CA** (the built-in Internal CA by default; a registered external CA per ICOM-009 / ADR-022) with a maximum validity of P90D and renewed automatically P14D before expiry. Certificates from **unregistered** CAs are not accepted. |
 | `ICOM-007` | Bootstrap tokens are one-time-use and expire within PT1H. A bootstrap token that has been used is immediately invalidated. Unused tokens are invalidated at expiry. |
 | `ICOM-008` | Compromised internal component certificates are added to the Internal CA CRL immediately. All components refresh their CRL cache within the profile-governed SLA. |
 | `ICOM-009` | The trust anchor for internal component mTLS is a registered root or intermediate CA whose certificate is installed in all component trust stores at deployment time. The trust anchor may be the built-in Internal CA or an external CA registered as a Certificate Provider (e.g. HashiCorp Vault PKI, Venafi, EJBCA) — see [credential management service Model](https://github.com/croadfeldt/udlm/blob/main/governance/credentials.md) Section on External CAs. Components do not accept certificates from unregistered trust anchors. |

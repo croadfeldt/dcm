@@ -579,7 +579,7 @@ Expressed as DCM Resource definitions per profile — machine-readable and enfor
 
 | Profile | CPU | Memory | Storage | Replicas |
 |---------|-----|--------|---------|---------|
-| minimal | 2 cores | 4 Gi | 20 Gi | 1 |
+| homelab | 2 cores | 4 Gi | 20 Gi | 1 |
 | dev | 4 cores | 8 Gi | 50 Gi | 1 |
 | standard | 8 cores | 16 Gi | 100 Gi | 3 |
 | prod | 16 cores | 32 Gi | 200 Gi | 3 |

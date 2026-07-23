@@ -346,7 +346,7 @@ scoring_thresholds:
 
 | Profile | auto_approve | reviewed | verified | authorized | signal_weights |
 |---------|-------------|-------------|--------------|-----------|----------------|
-| `minimal` | < 45 | 45–74 | 75–100 | — | default |
+| `homelab` | < 45 | 45–74 | 75–100 | — | default |
 | `dev` | < 40 | 40–69 | 70–100 | — | default |
 | `standard` | < 25 | 25–59 | 60–79 | 80–100 | default |
 | `prod` | < 15 | 15–49 | 50–74 | 75–100 | gating_weight: 0.50 |

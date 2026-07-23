@@ -202,7 +202,7 @@ DCM operationalizes them via:
   peer DCM zone, etc.)
 - **Hard rule for sovereign data** — sovereign-classified data carries a
   hard DENY for all federation and external-provider interactions in all
-  profiles including minimal; the rule is shipped pre-activated and cannot
+  profiles including homelab; the rule is shipped pre-activated and cannot
   be modified by tenant or platform policies
 
 ### 5.1 Zone evaluation in placement
@@ -231,7 +231,7 @@ automatically when the profile is set:
 
 | Profile | Rule set characteristics |
 |---|---|
-| `minimal` | Hard DENY only for sovereign/classified; soft ALLOW for public/internal; permissive |
+| `homelab` | Hard DENY only for sovereign/classified; soft ALLOW for public/internal; permissive |
 | `dev` | Inherits minimal; adds soft ALLOW_WITH_CONDITIONS for confidential to verified targets |
 | `standard` | Inherits minimal; adds soft ALLOW_WITH_CONDITIONS for restricted (third_party accreditation required); soft DENY for PHI without HIPAA |
 | `prod` | Inherits standard; tightens federation to verified peers only for confidential+; STRIP_FIELD for restricted in notifications |

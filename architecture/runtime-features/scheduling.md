@@ -162,7 +162,7 @@ Window approval tier varies by profile:
 
 | Profile | Window approval tier |
 |---|---|
-| minimal | auto |
+| homelab | auto |
 | dev | auto |
 | standard | reviewed |
 | prod | reviewed |
@@ -292,7 +292,7 @@ tolerance:
 
 | Profile | Max scheduling horizon | Max concurrent scheduled/actor | Recurring max frequency | Window approval tier |
 |---|---|---|---|---|
-| `minimal` | P365D | unlimited | PT1H | auto |
+| `homelab` | P365D | unlimited | PT1H | auto |
 | `dev` | P365D | 50 | PT1H | auto |
 | `standard` | P90D | 20 | PT4H | reviewed |
 | `prod` | P30D | 10 | PT12H | reviewed |

@@ -207,7 +207,7 @@ The DCM taxonomy defines the precise vocabulary used throughout the architecture
 |------|-----------|
 | **Session Record** | DCM Data artifact tracking an active actor session: session_uuid, actor_uuid, auth_provider_uuid, created_at, expires_at, status (active/refreshing/revoked/expired), revocation metadata. |
 | **Session Revocation Registry** | Fast-queryable store of revoked-but-not-yet-expired session UUIDs. All components that accept bearer tokens must check this on every request. Cache age is profile-governed (PT5M minimal → no cache sovereign). |
-| **Session Store** | Operational store for active sessions (not GitOps-backed). Separate from Realized State Store. Backed by Redis or Postgres (standard+) or in-memory (minimal/dev). |
+| **Session Store** | Operational store for active sessions (not GitOps-backed). Separate from Realized State Store. Backed by Redis or Postgres (standard+) or in-memory (homelab/dev). |
 | **Token Introspection** | RFC 7662 endpoint (`POST /api/v1/auth/introspect`) for validating bearer tokens. Returns active/inactive plus session metadata. Requires `introspection` scope. |
 | **AUTH-016–AUTH-022** | Session revocation system policies. Key: AUTH-016 (deprovisioning fires session + credential revocation in parallel), AUTH-017 (revocation SLA), AUTH-018 (all components check revocation registry), AUTH-019 (emergency revocation: critical urgency, non-suppressable). |
 

@@ -12,7 +12,7 @@ scenario:
     '
   actor:
     persona: compliance-auditor
-    profile: minimal
+    profile: homelab
   intent: Verify out-of-scope policies are reported as ungoverned, not passed
   success_criteria:
   - The resolved profile's policy set is selected by construction
@@ -28,7 +28,7 @@ scenario:
     provider_landscape: single_eligible
     governance_context: no_governance
     failure_mode: happy_path
-  profile: minimal
+  profile: homelab
   expected_domain_interactions:
   - domain: policy
     interaction: profile-resolved policy set evaluated, others marked out_of_scope

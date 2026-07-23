@@ -72,7 +72,7 @@ session_store:
 
 | Profile | Store | Session TTL | Refresh TTL | Max concurrent |
 |---------|-------|-------------|-------------|---------------|
-| `minimal` | in_memory or sqlite | PT8H | P7D | unlimited |
+| `homelab` | in_memory or sqlite | PT8H | P7D | unlimited |
 | `dev` | redis or postgres | PT4H | P3D | 10 |
 | `standard` | redis or postgres | PT1H | P1D | 5 |
 | `prod` | redis or postgres | PT30M | PT8H | 3 |
@@ -192,7 +192,7 @@ session_revocation_registry:
 
 | Profile | Max cache age | Behavior on cache miss |
 |---------|--------------|----------------------|
-| `minimal` | PT5M | Check authoritative store; cache result |
+| `homelab` | PT5M | Check authoritative store; cache result |
 | `standard` | PT1M | Check authoritative store; cache result |
 | `prod` | PT30S | Check authoritative store; cache result |
 | `fsi` | PT10S | Check authoritative store; cache result |
@@ -349,7 +349,7 @@ Session revocation (this document) and credential revocation (doc 31, CPX-001–
 | Policy | Rule |
 |--------|------|
 | `AUTH-016` | On actor deprovisioning, session revocation and credential revocation (CPX-006) are parallel operations. Deprovisioning is not acknowledged until both complete. |
-| `AUTH-017` | Session revocation must propagate to the Session Revocation Registry within the profile-governed SLA: minimal PT5M, standard PT1M, prod PT30S, fsi PT10S, sovereign PT5S. |
+| `AUTH-017` | **SESSION-REGISTRY SLA (owner):** session revocation must propagate to the Session Revocation Registry within the profile-governed SLA: homelab PT5M, dev PT5M, standard PT1M, prod PT30S, fsi PT10S, sovereign PT5S. (Distinct from the credential CACHE-PROPAGATION TTL and PROVIDER-INVALIDATION SLA — credentials.md §5.) |
 | `AUTH-018` | All DCM components that accept bearer tokens must check the Session Revocation Registry on each request. Cache age must not exceed the profile-governed maximum (sovereign: no cache). |
 | `AUTH-019` | Emergency session revocation (security_event trigger) fires immediately with no grace period. The `auth.security_session_revoked` event has `urgency: critical` and is non-suppressable. |
 | `AUTH-020` | The token introspection endpoint (`POST /api/v1/auth:introspect`) must be authenticated. Access requires an actor or service account with the `introspection` scope. |

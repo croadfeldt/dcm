@@ -372,7 +372,7 @@ require a new version to change.
 
 | Profile | Topology constraints |
 |---|---|
-| minimal | No constraint enforcement; sovereignty optional |
+| homelab | No constraint enforcement; sovereignty optional |
 | dev | Sovereignty optional; placement filter advisory |
 | standard | Sovereignty required for restricted+; placement filter enforced |
 | prod | Sovereignty enforced; max_data_classification enforced |

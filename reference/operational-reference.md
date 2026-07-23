@@ -181,7 +181,7 @@ Phase 5 — Decommission source (after burn-in period)
 
 ### 2.3 Common Migration Paths
 
-#### SQLite → PostgreSQL (minimal/dev → standard)
+#### SQLite → PostgreSQL (homelab/dev → standard)
 
 Typical trigger: scaling beyond single-node evaluation environment.
 
@@ -269,7 +269,7 @@ If migration fails after cutover (during burn-in):
 
 | Profile | Min dual-write duration | Max cutover pause | Burn-in period |
 |---------|------------------------|-------------------|----------------|
-| `minimal` | P1D | PT5M | P7D |
+| `homelab` | P1D | PT5M | P7D |
 | `dev` | P3D | PT5M | P14D |
 | `standard` | P7D | PT2M | P30D |
 | `prod` | P14D | PT1M | P30D |
@@ -456,7 +456,7 @@ The nuclear scenario: entire DCM installation destroyed. Git remote intact.
 
 | Profile | Scenario 1 (component) | Scenario 2 (store) | Scenario 3 (full CP) | Scenario 5 (repave) |
 |---------|------------------------|--------------------|-----------------------|---------------------|
-| `minimal` | PT15M | PT2H | PT30M | PT24H |
+| `homelab` | PT15M | PT2H | PT30M | PT24H |
 | `standard` | PT5M | PT30M | PT15M | PT8H |
 | `prod` | PT2M | PT15M | PT10M | PT4H |
 | `fsi` | PT2M | PT5M | PT5M | PT2H |

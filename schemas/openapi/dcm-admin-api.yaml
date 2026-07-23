@@ -1564,7 +1564,7 @@ components:
       name: profile_name
       in: path
       required: true
-      schema: { type: string, enum: [minimal, dev, standard, prod, fsi, sovereign] }
+      schema: { type: string, enum: [homelab, dev, standard, prod, fsi, sovereign] }
 
     limit:
       name: page_size

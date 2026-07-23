@@ -518,7 +518,7 @@ Process Resources must declare `max_execution_time`. The Enforcer monitors all e
 ```
 Lifecycle Constraint Enforcer runs continuously:
 
-  Every cycle (interval: PT1M for standard/prod; PT5M for minimal/dev):
+  Every cycle (interval: PT1M for standard/prod; PT5M for homelab/dev):
 
     Query Realized Store for entities with:
       lifecycle_state IN [OPERATIONAL, SUSPENDED, EXECUTING]

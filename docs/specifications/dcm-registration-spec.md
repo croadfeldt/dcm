@@ -69,7 +69,7 @@ provider_type_registry_entry:
   default_trust_level: standard               # minimal | standard | elevated | high
 
   # Which deployment profiles permit this provider type
-  enabled_in_profiles: [minimal, dev, standard, prod, fsi, sovereign]
+  enabled_in_profiles: [homelab, dev, standard, prod, fsi, sovereign]
 
   # Capability declaration schema reference
   capability_schema_ref: "schemas/service-provider-capabilities-v1.0.0"

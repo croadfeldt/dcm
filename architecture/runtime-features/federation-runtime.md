@@ -439,7 +439,7 @@ DCM ships built-in federation policy groups activated by default per profile:
 | 2 | Should Hub DCM relationships support automatic load balancing across child DCMs? | Architecture | ✅ Resolved — full placement engine logic at DCM instance level; sovereignty as hard pre-filter; tie-breaking hierarchy same as provider selection; sub-regional routing recursive (DCM-010) |
 | 3 | How does drift detection work for resources allocated from a peer DCM — who is responsible for discovery? | Operational | ✅ Resolved — provider-side DCM discovers; consumer-side DCM compares; events via federation Message Bus; peer unavailable = alert-and-hold (DCM-011) |
 | 4 | Should cross-DCM audit records be synchronized — so each DCM has the other's audit records? | Compliance | ✅ Resolved — correlation_id reference model; no full sync; on-demand pull with platform admin auth + sovereignty check (DCM-012) |
-| 5 | What is the maximum supported federation depth (peer of peer of peer)? | Architecture | ✅ Resolved — profile-governed max depth: minimal/dev=5, standard/prod=3, fsi/sovereign=2; measured as hops from deepest to Hub (DCM-013) |
+| 5 | What is the maximum supported federation depth (peer of peer of peer)? | Architecture | ✅ Resolved — profile-governed max depth: homelab/dev=5, standard/prod=3, fsi/sovereign=2; measured as hops from deepest to Hub (DCM-013) |
 
 
 ## 11. Federation Gap Resolutions
@@ -590,7 +590,7 @@ Depth is measured as hops from the deepest instance to the Hub DCM. Depth 3 cove
 | `DCM-010` | Hub DCM federation routing follows the same placement engine logic as provider selection. Sovereignty is a hard pre-filter — only Regional DCMs satisfying all sovereignty constraints enter the placement loop. The tie-breaking hierarchy applies at the DCM instance level: policy preference → federation priority → tenant affinity → sovereignty match quality → geographic affinity → least loaded → consistent hash. Regional DCMs are treated as DCM Provider instances. Sub-regional routing applies the same logic recursively within the federation depth limit. |
 | `DCM-011` | For resources allocated from peer DCMs, the provider-side DCM is responsible for discovery. The consumer-side DCM is responsible for drift comparison. Discovered State events are published via federation Message Bus with correlation_id. Peer DCM unavailability triggers alert-and-hold — not assumed drift. |
 | `DCM-012` | Cross-DCM audit records are referenced via correlation_id — not fully synchronized. Each DCM keeps its own authoritative audit trail. Cross-DCM correlation uses on-demand pull with platform admin authorization and sovereignty check. |
-| `DCM-013` | Federation depth is limited to a profile-governed maximum (default: 3 for standard/prod; 2 for fsi/sovereign; 5 for minimal/dev). Requests to establish federation beyond the maximum depth are rejected. Depth is measured as hops from the deepest instance to the Hub DCM. |
+| `DCM-013` | Federation depth is limited to a profile-governed maximum (default: 3 for standard/prod; 2 for fsi/sovereign; 5 for homelab/dev). Requests to establish federation beyond the maximum depth are rejected. Depth is measured as hops from the deepest instance to the Hub DCM. |
 
 
 ---

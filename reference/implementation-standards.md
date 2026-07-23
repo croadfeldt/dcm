@@ -66,7 +66,7 @@ deployments. Homelab is not exempt.
 | Use | Algorithm | Profile |
 |---|---|---|
 | Credential at-rest | AES-256-GCM | standard+ |
-| Credential at-rest | AES-128-GCM permitted | minimal/dev (performance trade) |
+| Credential at-rest | AES-128-GCM permitted | homelab/dev (performance trade) |
 | Pipeline payload encryption | AES-256-GCM (envelope) | All |
 | Audit record encryption | AES-256-GCM (sovereign) | sovereign |
 
@@ -74,7 +74,7 @@ deployments. Homelab is not exempt.
 
 | Profile | FIPS 140 level |
 |---|---|
-| `minimal` | None required |
+| `homelab` | None required |
 | `dev` | None required |
 | `standard` | None required |
 | `prod` | Level 1 (software-only acceptable) |
@@ -346,7 +346,7 @@ standards are enforced:
 
 | Profile | Standards |
 |---|---|
-| `minimal` | None enforced |
+| `homelab` | None enforced |
 | `dev` | None enforced |
 | `standard` | ISO 27001 (advisory); SOC 2 (advisory) |
 | `prod` | ISO 27001; SOC 2 Type II; NIST 800-53 (Moderate baseline advisory) |
@@ -387,7 +387,7 @@ DCM maps profiles to AAL:
 
 | Profile | AAL | Requirements |
 |---|---|---|
-| `minimal` | AAL1 | Single-factor; password or API key |
+| `homelab` | AAL1 | Single-factor; password or API key |
 | `dev` | AAL1 | Single-factor |
 | `standard` | AAL2 | MFA required for actor sessions |
 | `prod` | AAL2 | MFA required; TOTP, FIDO2, or hardware token |

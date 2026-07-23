@@ -155,7 +155,7 @@ windows (per `ING-013`):
 
 | Profile | Max per Bulk | Approval Required |
 |---|---|---|
-| minimal | Unlimited | No |
+| homelab | Unlimited | No |
 | dev | 1000 | No |
 | standard | 500 | Recommended |
 | prod | 100 | Yes |

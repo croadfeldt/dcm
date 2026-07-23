@@ -349,7 +349,7 @@ consumer action.
 
 | Profile | Default version policy |
 |---|---|
-| minimal | latest |
+| homelab | latest |
 | dev | compatible |
 | standard | compatible |
 | prod | compatible |

@@ -53,7 +53,7 @@
     "deployment_posture": {
       "type": "string",
       "enum": [
-        "minimal",
+        "homelab",
         "dev",
         "standard",
         "prod",

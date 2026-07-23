@@ -46,7 +46,7 @@ OAuth (opt-in via configuration).
 | Kerberos (FreeIPA SSO) | GSSAPI; keytab-based service principal |
 | mTLS | RFC 5280 X.509 chain validation; CN → actor mapping |
 | SCIM 2.0 | RFC 7643/7644 endpoints at `/scim/v2/Users` and `/scim/v2/Groups` |
-| Local users | argon2id password hashing; SQLite (minimal/dev) or PostgreSQL (standard+) backend |
+| Local users | argon2id password hashing; SQLite (homelab/dev) or PostgreSQL (standard+) backend |
 | Sessions | RFC 7519 JWT for stateless session tokens; refresh tokens stored in DB |
 
 ### 1.2 Internal vs External mode
@@ -75,7 +75,7 @@ storage uses the same envelope encryption mechanism as DCM internal secrets:
 
 | KEK source | Profile |
 |---|---|
-| Environment variable | minimal, dev (homelab) |
+| Environment variable | homelab, dev (homelab) |
 | Kubernetes Secret | standard, prod |
 | HSM via PKCS#11 | fsi, sovereign |
 
@@ -216,7 +216,7 @@ Profile defaults govern which operations require step-up:
 
 | Profile | Per-Session MFA | Step-Up Required |
 |---|---|---|
-| minimal | No | No |
+| homelab | No | No |
 | dev | No | No |
 | standard | Recommended | Optional |
 | prod | Required | Destructive operations |
@@ -283,7 +283,7 @@ authentication exists.
 
 | Profile | Modes available | Setup effort |
 |---|---|---|
-| `minimal` | Static API key, Local user/password | 30 seconds – 2 minutes |
+| `homelab` | Static API key, Local user/password | 30 seconds – 2 minutes |
 | `dev` | + GitHub/GitLab OAuth, FreeIPA/AD direct bind | 5–15 minutes |
 | `standard` | + OIDC via broker (Dex/Keycloak), AD/FreeIPA direct | 30–60 minutes |
 | `prod` | + OIDC direct, MFA | 1–2 hours |
@@ -324,10 +324,10 @@ and API key holders. Enterprise users belong in external Auth Providers
 | `AUTH-005-DCM` | When an Auth Provider becomes unhealthy, existing sessions remain valid until TTL expiry; new auth follows failover chain or is rejected |
 | `AUTH-006-DCM` | DCM records the Auth Provider used in the ingress block and carries it into the audit record |
 | `AUTH-007-DCM` | DCM rejects Auth Provider configurations containing plaintext credentials; secret references required |
-| `AUTH-008-DCM` | DCM permits no anonymous access in any profile; minimal/dev support lightweight authenticated modes |
+| `AUTH-008-DCM` | DCM permits no anonymous access in any profile; homelab/dev support lightweight authenticated modes |
 | `AUTH-009-DCM` | DCM always requires authentication on webhook and message bus inbound surfaces regardless of profile |
 | `AUTH-010-DCM` | DCM enforces rate limiting per authenticated actor; limits declared on Auth Provider or webhook registration |
 | `AUTH-011-DCM` | DCM resolves Git PR actor identity through the registered Auth Provider; resolved actor carries same role/group/tenant scope as web UI authentication |
 | `AUTH-013-DCM` | In-flight requests continue on cached tokens during Auth Provider outage; new auth follows failover chain |
 | `AUTH-014-DCM` | DCM enforces two-tier MFA: per-session (mfa_verified claim) and step-up (short-lived token) for sensitive operations per policy |
-| `AUTH-015-DCM` | DCM's built-in Auth Provider uses SQLite for minimal/dev, PostgreSQL for standard+; encryption-at-rest required in fsi/sovereign |
+| `AUTH-015-DCM` | DCM's built-in Auth Provider uses SQLite for homelab/dev, PostgreSQL for standard+; encryption-at-rest required in fsi/sovereign |

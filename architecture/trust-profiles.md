@@ -2,18 +2,22 @@
 
 **Principle:** trust/attestation strength is a **definable parameter with per-profile defaults** in DCM operational profiles — *and* DCM must carry the **mechanisms** to actually satisfy each target framework (declaration without enforcement is theater). Everything below is **adopt-by-reference** (ADR-021): real, accepted standards, not invented. Each cell is the *default floor* for that profile; a request may tighten (never loosen below the floor — governance).
 
-Profiles (existing DCM ladder; **homelab** = the relaxed end of `minimal`):
-`homelab/dev → minimal → standard → fsi → sovereign`
+Profiles (the six built-ins — the UDLM registry `profile-*` instances are the owner; `minimal` is the retired pre-ADR-017 name for `homelab`):
+`homelab → dev → standard → prod → fsi → sovereign`
 
 ---
 
 ## The matrix — accepted method per trust plane × profile
 
+> **`prod` floors:** not yet ratified per-plane — `prod` takes `standard`'s floors hardened toward `fsi`
+> (shorter cert lifetimes, introspection required). To be pinned in the ADR-022 per-profile pass; a `prod`
+> deployment today MUST meet at least the `standard` row.
+
 ### Identity & transport (who is talking)
 | | method (default floor) |
 |---|---|
-| homelab/dev | internal/self-signed CA; TLS optional; bearer between components |
-| minimal | internal CA; TLS 1.2+; mTLS optional |
+| homelab | internal/self-signed CA; TLS optional; bearer between components |
+| dev | internal CA; TLS 1.2+; mTLS optional |
 | standard | **mTLS everywhere**; real PKI (internal CA or ACME/Let's Encrypt); TLS 1.3; short-lived certs; **SPIFFE/SPIRE** workload identity (CNCF) recommended |
 | fsi | mTLS mandatory; enterprise PKI w/ documented chain; OCSP stapling; cert lifetimes ≤ 90d; HSM-protected CA keys |
 | sovereign | mTLS mandatory; **accredited** PKI; in-jurisdiction CA; hardware-protected CA (FIPS L3 HSM); RATS remote attestation of endpoints (RFC 9334) |
@@ -22,8 +26,8 @@ Profiles (existing DCM ladder; **homelab** = the relaxed end of `minimal`):
 *Suggested methods + the settable minimum per profile. `anchor_type` is a pluggable, declared dimension (ADR-022) — public-acme, internal-ca, private-acme, enterprise-pki, authority-list, hardware-rats, transparency-log, spiffe-bundle, tofu, did/ledger, threshold.*
 | | suggested anchor(s) | minimum requirement |
 |---|---|---|
-| homelab/dev | **`public-acme` (Let's Encrypt → ISRG root) for the public TLS edge** + **`internal-ca` or `private-acme` (step-ca) for the mesh/mTLS**; `tofu` bootstrap OK | any rooted anchor (internal-ca / private-acme / public-acme). *Note: a Let's Encrypt **leaf** can root the public edge but **cannot issue** mesh/client certs (CA:FALSE) — use step-ca/internal CA for mTLS.* self-signed only for throwaway dev |
-| minimal | `internal-ca` or `private-acme` (step-ca) mesh; `public-acme` edge optional | a real issuing root (internal-ca / private-acme) — no bare self-signed for the mesh |
+| homelab | **`public-acme` (Let's Encrypt → ISRG root) for the public TLS edge** + **`internal-ca` or `private-acme` (step-ca) for the mesh/mTLS**; `tofu` bootstrap OK | any rooted anchor (internal-ca / private-acme / public-acme). *Note: a Let's Encrypt **leaf** can root the public edge but **cannot issue** mesh/client certs (CA:FALSE) — use step-ca/internal CA for mTLS.* self-signed only for throwaway dev |
+| dev | `internal-ca` or `private-acme` (step-ca) mesh; `public-acme` edge optional | a real issuing root (internal-ca / private-acme) — no bare self-signed for the mesh |
 | standard | internal/enterprise PKI or `private-acme` mesh + `public-acme` edge; **`transparency-log` (CT/Sigstore)** recommended; `spiffe-bundle` optional | real CA + CRL/OCSP; transparency-logging recommended |
 | fsi | `enterprise-pki` (documented chain) with **HSM-protected issuing root**; `authority-list` for attestation; CT | HSM-protected issuing CA **+** external `authority-list` for assurance claims |
 | sovereign | **accredited, in-jurisdiction, HSM-L3 issuing root**, root key **`threshold`/ceremony-protected**; external authority roots (CMVP/eIDAS) **+ `hardware-rats`**; disconnected = import + re-anchor | accredited + HSM-L3 issuing root, external-authority attestation, hardware-attested (top tier), quorum-protected root key |
@@ -31,8 +35,8 @@ Profiles (existing DCM ladder; **homelab** = the relaxed end of `minimal`):
 ### Authorization (what they may do)
 | | method |
 |---|---|
-| homelab/dev | static token / basic OIDC; long-ish sessions |
-| minimal | OIDC (Keycloak/RHSSO); JWT; introspection optional |
+| homelab | static token / basic OIDC; long-ish sessions |
+| dev | OIDC (Keycloak/RHSSO); JWT; introspection optional |
 | standard | OIDC + **token introspection (RFC 7662)** + JWKS rotation; session revocation registry; AAL1–2 |
 | fsi | OIDC + **AAL2 hardware MFA**; step-up-MFA for sensitive ops; short token TTL; dual-control on privileged actions |
 | sovereign | **AAL3** hardware-bound (FIDO2/PIV/CAC); step-up everywhere; PT-scale token TTL; full revocation propagation |
@@ -40,7 +44,7 @@ Profiles (existing DCM ladder; **homelab** = the relaxed end of `minimal`):
 ### Credential issuance / retrieval (ADR-022 selected spec)
 | | x509 | tokens | keys |
 |---|---|---|---|
-| homelab/dev | self-signed / internal ACME | OAuth2 | software keys |
+| homelab / dev | self-signed / internal ACME | OAuth2 | software keys |
 | standard | **ACME** (RFC 8555) / internal CA | OAuth2 + OIDC | software or KMS |
 | fsi | **EST/CMP** to enterprise CA; ≤90d | OAuth2, short TTL | **HSM/KMIP**, FIPS 140-3 |
 | sovereign | EST/CMP to accredited CA, in-jurisdiction | mTLS-bound tokens | **HSM L3 + key ceremony**, split-knowledge (NIST SP 800-57) |
@@ -48,8 +52,8 @@ Profiles (existing DCM ladder; **homelab** = the relaxed end of `minimal`):
 ### Attestation (the trust backing — ADR-022 ladder)
 | | default tier + accepted frameworks |
 |---|---|
-| homelab/dev | `self_asserted` |
-| minimal | `self_asserted` → `vendor_attested` |
+| homelab | `self_asserted` |
+| dev | `self_asserted` → `vendor_attested` |
 | standard | `vendor_attested` / `independently_verified`; SOC 2; ISO 27001; FIPS via CMVP if claimed |
 | fsi | `independently_verified`+; **PCI-DSS, SOC 2 Type II, FIPS 140-3 CMVP** |
 | sovereign | `accredited` + `hardware_attested`; market authority: **FedRAMP High + FIPS 140-3 L3 + Common Criteria** (US), **eIDAS QTSP / SecNumCloud / BSI C5 / EUCS** (EU), **IRAP** (AU), **ISMAP** (JP); TPM/HSM remote attestation; confidential-compute attestation (SEV-SNP/TDX/SGX) where applicable |
@@ -57,7 +61,7 @@ Profiles (existing DCM ladder; **homelab** = the relaxed end of `minimal`):
 ### Federation (trusting another DCM/provider)
 | | method |
 |---|---|
-| homelab/dev | manual trust-anchor add |
+| homelab / dev | manual trust-anchor add |
 | standard | exchange trust anchors; verify CONFORMANCE declaration |
 | fsi | + verify `independently_verified` attestation before federating |
 | sovereign | + verify `accredited` posture, jurisdiction match, and live attestation; no federation to lower-posture peers |

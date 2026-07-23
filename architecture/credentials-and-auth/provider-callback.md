@@ -142,11 +142,14 @@ Registration approved (provider status → ACTIVE)
   ▼ Provider stores credential securely and uses for all callback calls
 ```
 
-### 3.3 Credential lifetime by profile
+### 3.3 Credential lifetime by profile — the one `dcm_interaction` ladder
+
+The single per-profile lifetime table for `dcm_interaction` credentials (cited by credentials.md §3.2;
+internal component calls **narrow** to PT5M — internal-component-auth.md §4.1 — never a second table):
 
 | Profile | Lifetime | Rotation trigger | IP binding |
 |---|---|---|---|
-| minimal | PT8H | Pre-expiry P1H | No |
+| homelab | PT8H | Pre-expiry P1H | No |
 | dev | PT4H | Pre-expiry P30M | No |
 | standard | PT1H | Pre-expiry PT10M | No |
 | prod | PT30M | Pre-expiry PT5M | Optional |

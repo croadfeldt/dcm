@@ -227,7 +227,7 @@ quota_policy:
 
 | Profile | Default API rate limit | Default resource quota |
 |---------|----------------------|----------------------|
-| minimal | 10 req/min | Unlimited |
+| homelab | 10 req/min | Unlimited |
 | dev | 60 req/min | Unlimited |
 | standard | 60 req/min | Policy-declared |
 | prod | 120 req/min | Policy-declared |
