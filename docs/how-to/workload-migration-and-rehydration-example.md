@@ -1,8 +1,8 @@
 # Workload migration and rehydration — a worked example (and its limits)
 
-**What this is.** The concrete process behind the model's *migration* (UDLM ADR-038) and *rehydration*
-(UDLM `four-states.md` §5), shown as **one mechanism** with a **complete** part list — not just compute and a
-disk, but the **IP allocation, network connection, and DNS** a workload actually needs to come back to life.
+**What this is.** Some examples of migration and rehydration using UDLM and DCM — shown as **one mechanism** with
+a **complete** part list, not just compute and a disk but the **IP allocation, network connection, and DNS** a
+workload actually needs to come back to life.
 
 The answer to *"can you cast a VMware VM to an OpenShift VM?"* is **"the model enables it, and DCM orchestrates
 it end-to-end — calling capable providers to do the work, including one that migrates the data — and
