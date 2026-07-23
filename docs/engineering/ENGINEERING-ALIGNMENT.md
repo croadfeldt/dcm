@@ -33,7 +33,7 @@ Three-tier resource model: `ServiceType → CatalogItem → CatalogItemInstance`
 ### What aligns
 
 - 🟢 **ServiceType → CatalogItem → CatalogItemInstance** maps cleanly to architecture's **Resource Type Spec → Catalog Item → Request**
-- 🟢 **Field configurations with `editable` and `depends_on`** — the architecture adopts this pattern (incorporated from your enhancement into doc 05)
+- 🟢 **Field configurations with `editable` and `depends_on`** — the architecture adopts this pattern (incorporated from your enhancement into into the resource-type spec)
 - 🟢 **AEP compliance** — keep it. The architecture mandates AEP.
 - 🟢 **Spec construction** (resolve chain, merge defaults, validate) — matches the Layer Assembly concept in the Request Processor
 - 🟢 **Pagination** (page_size/page_token) — AEP standard, correct
@@ -41,27 +41,27 @@ Three-tier resource model: `ServiceType → CatalogItem → CatalogItemInstance`
 
 ### What to add
 
-- 🔴 **`tenant_uuid` on all resources** — architecture requires mandatory tenant scoping (doc 15, STI-001). Every ServiceType, CatalogItem, and CatalogItemInstance needs a `tenant_uuid` field. Queries must filter by tenant. This is the single biggest gap across all services.
+- 🔴 **`tenant_uuid` on all resources** — architecture requires mandatory tenant scoping ([universal-groups.md](https://github.com/croadfeldt/udlm/blob/main/observability/universal-groups.md), STI-001). Every ServiceType, CatalogItem, and CatalogItemInstance needs a `tenant_uuid` field. Queries must filter by tenant. This is the single biggest gap across all services.
   - **How:** Add `tenant_uuid` column to all GORM models. Read `X-DCM-Tenant` header in middleware, set as GORM scope. Add RLS policies to PostgreSQL schema.
-  - **Architecture ref:** doc 49 §4, STI-001, STI-002
+  - **Architecture ref:** [implementation-specifications.md](../../reference/implementation-specifications.md) §4, STI-001, STI-002
 
-- 🔴 **UUID as primary identifier** — the enhancement used `name` as natural key. Architecture requires UUID as primary identifier on all entities (doc 00 §3). You already support optional user-specified IDs — make UUID the canonical identifier and `handle` the human-readable alias.
+- 🔴 **UUID as primary identifier** — the enhancement used `name` as natural key. Architecture requires UUID as primary identifier on all entities ([foundations.md](https://github.com/croadfeldt/udlm/blob/main/foundations/foundations.md) §3). You already support optional user-specified IDs — make UUID the canonical identifier and `handle` the human-readable alias.
   - **How:** Rename `id` to `handle` in API responses. Add `uuid` as the primary key returned in all responses. Keep `id` query param for user-specified handles.
 
-- 🔴 **`consumption_models` and `subscription_tiers` on CatalogItems** — new fields from doc 50 (Subscription Lifecycle). Catalog items declare whether they support `on_demand`, `subscription`, or both. Subscription-capable items include tier definitions with entitlements.
+- 🔴 **`consumption_models` and `subscription_tiers` on CatalogItems** — new fields from the catalog consumer model (Subscription Lifecycle). Catalog items declare whether they support `on_demand`, `subscription`, or both. Subscription-capable items include tier definitions with entitlements.
   - **How:** Add `consumption_models` (string array) and `subscription_tiers` (JSONB) to CatalogItem model. Default `consumption_models` to `["on_demand"]` for backward compatibility.
 
-- 🔴 **Provenance tracking** — every field modification must record who changed it, when, and why (doc 00 §4.3). Currently absent from all enhancement-based services.
+- 🔴 **Provenance tracking** — every field modification must record who changed it, when, and why ([foundations.md](https://github.com/croadfeldt/udlm/blob/main/foundations/foundations.md) §4.3). Currently absent from all enhancement-based services.
   - **How:** Add `provenance` JSONB column. On create/update, write `{field_path: {source, actor_uuid, timestamp, reason}}` for each modified field.
 
-- 🟡 **Portability classification** — every field in a ServiceType spec should declare `universal|conditional|provider_specific|exclusive` (doc 05 §3). This enables the portability model for multi-provider scenarios.
+- 🟡 **Portability classification** — every field in a ServiceType spec should declare `universal|conditional|provider_specific|exclusive` ([resource-type-hierarchy.md](https://github.com/croadfeldt/udlm/blob/main/entities/resource-type-hierarchy.md) §3). This enables the portability model for multi-provider scenarios.
   - **How:** Add optional `portability` field to ServiceType field definitions.
 
-- 🟡 **Version model** — switch from `apiVersion: v1alpha1` to semantic versioning (Major.Minor.Revision) per doc 03 §2. All definitions need `version` field.
+- 🟡 **Version model** — switch from `apiVersion: v1alpha1` to semantic versioning (Major.Minor.Revision) per [layering-and-versioning.md](https://github.com/croadfeldt/udlm/blob/main/foundations/layering-and-versioning.md) §9. All definitions need `version` field.
 
-- 🟡 **Deprecation lifecycle** — add `status` field with values `active → deprecated → retired` per doc 06 §4.
+- 🟡 **Deprecation lifecycle** — add `status` field with values `active → deprecated → retired` per the artifact lifecycle ([layering-and-versioning.md](https://github.com/croadfeldt/udlm/blob/main/foundations/layering-and-versioning.md) §10).
 
-- 🟡 **Audit event emission** — on every CRU operation, publish a structured event to the `dcm-events` Kafka topic. Format per doc 33 (Event Catalog).
+- 🟡 **Audit event emission** — on every CRU operation, publish a structured event to the `dcm-events` Kafka topic. Format per [event-catalog.md](https://github.com/croadfeldt/udlm/blob/main/contracts/event-catalog.md) (Event Catalog).
 
 ### What to change
 
@@ -105,9 +105,9 @@ Provider registration CRUD (POST/GET/PUT/DELETE) with health endpoint. Go client
   - `capability_extension` — structured declaration of what the provider can do
   - `capacity_model` — `static|dynamic|on_demand` (doc A §5)
   - `ownership_model_declaration` — how the provider handles entity ownership
-  - `public_key_pem` — for mTLS mutual authentication (doc 43, PCA-001)
+  - `public_key_pem` — for mTLS mutual authentication ([provider-callback-auth.md](https://github.com/croadfeldt/udlm/blob/main/contracts/provider-callback-auth.md), PCA-001)
   - **How:** Add JSONB columns for structured fields. Extend OpenAPI spec with new request/response fields.
-  - **Note (doc 51):** DCM defines 5 provider types: `service_provider`, `information_provider`, `auth_provider`, `peer_dcm`, `process_provider`. Credentials and notifications are handled by service_providers via resource type declarations.
+  - **Note:** providers declare **capabilities** (verb × domain, ADR-PROV-002) — the five legacy type labels (`service_provider`, `information_provider`, `auth_provider`, `peer_realization`, `process_provider`) are resolved convenience labels, not registration types.
 
 - 🔴 **Provider status lifecycle** — current model is likely binary (registered/not). Architecture requires: `PENDING → ACTIVE → SUSPENDED → DEREGISTERED | SANDBOX` with approval pipeline (auto/reviewed/verified/authorized per doc A §2).
   - **How:** Add `status` column with CHECK constraint. Add admin approval endpoint.
@@ -115,12 +115,12 @@ Provider registration CRUD (POST/GET/PUT/DELETE) with health endpoint. Go client
 - 🔴 **Health monitoring expansion** — current health check is binary (200/non-200). Architecture requires structured Provider Lifecycle Events: `DEGRADATION`, `MAINTENANCE`, `UNSANCTIONED_CHANGE`, `CAPACITY_CHANGE` per doc A §7.
   - **How:** Add `POST /api/v1/providers/{uuid}/lifecycle-event` endpoint that accepts structured event payloads. Keep `GET /health` for liveness.
 
-- 🔴 **Provider Callback Authentication** — two-layer mTLS + credential model per doc 43 (PCA-001 through PCA-010). Providers must authenticate inbound callbacks.
+- 🔴 **Provider Callback Authentication** — two-layer mTLS + credential model per [provider-callback-auth.md](https://github.com/croadfeldt/udlm/blob/main/contracts/provider-callback-auth.md) (PCA-001 through PCA-010). Providers must authenticate inbound callbacks.
   - **How:** Store `public_key_pem` and `callback_credential_hash` on provider record. Validate on callback receipt.
 
 - 🔴 **Tenant scoping** — same as catalog-manager (STI-001).
 
-- 🟡 **Accreditation status** — providers can have accreditation levels that affect what resource types they're trusted to realize (doc 26).
+- 🟡 **Accreditation status** — providers can have accreditation levels that affect what resource types they're trusted to realize (the five-check boundary model).
 
 ### What to change
 
@@ -153,16 +153,16 @@ Policy artifact CRUD. Stores policy definitions and provides retrieval API.
 
 ### What to add
 
-- 🔴 **Eight policy types** — architecture defines 8 distinct policy categories: `gating`, `validation`, `transformation`, `placement`, `lifecycle`, `cost_attribution`, `recovery`, `itsm_action` (doc B §2). Each has different execution semantics (boolean deny vs scoring vs field mutation vs routing).
+- 🔴 **Eight policy types** — architecture defines 8 distinct policy categories: `gating`, `validation`, `transformation`, `placement`, `lifecycle`, `cost_attribution`, `recovery`, `itsm_action` (architecture/design-principles.md; policy types: the policy-contract enum). Each has different execution semantics (boolean deny vs scoring vs field mutation vs routing).
   - **How:** Add `policy_type` field to policy artifacts with CHECK constraint.
 
 - 🔴 **Policy evaluation endpoint** — beyond CRUD, the policy-manager needs an endpoint that other pipeline services call to evaluate policies against a request payload. `POST /api/v1/policies/evaluate` takes a payload + context and returns evaluation results.
   - **How:** This is the core business logic addition. The Request Orchestrator will call this during the pipeline's policy evaluation stage.
 
-- 🔴 **OPA/Rego integration** — policies are expressed as Rego rules (doc B §4). The policy-manager should embed an OPA engine or delegate to an OPA sidecar for evaluation.
+- 🔴 **OPA/Rego integration** — policies are expressed as Rego rules (policy-as-code requirement — architecture/design-principles.md §4). The policy-manager should embed an OPA engine or delegate to an OPA sidecar for evaluation.
   - **How:** Add OPA Go library as dependency. Load Rego policies from stored artifacts. Evaluate against input payloads.
 
-- 🔴 **Scoring model** — compliance validation policies produce compliance scores; advisory validation policies produce completeness scores. The scoring model (doc 29) aggregates these into an approval routing decision.
+- 🔴 **Scoring model** — compliance validation policies produce compliance scores; advisory validation policies produce completeness scores. The scoring model ([scoring.md](../../architecture/convergence-engine/scoring.md)) aggregates these into an approval routing decision.
   - **How:** Policy evaluation response includes `score`, `enforcement_class`, and `output_class` fields.
 
 - 🔴 **Provenance on mutations** — Transformation policies modify request payloads. Every modification must record provenance (who, when, which policy, what changed).
@@ -196,8 +196,8 @@ Policy artifact CRUD. Stores policy definitions and provides retrieval API.
 
 ### What to add
 
-- 🔴 **Specificity narrowing model** — placement works by progressive narrowing: available providers → capability match → sovereignty match → capacity match → placement policy → scored selection (doc 29 §4).
-- 🔴 **Location topology awareness** — placement considers region, zone, sovereignty zone constraints (doc 48).
+- 🔴 **Specificity narrowing model** — placement works by progressive narrowing: available providers → capability match → sovereignty match → capacity match → placement policy → scored selection ([scoring.md](../../architecture/convergence-engine/scoring.md) §4).
+- 🔴 **Location topology awareness** — placement considers region, zone, sovereignty zone constraints (topology: architecture/topology/).
 - 🔴 **Tenant scoping**
 - 🟡 **Placement policy integration** — consumes placement policy evaluation results from policy-manager.
 
@@ -229,7 +229,7 @@ KrakenD-based gateway. Config-driven routing to 4 backends (SPM, Catalog, Policy
 
 - 🔴 **`X-DCM-Tenant` header injection** — gateway must extract tenant from JWT claims and set `X-DCM-Tenant` header on all backend requests. This is how tenant context propagates.
 
-- 🔴 **`X-Request-ID` generation** — gateway issues UUID for every inbound request. This becomes the `operation_uuid` / `request_uuid` for the pipeline (doc 49 §7.1).
+- 🔴 **`X-Request-ID` generation** — gateway issues UUID for every inbound request. This becomes the `operation_uuid` / `request_uuid` for the pipeline ([implementation-specifications.md](../../reference/implementation-specifications.md) §7.1).
 
 - 🟡 **JWT validation** — marked as future in the current repo. Architecture requires Keycloak JWT validation at the gateway layer.
 
@@ -294,8 +294,8 @@ KrakenD-based gateway. Config-driven routing to 4 backends (SPM, Catalog, Policy
 
 ### What to add
 
-- 🔴 **Composite Service contract compliance** — architecture's Composite Service Composition Model (doc 30) requires: composition declaration at registration, dependency graph between constituents, cascading lifecycle management, aggregated status reporting.
-- 🟡 **Subscription support** — meta providers can offer subscription-based composite services (doc 50 §12, Q2).
+- 🔴 **Composite Service contract compliance** — architecture's Composite Service Composition Model ([composite-service-model.md](https://github.com/croadfeldt/udlm/blob/main/entities/composite-service-model.md)) requires: composition declaration at registration, dependency graph between constituents, cascading lifecycle management, aggregated status reporting.
+- 🟡 **Subscription support** — meta providers can offer subscription-based composite services (catalog consumer model §12, Q2).
 
 ---
 

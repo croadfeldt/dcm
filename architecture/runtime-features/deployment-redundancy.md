@@ -526,11 +526,11 @@ All DCM components address each other via Kubernetes Service DNS. No hardcoded I
 
 ## 11. Related Concepts
 
-- **Universal Audit Model** (doc 16) — two-stage audit; Commit Log quorum model
-- **Policy Organization** (doc 14) — Profile-governed redundancy configuration
-- **data stores** (doc 11) — Store contracts include replication requirements
-- **Four States** (doc 02) — all state stores are redundant per this model
-- **Ingestion Model** (doc 13) — DCM's own deployment recovery uses the repave/rehydration pattern
+- **Universal Audit Model** ([universal-audit.md](https://github.com/croadfeldt/udlm/blob/main/observability/universal-audit.md)) — two-stage audit; Commit Log quorum model
+- **Policy Organization** (now the policy-contract / policy-groups model) — Profile-governed redundancy configuration
+- **data stores** ([data-store-contracts.md](https://github.com/croadfeldt/udlm/blob/main/contracts/data-store-contracts.md)) — Store contracts include replication requirements
+- **Four States** ([four-states.md](https://github.com/croadfeldt/udlm/blob/main/foundations/four-states.md)) — all state stores are redundant per this model
+- **Ingestion Model** ([ingestion-model.md](https://github.com/croadfeldt/udlm/blob/main/lifecycle/ingestion-model.md)) — DCM's own deployment recovery uses the repave/rehydration pattern
 
 
 ## 8. Deployment Redundancy Gap Resolutions

@@ -46,7 +46,7 @@ cannot be automatically determined.
 ## 2. Relationship to Existing Capabilities
 
 ```
-Discovery (DRC)          Workload Analysis       Ingestion (doc 13)
+Discovery (DRC)          Workload Analysis       Ingestion ([ingestion-model.md](https://github.com/croadfeldt/udlm/blob/main/lifecycle/ingestion-model.md))
       │                        │                        │
       ▼                        ▼                        ▼
 Discovered State     WorkloadProfile entity    INGESTED → ENRICHING

@@ -684,7 +684,7 @@ POST /api/v1/requests
 DCM tracks service delivery against declared SLOs at the Resource Type level:
 
 ```yaml
-# Declared in Resource Type Specification (doc 05)
+# Declared in Resource Type Specification ([resource-type-spec.schema.json](https://github.com/croadfeldt/udlm/blob/main/registry/resource-type-spec.schema.json))
 resource_type_slo:
   resource_type: Compute.VirtualMachine
   

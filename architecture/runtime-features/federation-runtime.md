@@ -597,12 +597,12 @@ Depth is measured as hops from the deepest instance to the Hub DCM. Depth 3 cove
 
 ## 10. Related Concepts
 
-- **Universal Group Model** (doc 15) — federation and nesting group classes
-- **data stores** (doc 11) — storage never federated by default
-- **Auth Providers** (doc 19) — mTLS for DCM-to-DCM authentication
-- **Universal Audit Model** (doc 16) — audit records in both DCM instances; correlation_id
-- **Registry Governance** (doc 20) — signed bundles for air-gapped registry updates
-- **Information Providers Advanced** (doc 21) — confidence scoring used in cross-DCM context
+- **Universal Group Model** ([universal-groups.md](https://github.com/croadfeldt/udlm/blob/main/observability/universal-groups.md)) — federation and nesting group classes
+- **data stores** ([data-store-contracts.md](https://github.com/croadfeldt/udlm/blob/main/contracts/data-store-contracts.md)) — storage never federated by default
+- **Auth Providers** ([auth-providers.md](https://github.com/croadfeldt/udlm/blob/main/governance/auth-providers.md)) — mTLS for DCM-to-DCM authentication
+- **Universal Audit Model** ([universal-audit.md](https://github.com/croadfeldt/udlm/blob/main/observability/universal-audit.md)) — audit records in both DCM instances; correlation_id
+- **Registry Governance** ([registry-governance.md](https://github.com/croadfeldt/udlm/blob/main/governance/registry-governance.md)) — signed bundles for air-gapped registry updates
+- **Information Providers Advanced** ([information-providers-advanced.md](https://github.com/croadfeldt/udlm/blob/main/contracts/information-providers-advanced.md)) — confidence scoring used in cross-DCM context
 
 ---
 

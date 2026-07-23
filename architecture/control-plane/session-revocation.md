@@ -16,9 +16,9 @@ Maps to: udlm/governance/auth-providers.md
 
 > **This document maps to: DATA + POLICY**
 >
-> A session is a Data artifact with a UUID, lifecycle state, and audit trail. Session revocation is a Policy concern — it fires on triggers defined here and enforced by the Auth Provider and Ingress layer. This document extends the Auth Provider model (doc 19) with the explicit revocation lifecycle that was previously unspecified.
+> A session is a Data artifact with a UUID, lifecycle state, and audit trail. Session revocation is a Policy concern — it fires on triggers defined here and enforced by the Auth Provider and Ingress layer. This document extends the Auth Provider model ([auth-providers.md](https://github.com/croadfeldt/udlm/blob/main/governance/auth-providers.md)) with the explicit revocation lifecycle that was previously unspecified.
 >
-> **Relationship to credential revocation:** CPX-006 (doc 31) governs credential revocation — when an actor is deprovisioned, all credentials issued to that actor are revoked. This document governs the complementary concern: active *session tokens* must also be invalidated on the same trigger. Credential revocation and session revocation are parallel processes that both fire on actor deprovisioning.
+> **Relationship to credential revocation:** CPX-006 ([credentials.md](../credentials-and-auth/credentials.md)) governs credential revocation — when an actor is deprovisioned, all credentials issued to that actor are revoked. This document governs the complementary concern: active *session tokens* must also be invalidated on the same trigger. Credential revocation and session revocation are parallel processes that both fire on actor deprovisioning.
 
 ---
 
@@ -328,7 +328,7 @@ The evicted actor receives an `auth.session_revoked` notification if a notificat
 
 ## 8. Relationship to the Credential Revocation Model
 
-Session revocation (this document) and credential revocation (doc 31, CPX-001–CPX-012) are parallel but distinct:
+Session revocation (this document) and credential revocation ([credentials.md](../credentials-and-auth/credentials.md), CPX-001–CPX-012) are parallel but distinct:
 
 | | Session Revocation | Credential Revocation |
 |--|---|---|

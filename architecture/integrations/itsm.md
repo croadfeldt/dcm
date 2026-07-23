@@ -636,7 +636,7 @@ The foundations document policy type table gains an 8th entry:
 
 ## 7. Event Catalog Additions
 
-Two new events for the Event Catalog (doc 33):
+Two new events for the Event Catalog ([event-catalog.md](https://github.com/croadfeldt/udlm/blob/main/contracts/event-catalog.md)):
 
 | Event Type | Urgency | Trigger |
 |-----------|---------|---------|

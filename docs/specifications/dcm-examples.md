@@ -558,7 +558,7 @@ steps := [
 
 **Related use cases:** See Section 1.8 (Brownfield Ingestion) for bringing existing
 resources under DCM management. See Section 1.5 (Drift Detection) for reconciling
-drift rather than replacing. See the Ingestion Model (doc 13) for the `mode: intent`
+drift rather than replacing. See the Ingestion Model ([ingestion-model.md](https://github.com/croadfeldt/udlm/blob/main/lifecycle/ingestion-model.md)) for the `mode: intent`
 Rehydration flow (replaying intent through current policies).
 
 ---

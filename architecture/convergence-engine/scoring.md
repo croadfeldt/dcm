@@ -284,7 +284,7 @@ accreditation_weights:
 
 # richness_score = sum(weights for held accreditations) / max_possible × 1
 
-# Verification currency multipliers (applied per accreditation, see doc 47)
+# Verification currency multipliers (applied per accreditation, see [accreditation-and-authorization-matrix.md](https://github.com/croadfeldt/udlm/blob/main/governance/accreditation-and-authorization-matrix.md))
 # Multiplier reduces an accreditation's weight contribution based on how recently
 # it was externally verified by the Accreditation Monitor
 verification_multipliers:
@@ -322,7 +322,7 @@ Signal weights are profile-governed and can be adjusted per deployment. The weig
 Every profile declares scoring thresholds that map the continuous risk score to a discrete approval routing decision.
 
 ```yaml
-# Approval routing uses named tier thresholds — see Authority Tier Model (doc 32)
+# Approval routing uses named tier thresholds — see Authority Tier Model ([design-principles.md §2 (approval tiers)](../design-principles.md))
 # Tier names are resolved from the ordered authority tier list; numeric weights are derived.
 scoring_thresholds:
   approval_routing:
