@@ -1,4 +1,4 @@
-# UC-15 · Provider-portable rebuild — the play
+# UC-18 · Provider-portable rebuild — the play
 
 **Purpose:** how DCM rebuilds resources on an alternate provider after a failure, on top of
 [request-realization](request-realization.md) — only the UC-specific mechanics.

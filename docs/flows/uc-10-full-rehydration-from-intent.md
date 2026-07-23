@@ -1,4 +1,4 @@
-# UC-12 · Dynamic rehydration — the play
+# UC-10 · Dynamic rehydration — the play
 
 **Purpose:** how DCM rebuilds a whole environment from stored intent, on top of
 [request-realization](request-realization.md) — only the UC-specific mechanics.

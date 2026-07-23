@@ -1,4 +1,4 @@
-# UC-02 · VM intent onto OSAC — the play
+# UC-04 · VM intent onto OSAC — the play
 
 **Purpose:** how DCM places a VM intent onto an **OSAC-backed provider** on top of
 [request-realization](request-realization.md) — proving OSAC participates through the ordinary provider

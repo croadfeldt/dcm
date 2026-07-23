@@ -1,4 +1,4 @@
-# UC-05 · Idempotent reconvergence — the play
+# UC-13 · Idempotent reconvergence — the play
 
 **Purpose:** how DCM turns a re-applied, unchanged intent into a **no-op** — on top of
 [request-realization](request-realization.md). The only new mechanic is the intent-vs-realized compare that

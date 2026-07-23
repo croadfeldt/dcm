@@ -1,4 +1,4 @@
-# UC-11 · Policy override approval — the play
+# UC-16 · Policy override approval — the play
 
 **Purpose:** how DCM runs a time-bounded policy override on top of
 [request-realization](request-realization.md) — only the UC-specific mechanics.

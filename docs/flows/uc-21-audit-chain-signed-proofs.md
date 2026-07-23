@@ -1,6 +1,6 @@
-# UC-20 · Transparency-log capability validation — the play
+# UC-21 · Transparency-log capability validation — the play
 
-**Purpose:** how DCM demonstrates the DR-D transparency-log capability — a registered information provider selected by capability match, serving all three proof kinds with the signing key in-boundary — on top of [request-realization](request-realization.md). Only the UC-specific mechanics. The verification *act* is [UC-19](uc-19-audit-merkle-tree-verification.md)'s play; this validates the capability is *present*.
+**Purpose:** how DCM demonstrates the DR-D transparency-log capability — a registered information provider selected by capability match, serving all three proof kinds with the signing key in-boundary — on top of [request-realization](request-realization.md). Only the UC-specific mechanics. The verification *act* is [UC-19](uc-15-merkle-tree-audit-verification.md)'s play; this validates the capability is *present*.
 
 > **Use Case:** `governance/audit-chain-proofs-capability` · **Persona:** compliance-auditor.
 
@@ -38,4 +38,4 @@ sequenceDiagram
 ## Pointers
 
 - Stage: [udlm request-realization](https://github.com/croadfeldt/udlm/tree/main/docs/flows/request-realization.md). UC source: `governance/audit-chain-proofs-capability`.
-- The verification act: [udlm uc-19-audit-merkle-tree-verification](https://github.com/croadfeldt/udlm/tree/main/docs/flows/uc-19-audit-merkle-tree-verification.md).
+- The verification act: [udlm uc-15-merkle-tree-audit-verification](https://github.com/croadfeldt/udlm/tree/main/docs/flows/uc-15-merkle-tree-audit-verification.md).

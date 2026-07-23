@@ -1,4 +1,4 @@
-# UC-03 · Persistent volume with attach — the play
+# UC-06 · Persistent volume with attach — the play
 
 **Purpose:** how DCM provisions a block volume **and attaches it to an existing VM** on top of
 [request-realization](request-realization.md). The new mechanics are the cross-resource reference, the

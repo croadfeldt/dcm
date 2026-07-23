@@ -1,4 +1,4 @@
-# UC-18 · Realized status with field-level provenance — the play
+# UC-05 · Realized status with field-level provenance — the play
 
 **Purpose:** how DCM runs the post-commit half — ingesting the libvirt provider's status and stamping provenance on each realized field, then reconciling drift — on top of [request-realization](request-realization.md). Only the UC-specific mechanics here.
 

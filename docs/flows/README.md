@@ -35,8 +35,33 @@ them, so each use-case flow stays short and specific to what makes that case dif
 request-realization first.
 
 **The 21 September-release use cases** (DAV set 29 — *FF Extended Target*) are documented as flows here, each
-labeled by its Use Case number and built on request-realization. Grouped by persona in
+labeled by its canonical UC number (matching the [DCM Priorities 1-pager](https://docs.google.com/document/d/1gFEDUOlGDbaSxPdhFJhfxjl_iMRbkY9risTZVRhjt2I/edit)
+and the Jira hand-off doc) and built on request-realization. Grouped by persona in
 **[by-persona.md](by-persona.md)** — the usage-by-role view.
+
+| UC | Flow | Summary |
+|----|------|---------|
+| 01 | [uc-01](uc-01-vm-as-udlm-resource.md) | VM as a first-class UDLM resource |
+| 02 | [uc-02](uc-02-architecture-to-composite.md) | Architectural pattern to composite request |
+| 03 | [uc-03](uc-03-vm-standard-provision.md) | Standard VM provision |
+| 04 | [uc-04](uc-04-vm-intent-osac-placement.md) | Intent to VM placement on OSAC |
+| 05 | [uc-05](uc-05-vm-status-provenance.md) | VM status provenance |
+| 06 | [uc-06](uc-06-persistent-volume-provision.md) | Persistent volume provision and attach |
+| 07 | [uc-07](uc-07-dependency-graph-data-model.md) | Dependency graph as first-class data |
+| 08 | [uc-08](uc-08-cross-provider-dependency-ordering.md) | Cross-provider dependency ordering |
+| 09 | [uc-09](uc-09-dependency-failure-surfaced.md) | Dependency failure surfaced |
+| 10 | [uc-10](uc-10-full-rehydration-from-intent.md) | Full rehydration from intent |
+| 11 | [uc-11](uc-11-provider-failure-recovery.md) | Provider-failure recovery |
+| 12 | [uc-12](uc-12-resilience-posture-rehydration.md) | Resilience posture rehydration test |
+| 13 | [uc-13](uc-13-vm-lifecycle-reconciliation.md) | VM lifecycle reconciliation |
+| 14 | [uc-14](uc-14-drift-detection-remediation.md) | Drift detection and remediation |
+| 15 | [uc-15](uc-15-merkle-tree-audit-verification.md) | Merkle-tree audit verification |
+| 16 | [uc-16](uc-16-policy-override-approval.md) | Policy override approval workflow |
+| 17 | [uc-17](uc-17-provider-registration-capability.md) | Provider registration and capability advertisement |
+| 18 | [uc-18](uc-18-workload-portability.md) | Workload portability across providers |
+| 19 | [uc-19](uc-19-policy-resolution-by-profile.md) | Policy resolution by profile |
+| 20 | [uc-20](uc-20-profile-resolution-onboarding.md) | Profile resolution and tenant onboarding |
+| 21 | [uc-21](uc-21-audit-chain-signed-proofs.md) | Cryptographically verifiable audit chain |
 
 **Planned** (same shape): decommission & teardown ordering · drift detection → reconcile · rehydration
 (faithful / provider-portable) · dependency brokering (fulfillment: provider).

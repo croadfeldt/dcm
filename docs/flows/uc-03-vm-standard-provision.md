@@ -1,4 +1,4 @@
-# UC-01 · Standard VM provision — the play
+# UC-03 · Standard VM provision — the play
 
 **Purpose:** how DCM runs the plainest case — standard profile, one eligible provider, one policy check — on
 top of [request-realization](request-realization.md). The only mechanics this UC adds are the
@@ -14,7 +14,7 @@ lives there.
   evaluated before reserve. Pass → proceed; fail → stop with a field-level policy error, nothing allocated.
 - **Audit write is part of done.** On commit, DCM writes an audit event carrying **actor · intent · outcome** —
   a required outcome here, not an incidental log line.
-- **Idempotency** is guaranteed but implemented by the reconvergence path — see [UC-05](uc-05-idempotent-reconvergence.md).
+- **Idempotency** is guaranteed but implemented by the reconvergence path — see [UC-05](uc-13-vm-lifecycle-reconciliation.md).
 
 ## Sequence — only the UC-specific part
 ```mermaid

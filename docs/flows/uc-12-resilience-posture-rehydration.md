@@ -1,7 +1,7 @@
-# UC-13 · Rehydration RTO measurement — the play
+# UC-12 · Rehydration RTO measurement — the play
 
 **Purpose:** how DCM measures and validates a rehydration, on top of
-[request-realization](request-realization.md) and [UC-12](uc-12-dynamic-rehydration.md) — only the
+[request-realization](request-realization.md) and [UC-12](uc-10-full-rehydration-from-intent.md) — only the
 UC-specific mechanics.
 
 > **Use Case:** `observability/rehydration-rto-measurement` · **Persona:** platform-engineer.

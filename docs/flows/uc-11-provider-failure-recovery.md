@@ -1,4 +1,4 @@
-# UC-04 · VM provision, provider fails mid-realization — the play
+# UC-11 · VM provision, provider fails mid-realization — the play
 
 **Purpose:** how DCM recovers when a provider **accepts the dispatch then goes unreachable** — on top of
 [request-realization](request-realization.md). Everything through dispatch is the base pipeline; the new

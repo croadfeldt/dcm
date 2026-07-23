@@ -1,4 +1,4 @@
-# UC-21 · Solution architecture deployment — the play
+# UC-02 · Solution architecture deployment — the play
 
 **Purpose:** how DCM runs a whole solution — decomposing a code-first DSL into component requests, ordering them by dependency, and running each through [request-realization](request-realization.md), then assembling one wired receipt. Only the orchestration mechanics here; each component's own build is the base flow.
 

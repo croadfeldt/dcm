@@ -1,4 +1,4 @@
-# UC-19 · Cryptographic audit verification — the play
+# UC-15 · Cryptographic audit verification — the play
 
 **Purpose:** how DCM answers an auditor's tamper-evidence query — serving signed tree heads and inclusion/consistency proofs from the audit provider, with the signing key pinned in-boundary — on top of [request-realization](request-realization.md). Only the UC-specific mechanics.
 
@@ -43,4 +43,4 @@ sequenceDiagram
 ## Pointers
 
 - Stage: [udlm request-realization](https://github.com/croadfeldt/udlm/tree/main/docs/flows/request-realization.md). UC source: `governance/audit-merkle-tree-verification`.
-- Capability-validation sibling: [udlm uc-20-audit-chain-proofs-capability](https://github.com/croadfeldt/udlm/tree/main/docs/flows/uc-20-audit-chain-proofs-capability.md).
+- Capability-validation sibling: [udlm uc-21-audit-chain-signed-proofs](https://github.com/croadfeldt/udlm/tree/main/docs/flows/uc-21-audit-chain-signed-proofs.md).

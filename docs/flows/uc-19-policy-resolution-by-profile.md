@@ -1,4 +1,4 @@
-# UC-16 · Policy resolution by profile — the play
+# UC-19 · Policy resolution by profile — the play
 
 **Purpose:** how DCM decides which policies apply and reports them honestly, on top of
 [request-realization](request-realization.md) — only the UC-specific mechanics. Validation UC for **DR-E**.

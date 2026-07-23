@@ -1,4 +1,4 @@
-# UC-10 · Provider registration + capability — the play
+# UC-17 · Provider registration + capability — the play
 
 **Purpose:** how DCM runs this case, on top of [request-realization](request-realization.md) — only the UC-specific mechanics. Here that's the libvirt provider registering capability and per-host capacity into the registry that placement reads.
 

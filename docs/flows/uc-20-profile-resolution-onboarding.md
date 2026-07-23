@@ -1,4 +1,4 @@
-# UC-17 · Profile resolution & atomic onboarding — the play
+# UC-20 · Profile resolution & atomic onboarding — the play
 
 **Purpose:** how DCM resolves the instance profile and onboards a tenant atomically, on top of
 [request-realization](request-realization.md) — only the UC-specific mechanics. Validation UC for **DR-B**.

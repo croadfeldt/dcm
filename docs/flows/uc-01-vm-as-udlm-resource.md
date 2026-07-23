@@ -1,4 +1,4 @@
-# UC-06 · VM as a first-class resource — the play
+# UC-01 · VM as a first-class resource — the play
 
 **Purpose:** how DCM runs this case, on top of [request-realization](request-realization.md) — only the UC-specific mechanics. Here that's the registration of the `Compute.VirtualMachine` type and the reconciliation of libvirt's realized status back onto the resource.
 
