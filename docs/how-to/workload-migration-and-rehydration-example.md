@@ -34,8 +34,8 @@ mechanism below is written once; migration and rehydration are two entry points 
 ## What to expect
 
 - **DCM orchestrates; providers do the work.** DCM plans and drives the steps a migration needs and calls a
-  provider capable of each — including a provider that migrates the **data** (using MTV, `virt-v2v`,
-  backup/restore, or replication). DCM coordinates the sequence end-to-end; the providers execute it, so a
+  provider capable of each — including a provider that migrates the **data** (MTV, `virt-v2v`, backup/restore,
+  replication, or a **Disaster Recovery service**). DCM coordinates the sequence end-to-end; the providers execute it, so a
   workload with the capable providers wired in migrates unattended. Where no provider automates a step, it falls
   to a human.
 - **A migration rebuilds from requirements.** The workload re-realizes on the target's native services from its own
@@ -58,7 +58,7 @@ a real UDLM Resource with its own provider. All types below **exist in the regis
 | Part | UDLM type | Portable requirement (Base/Type intent) | Provider realizes | DR / data-migration role | Migration vs rehydration |
 |---|---|---|---|---|---|
 | **Compute** | `Compute.VirtualMachine` | `cpu`, `memory`, `os_image` (by standard identity, ADR-035) | a VM provider builds the guest | — (rebuilt from intent) | identical |
-| **Disk / data** | `Storage.Volume` (+ DR replica) | `tier`, `min_gib` | storage provider provisions the target volume | **the data step** — a **data-migration provider** (MTV / replication / backup) DCM calls | migration: provider pulls from source · rehydration: replica already staged |
+| **Disk / data** | `Storage.Volume` (+ DR replica) | `tier`, `min_gib` | storage provider provisions the target volume | **the data step** — a **data-migration provider** (MTV / replication / backup / a DR service) DCM calls | migration: provider pulls from source · rehydration: replica already staged |
 | **IP allocation** | `Network.IPAddress` from `Network.IPAddressPool` (or `Network.DHCPScope`) | `ip_family`, `allocation: dynamic\|static` | an IPAM/DHCP provider (`Network.AddressService`) leases an address | — | migration: **new** address · rehydration: often **reserved/preserved** for the same UUID |
 | **Network connection** | `Compute.VM.networks[]` → `Network.VirtualNetwork` (+ `Network.ConnectionProfile` NMstate) | **`isolation: private`, `egress: restricted`** (the private-networking intent) | network provider naturalizes: NSX portgroup **↔** OVN NAD + `NetworkPolicy` | — | reattach to the target segment |
 | **Egress / gateway** | `Network.Gateway` | `egress: restricted` | gateway provider programs NAT/edge; emits `external_address` | — | re-establish egress |
@@ -212,8 +212,9 @@ Rehydration reuses **Example A's flow verbatim**, with these deltas that fall st
   provenance source, four-states §5.2) — and relationships that pointed at the lost entity re-point to the
   replacement. *(The other case — a faithful restore from the **Realized** record while its provider is still
   available — preserves the same UUID per `RHY-005`; that is a different scenario than this one.)*
-- **The DR data is already staged** — the data-migration step is a **replica/backup activation** near the target
-  rather than a cross-provider pull, so it is typically faster and lower-loss than a migration's.
+- **The DR data is already staged** — the data-migration step is a **replica/backup activation** (often a
+  **Disaster Recovery service**) near the target rather than a cross-provider pull, so it is typically faster and
+  lower-loss than a migration's.
 - **Sovereignty/tenancy re-evaluated under *current* policy** (`RHY-001`) — a rehydration into today's estate may
   hit a residency/tenancy rule that did not exist at original realization, so the entity can land in
   `PENDING_REVIEW` before it proceeds. Migration evaluates target policy the same way; only the *timing* (an
@@ -226,8 +227,8 @@ dependency-ordered sequence — **one enabled solution serves both.**
 
 ## What DCM orchestrates vs. what needs a human
 
-- **Data + storage migration** — done by a **capable provider** (wrapping MTV, `virt-v2v`, backup/restore, or
-  replication) that DCM orchestrates — not DCM's own bytes, and not a human step. The whole flow runs unattended
+- **Data migration** — done by a **capable provider** (wrapping MTV, `virt-v2v`, backup/restore, replication, or
+  a **Disaster Recovery service**) that DCM orchestrates — not DCM's own bytes, and not a human step. The whole flow runs unattended
   where such a provider and its automation exist; only where none does it fall to a human.
 - **The non-portable remainder** — provider-specific features with no target equivalent (`distributed_switch`);
   surfaced, not silently dropped.
