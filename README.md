@@ -26,7 +26,6 @@ dcm/
 │   ├── layering.md                        ← UDLM/DCM boundary and how they relate
 │   ├── operator-perspective.md            ← Narrative operator/implementer handbook
 │   ├── design-principles.md               ← DCM-specific implementation choices
-│   ├── consistency-review.md
 │   ├── 00-split-manifest.md               ← Permanent record of the UDLM/DCM split
 │   ├── 00-layering-data-model-vs-dcm.md   ← Superseded stub — see layering.md
 │   ├── control-plane/                     ← Components, self-health, internal auth,
