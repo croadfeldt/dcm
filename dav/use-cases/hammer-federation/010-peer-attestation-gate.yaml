@@ -31,7 +31,7 @@ scenario:
   profile: fsi
   expected_domain_interactions:
   - domain: policy
-    interaction: attestation-gating policy blocks peer selection until fresh proof is verified
+    interaction: the attestation Validation Policy blocks peer selection until fresh proof is verified
   - domain: provider
     interaction: peer becomes selectable only after re-attestation; order proceeds unchanged
   - domain: audit
