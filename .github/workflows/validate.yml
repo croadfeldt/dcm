@@ -40,3 +40,14 @@ jobs:
           python-version: "3.12"
       # No homelab identifiers in the public spec (hashed denylist). Pure stdlib.
       - run: python3 tests/check_estate_tokens.py
+
+  links:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      # Referential integrity (repo-cleanliness Q8 — croadfeldt/dav docs/repo-cleanliness-review.md):
+      # every relative markdown link resolves. Pure stdlib.
+      - run: python3 tests/check_links.py
