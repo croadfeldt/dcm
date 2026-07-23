@@ -33,7 +33,7 @@ scenario:
     interaction: new realized entity records source_record_uuid lineage
 generated_by:
   mode: authoring
-  source: ai-assisted
+  source: llm-guided
   model: claude
   prompt_version: portability-enrich-2026-07-22
   timestamp: '2026-07-22T12:00:00.000000+00:00'

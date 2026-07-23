@@ -39,7 +39,7 @@ scenario:
     interaction: ingress admission crossing recorded with scan result, signer, and approver
 generated_by:
   mode: authoring
-  source: ai-assisted
+  source: llm-guided
   model: claude
   prompt_version: supply-chain-promotion-2026-07-22
   timestamp: '2026-07-22T12:00:00.000000+00:00'

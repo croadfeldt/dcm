@@ -103,15 +103,15 @@
             },
             "resource_complexity": {
               "type": "string",
-              "description": "Shape/dependency complexity of the requested resource(s). Vocabulary: single_no_deps, hard_dependencies, compound_service, conditional_soft_deps, process_resource, cross_dependency_payload."
+              "description": "Shape/dependency complexity of the requested resource(s). Vocabulary (engine consumer_profile default): single_no_deps, hard_dependencies, composite_service, conditional_soft_deps, process_resource, cross_dependency_payload."
             },
             "policy_complexity": {
               "type": "string",
-              "description": "Policy-evaluation complexity exercised. Vocabulary: system_defaults_only, single_gating (formerly single_gatekeeper), multi_policy_chain, conflicting_policies, orchestration_flow_static, dynamic_conditional_flow, cross_domain_constraint, human_escalation_required, governance_matrix_enforcement, recovery_policy."
+              "description": "The policy-evaluation complexity the scenario exercises. Vocabulary (engine consumer_profile default): system_defaults_only, single_validation, multi_policy_chain, conflicting_policies, orchestration_flow_static, dynamic_conditional_flow, cross_domain_constraint, human_escalation_required, governance_matrix_enforcement, recovery_policy."
             },
             "provider_landscape": {
               "type": "string",
-              "description": "The provider-eligibility situation for placement. Vocabulary: single_eligible, multiple_eligible, none_eligible, peer_dcm_required, meta_provider_composed, process_provider, mixed."
+              "description": "The provider landscape the scenario runs against. Vocabulary (engine consumer_profile default): single_eligible, multiple_eligible, none_eligible, peer_dcm_required, process_provider, mixed."
             },
             "governance_context": {
               "type": "string",
@@ -179,7 +179,6 @@
             "corpus",
             "llm-unguided",
             "llm-guided",
-            "ai-assisted",
             "human-authored"
           ]
         },
