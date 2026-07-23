@@ -31,7 +31,7 @@ mechanism below is written once; migration and rehydration are two entry points 
 
 ---
 
-## Set expectations first
+## What to expect
 
 - **Enablement, not execution — but automatable end-to-end.** DCM + the model give you the *data framework* to
   plan and drive the rebuild. **DCM never moves the bytes itself** — a **third-party mover** does (MTV,
