@@ -385,7 +385,7 @@ DCM applies per-domain retention policies:
 |---|---|---|
 | Intent | Indefinite | Audit and reproducibility; small per-record size |
 | Requested | Indefinite | Provenance chain for active entities; archived per profile after entity decommission |
-| Realized (historical versions) | Per profile: P365D (minimal) → P10Y (fsi/sovereign) | `is_current = false` rows |
+| Realized (historical versions) | Per profile: P365D (homelab) → P10Y (fsi/sovereign) | `is_current = false` rows |
 | Realized (current) | While entity active; permanent post-decommission for audit | `is_current = true` rows; immutable after decommission |
 | Discovered | P30D rolling | Discovery snapshots; not retained as authoritative state |
 | Pipeline events | P7D rolling for delivered events; indefinite for replay-eligible | Consumed events purged; never-consumed events retained for replay |
@@ -413,7 +413,7 @@ multi-second latency vs sub-second for hot data.
 
 | Profile | Historical Realized retention | Audit retention | Archival enabled |
 |---|---|---|---|
-| minimal | P90D | P1Y | No |
+| homelab | P90D | P1Y | No |
 | dev | P180D | P1Y | No |
 | standard | P365D | P3Y | Optional |
 | prod | P3Y | P7Y | Yes |

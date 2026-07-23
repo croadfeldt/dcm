@@ -411,7 +411,7 @@ action := "NOTIFY_AND_WAIT" if {
 
 action := "DRIFT_RECONCILE" if {
     input.payload.type == "recovery.timeout_fired"
-    input.deployment.deployment_posture in ["minimal", "dev", "standard"]
+    input.deployment.deployment_posture in ["homelab", "dev", "standard"]
 }
 
 action_parameters := {"deadline": "PT4H", "on_deadline_exceeded": "ESCALATE"}

@@ -304,7 +304,7 @@ under the `request.*` domain.
 
 | Profile | Max group size | Max timeout | Field injection validation | Max nesting depth |
 |---|---|---|---|---|
-| minimal | 100 | P30D | advisory | 3 |
+| homelab | 100 | P30D | advisory | 3 |
 | dev | 100 | P7D | advisory | 3 |
 | standard | 50 | P3D | enforced | 3 |
 | prod | 25 | P1D | enforced + audited | 3 |

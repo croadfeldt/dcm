@@ -318,7 +318,7 @@ references the udlm doc.
 **udlm sections** → `udlm/70-design-principles/00-design-priorities.md`
 - *Design Principles as Interoperability Substrate* — Four invariant principles (consumer sovereignty, zero trust, federation, policy as code) form the contract foundation any realization must honor.
 - *Authority Tiers (model definition)* — Ordered decision authority vocabulary (auto, reviewed, verified, authorized) plus custom extensions.
-- *Profile Scaling Model (definition)* — Named profiles (minimal, dev, standard, prod, fsi, sovereign) with constraint matrices.
+- *Profile Scaling Model (definition)* — Named profiles (homelab, dev, standard, prod, fsi, sovereign) with constraint matrices.
 
 **dcm sections** → `dcm/architecture/design-principles.md`
 - *Design Priorities: Implementation Choices* — Specific trade-offs (latency vs governance rigor, velocity vs stability).

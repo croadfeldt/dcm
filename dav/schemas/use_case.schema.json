@@ -63,7 +63,7 @@
             "profile": {
               "description": "The actor's operating profile (capability-set preset). See scenario.profile.",
               "enum": [
-                "minimal",
+                "homelab",
                 "dev",
                 "standard",
                 "prod",
@@ -126,7 +126,7 @@
         "profile": {
           "description": "The deployment/operating profile (a platform capability-set preset) the scenario runs under. Profiles are capability sets, not a strict hierarchy; named values are presets. minimal=least overhead (not least security), sovereign=in-boundary/air-gap-capable.",
           "enum": [
-            "minimal",
+            "homelab",
             "dev",
             "standard",
             "prod",

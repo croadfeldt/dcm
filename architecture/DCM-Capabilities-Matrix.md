@@ -36,7 +36,7 @@
 | AUTH-012 | SCIM Automated Provisioning | Actor created/updated/deprovisioned from IdP automatically via SCIM | — | Configure SCIM 2.0 endpoint; manage suspension-on-deprovision policy | IAM-001 |
 | AUTH-013 | In-Flight Request Continuity on Auth Failure | In-flight requests before auth failure are not interrupted | — | Configure session cache TTL; manage graceful degradation | IAM-001 |
 | AUTH-014 | Two-Tier MFA Enforcement | Satisfy per-session MFA at login and step-up MFA for high-risk operations | — | Configure per-session and step-up MFA; declare step-up trigger operations | IAM-005 |
-| AUTH-015 | Built-In Auth Provider Storage Backend | — | — | Configure built-in Auth Provider storage backend (SQLite for minimal/dev; PostgreSQL/MySQL for standard+) | IAM-001 |
+| AUTH-015 | Built-In Auth Provider Storage Backend | — | — | Configure built-in Auth Provider storage backend (SQLite for homelab/dev; PostgreSQL/MySQL for standard+) | IAM-001 |
 
 ---
 
@@ -381,7 +381,7 @@
 | CPX-009 | Algorithm and Key Usage Declaration | — | Declare algorithm and key_usage on credential records at issuance | Enforce declaration at issuance; reject credentials without declared algorithm | CPX-001 |
 | CPX-010 | Idle Credential Detection | Receive notification when credential reaches idle threshold | — | Configure idle_detection_threshold per profile; enforce alert-only action | CPX-001 |
 | CPX-011 | Compliance Domain Additive Credential Requirements | — | — | Enforce additive credential requirements when compliance domains are active on a profile | CPX-001, POL-005 |
-| CPX-012 | Credential Value Store Isolation (All Profiles) | — | — | Enforce credential values never stored in DCM stores in ALL profiles including minimal | CPX-001 |
+| CPX-012 | Credential Value Store Isolation (All Profiles) | — | — | Enforce credential values never stored in DCM stores in ALL profiles including homelab | CPX-001 |
 
 ---
 

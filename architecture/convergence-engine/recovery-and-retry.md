@@ -49,7 +49,7 @@ entire assembly budget.
 
 | Profile | assembly_timeout default |
 |---|---|
-| minimal | PT5M |
+| homelab | PT5M |
 | dev | PT5M |
 | standard | PT3M |
 | prod | PT2M |
@@ -64,7 +64,7 @@ Realized State callback by the deadline, `DISPATCH_TIMEOUT` fires.
 
 | Profile | dispatch_timeout default |
 |---|---|
-| minimal | PT2H |
+| homelab | PT2H |
 | dev | PT1H |
 | standard | PT1H |
 | prod | PT30M |
@@ -82,7 +82,7 @@ parallel during the placement loop, with a short per-call deadline:
 
 | Profile | reserve_query_timeout default |
 |---|---|
-| minimal | PT30S |
+| homelab | PT30S |
 | dev | PT30S |
 | standard | PT10S |
 | prod | PT5S |
@@ -336,7 +336,7 @@ with `concern_type: recovery_posture`):
 
 | Group | Posture |
 |---|---|
-| `recovery-automated-reconciliation` | Let drift detection converge; default for minimal/dev/standard |
+| `recovery-automated-reconciliation` | Let drift detection converge; default for homelab/dev/standard |
 | `recovery-discard-and-requeue` | On ambiguity, clean up and start fresh — prioritize consistency |
 | `recovery-notify-and-wait` | Never act automatically — always notify and wait for human; default for prod/fsi/sovereign |
 | `recovery-aggressive-retry` | Retry everything before giving up |

@@ -434,7 +434,7 @@ enforcement. It is also exposed to tenant administrators via the consumer API.
 
 | Profile | /livez | /readyz | /api/v1/admin/health | /metrics scraping |
 |---------|--------|---------|----------------------|-------------------|
-| `minimal` | Unauthenticated | Unauthenticated | Admin auth | Internal network only |
+| `homelab` | Unauthenticated | Unauthenticated | Admin auth | Internal network only |
 | `dev` | Unauthenticated | Unauthenticated | Admin auth | Internal network only |
 | `standard` | Unauthenticated | Unauthenticated | Admin auth | mTLS client cert or auth token |
 | `prod` | Unauthenticated | Unauthenticated | Admin auth | mTLS client cert or auth token |

@@ -35,7 +35,7 @@ sourced from the deployment environment.
 
 | KEK source | Profile | Security level |
 |---|---|---|
-| Environment variable | minimal, dev | Basic — protects against database theft |
+| Environment variable | homelab, dev | Basic — protects against database theft |
 | Kubernetes Secret | standard, prod | Good — K8s RBAC + etcd encryption |
 | HSM via PKCS#11 | fsi, sovereign | Strong — KEK never leaves the HSM |
 
@@ -137,7 +137,7 @@ DCM prepares to dispatch to a provider
   │   scope.operations: [dispatch]
   │   scope.resource_types: [Compute.VirtualMachine]
   │   entity_uuid: <entity_being_dispatched>
-  │   expires_at: <now + PT15M>  (max; profile-governed)
+  │   expires_at: <now + PT15M>  (external-dispatch ceiling; the per-profile ladder is provider-callback §3.3 — the one table)
   ▼ DCM includes credential in provider dispatch
   ▼ Provider validates credential scope before executing
   ▼ Credential expires after PT15M regardless of use
@@ -243,11 +243,15 @@ Credential revoked
   ▼ revoked_at, revocation_reason persisted
   ▼ credential.revoked event published to pipeline_events
   ▼ All subscribed components update local revocation cache
-  │   Cache TTL: PT1M standard, PT30S fsi/sovereign
+  │   CACHE-PROPAGATION TTL (owner: this table; CPX-003-DCM cites it):
+  │   PT1M standard, PT30S fsi/sovereign
   ▼ Credential Provider notified to invalidate stored value
-  │   Provider must honor within revocation_sla
+  │   PROVIDER-INVALIDATION SLA (owner: this table):
   │   standard/prod: PT5M
   │   fsi/sovereign: PT1M
+  │   (Distinct SLAs elsewhere: SESSION-REGISTRY SLA = session-revocation.md AUTH-017;
+  │    internal-cert CRL refresh = internal-component-auth.md ICOM-008. Four named SLAs,
+  │    one owner each — cite the name, never restate the numbers.)
   ▼ Audit record: credential_uuid, revocation_trigger, revoked_by_actor
 ```
 
@@ -333,7 +337,7 @@ The Credential Provider must validate at use time (see Section 5.3 above):
 
 DCM enforces the credential profile configuration at issuance and use.
 
-| Setting | minimal/dev | standard/prod | fsi/sovereign |
+| Setting | homelab/dev | standard/prod | fsi/sovereign |
 |---|---|---|---|
 | Default TTL | P365D | P90D | P30D |
 | Max TTL | unlimited | P365D | P90D |
@@ -354,7 +358,7 @@ DCM rejects credentials with forbidden algorithms (MD5, SHA-1, DES, 3DES,
 RC4, RSA < 2048, ECDSA < P-256) at issuance regardless of profile. Approved
 algorithms vary per profile:
 
-- `minimal/dev`: negative list (forbidden_algorithms enforced; everything
+- `homelab/dev`: negative list (forbidden_algorithms enforced; everything
   else permitted)
 - `standard+`: positive list per credential type
 - `fsi`: FIPS-approved subset (Ed25519 excluded from FIPS 140-2 in `fsi`;
@@ -411,7 +415,7 @@ idle_credential_record:
   status: idle_alert_pending
 ```
 
-Idle threshold by profile: P30D (minimal) → PT12H (sovereign). The credential
+Idle threshold by profile: P30D (homelab) → PT12H (sovereign). The credential
 is NOT automatically revoked at the threshold — alert only. Auto-revocation
 after 2× threshold is profile-configurable (`CPX-010`).
 
@@ -457,4 +461,4 @@ type, and trigger metadata.
 | `CPX-009-DCM` | DCM declares algorithm + key_usage on every credential at issuance (standard+); enforces key_usage at validation |
 | `CPX-010-DCM` | DCM fires idle detection at profile threshold; alert-only; auto-revocation after 2× threshold profile-configurable |
 | `CPX-011-DCM` | DCM compliance overlays always tighten (never relax) base profile credential requirements |
-| `CPX-012-DCM` | CPX-001-DCM applies in ALL profiles including minimal; no profile permits credential values in DCM stores |
+| `CPX-012-DCM` | CPX-001-DCM applies in ALL profiles including homelab; no profile permits credential values in DCM stores |

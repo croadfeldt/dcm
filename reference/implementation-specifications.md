@@ -64,7 +64,7 @@ Actor makes request:
 
 | Profile | Rate (req/min) | Burst Max | Bucket Max |
 |---------|---------------|-----------|------------|
-| `minimal` | 60 | 20 | 80 |
+| `homelab` | 60 | 20 | 80 |
 | `dev` | 120 | 40 | 160 |
 | `standard` | 300 | 100 | 400 |
 | `prod` | 600 | 200 | 800 |

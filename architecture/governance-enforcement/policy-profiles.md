@@ -123,7 +123,7 @@ Examples:
 
 ### 1a.1 The Gap in the Original Model
 
-The original six profiles (minimal → sovereign) are organized around **deployment posture** — how strict, how redundant, how governed. But organizations need compliance governance that is orthogonal to posture. A healthcare organization needs HIPAA controls regardless of whether they deploy at `standard` or `sovereign` posture. A payment processor needs PCI-DSS regardless of their redundancy profile.
+The original six profiles (homelab → sovereign) are organized around **deployment posture** — how strict, how redundant, how governed. But organizations need compliance governance that is orthogonal to posture. A healthcare organization needs HIPAA controls regardless of whether they deploy at `standard` or `sovereign` posture. A payment processor needs PCI-DSS regardless of their redundancy profile.
 
 The new model makes compliance a first-class dimension that composes with posture:
 
@@ -226,11 +226,11 @@ Sovereign and classified deployment controls:
 The six built-in profiles become explicit posture+compliance compositions:
 
 ```yaml
-system/profile/minimal:
+system/profile/homelab:
   policy_groups: [system/group/posture-minimal]
 
 system/profile/dev:
-  extends: system/profile/minimal
+  extends: system/profile/homelab
   policy_groups: [system/group/posture-dev]
 
 system/profile/standard:
@@ -545,16 +545,16 @@ policy_profile:
 
 ### 3.2 DCM Built-In Profiles
 
-DCM ships six profiles covering the spectrum from minimal to sovereign:
+DCM ships six profiles covering the spectrum from homelab to sovereign:
 
-#### `system/profile/minimal` — Home Lab / Evaluation
+#### `system/profile/homelab` — Home Lab / Evaluation
 
 ```yaml
-handle: "system/profile/minimal"
-name: "Minimal"
+handle: "system/profile/homelab"
+name: "Homelab"
 extends: null
 description: >
-  Minimal configuration for home lab, local testing, and evaluation.
+  The single-operator on-ramp (UDLM ADR-017) — home lab, local testing, and evaluation.
   Most controls advisory only. Single Tenant auto-created on first use.
   No audit requirements. No sovereignty enforcement.
 
@@ -580,7 +580,7 @@ policy_groups:
 ```yaml
 handle: "system/profile/dev"
 name: "Development"
-extends: "system/profile/minimal"
+extends: "system/profile/homelab"
 description: >
   Development environment profile. Tenancy recommended but not blocking.
   Basic logging. Ephemeral resource defaults. Warn-not-block enforcement.
@@ -703,7 +703,7 @@ system/profile/sovereign
     extends: system/profile/prod
       extends: system/profile/standard
         extends: system/profile/dev
-          extends: system/profile/minimal
+          extends: system/profile/homelab
             extends: null (base)
 ```
 
@@ -721,25 +721,22 @@ org/profile/my-prod:
 
 ### 3.4 Profile Activation
 
-Profiles activate at three levels — more specific takes precedence:
+**Profiles are platform-scoped: one active profile per DCM instance** (UDLM ADR-007 §5; `profile-resolution.md` §5 owns the resolution mechanics). A profile is a composed **set with a floor** — activating it never disables capabilities above the floor. If two postures are genuinely needed, run two instances; that is the supported pattern.
 
 ```yaml
-# DCM installation default
+# DCM installation default (first boot; the platform admin may activate another)
 installation_config:
-  default_profile: "system/profile/minimal"
+  default_profile: "system/profile/homelab"
 
-# Platform-level (applies to all Tenants)
+# Platform-level — THE active profile for this instance
 platform_config:
   active_profile: "system/profile/prod"
-  minimum_tenant_profile: "system/profile/dev"   # Tenants cannot go below this
-  maximum_tenant_profile: null                    # null = no ceiling
-
-# Tenant-level override
-tenant_config:
-  active_profile: "system/profile/fsi"           # must be >= minimum_tenant_profile
 ```
 
-**A Tenant cannot activate a profile less restrictive than the platform minimum.** A sovereign deployment can set `minimum_tenant_profile: system/profile/sovereign` — no Tenant can drop below that level.
+> **Rejected direction (recorded so it does not silently return):** a three-level activation model with
+> per-tenant profile overrides and `minimum/maximum_tenant_profile` ceilings. Rejected by ADR-007 §5 —
+> tenant-level posture splits are served by separate instances; group-scoping is ADR-007's recorded
+> *future* direction, not a tenant override.
 
 ### 3.5 Profile Conflict Resolution
 
@@ -748,7 +745,11 @@ When a profile is activated, DCM runs conflict detection across all constituent 
 Conflict resolution order:
 1. **Explicit `conflicts_with` declarations** on groups — use declared resolution rule
 2. **Priority schema** — higher numeric priority wins
-3. **Domain authority** — `system` beats `platform` beats `tenant`
+3. **Domain authority** — `system` beats `platform` beats `tenant` **at activation only**: this ranks *whose
+   group wins a declaration conflict* (system floors are unoverridable, ADR-013). It is the **opposite axis**
+   from evaluation-time precedence, where the *most specific* matching rule wins within what the floors permit
+   (`entity > resource_type > tenant > platform > system` — policy-evaluation.md §1–3, the owner). The two
+   orders never apply to the same question.
 4. **Unresolved** — profile activation fails with detailed conflict report
 
 ### 3.6 Profile Shadow Validation
@@ -1262,7 +1263,7 @@ See [Operational Models](https://github.com/croadfeldt/udlm/blob/main/lifecycle/
 
 | Profile | Default Recovery Posture |
 |---------|------------------------|
-| `minimal` | recovery-automated-reconciliation |
+| `homelab` | recovery-automated-reconciliation |
 | `dev` | recovery-automated-reconciliation |
 | `standard` | recovery-automated-reconciliation |
 | `prod` | recovery-notify-and-wait |
@@ -1302,7 +1303,7 @@ See [Accreditation and Authorization Matrix](https://github.com/croadfeldt/udlm/
 
 | Posture | Boundary | Internal | Hardware | Profile Default |
 |---------|---------|----------|----------|----------------|
-| `none` | Perimeter model | Trusted | Not required | minimal |
+| `none` | Perimeter model | Trusted | Not required | homelab |
 | `boundary` | Zero trust at external boundaries | Service mesh | Not required | dev, standard |
 | `full` | Zero trust everywhere | Per-call auth | Not required | prod, fsi |
 | `hardware_attested` | Zero trust everywhere | Per-call auth | Required (TPM/HSM) | sovereign |
@@ -1311,7 +1312,7 @@ See [Accreditation and Authorization Matrix](https://github.com/croadfeldt/udlm/
 
 | Profile | Max credential lifetime |
 |---------|------------------------|
-| minimal | PT8H |
+| homelab | PT8H |
 | dev | PT4H |
 | standard | PT1H |
 | prod | PT30M |

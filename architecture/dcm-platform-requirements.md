@@ -62,7 +62,7 @@ Manages the physical and virtual infrastructure that DCM's providers abstract. I
 
 Defines and manages the governance rules that DCM enforces. Authors validation policies (allow/deny), sovereignty constraints, and override approval rules. Reviews audit trails and compliance reports.
 
-- **Key activities:** Author and activate policies, configure policy profiles (minimal through sovereign), review override requests (dual-approval), verify audit integrity, manage compliance rescans
+- **Key activities:** Author and activate policies, configure policy profiles (homelab through sovereign), review override requests (dual-approval), verify audit integrity, manage compliance rescans
 
 ## Platform Administrator
 
@@ -144,7 +144,7 @@ An administrator configures deployment profiles that govern operational behavior
 
 | Profile | Audit Granularity | Override Timeout | Policy Minimums | Use |
 |---------|-------------------|-----------------|----------------|-----|
-| minimal | stage | 24h | none | Homelab, evaluation |
+| homelab | stage | 24h | none | Homelab, evaluation |
 | dev | stage | 4h | naming, tagging | Development |
 | standard | mutation | 8h | all core policies | Production |
 | fsi | field | 48h | sovereignty + all core | Financial services |

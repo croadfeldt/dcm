@@ -113,7 +113,7 @@ Rate limits are profile-governed and apply per authenticated actor:
 
 | Profile | Requests/minute | Burst allowance | Rate page_size header |
 |---------|----------------|-----------------|-------------------|
-| `minimal` | 60 | 20 | Yes |
+| `homelab` | 60 | 20 | Yes |
 | `standard` | 300 | 100 | Yes |
 | `prod` | 600 | 200 | Yes |
 | `fsi` | 600 | 200 | Yes |

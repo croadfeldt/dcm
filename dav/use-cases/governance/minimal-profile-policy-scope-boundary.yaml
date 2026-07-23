@@ -18,7 +18,7 @@ scenario:
     rank.)
   actor:
     persona: individual-developer
-    profile: minimal
+    profile: homelab
   intent: Provision a VM with attached volume and cross-region network attachment
     under a minimal resolved profile, with FSI-scoped policies correctly out of scope
   success_criteria:
@@ -37,7 +37,7 @@ scenario:
     provider_landscape: mixed
     governance_context: no_governance
     failure_mode: happy_path
-  profile: minimal
+  profile: homelab
   expected_domain_interactions:
   - domain: policy
     interaction: the engine resolves the request's profile and selects that profile's
