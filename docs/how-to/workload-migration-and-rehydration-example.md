@@ -43,9 +43,9 @@ mechanism below is written once; migration and rehydration are two entry points 
 - **Portability follows what you expressed as requirements.** Whatever is stated portably (Base/Type intent)
   re-realizes automatically; source-specific features with no target equivalent are surfaced for a decision. A
   partial or assisted result is normal.
-- **The result tracks the intent you have.** A workload realized through DCM carries its intent (the request
-  **is** the intent) and rebuilds cleanly. A brownfield resource carries only its native form, so **greening**
-  (DCM ADR-017) recovers the requirement first — the rebuild is as good as that recovered intent.
+- **The result tracks the intent you have.** A workload realized through DCM already carries its intent, so it
+  migrates or rehydrates cleanly. A brownfield resource carries only its native form, so **greening** (DCM
+  ADR-017) must recover the intent first — and the result is only as good as that recovered intent.
 
 ---
 
