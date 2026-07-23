@@ -13,7 +13,7 @@ editor is pure DCM.**
 Per the provider contract, a provider supplies **config-projection detail** — enough schema/detail for
 DCM to project a configuration interface at the provider's supported scale, plus each resource's
 `data_classification` and `tenant_uuid`. UDLM is the **state system-of-record** (UDLM ADR-016 §3): the
-config *state* (base + provider-namespaced `provider_extensions` — interim, retiring per udlm #202) is recorded on the resource across
+config *state* (Base/Type Class + Provider-Class elements, UDLM ADR-038) is recorded on the resource across
 Requested/Realized. DCM does not invent config vocabulary — it projects what the provider declares.
 
 ## 2. Projection scale — text passthrough → typed
