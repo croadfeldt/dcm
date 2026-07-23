@@ -104,8 +104,9 @@ curation state — and it attaches at one of three scopes:
 > **Status.** Scoped classes are defined in **UDLM ADR-038** (accepted) but are not yet a live registry
 > construct, and UDLM ships *no* concrete Provider Class — Provider Classes are **provider-authored**. So the
 > elements above are the **pattern a provider authors**, and a portable `isolation` intent at the Type Class is a
-> greenfield candidate under that pattern. Until scoped classes are realized in the schema, the mechanism in use
-> is **`provider_extensions`** on the realized entity (**UDLM ADR-PROV-004**). Realizing these classes and the
+> greenfield candidate under that pattern. Provider-specific data is Provider-Class `SharedDataElement`s
+> (**UDLM ADR-038**; schema realization tracked udlm #199 — the `provider_extensions` carrier is retired
+> and removed). Realizing these classes and the
 > contribution lifecycle for org-authored ones are the DCM engine's domain (**DCM ADR-025**, scoped-class
 > realization).
 
@@ -242,9 +243,8 @@ dependency-ordered sequence — **one enabled solution serves both.**
 ---
 
 ## References
-- UDLM **ADR-038** — the scoped-Class model (Base/Type/Provider Class + `SharedDataElement`) + migration.
-- UDLM **ADR-PROV-004** (`registry/instances/adr-resource-type-extension.json`) — `provider_extensions`, the
-  mechanism for provider-specific data until scoped classes are realized in the schema.
+- UDLM **ADR-038** — the scoped-Class model (Base/Type/Provider Class + `SharedDataElement`) + migration;
+  supersedes the retired ADR-PROV-004 `provider_extensions` mechanism (removed per udlm #202).
 - UDLM **`four-states.md` §5** — rehydration: replay the stored record through the dependency graph, preserve the
   UUID (`RHY-005`), re-evaluate sovereignty under current policy (`RHY-001`).
 - UDLM **`entities/service-dependencies.md`** — the dependency graph that supplies the rebuild order for both

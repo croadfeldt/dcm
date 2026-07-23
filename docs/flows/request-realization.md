@@ -82,7 +82,8 @@ sequenceDiagram
    [Placement across the specificity scale](#placement-across-the-specificity-scale).)
 
 4. **Enrich.** DCM reads what OpenShift requires for a VM (`cpu, memory, namespace`), sees that `namespace`
-   is missing, and fills it — writing the value into `provider_extensions.openshift.namespace` and moving
+   is missing, and fills it — writing the value into the provider's Provider-Class element
+   (`compute.vm.openshift#namespace`, UDLM ADR-038) and moving
    `enrichment_status` to `complete`. **This is where the namespace comes from.** *How* it's filled is the
    org's choice (next section); the common case is a small enrichment policy:
 
@@ -100,7 +101,7 @@ sequenceDiagram
            operator: equals
            value: "Compute.VirtualMachine"
      mutations:
-       - field: provider_extensions.openshift.namespace
+       - field: compute.vm.openshift#namespace   # Provider-Class element (UDLM ADR-038)
          operation: set
          value: "${tenant.handle}"          # the org's rule: namespace = the tenant
          reason: "OpenShift requires a namespace; use the owning tenant's"

@@ -11,7 +11,8 @@
 - **Placement re-runs with an exclusion.** The affected resources go back through the placement engine with
   the failed provider removed from the eligible pool. Validation policies re-evaluate against the alternate —
   a resource may only move somewhere policy still allows.
-- **Naturalized references are re-derived.** The old provider's `provider_extensions` (namespace, native id,
+- **Naturalized references are re-derived.** The old provider's Provider-Class elements (UDLM
+  ADR-038 — namespace, native id,
   cluster) are dropped and re-enriched for the new provider through the ordinary enrichment step. The portable
   base of the resource is unchanged.
 - **Re-realize, then confirm portability.** The dispatcher reserves and commits on the alternate provider, and

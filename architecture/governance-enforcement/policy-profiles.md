@@ -1035,7 +1035,7 @@ If a tenant-global policy says "allow informational sharing with Tenant B" but a
 
 ### 7.1 Tenancy and Sovereignty Are Always Current
 
-Tenancy controls, sovereignty directives, and cross-tenant authorizations are **always evaluated against current policies during rehydration**. They cannot be pinned to historical versions.
+Tenancy controls, sovereignty directives, and cross-tenant authorizations are **always evaluated against current policies during rehydration**. They cannot be pinned to historical versions. The normative rule is UDLM-owned — `RHY-001` in [udlm four-states.md](https://github.com/croadfeldt/udlm/blob/main/foundations/four-states.md); this section is DCM's realization of it.
 
 ```yaml
 rehydration:
@@ -1078,10 +1078,14 @@ rehydration_tenancy_conflict_record:
 
 | Policy | Rule |
 |--------|------|
-| `RHY-001` | Tenancy, sovereignty, and cross-tenant authorizations always use current policies during rehydration |
+| `RHY-001` | UDLM-owned ([four-states.md](https://github.com/croadfeldt/udlm/blob/main/foundations/four-states.md)) — always-current tenancy/sovereignty/cross-tenant evaluation; realized by §7.1–§7.2 |
 | `RHY-002` | Rehydration that conflicts with current tenancy/sovereignty pauses and enters PENDING_REVIEW |
 | `RHY-003` | A paused rehydration allocation is not automatically released — requires explicit resolution |
 | `RHY-004` | A policy may declare automatic resolution behavior for rehydration tenancy conflicts |
+
+> `RHY-001` (and `RHY-005`, UUID preservation on restore-in-place) are UDLM data-model rules;
+> `RHY-002..004` are DCM realization rules in the same coordinated number space (udlm
+> four-states.md notes the split — "the rest is realization/policy" and lives here).
 
 ---
 
