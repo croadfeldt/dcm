@@ -9,4 +9,5 @@ The narrative documentation tier (the architecture itself lives in `architecture
 - [`how-to/`](how-to/) — operator how-tos: the six profiles, workload migration and rehydration
   (replay intent, end to end).
 - [`engineering/`](engineering/) — engineering alignment tracking and reconciliation notes.
-- `internal/` — engagement-specific working notes; not part of the public spec surface.
+- `internal/` — non-public working notes (never tracked); not part of the spec surface.
+- [`archive/`](archive/) — archived historical records (point-in-time reviews, landed proposals).

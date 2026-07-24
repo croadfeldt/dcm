@@ -39,7 +39,7 @@ EXEMPT_FILES = {
     "AGENTS.md",                                        # the terminology decisions themselves
     "CLAUDE.md",                                        # mirror of AGENTS.md
     "architecture/DISCUSSION-TOPICS.md",                # open-questions / decision log (historical)
-    "docs/engineering/service-taxonomy-reconciliation.md",  # engineering proposal record (Service/Resource rename)
+    "docs/archive/service-taxonomy-reconciliation.md",  # archived proposal record (Service/Resource rename; landed)
     "tests/check_terminology.py",                       # this gate names the forbidden terms
 }
 

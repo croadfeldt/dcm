@@ -279,7 +279,7 @@ dcm/
 │   │   └── kessel-evaluation.md    # ← 44
 │   ├── design-principles.md        # ← dcm parts of 00-design-priorities
 │   ├── operator-perspective.md     # NEW — how to operationalize udlm (companion to udlm's consumer-perspective)
-│   └── consistency-review.md       # ← 45 (meta doc, lives here)
+│   └── consistency-review.md       # ← 45 (meta doc; archived 2026-07-23 → docs/archive/)
 ├── deployment/                     # (existing)
 ├── requirements/
 │   └── dcm-platform-requirements.md

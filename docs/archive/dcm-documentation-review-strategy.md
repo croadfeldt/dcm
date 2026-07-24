@@ -1,3 +1,5 @@
+> **Archived 2026-07-23.** Pre-split review-strategy memo; the process it describes is superseded by the CI cleanliness gates + the nine-question review brief (croadfeldt/dav docs/repo-cleanliness-review.md). Kept for the reasoning trail — do not extend.
+
 # DCM Architecture Documentation — Review Strategy
 
 **Author:** Chris, Principal Architect  

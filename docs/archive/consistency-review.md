@@ -1,3 +1,5 @@
+> **Archived 2026-07-23.** Point-in-time review record; its findings are resolved. Kept for the reasoning trail — do not extend.
+
 # DCM — Consistency Review Findings
 
 **Document Status:** ✅ Complete
