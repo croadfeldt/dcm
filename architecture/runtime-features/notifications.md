@@ -204,7 +204,7 @@ The notification event taxonomy is a **closed vocabulary** — a finite, version
 
 | Event Type | Trigger | Audience |
 |-----------|---------|---------|
-| `audit.chain_integrity_alert` | Hash chain verification failure detected | Security Team, Platform Admin |
+| `audit.integrity_alert` | Merkle verification failure detected | Security Team, Platform Admin |
 | `sovereignty.violation` | Resource in violation of sovereignty constraints | Platform Admin, Security Team, Resource Owner |
 | `sovereignty.migration_required` | Provider sovereignty change requires entity migration | Platform Admin, Resource Owner |
 | `federation.tunnel_degraded` | DCM-to-DCM federation tunnel health degraded | Platform Admin, SRE |

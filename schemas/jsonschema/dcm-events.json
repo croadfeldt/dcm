@@ -1415,7 +1415,7 @@
         }
       }
     },
-    "audit_chain_integrity_payload": {
+    "audit_integrity_payload": {
       "type": "object",
       "required": [
         "store_uuid",
@@ -1816,9 +1816,9 @@
         }
       }
     },
-    "audit_chain_break_payload": {
+    "audit_integrity_break_payload": {
       "type": "object",
-      "description": "Audit hash chain break detected \u2014 potential tamper or data corruption. Urgency: critical, non-suppressable (EVT-007).",
+      "description": "Audit Merkle-tree integrity break detected \u2014 potential tamper or data corruption. Urgency: critical, non-suppressable (EVT-007).",
       "required": [
         "entity_uuid",
         "expected_hash",

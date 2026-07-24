@@ -132,7 +132,7 @@ The `previous_record_hash` for the first record in an entity's chain is `SHA-256
 Hash chain verification runs on two schedules:
 
 **Continuous verification (per-write):**
-Every audit record write triggers an immediate verification of that record against its predecessor. This catches chain breaks at write time — before the record is committed. A write that would break the chain is rejected and triggers `audit.chain_integrity_alert`.
+Every audit record write triggers an immediate verification of that record against its predecessor. This catches chain breaks at write time — before the record is committed. A write that would break the chain is rejected and triggers `audit.integrity_alert`.
 
 **Periodic batch verification (scheduled):**
 The Audit component runs a full-chain verification sweep on a profile-governed schedule:
@@ -160,7 +160,7 @@ Chain break detected (during write-time or sweep verification):
   │   Break point: chain_sequence N where hash mismatch occurs
   │   All records with chain_sequence > N for this entity: integrity_status = unverified
   │
-  ▼ audit.chain_integrity_alert event fired (urgency: critical, non-suppressable)
+  ▼ audit.integrity_alert event fired (urgency: critical, non-suppressable)
   │   payload: {entity_uuid, entity_type, break_at_sequence, break_detected_at, sweep_type}
   │
   ▼ Notifications dispatched:
@@ -546,7 +546,7 @@ Service Providers must declare a Software Bill of Materials reference at registr
 | `SEC-002` | DCM GitOps stores enforce secrets scanning on all commits. Commits with detected secrets are rejected. |
 | `SEC-003` | For `fsi` and `sovereign` profiles, SBOM declaration is mandatory for all Service Providers before activation. |
 | `SEC-004` | The Internal CA private key must be stored in an HSM for `sovereign` profile deployments. Software-only key storage is not permitted at sovereign profile. |
-| `SEC-005` | Any direct database write to a DCM store that bypasses the application layer is detectable via data store provenance emission. Detection triggers `audit.chain_integrity_alert` for affected records. |
+| `SEC-005` | Any direct database write to a DCM store that bypasses the application layer is detectable via data store provenance emission. Detection triggers `audit.integrity_alert` for affected records. |
 
 ---
 

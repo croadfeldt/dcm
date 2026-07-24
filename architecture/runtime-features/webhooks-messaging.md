@@ -354,7 +354,7 @@ The event taxonomy maps onto the Universal Audit action vocabulary. All are vers
 | Relationship | `relationship.created`, `relationship.released` |
 | Policy | `policy.activated`, `policy.deactivated`, `policy.evaluated` (fail/gate only), `policy.shadow_result` |
 | Provider | `provider.healthy`, `provider.degraded`, `provider.unhealthy`, `provider.registered`, `provider.deregistered` |
-| Audit/security | `audit.chain_break`, `audit.forward_failed` |
+| Audit/security | `audit.integrity_break`, `audit.forward_failed` |
 | Drift | `drift.detected`, `drift.resolved`, `drift.escalated` |
 | Request | `request.submitted`, `request.approved`, `request.rejected`, `request.realized`, `request.failed` |
 | Rehydration | `rehydration.started`, `rehydration.completed`, `rehydration.paused`, `rehydration.interrupted` |
@@ -509,7 +509,7 @@ A **event routing service** is the sixth DCM provider type — a persistent, hig
       entity.state_transition: "dcm.entities.state"
       drift.detected: "dcm.drift.alerts"
       request.realized: "dcm.requests.completed"
-      audit.chain_break: "dcm.security.alerts"
+      audit.integrity_break: "dcm.security.alerts"
     schema_version: "1.0"
     delivery_guarantee: at_least_once
 

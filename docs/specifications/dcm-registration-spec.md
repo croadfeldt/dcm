@@ -502,7 +502,7 @@ information_provider_capabilities:
       search_index_companion: true
     - store_type: write_once_snapshot
       entity_uuid_keyed: true
-      hash_chain_integrity: true
+      merkle_integrity: true
       point_in_time_query: true
 
   consistency:
