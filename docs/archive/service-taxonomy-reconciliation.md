@@ -1,3 +1,5 @@
+> **Archived 2026-07-23 — Landed.** The decisions this proposal argued for are settled and live in `taxonomy/DCM-Taxonomy.md` (incl. Part 2 anti-vocabulary) and the ADRs (Service=act / Resource=thing; realize/Realized). Historical record of the reasoning — do not extend; on any divergence the taxonomy wins.
+
 # Service Taxonomy Reconciliation (DCM/UDLM ↔ Engineering ↔ OSAC)
 
 **Status:** Proposal — basis for the alignment conversation with **dcm-project engineering** (OSAC convergence is context that motivates one of the proposals, not a party whose sign-off is required). Not yet adopted.

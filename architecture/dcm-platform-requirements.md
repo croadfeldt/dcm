@@ -10,7 +10,7 @@
 
 ---
 
-# Engagement Context
+# Context
 
 DCM addresses a fundamental gap in enterprise infrastructure management: on-premises data centers lack the unified control plane that public clouds provide as table stakes. Organizations operating large-scale, multi-platform infrastructure spend disproportionate engineering effort stitching together disparate automation tools, enforcing governance manually, and reconciling inventory that diverges silently between intended and actual state.
 
