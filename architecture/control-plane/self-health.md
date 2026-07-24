@@ -229,7 +229,7 @@ Content-Type: application/health+json
     "audit_store": {
       "status": "pass",
       "records_last_hour": 1840,
-      "chain_integrity": "verified"
+      "integrity": "verified"          # Merkle inclusion/consistency
     },
     "message_bus": {
       "status": "pass",

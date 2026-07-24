@@ -1900,7 +1900,7 @@ Response 200:
     }
   ],
   "total": 47,
-  "chain_integrity": "verified"      # verified | unverifiable | compromised
+  "integrity": "verified"            # verified | unverifiable | compromised (Merkle proofs)
 }
 ```
 

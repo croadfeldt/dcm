@@ -198,7 +198,7 @@ FedRAMP Moderate authorization controls:
 - NIST 800-53 Rev 5 Moderate baseline implemented as policy group
 - FedRAMP-authorized provider preference injected as placement constraint
 - Continuous monitoring: drift detection mandatory; P24H maximum drift resolution window
-- Incident response: webhook required for security events (audit.chain_break, drift.escalated)
+- Incident response: webhook required for security events (audit.integrity_break, drift.escalated)
 - POA&M tracking: `poam_status` field in status_metadata on all policy artifacts
 - Boundary protection: explicit ingress/egress control documentation
 
