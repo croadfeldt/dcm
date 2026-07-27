@@ -20,6 +20,8 @@ jobs:
       - run: pip install jsonschema pyyaml
       # JSON Schemas valid + OpenAPI parse/structure (catches a broken contract merging).
       - run: python3 tests/validate_contracts.py
+      # UC dimension vocabulary (DIM-001) — needs pyyaml, lives in this job
+      - run: python3 tests/check_uc_dimensions.py
 
   terminology:
     runs-on: ubuntu-latest
@@ -30,8 +32,6 @@ jobs:
           python-version: "3.12"
       # Locked terminology (policy-type merge, Realized not Fulfilled, etc.). Pure stdlib.
       - run: python3 tests/check_terminology.py
-      # UC dimension vocabulary (mirror of udlm DIM-001, 2026-07-28 sweep F1)
-      - run: python3 tests/check_uc_dimensions.py
 
   estate-tokens:
     runs-on: ubuntu-latest
