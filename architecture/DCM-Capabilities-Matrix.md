@@ -91,7 +91,8 @@
 | PRR-005 | Prometheus Metrics (GATE-SP-05) | — | Expose required metric families at declared metrics_endpoint | Validate metric presence during approval; gate standard+ activation | PRV-001, HLT-005 |
 | PRR-006 | AEP.DEV Linting (GATE-SP-06) | — | Pass AEP linter against OpenAPI spec with no errors before registration; include linting report URL | Gate standard+ activation on linting pass; block activation on errors | PRV-001 |
 
-| PRV-010 | Provider Sandbox/Test Mode | Submit test requests targeting sandbox providers via `_test_context.target_provider_uuid`; sandbox providers visible in registry with `status: sandbox` | Register with `sandbox_mode: true`; implement full OIS contract; graduate to production via standard approval | Manage sandbox provider registry; review graduation requests; sandbox providers excluded from production placement | PRV-001, GATE-SP-01 || PRR-007 | Multi-Tenant Dispatch (GATE-SP-07) | — | Accept tenant_uuid in all dispatch payloads; return tenant-scoped resources | Gate standard+ activation on multi-tenant compatibility test | PRV-001 |
+| PRV-010 | Provider Sandbox/Test Mode | Submit test requests targeting sandbox providers via `_test_context.target_provider_uuid`; sandbox providers visible in registry with `status: sandbox` | Register with `sandbox_mode: true`; implement full OIS contract; graduate to production via standard approval | Manage sandbox provider registry; review graduation requests; sandbox providers excluded from production placement | PRV-001, GATE-SP-01 |
+| PRR-007 | Multi-Tenant Dispatch (GATE-SP-07) | — | Accept tenant_uuid in all dispatch payloads; return tenant-scoped resources | Gate standard+ activation on multi-tenant compatibility test | PRV-001 |
 
 ---
 
@@ -644,7 +645,7 @@
 | Identity and Access Management | 21 |
 | Service Catalog | 7 |
 | Request Lifecycle Management | 10 |
-| Provider Contract and Realization | 16 |
+| Provider Contract and Realization | 17 |
 | Resource Lifecycle Management | 7 |
 | Drift Detection and Remediation | 5 |
 | Policy Management | 7 |
@@ -680,7 +681,7 @@
 | Accreditation Monitoring | 6 |
 | Location Topology Management | 7 |
 | Subscription Management | 10 |
-| **Total** | **311** |
+| **Total** | **312** |
 ---
 
 ## Dependency Map — Critical Path Capabilities
