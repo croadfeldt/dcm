@@ -23,7 +23,7 @@ scenario:
     lifecycle_phase: rehydration_provider_portable
     resource_complexity: multi_dependent
     policy_complexity: multi_validation
-    provider_landscape: multi_eligible
+    provider_landscape: multiple_eligible
     governance_context: standard_governance
     failure_mode: single_provider_failure
   profile: standard

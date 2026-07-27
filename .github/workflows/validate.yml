@@ -30,6 +30,8 @@ jobs:
           python-version: "3.12"
       # Locked terminology (policy-type merge, Realized not Fulfilled, etc.). Pure stdlib.
       - run: python3 tests/check_terminology.py
+      # UC dimension vocabulary (mirror of udlm DIM-001, 2026-07-28 sweep F1)
+      - run: python3 tests/check_uc_dimensions.py
 
   estate-tokens:
     runs-on: ubuntu-latest
