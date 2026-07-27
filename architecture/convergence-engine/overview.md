@@ -58,7 +58,7 @@ intent until decommissioned.
 | React to provider events | Provider callbacks land at the Provider Callback API; the Request Orchestrator routes to Realized State persistence and event emission |
 | Detect drift | Discovery Service polls per Resource Type Spec's `discovery_schedule`; Drift Detection compares Discovered to Realized field-by-field |
 | Evaluate recovery on failure | Recovery Policies fire on declared triggers (timeout, cancellation failure, partial realization, compensation failure); evaluate via the same Policy Manager |
-| Audit everything | Audit Service appends a record on every state transition, policy decision, credential issuance, and provider call; SHA-256 hash chain provides tamper evidence |
+| Audit everything | Audit Service appends a record on every state transition, policy decision, credential issuance, and provider call; records are leaves of an RFC 9162 Merkle tree (signed tree heads) providing tamper evidence |
 
 ---
 
@@ -97,7 +97,7 @@ Provider — realizes the resource, calls back to /api/v1/instances/{id}/status
 Request Orchestrator — writes Realized State, emits entity.realized
     │ LISTEN/NOTIFY
     ▼
-Audit Service — appends audit record with hash chain
+Audit Service — appends audit record as a Merkle-tree leaf
     │
     ▼
 Discovery Service — runs scheduled discovery for the resource type

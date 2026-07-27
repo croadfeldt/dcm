@@ -355,7 +355,7 @@ These are being built in [dcm-project/dcm-examples](https://github.com/dcm-proje
 |---------|------|---------------------|
 | **Request Orchestrator** | Event bus — routes Kafka events to pipeline stages | New architectural component — the async pipeline core |
 | **Request Processor** | Layer assembly — merges core/service/consumer layers | New architectural component — data assembly |
-| **Audit Service** | Immutable audit store with SHA-256 hash chain | New architectural component — compliance evidence |
+| **Audit Service** | Immutable audit store with an RFC 9162 Merkle tree | New architectural component — compliance evidence |
 | **Discovery Service** | Scheduled discovery + drift detection | New architectural component — state reconciliation |
 
 These will eventually need their own repos in the `dcm-project` org.

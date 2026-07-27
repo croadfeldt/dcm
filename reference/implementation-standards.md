@@ -56,8 +56,8 @@ deployments. Homelab is not exempt.
 
 | Use | Algorithm | Profile |
 |---|---|---|
-| Audit hash chain | SHA-256 | All (minimum) |
-| Audit hash chain | SHA-384 / SHA-512 | fsi/sovereign (preferred) |
+| Audit Merkle leaf/tree hash | SHA-256 | All (minimum) |
+| Audit Merkle leaf/tree hash | SHA-384 / SHA-512 | fsi/sovereign (preferred) |
 | TLS cipher suites | per RFC 8446 (TLS 1.3 mandatory) | All |
 | Audit signing | Ed25519 or ECDSA P-384 | All |
 

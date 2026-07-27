@@ -275,7 +275,7 @@ Override requires dual-approval: two approvers from different roles, with writte
 An external auditor requests proof that a specific provisioning request was processed correctly. DCM returns:
 - **Inclusion proof:** Mathematical proof that the specific audit record exists in the Merkle tree
 - **Consistency proof:** Mathematical proof that the tree has only grown since the last signed tree head (no deletions)
-- **Request chain:** The complete hash chain from intent through realization with Ed25519 signatures from each service
+- **Request-chain proof:** Chain-of-custody across the request's audit leaves from intent through realization — each Ed25519-signed, with `output_payload_hash[N] == input_payload_hash[N+1]`
 - **Signed tree head:** The current root hash signed by DCM's identity
 
 The auditor can independently verify these proofs without trusting DCM.

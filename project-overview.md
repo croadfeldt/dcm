@@ -116,7 +116,7 @@ Complete observability into what was requested, what was provisioned, whether it
 
 ### Auditors
 
-A complete, chronological, tamper-evident record of every change to every artifact — who made it, when, through what authorization chain, and what the values were before and after. The audit hash chain means any deleted or modified record is detectable. Field-level provenance means every value in every record can be traced to its origin.
+A complete, chronological, tamper-evident record of every change to every artifact — who made it, when, through what authorization chain, and what the values were before and after. The audit Merkle tree (RFC 9162) means any deleted or modified record is detectable via inclusion/consistency proofs. Field-level provenance means every value in every record can be traced to its origin.
 
 ### FinOps and Business Leadership
 

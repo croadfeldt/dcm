@@ -240,7 +240,7 @@ Of DCM's four stores, **Discovered State** is the only one Kessel Inventory coul
 
 The other three stores — Intent, Requested, and Realized — **cannot** be replaced by Kessel Inventory:
 - Intent and Requested State require GitOps semantics (PR workflow, immutability, version history)
-- Realized State requires append-only event stream semantics with field-level provenance and hash chain integrity
+- Realized State requires append-only event stream semantics with field-level provenance and Merkle-tree integrity
 - None of DCM's lifecycle or audit requirements are in scope for Kessel Inventory
 
 #### 4.2.2 The Schema Alignment Question
@@ -429,7 +429,7 @@ The following DCM capabilities remain entirely in DCM regardless of how the Kess
 | Entity Relationship Graph | Operational relationships between resources — not access control |
 | Field-level provenance | Source tracking per field — not in scope for Kessel |
 | Drift detection logic and classification | DRC component — Kessel Inventory is a data source, not a drift engine |
-| Audit trail (hash chain) | Tamper-evident audit — DCM-specific requirement |
+| Audit trail (Merkle tree) | Tamper-evident audit — DCM-specific requirement |
 | Resource lifecycle state machine | REQUESTED → OPERATIONAL → DECOMMISSIONED — DCM-specific |
 | Policy Engine | Validation, Transformation, Recovery, Orchestration Flow policies — DCM-specific |
 | Authority Tier model | Approval routing — DCM-specific governance model |

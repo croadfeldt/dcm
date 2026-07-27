@@ -333,7 +333,7 @@ dcm_federation_trust_score:
     identity_verified: true        # mTLS certificate chain verified
     sovereignty_compatible: true
     certifications_current: true
-    audit_trail_integrity: true    # audit hash chains verified on sample
+    audit_trail_integrity: true    # audit Merkle proofs verified on sample
     uptime_score: 0.98
     compliance_score: 0.90         # policy compliance in recent operations
     data_completeness: 0.92
@@ -368,7 +368,7 @@ dcm_export_package:
     groups: all
     audit_records:
       date_range: [<from>, <to>]
-      include_hash_chain: true      # for audit trail verification on import
+      include_merkle_proof: true    # inclusion/consistency proofs for audit verification on import
 
   sovereignty:
     classification: internal
@@ -389,7 +389,7 @@ import_trust_score:
     sovereignty_compatible: true
     data_completeness: 0.92
     schema_compatibility: 1.00     # source schema matches current version
-    audit_trail_complete: true     # audit records included and hash chain valid
+    audit_trail_complete: true     # audit records included and Merkle proofs valid
     certifications_current: true
   action_on_low_score: <reject|import_with_warning|escalate>
   threshold: 70                    # reject if below

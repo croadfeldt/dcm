@@ -49,7 +49,7 @@ or any subset of these. DCM's contract enforcement assumes all of them.
 ## 2. Why PostgreSQL (the rationale)
 
 DCM's design principle is: prescribe **data contracts** (schemas,
-immutability rules, versioning, hash chains) — not infrastructure products.
+immutability rules, versioning, the Merkle-tree audit) — not infrastructure products.
 Where a contract maps directly to a single well-understood infrastructure
 category, DCM prescribes the category and the contract, not an abstraction
 layer over it.
@@ -68,7 +68,7 @@ native features:
 |---|---|
 | Append-only on Intent / Requested / Audit | `REVOKE UPDATE, DELETE` + audit trigger |
 | Versioning on Realized | Row versioning with semantic version columns + `is_current` flag |
-| Tamper-evident audit | SHA-256 hash chain in `audit_records` table |
+| Tamper-evident audit | RFC 9162 Merkle tree over the `audit_records` leaves, signed tree heads |
 | Tenant isolation | Row-Level Security (RLS) policies |
 | Event-driven pipeline routing | `LISTEN/NOTIFY` |
 | JSONB document storage | Native JSONB with GIN indexes |
@@ -82,9 +82,9 @@ native features:
 |---|---|---|
 | Immutability | Git commits are immutable | Append-only tables + REVOKE UPDATE, DELETE + audit trigger |
 | Version history | Git log | Row versioning with semantic version fields |
-| Audit trail | Git commit metadata | SHA-256 hash chain (stronger — explicit cryptographic chain vs Git's graph integrity) |
+| Audit trail | Git commit metadata | RFC 9162 Merkle tree (stronger — inclusion/consistency proofs against signed tree heads vs Git's graph integrity) |
 | PR-based review | Native Git workflow | DCM's Policy Engine + Scoring Model + Authority Tier routing (more sophisticated) |
-| Tamper evidence | Git SHA integrity | Per-record hash chain (per-record, not per-repo) |
+| Tamper evidence | Git SHA integrity | Per-leaf Merkle inclusion (per-record, not per-repo) |
 | Transactional consistency | Cross-store sync required | Native — intent + audit + operation in same transaction |
 | Sovereignty partitioning | Separate Git/Kafka/Redis per zone | Separate PostgreSQL instance per zone (one thing to deploy, not four) |
 | Air-gapped deployment | Git + Kafka + Redis + PostgreSQL (4 infra dependencies) | PostgreSQL only (1 dependency) |

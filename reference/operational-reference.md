@@ -145,7 +145,7 @@ gitops_store:
 DCM store migrations follow three invariants:
 
 1. **No data loss** — every record in the source store must exist in the target store after migration
-2. **Audit chain continuity** — the audit hash chain must be unbroken across the migration; audit records written before and after must chain correctly
+2. **Audit continuity** — the audit Merkle tree must remain consistent across the migration; a consistency proof must hold between the pre- and post-migration signed tree heads, and `leaf_index` must continue monotonically
 3. **Read availability during migration** — DCM continues serving read requests throughout; write availability may be briefly paused during cutover
 
 ### 2.2 Migration Playbook Structure
