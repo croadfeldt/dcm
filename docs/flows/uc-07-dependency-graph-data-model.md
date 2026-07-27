@@ -6,9 +6,9 @@
 
 ## What's different in the engine
 
-- **No parallel dependency store.** DCM queries the UDLM graph directly for the three edge kinds — containment, `depends_on`, shares-fault-domain — instead of building its own.
-- **Two derived reads, one source.** A topological sort over `depends_on` + containment yields convergence order; a reverse-reachability walk over the same edges yields blast-radius and redundancy.
-- **Edges written where they're known.** Containment and fault-domain edges are recorded at realization (which host, which pool); `depends_on` edges come from the resource spec.
+- **No parallel dependency store.** DCM queries the UDLM graph directly for the two authored edge kinds — containment and `depends_on` — instead of building its own; fault-domain co-membership is **derived**, not a third edge (UDLM ADR-010: a fault domain is *not an authored edge kind* — resources that transitively reference the same fault-domain anchor share it).
+- **Two derived reads, one source.** A topological sort over `depends_on` + containment yields convergence order; a reverse-reachability walk over the same edges yields blast-radius, and shared-anchor co-reference yields fault-domain redundancy.
+- **Edges written where they're known.** Containment edges are recorded at realization (which host, which pool); `depends_on` edges come from the resource spec; fault-domain grouping is computed from the recorded anchor references, never authored.
 
 ## Sequence — only the UC-specific part
 
@@ -19,7 +19,7 @@ sequenceDiagram
     participant Ord as Ordering query
     participant Imp as Impact query
 
-    Op->>G: realize resources, record edges (containment, depends_on, fault-domain)
+    Op->>G: realize resources, record edges (containment, depends_on) + anchor refs
     Op->>Ord: what order is safe?
     Ord->>G: topological sort over depends_on + containment
     G-->>Ord: convergence order
