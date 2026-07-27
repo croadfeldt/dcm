@@ -103,7 +103,7 @@ The following are exempt from consumer rate limits:
 
 ## 3. Audit Log Hash Chain — Verification Schedule and Implementation
 
-The hash chain structure is defined in [Universal Audit](https://github.com/croadfeldt/udlm/blob/main/observability/universal-audit.md) §8. This section specifies the verification schedule, triggering component, and response protocol.
+The Merkle-tree structure is defined in [Universal Audit](https://github.com/croadfeldt/udlm/blob/main/observability/universal-audit.md) §8. This section specifies the verification schedule, triggering component, and response protocol.
 
 ### 3.1 Hash Computation
 

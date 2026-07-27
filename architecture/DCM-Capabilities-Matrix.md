@@ -226,7 +226,7 @@
 | STO-002 | Realized State Management | — | — | Configure realized_entities table; manage version retention and is_current flag | PRV-005 |
 | STO-003 | Discovered State Management | — | — | Configure discovered_records table; manage retention policies per profile | DRF-001 |
 | STO-004 | Search and Query | Use entity and catalog search | — | Configure materialized views and indexes; manage cache refresh | STO-001 |
-| STO-005 | Backup and Recovery | — | — | Configure PostgreSQL backup (PITR); test recovery; verify audit hash chain integrity | STO-001 |
+| STO-005 | Backup and Recovery | — | — | Configure PostgreSQL backup (PITR); test recovery; verify audit Merkle-tree integrity (inclusion/consistency proofs) | STO-001 |
 | STO-006 | Provenance Model Configuration | — | — | Select and configure provenance model (full_inline / deduplicated / tiered); manage tier transitions | STO-001 |
 | STO-007 | Sovereignty Partitioning | — | Declare sovereignty constraints at registration | Configure separate PostgreSQL instances per sovereignty zone; manage cross-zone prohibition | STO-001, GOV-001 |
 | STO-008 | Tenant-Scoped Storage Isolation | Data is isolated by tenant via RLS | — | Configure RLS policies per table; enforce STI-001 through STI-004 | STO-001, IAM-001 |

@@ -520,7 +520,7 @@ All DCM components address each other via Kubernetes Service DNS. No hardcoded I
 | 2 | How does DCM handle Kubernetes cluster upgrades in sovereign deployments? | Operational | ✅ Resolved — pre-staged images via signed bundles; maintenance mode during upgrade; startup verification before resume (RED-012) |
 | 3 | Should DCM support non-Kubernetes container runtimes? | Portability | ✅ Resolved — Kubernetes primary/required for production; Podman/Docker Compose for dev/community only (RED-013) |
 | 4 | What is the minimum hardware specification per profile? | Implementation | ✅ Resolved — declared as DCM Resource definitions; enforced by placement engine; table documented (RED-014) |
-| 5 | How does DCM's self-hosted drift detection handle DCM drifting from its own state? | Self-hosting | ✅ Resolved — DCM is DCM-managed resource; Operator reconciles; bootstrap hash provides independent check; audit hash chain externally verifiable (RED-015) |
+| 5 | How does DCM's self-hosted drift detection handle DCM drifting from its own state? | Self-hosting | ✅ Resolved — DCM is DCM-managed resource; Operator reconciles; bootstrap hash provides independent check; audit Merkle tree externally verifiable via inclusion/consistency proofs (RED-015) |
 
 ---
 
@@ -594,7 +594,7 @@ DCM's own deployment is a DCM-managed resource subject to the same drift detecti
 
 **The bootstrap paradox — who watches the watchman:**
 - DCM Operator drifts → bootstrap manifest hash verification (RED-011) detects independently
-- Audit component compromised → Audit Store hash chain break is detectable by external verification
+- Audit component compromised → Audit Store Merkle-tree break is detectable by external verification (failed inclusion/consistency proof)
 - Full DCM compromise → signed bundle verification at import time provides external trust anchor
 
 ### 8.6 System Policies — Deployment Redundancy Gaps
@@ -605,7 +605,7 @@ DCM's own deployment is a DCM-managed resource subject to the same drift detecti
 | `RED-012` | Kubernetes cluster upgrades in Sovereign DCM deployments use pre-staged container images from the local signed bundle registry. DCM enters maintenance mode during upgrade. In-flight operations complete before upgrade. DCM exits maintenance mode on successful startup verification. |
 | `RED-013` | Kubernetes is DCM's primary and recommended container runtime. Non-Kubernetes runtimes are supported for development and community extension purposes only. Production deployments must use Kubernetes. |
 | `RED-014` | Minimum hardware specifications are expressed as DCM Resource definitions per profile and enforced by the placement engine during DCM self-deployment. |
-| `RED-015` | DCM's own deployment is a DCM-managed resource subject to the same drift detection as any other resource. Bootstrap manifest hash verification (RED-011) provides independent verification. Audit Store hash chain breaks are detectable externally. |
+| `RED-015` | DCM's own deployment is a DCM-managed resource subject to the same drift detection as any other resource. Bootstrap manifest hash verification (RED-011) provides independent verification. Audit Store Merkle-tree breaks are detectable externally via inclusion/consistency proofs. |
 
 
 

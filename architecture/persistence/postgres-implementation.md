@@ -238,14 +238,22 @@ Platform admin queries set `dcm.current_tenant_uuid = '*'` (resolved via a
 separate RLS policy that grants cross-tenant access only to platform_admin
 role).
 
-### 2.3 Hash chain (audit integrity)
+### 2.3 Merkle tree (audit integrity)
 
-The `audit_records` table has a SHA-256 hash chain. Each record's
-`record_hash` includes the previous record's hash:
+Audit integrity follows the **RFC 9162 Merkle-tree** model (DCM ADR-010; the
+normative contract is UDLM `AUD-006` / universal-audit §8) — **not** a linked
+hash chain. Each `audit_records` row is a **leaf**: `record_hash` is the
+SHA-256 of the record's canonical content (the Merkle leaf hash), and
+`leaf_index` is its append-only position in the tree. `previous_leaf_hash`
+survives only as the per-request **chain-of-custody** link
+(`output_payload_hash[N] == input_payload_hash[N+1]`); it is not the integrity
+mechanism. The root of trust is a periodically **signed tree head**.
 
 ```sql
 CREATE TABLE audit_records (
     audit_uuid          UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    leaf_index          BIGINT NOT NULL,            -- append-only position in the Merkle tree
+    request_uuid        UUID,                       -- chain-of-custody grouping
     entity_uuid         UUID,
     tenant_uuid         UUID,
     action              VARCHAR(64) NOT NULL,
@@ -253,8 +261,19 @@ CREATE TABLE audit_records (
     actor_type          VARCHAR(32) NOT NULL,
     timestamp           TIMESTAMPTZ NOT NULL DEFAULT NOW(),
     payload             JSONB NOT NULL DEFAULT '{}',
-    previous_record_hash CHAR(64),
-    record_hash         CHAR(64) NOT NULL
+    previous_leaf_hash  CHAR(64),                   -- per-request chain of custody, not the integrity root
+    record_hash         CHAR(64) NOT NULL,          -- SHA-256 of canonical content = the Merkle leaf hash
+    UNIQUE (leaf_index)
+);
+
+-- Signed Tree Heads: the root of trust (AUD-006 §8.3). Recomputed and signed
+-- every N leaves or T seconds (profile-governed).
+CREATE TABLE audit_signed_tree_heads (
+    tree_size           BIGINT NOT NULL,            -- number of leaves covered
+    timestamp           TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    sha256_root_hash    CHAR(64) NOT NULL,          -- Merkle root
+    signature           BYTEA NOT NULL,             -- Ed25519, DCM's audit signing key
+    PRIMARY KEY (tree_size)
 );
 
 CREATE INDEX idx_audit_entity ON audit_records(entity_uuid, timestamp);
@@ -264,9 +283,11 @@ CREATE INDEX idx_audit_action ON audit_records(action, timestamp);
 REVOKE UPDATE, DELETE ON audit_records FROM dcm_app;
 ```
 
-The per-entity hash chain enables targeted integrity verification without
-requiring a full-database recompute. Each entity's chain is independently
-verifiable.
+Verification is by **inclusion and consistency proofs** against a signed tree
+head (AUD-006 §8.4), not by walking a linked chain — so targeted integrity
+checks (a single entity's or request's leaves) are O(log n) against a tree head
+and need no full-database recompute, and an external auditor verifies with only
+the tree head and the proof.
 
 ### 2.4 Append-on-change via trigger (Realized)
 
