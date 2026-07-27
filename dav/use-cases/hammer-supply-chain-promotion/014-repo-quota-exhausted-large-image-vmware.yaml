@@ -12,6 +12,9 @@ scenario:
   actor:
     persona: sre
     profile: standard
+  perspectives:
+    - application-team-member
+    - provider-owner
   intent: Promote a very large VM image but the controlled repo runs out of capacity mid-write
   success_criteria:
   - All governance gates pass before the artifact write begins

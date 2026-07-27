@@ -12,6 +12,9 @@ scenario:
   actor:
     persona: tenant-admin
     profile: prod
+  perspectives:
+    - federation-peer-operator
+    - compliance-auditor
   intent: Admit a peer-contributed provider capability into the local catalog under policy
   success_criteria:
   - Peer submits a capability contribution with attestation and a conformant schema

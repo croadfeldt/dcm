@@ -12,6 +12,9 @@ scenario:
   actor:
     persona: security-officer
     profile: fsi
+  perspectives:
+    - platform-operator
+    - sre
   intent: Detect and remediate drift on a policy-locked field and record the lock breach
   success_criteria:
   - The network-tier field is marked policy-locked to an approved value

@@ -12,6 +12,9 @@ scenario:
   actor:
     persona: compliance-auditor
     profile: fsi
+  perspectives:
+    - federation-peer-operator
+    - regulator
   intent: Produce and verify a mutually cross-signed audit checkpoint for a federation interaction
   success_criteria:
   - A cross-boundary operation triggers a checkpoint recorded on both peers

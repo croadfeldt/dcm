@@ -13,6 +13,9 @@ scenario:
   actor:
     persona: application-team-member
     profile: standard
+  perspectives:
+    - platform-operator
+    - sre
   intent: Rehydrate a resource that was only ever requested, never realized
   success_criteria:
   - System detects the resource has requested state but no prior realized state

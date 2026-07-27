@@ -12,6 +12,8 @@ scenario:
   actor:
     persona: finance-analyst
     profile: standard
+  perspectives:
+    - tenancy-authority
   intent: Toggle a tenant between non-binding showback and binding chargeback
   success_criteria:
   - Showback and chargeback are modeled as distinct policy modes over one attribution set

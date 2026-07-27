@@ -13,6 +13,12 @@ scenario:
   actor:
     persona: platform-engineer
     profile: standard
+  perspectives:
+    - application-team-member
+    - platform-operator
+    - sre
+    - provider-owner
+    - federation-peer-operator
   intent: Rehydrate resources whose original peer-provider has left the federation
   success_criteria:
   - Stored intent and dependency graph are available for the destroyed resources

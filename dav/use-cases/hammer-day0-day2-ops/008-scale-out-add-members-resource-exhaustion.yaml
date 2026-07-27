@@ -10,6 +10,9 @@ scenario:
   actor:
     persona: application-team-member
     profile: standard
+  perspectives:
+    - sre
+    - provider-owner
   intent: Scale out a composite by adding and configuring new members, handling capacity exhaustion
   success_criteria:
   - Each new worker is provisioned then configured by a bound Automation.Job before joining

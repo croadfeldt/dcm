@@ -12,6 +12,10 @@ scenario:
   actor:
     persona: compliance-auditor
     profile: sovereign
+  perspectives:
+    - platform-operator
+    - sre
+    - sovereignty-authority
   intent: Satisfy right-to-erasure over data inside immutable audit records without breaking integrity
   success_criteria:
   - The erasure request is recognized as targeting data inside immutable records

@@ -11,6 +11,7 @@ scenario:
   actor:
     persona: application-team-member
     profile: dev
+  perspectives: []
   intent: Discard an intent that was never realized without calling any provider
   success_criteria:
   - System confirms the intent has no realized state and no provider footprint

@@ -12,6 +12,7 @@ scenario:
   actor:
     persona: application-team-member
     profile: standard
+  perspectives: []
   intent: Decommission a composite service and tear its constituents down in the right internal order
   success_criteria:
   - The composite is decomposed into its declared constituents

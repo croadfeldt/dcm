@@ -13,6 +13,10 @@ scenario:
   actor:
     persona: compliance-auditor
     profile: sovereign
+  perspectives:
+    - platform-operator
+    - sre
+    - sovereignty-authority
   intent: Adopt a discovered resource under a sovereign residency mandate without breaching it
   success_criteria:
   - The residency jurisdiction of the discovered resource is captured at discovery

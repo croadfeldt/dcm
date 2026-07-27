@@ -12,6 +12,8 @@ scenario:
   actor:
     persona: sre
     profile: standard
+  perspectives:
+    - platform-operator
   intent: Run a reconciliation pass and confirm the resource has not drifted
   success_criteria:
   - Reconciliation reads the immutable Realized snapshot and does not mutate it

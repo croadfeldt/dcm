@@ -10,6 +10,11 @@ scenario:
   actor:
     persona: platform-engineer
     profile: standard
+  perspectives:
+    - platform-operator
+    - sre
+    - provider-owner
+    - sovereignty-authority
   intent: Dynamically rebuild all resources from stored intent after total destruction
   success_criteria:
   - All resources are destroyed (realized state cleared)

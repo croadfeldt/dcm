@@ -12,6 +12,10 @@ scenario:
   actor:
     persona: tenant-admin
     profile: standard
+  perspectives:
+    - platform-operator
+    - sre
+    - tenancy-authority
   intent: Rebuild an app while preserving resource UUIDs for downstream references
   success_criteria:
   - Both resources are re-realized in correct dependency order (database before web tier)

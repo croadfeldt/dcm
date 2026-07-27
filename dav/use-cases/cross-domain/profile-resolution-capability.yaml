@@ -8,6 +8,8 @@ scenario:
   actor:
     persona: platform-engineer
     profile: fsi
+  perspectives:
+    - tenancy-authority
   intent: Validate DCM resolves the instance profile from the approved list + default and onboards atomically
   success_criteria:
   - DCM resolves the instance profile from the platform approved list and default

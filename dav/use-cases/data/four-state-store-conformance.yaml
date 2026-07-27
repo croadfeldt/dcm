@@ -9,6 +9,9 @@ scenario:
   actor:
     persona: platform-engineer
     profile: standard
+  perspectives:
+    - platform-operator
+    - sre
   intent: Verify four-state data store conformance to the UDLM specification
   success_criteria:
   - Intent store preserves the original consumer declaration immutably

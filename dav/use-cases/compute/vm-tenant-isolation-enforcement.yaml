@@ -10,6 +10,8 @@ scenario:
   actor:
     persona: application-team-member
     profile: standard
+  perspectives:
+    - tenancy-authority
   intent: Provision a VM whose network and storage attachments are confined to the
     requesting team's tenant boundary
   success_criteria:

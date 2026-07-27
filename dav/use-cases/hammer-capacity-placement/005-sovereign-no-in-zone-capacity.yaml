@@ -12,6 +12,12 @@ scenario:
   actor:
     persona: security-officer
     profile: sovereign
+  perspectives:
+    - application-team-member
+    - sre
+    - provider-owner
+    - sovereignty-authority
+    - tenancy-authority
   intent: Place under a sovereign mandate when only out-of-zone capacity exists
   success_criteria:
   - In-zone providers are queried and all report exhausted capacity

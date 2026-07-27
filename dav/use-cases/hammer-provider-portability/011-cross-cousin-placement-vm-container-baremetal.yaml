@@ -8,6 +8,8 @@ scenario:
   actor:
     persona: platform-engineer
     profile: standard
+  perspectives:
+    - provider-owner
   intent: Placement evaluates VM, Container and BareMetal cousins for one portable intent
   success_criteria:
   - A Base-Class Compute intent is requested without a pinned Type

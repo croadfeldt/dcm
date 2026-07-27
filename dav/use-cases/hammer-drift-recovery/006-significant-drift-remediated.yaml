@@ -12,6 +12,8 @@ scenario:
   actor:
     persona: sre
     profile: prod
+  perspectives:
+    - platform-operator
   intent: Classify an intent-governed drift as significant and remediate it back to target
   success_criteria:
   - Discovery reports the instance count below the intended replica count

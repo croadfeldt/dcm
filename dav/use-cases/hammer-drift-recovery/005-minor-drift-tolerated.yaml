@@ -12,6 +12,9 @@ scenario:
   actor:
     persona: application-team-member
     profile: dev
+  perspectives:
+    - platform-operator
+    - sre
   intent: Confirm that cosmetic minor drift is classified and tolerated without remediation
   success_criteria:
   - Discovery reports divergence only on cosmetic, non-intent-governed fields

@@ -7,6 +7,10 @@ scenario:
   actor:
     persona: platform-engineer
     profile: standard
+  perspectives:
+    - platform-operator
+    - sre
+    - provider-owner
   intent: Port a composite service whose constituents span Compute, Storage and Network Base Classes
   success_criteria:
   - The composite's constituents are re-realized in dependency order

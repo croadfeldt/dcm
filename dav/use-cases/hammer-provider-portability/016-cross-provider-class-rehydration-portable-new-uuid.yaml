@@ -8,6 +8,11 @@ scenario:
   actor:
     persona: platform-engineer
     profile: standard
+  perspectives:
+    - application-team-member
+    - platform-operator
+    - sre
+    - provider-owner
   intent: Rehydrate a workload onto a different provider when the original is offline (new UUID)
   success_criteria:
   - The original provider is offline; no in-place restore is possible

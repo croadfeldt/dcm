@@ -12,6 +12,8 @@ scenario:
   actor:
     persona: platform-engineer
     profile: standard
+  perspectives:
+    - tenancy-authority
   intent: Validate a request against a tenant boundary expressed as a DCMGroup
   success_criteria:
   - The tenant is represented as a DCMGroup enclosing its resources

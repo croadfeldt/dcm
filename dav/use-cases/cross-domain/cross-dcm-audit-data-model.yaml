@@ -8,6 +8,10 @@ scenario:
   actor:
     persona: sovereign-tenant-admin
     profile: sovereign
+  perspectives:
+    - federation-peer-operator
+    - compliance-auditor
+    - sovereignty-authority
   intent: Validate UDLM models peer-ack metadata and a consistent cross-DCM audit record
   success_criteria:
   - The released resource record models peer-acknowledgement metadata

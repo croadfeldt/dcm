@@ -13,6 +13,10 @@ scenario:
   actor:
     persona: platform-operator
     profile: standard
+  perspectives:
+    - application-team-member
+    - sre
+    - federation-peer-operator
   intent: Survive a peer-DCM disconnect mid-ingestion without corrupting the partial inventory
   success_criteria:
   - Entities ingested before the disconnect are retained as provisional, not authoritative

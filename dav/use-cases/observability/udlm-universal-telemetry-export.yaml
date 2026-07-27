@@ -15,6 +15,10 @@ scenario:
   actor:
     persona: platform-operator
     profile: standard
+  perspectives:
+    - application-team-member
+    - sre
+    - compliance-auditor
   intent: Establish a universal telemetry export so monitoring, alerting, logging, and
     audit tooling consume DCM data through one UDLM-modeled interface over standard
     transports, with no DCM-side per-tool adapters

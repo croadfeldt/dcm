@@ -8,6 +8,9 @@ scenario:
   actor:
     persona: platform-engineer
     profile: standard
+  perspectives:
+    - application-team-member
+    - sre
   intent: Re-realize a stateless workload from Compute.VM to Compute.Container across Type Classes
   success_criteria:
   - The Compute Base requirements carry from VM to Container

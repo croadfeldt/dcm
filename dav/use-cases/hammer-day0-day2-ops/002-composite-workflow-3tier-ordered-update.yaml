@@ -10,6 +10,8 @@ scenario:
   actor:
     persona: sre
     profile: prod
+  perspectives:
+    - platform-operator
   intent: Update a 3-tier app tier-by-tier in dependency order via a DCM-sequenced composite process
   success_criteria:
   - DCM sequences the three per-tier job calls in dependency order (database, app, web)

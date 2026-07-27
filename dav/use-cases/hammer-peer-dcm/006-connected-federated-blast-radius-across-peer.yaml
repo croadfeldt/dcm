@@ -7,6 +7,11 @@ scenario:
   actor:
     persona: sre
     profile: prod
+  perspectives:
+    - application-team-member
+    - platform-operator
+    - federation-peer-operator
+    - compliance-auditor
   intent: Reverse-walk impact across a peer boundary to find affected peer-owned resources
   success_criteria:
   - Blast-radius reverse-walks reference edges including cross-boundary edges

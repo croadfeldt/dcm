@@ -12,6 +12,9 @@ scenario:
   actor:
     persona: sre
     profile: prod
+  perspectives:
+    - application-team-member
+    - platform-operator
   intent: Detect a manual out-of-pipeline provider change and classify it as drift
   success_criteria:
   - Fresh Discovery reports a memory value differing from the Realized snapshot

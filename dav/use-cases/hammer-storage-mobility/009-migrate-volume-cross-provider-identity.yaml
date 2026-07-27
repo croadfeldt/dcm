@@ -12,6 +12,10 @@ scenario:
   actor:
     persona: platform-engineer
     profile: prod
+  perspectives:
+    - platform-operator
+    - sre
+    - provider-owner
   intent: Move a volume's data to a new provider while preserving its DCM identity
   success_criteria:
   - Migration is modeled as a modification of the existing volume, not a new resource

@@ -7,6 +7,12 @@ scenario:
   actor:
     persona: sre
     profile: sovereign
+  perspectives:
+    - platform-operator
+    - provider-owner
+    - federation-peer-operator
+    - sovereignty-authority
+    - tenancy-authority
   intent: Rehydrate onto a peer DCM under current sovereignty policy, landing in review
   success_criteria:
   - The original provider is offline; rehydration targets a peer DCM

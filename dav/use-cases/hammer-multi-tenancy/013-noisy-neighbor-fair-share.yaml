@@ -12,6 +12,10 @@ scenario:
   actor:
     persona: sre
     profile: prod
+  perspectives:
+    - application-team-member
+    - provider-owner
+    - tenancy-authority
   intent: Prevent one tenant from monopolizing shared provider capacity
   success_criteria:
   - Placement evaluates per-tenant consumption against the shared provider's capacity

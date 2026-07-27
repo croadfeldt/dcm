@@ -11,6 +11,7 @@ scenario:
   actor:
     persona: platform-engineer
     profile: standard
+  perspectives: []
   intent: Create a single standalone VLAN segment on the fabric
   success_criteria:
   - Network.VLAN record is created with a stable UUID

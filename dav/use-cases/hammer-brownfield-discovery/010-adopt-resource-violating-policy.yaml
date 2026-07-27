@@ -13,6 +13,9 @@ scenario:
   actor:
     persona: security-officer
     profile: fsi
+  perspectives:
+    - application-team-member
+    - sre
   intent: Adopt a discovered resource that fails current policy without granting a blanket exception
   success_criteria:
   - Discovered attributes are evaluated against current policy at the point of adoption

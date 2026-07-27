@@ -11,6 +11,10 @@ scenario:
   actor:
     persona: sre
     profile: prod
+  perspectives:
+    - application-team-member
+    - compliance-auditor
+    - security-officer
   intent: Use a valid but out-of-scope credential and confirm the provider refuses it
   success_criteria:
   - The credential is confirmed valid but scoped to a different provider/interaction

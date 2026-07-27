@@ -12,6 +12,10 @@ scenario:
   actor:
     persona: sre
     profile: prod
+  perspectives:
+    - application-team-member
+    - platform-operator
+    - compliance-auditor
   intent: Detect realized consumption that has drifted past declared quota
   success_criteria:
   - Realized consumption is compared against the declared-quota intent

@@ -11,6 +11,9 @@ scenario:
   actor:
     persona: sre
     profile: prod
+  perspectives:
+    - application-team-member
+    - provider-owner
   intent: Spread HA replicas across distinct fault domains via anti-affinity
   success_criteria:
   - The anti-affinity rule and fault-domain topology are resolved for the service

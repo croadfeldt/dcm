@@ -13,6 +13,10 @@ scenario:
   actor:
     persona: platform-engineer
     profile: sovereign
+  perspectives:
+    - application-team-member
+    - sre
+    - sovereignty-authority
   intent: Ensure primary, replica, and backups all stay in the mandated jurisdiction
   success_criteria:
   - The residency constraint is propagated to the derived backup and replica resources

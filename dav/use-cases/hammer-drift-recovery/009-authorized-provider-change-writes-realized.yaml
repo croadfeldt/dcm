@@ -12,6 +12,8 @@ scenario:
   actor:
     persona: sre
     profile: prod
+  perspectives:
+    - platform-operator
   intent: Accept an authorized provider-originated change as a legitimate Realized update, not drift
   success_criteria:
   - The provider change arrives with a valid provider-originated authorization event

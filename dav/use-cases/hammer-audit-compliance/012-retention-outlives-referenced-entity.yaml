@@ -12,6 +12,8 @@ scenario:
   actor:
     persona: compliance-auditor
     profile: fsi
+  perspectives:
+    - tenancy-authority
   intent: Keep audit records valid and queryable after every referenced entity is gone
   success_criteria:
   - Audit records survive decommission of the resource they describe

@@ -11,6 +11,9 @@ scenario:
   actor:
     persona: tenant-admin
     profile: dev
+  perspectives:
+    - provider-owner
+    - tenancy-authority
   intent: Resize an OCPVirt VM while preserving its custodied Provider-Class placement_group_ref unchanged
   success_criteria:
   - The memory resize is applied to the entity

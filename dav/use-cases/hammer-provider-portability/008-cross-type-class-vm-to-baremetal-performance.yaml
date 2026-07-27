@@ -8,6 +8,8 @@ scenario:
   actor:
     persona: platform-engineer
     profile: standard
+  perspectives:
+    - provider-owner
   intent: Re-realize a Compute.VM as Compute.BareMetal for a performance requirement
   success_criteria:
   - The Base requirements carry from VM to BareMetal

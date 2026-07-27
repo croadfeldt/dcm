@@ -12,6 +12,9 @@ scenario:
   actor:
     persona: tenant-admin
     profile: prod
+  perspectives:
+    - compliance-auditor
+    - tenancy-authority
   intent: Attempt to access another tenant's volume on a shared pool
   success_criteria:
   - Every volume operation is authorized against the requesting tenant's ownership

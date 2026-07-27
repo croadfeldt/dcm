@@ -12,6 +12,7 @@ scenario:
   actor:
     persona: platform-engineer
     profile: standard
+  perspectives: []
   intent: Realize a declarative NMstate connection profile onto a host
   success_criteria:
   - Network.ConnectionProfile record is created with a stable UUID

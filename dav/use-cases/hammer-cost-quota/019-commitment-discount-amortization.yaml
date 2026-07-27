@@ -12,6 +12,12 @@ scenario:
   actor:
     persona: finance-analyst
     profile: standard
+  perspectives:
+    - platform-operator
+    - sre
+    - provider-owner
+    - compliance-auditor
+    - tenancy-authority
   intent: Amortize a committed-use discount across its consumers at the effective rate
   success_criteria:
   - The commitment, its term, and its committed capacity are identified

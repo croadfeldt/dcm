@@ -8,6 +8,9 @@ scenario:
   actor:
     persona: platform-operator
     profile: standard
+  perspectives:
+    - sre
+    - compliance-auditor
   intent: Validate UDLM models telemetry/events/audit as schema-discoverable data + event catalog
   success_criteria:
   - Metrics, events, log records, and audit records are modeled as UDLM entities

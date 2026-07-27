@@ -12,6 +12,8 @@ scenario:
   actor:
     persona: platform-engineer
     profile: standard
+  perspectives:
+    - tenancy-authority
   intent: Adopt a discovered resource into management while preserving its Entity UUID
   success_criteria:
   - The adopted entity retains the exact Entity UUID assigned at discovery

@@ -13,6 +13,11 @@ scenario:
   actor:
     persona: platform-engineer
     profile: standard
+  perspectives:
+    - application-team-member
+    - platform-operator
+    - sre
+    - compliance-auditor
   intent: Attempt to hand-edit an immutable Realized snapshot to erase a drift
   success_criteria:
   - The request asks to overwrite the immutable Realized snapshot in place

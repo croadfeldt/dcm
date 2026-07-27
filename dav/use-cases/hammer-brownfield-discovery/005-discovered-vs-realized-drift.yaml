@@ -13,6 +13,8 @@ scenario:
   actor:
     persona: sre
     profile: standard
+  perspectives:
+    - platform-operator
   intent: Detect out-of-band change as drift between discovered and realized state
   success_criteria:
   - The discovery observation is compared against the recorded realized state

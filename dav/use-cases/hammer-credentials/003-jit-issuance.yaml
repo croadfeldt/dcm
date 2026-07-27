@@ -12,6 +12,8 @@ scenario:
   actor:
     persona: sre
     profile: prod
+  perspectives:
+    - security-officer
   intent: Mint a single-use credential just-in-time inside a provider dispatch
   success_criteria:
   - No standing credential exists before the dispatch begins

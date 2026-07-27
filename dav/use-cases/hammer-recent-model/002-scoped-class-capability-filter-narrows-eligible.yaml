@@ -12,6 +12,9 @@ scenario:
   actor:
     persona: sre
     profile: standard
+  perspectives:
+    - platform-operator
+    - tenancy-authority
   intent: Resolve a Compute request with an accelerator requirement and a hard dependency the eligible
     Provider Class only partly satisfies
   success_criteria:

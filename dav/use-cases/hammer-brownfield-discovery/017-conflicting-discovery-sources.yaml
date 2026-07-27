@@ -13,6 +13,11 @@ scenario:
   actor:
     persona: platform-engineer
     profile: standard
+  perspectives:
+    - application-team-member
+    - platform-operator
+    - sre
+    - compliance-auditor
   intent: Reconcile conflicting attribute values from two correlated discovery sources
   success_criteria:
   - The two observations correlate to a single entity via matching keys

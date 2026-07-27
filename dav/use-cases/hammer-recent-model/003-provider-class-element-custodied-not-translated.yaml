@@ -11,6 +11,7 @@ scenario:
   actor:
     persona: platform-operator
     profile: prod
+  perspectives: []
   intent: Provision an OCPVirt VM carrying a Provider-Class network_policy_ref that the substrate stores
     but never naturalizes
   success_criteria:

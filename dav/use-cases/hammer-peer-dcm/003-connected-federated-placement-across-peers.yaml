@@ -7,6 +7,9 @@ scenario:
   actor:
     persona: platform-engineer
     profile: prod
+  perspectives:
+    - provider-owner
+    - federation-peer-operator
   intent: Place a workload by evaluating providers across the local DCM and multiple peers
   success_criteria:
   - Placement enumerates local and federated-peer candidates

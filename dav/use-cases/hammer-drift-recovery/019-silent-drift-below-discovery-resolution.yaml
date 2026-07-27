@@ -13,6 +13,10 @@ scenario:
   actor:
     persona: compliance-auditor
     profile: fsi
+  perspectives:
+    - platform-operator
+    - sre
+    - security-officer
   intent: Detect that a governed field is unverifiable because discovery cannot observe it
   success_criteria:
   - Intent governs firewall rule ordering

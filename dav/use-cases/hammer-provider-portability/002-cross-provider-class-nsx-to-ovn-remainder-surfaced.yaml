@@ -8,6 +8,12 @@ scenario:
   actor:
     persona: platform-engineer
     profile: standard
+  perspectives:
+    - application-team-member
+    - platform-operator
+    - sre
+    - provider-owner
+    - security-officer
   intent: Re-port a VMware/NSX VM to OCPVirt/OVN, surfacing the provider-specific remainder
   success_criteria:
   - The portable Base/Type subset re-realizes on OCPVirt automatically

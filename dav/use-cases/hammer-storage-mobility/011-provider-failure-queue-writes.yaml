@@ -12,6 +12,9 @@ scenario:
   actor:
     persona: sre
     profile: prod
+  perspectives:
+    - application-team-member
+    - platform-operator
   intent: Preserve and replay in-flight storage intents across a provider outage
   success_criteria:
   - Provider unreachability is detected and the provider is marked unhealthy

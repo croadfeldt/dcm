@@ -11,6 +11,9 @@ scenario:
   actor:
     persona: tenant-admin
     profile: dev
+  perspectives:
+    - compliance-auditor
+    - tenancy-authority
   intent: Onboard a new empty tenant scope bound to platform defaults
   success_criteria:
   - A new tenant scope is created with a unique identity

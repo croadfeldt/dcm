@@ -12,6 +12,9 @@ scenario:
   actor:
     persona: platform-engineer
     profile: prod
+  perspectives:
+    - compliance-auditor
+    - security-officer
   intent: Promote a clean, signed golden VM image into the controlled repo for OCPVirt VMs
   success_criteria:
   - Promotion request enters the contribution pipeline and is not silently applied to the repo

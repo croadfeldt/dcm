@@ -13,6 +13,11 @@ scenario:
   actor:
     persona: security-officer
     profile: prod
+  perspectives:
+    - application-team-member
+    - platform-operator
+    - sre
+    - compliance-auditor
   intent: Activate a shadow policy only after acknowledging its measured divergence
   success_criteria:
   - Shadow verdicts are compared against enforced verdicts over recent requests

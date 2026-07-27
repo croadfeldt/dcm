@@ -12,6 +12,10 @@ scenario:
   actor:
     persona: tenant-admin
     profile: sovereign
+  perspectives:
+    - provider-owner
+    - sovereignty-authority
+    - tenancy-authority
   intent: Provision storage whose data-at-rest stays in one named jurisdiction
   success_criteria:
   - Request is accepted with the named jurisdiction as a hard residency attribute

@@ -14,6 +14,10 @@ scenario:
   actor:
     persona: tenant-admin
     profile: sovereign
+  perspectives:
+    - security-officer
+    - sovereignty-authority
+    - tenancy-authority
   intent: Enforce a sovereign profile for one tenant inside a standard shared platform
   success_criteria:
   - The sovereign tenant's request is evaluated under its sovereign governance matrix

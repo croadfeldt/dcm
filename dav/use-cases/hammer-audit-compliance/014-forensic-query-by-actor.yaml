@@ -12,6 +12,8 @@ scenario:
   actor:
     persona: security-officer
     profile: prod
+  perspectives:
+    - compliance-auditor
   intent: Retrieve all actions by one identity across the estate in a time window
   success_criteria:
   - The audit trail is queryable by actor identity as a primary axis

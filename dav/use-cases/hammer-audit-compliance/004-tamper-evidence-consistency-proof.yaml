@@ -13,6 +13,8 @@ scenario:
   actor:
     persona: compliance-auditor
     profile: sovereign
+  perspectives:
+    - regulator
   intent: Prove the audit log evolved append-only between two signed tree heads
   success_criteria:
   - Both the old and new signed tree heads are retrievable

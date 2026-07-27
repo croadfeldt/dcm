@@ -12,6 +12,9 @@ scenario:
   actor:
     persona: platform-engineer
     profile: standard
+  perspectives:
+    - platform-operator
+    - sre
   intent: Faithfully rebuild one stateless service from stored intent after a rebuild
   success_criteria:
   - Stored intent and captured realized facts are read for the single resource

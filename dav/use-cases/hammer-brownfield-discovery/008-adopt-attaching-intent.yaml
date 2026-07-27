@@ -13,6 +13,9 @@ scenario:
   actor:
     persona: application-team-member
     profile: standard
+  perspectives:
+    - platform-operator
+    - sre
   intent: Attach an Intent to a discovered resource to bring it under managed lifecycle
   success_criteria:
   - The authored Intent attaches to the existing Discovered entity without changing its UUID

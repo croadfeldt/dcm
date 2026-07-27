@@ -14,6 +14,9 @@ scenario:
   actor:
     persona: platform-engineer
     profile: sovereign
+  perspectives:
+    - compliance-auditor
+    - sovereignty-authority
   intent: Ingest a brownfield resource whose residency cannot be resolved
   success_criteria:
   - The resource is ingested into the model despite missing residency metadata

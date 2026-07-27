@@ -12,6 +12,8 @@ scenario:
   actor:
     persona: sre
     profile: prod
+  perspectives:
+    - platform-operator
   intent: Have a recovery policy automatically fire and remediate a detected drift
   success_criteria:
   - Drift is detected on the health-check interval field

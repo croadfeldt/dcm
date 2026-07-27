@@ -12,6 +12,9 @@ scenario:
   actor:
     persona: platform-engineer
     profile: standard
+  perspectives:
+    - provider-owner
+    - sovereignty-authority
   intent: Place a workload on the cheapest policy-compliant eligible provider
   success_criteria:
   - The set of eligible providers is resolved for the request

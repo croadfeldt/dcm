@@ -11,6 +11,11 @@ scenario:
   actor:
     persona: tenant-admin
     profile: prod
+  perspectives:
+    - application-team-member
+    - sre
+    - compliance-auditor
+    - tenancy-authority
   intent: Attach a VM to another tenant's private VLAN and get denied
   success_criteria:
   - The referenced VLAN's tenant ownership/stake is resolved from the data model

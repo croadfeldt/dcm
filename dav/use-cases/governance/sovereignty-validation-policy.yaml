@@ -10,6 +10,9 @@ scenario:
   actor:
     persona: platform-engineer
     profile: sovereign
+  perspectives:
+    - provider-owner
+    - sovereignty-authority
   intent: Configure and enforce sovereignty validation policy for resource placement
   success_criteria:
   - Sovereignty validation policy is registered and active

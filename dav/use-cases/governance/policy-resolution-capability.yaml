@@ -9,6 +9,11 @@ scenario:
   actor:
     persona: platform-engineer
     profile: standard
+  perspectives:
+    - application-team-member
+    - platform-operator
+    - sre
+    - compliance-auditor
   intent: Validate DCM resolves the request profile and produces three-state policy outcomes
   success_criteria:
   - DCM resolves the request's profile and selects that profile's policies by construction

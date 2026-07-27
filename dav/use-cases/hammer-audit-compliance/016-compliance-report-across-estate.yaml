@@ -12,6 +12,8 @@ scenario:
   actor:
     persona: compliance-auditor
     profile: fsi
+  perspectives:
+    - executive
   intent: Produce an estate-wide as-of conformance report for one control
   success_criteria:
   - Every in-scope resource is evaluated against the named control

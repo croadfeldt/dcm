@@ -12,6 +12,11 @@ scenario:
   actor:
     persona: platform-engineer
     profile: prod
+  perspectives:
+    - application-team-member
+    - platform-operator
+    - sre
+    - provider-owner
   intent: Migrate a volume to a provider that cannot honor its capabilities
   success_criteria:
   - Source volume's required capabilities (snapshots, strong consistency) are enumerated

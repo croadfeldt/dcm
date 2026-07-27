@@ -15,6 +15,9 @@ scenario:
   actor:
     persona: platform-operator
     profile: standard
+  perspectives:
+    - sre
+    - security-officer
   intent: Adopt an existing configuration-management inventory into DCM as
     first-class entities, groups, and credentials - in place, with zero
     resource recreation and no management gap during transition

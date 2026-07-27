@@ -12,6 +12,9 @@ scenario:
   actor:
     persona: platform-engineer
     profile: prod
+  perspectives:
+    - provider-owner
+    - federation-peer-operator
   intent: Realize a resource whose only eligible provider is a peer DCM acting as a Provider
   success_criteria:
   - Intent is accepted and the placement engine identifies the peer DCM as an eligible provider

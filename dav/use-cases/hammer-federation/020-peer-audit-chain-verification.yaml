@@ -12,6 +12,12 @@ scenario:
   actor:
     persona: compliance-auditor
     profile: fsi
+  perspectives:
+    - application-team-member
+    - platform-operator
+    - sre
+    - federation-peer-operator
+    - regulator
   intent: Independently verify a peer DCM's audit chain for a federation interaction
   success_criteria:
   - Peer supplies its audit chain for the completed interaction

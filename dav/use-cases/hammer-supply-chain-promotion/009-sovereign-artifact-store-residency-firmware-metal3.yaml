@@ -12,6 +12,8 @@ scenario:
   actor:
     persona: compliance-auditor
     profile: sovereign
+  perspectives:
+    - sovereignty-authority
   intent: Promote a firmware package only into an in-jurisdiction, audit-complete controlled store
   success_criteria:
   - SBOM, CVE scan, signature, and provenance attestation gates all pass for the firmware package

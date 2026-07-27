@@ -12,6 +12,9 @@ scenario:
   actor:
     persona: sre
     profile: prod
+  perspectives:
+    - platform-operator
+    - federation-peer-operator
   intent: Survive a peer DCM disconnect mid-order without data loss or duplication
   success_criteria:
   - Order is dispatched and the peer acknowledges before the link drops

@@ -11,6 +11,10 @@ scenario:
   actor:
     persona: sre
     profile: standard
+  perspectives:
+    - application-team-member
+    - platform-operator
+    - security-officer
   intent: Detect that a credential expired out-of-band as drift against intent
   success_criteria:
   - Intended credential validity is compared against the backend's realized state

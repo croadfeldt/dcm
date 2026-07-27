@@ -7,6 +7,10 @@ scenario:
   actor:
     persona: platform-engineer
     profile: standard
+  perspectives:
+    - application-team-member
+    - sre
+    - federation-peer-operator
   intent: Discover a peer DCM's advertised capabilities to find an eligible provider
   success_criteria:
   - The local DCM queries federated peers' advertised capabilities

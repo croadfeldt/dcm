@@ -11,6 +11,10 @@ scenario:
   actor:
     persona: application-team-member
     profile: prod
+  perspectives:
+    - provider-owner
+    - compliance-auditor
+    - tenancy-authority
   intent: Select the best GPU-class provider meeting a count and interconnect floor
   success_criteria:
   - The required GPU class, minimum count, and interconnect capability are resolved

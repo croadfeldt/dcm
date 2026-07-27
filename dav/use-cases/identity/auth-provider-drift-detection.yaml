@@ -14,6 +14,12 @@ scenario:
   actor:
     persona: sovereign-tenant-admin
     profile: sovereign
+  perspectives:
+    - platform-operator
+    - sre
+    - compliance-auditor
+    - sovereignty-authority
+    - tenancy-authority
   intent: Detect and respond to divergence between DCM's disconnected identity
     projection and the authoritative IdP, under sovereign/disconnected operation
   success_criteria:

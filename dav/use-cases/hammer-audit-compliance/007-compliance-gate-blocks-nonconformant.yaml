@@ -12,6 +12,11 @@ scenario:
   actor:
     persona: tenant-admin
     profile: fsi
+  perspectives:
+    - application-team-member
+    - sre
+    - compliance-auditor
+    - tenancy-authority
   intent: Verify a non-conformant request is blocked at the compliance gate pre-dispatch
   success_criteria:
   - The compliance gate evaluates the request before any provider dispatch

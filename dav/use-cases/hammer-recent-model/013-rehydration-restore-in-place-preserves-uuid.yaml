@@ -10,6 +10,10 @@ scenario:
   actor:
     persona: sre
     profile: prod
+  perspectives:
+    - platform-operator
+    - sovereignty-authority
+    - tenancy-authority
   intent: Restore a service in place from its Realized record, preserving the entity UUID under a current-policy
     re-check
   success_criteria:

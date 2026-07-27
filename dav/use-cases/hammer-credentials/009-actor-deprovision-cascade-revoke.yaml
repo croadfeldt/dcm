@@ -11,6 +11,12 @@ scenario:
   actor:
     persona: tenant-admin
     profile: prod
+  perspectives:
+    - application-team-member
+    - platform-operator
+    - sre
+    - compliance-auditor
+    - security-officer
   intent: Revoke all of a deprovisioned actor's credentials and surface the blast radius
   success_criteria:
   - All credentials issued to the actor are enumerated

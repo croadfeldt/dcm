@@ -12,6 +12,7 @@ scenario:
   actor:
     persona: sre
     profile: standard
+  perspectives: []
   intent: Declare a static DHCP reservation as a first-class IPAddress record bound to an interface
   success_criteria:
   - Network.IPAddress record is created with allocation set to static

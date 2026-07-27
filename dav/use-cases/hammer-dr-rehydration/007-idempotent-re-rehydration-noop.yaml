@@ -12,6 +12,9 @@ scenario:
   actor:
     persona: platform-engineer
     profile: standard
+  perspectives:
+    - platform-operator
+    - sre
   intent: Re-run a rehydration safely so completed resources are no-ops
   success_criteria:
   - System compares current realized state against intent for each resource on the retry

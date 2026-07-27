@@ -12,6 +12,10 @@ scenario:
   actor:
     persona: security-officer
     profile: fsi
+  perspectives:
+    - application-team-member
+    - platform-operator
+    - sre
   intent: Immediately kill a compromised credential with no overlap window
   success_criteria:
   - Old credential is invalidated immediately with no overlap

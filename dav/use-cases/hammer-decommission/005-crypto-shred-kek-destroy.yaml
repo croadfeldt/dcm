@@ -13,6 +13,12 @@ scenario:
   actor:
     persona: security-officer
     profile: sovereign
+  perspectives:
+    - application-team-member
+    - platform-operator
+    - sre
+    - sovereignty-authority
+    - tenancy-authority
   intent: Crypto-shred a tenant by destroying its KEK and rendering all data unrecoverable
   success_criteria:
   - KEK is modeled as a resource with the tenant's encrypted volumes as dependents

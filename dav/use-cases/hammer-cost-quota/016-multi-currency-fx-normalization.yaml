@@ -12,6 +12,11 @@ scenario:
   actor:
     persona: finance-analyst
     profile: sovereign
+  perspectives:
+    - platform-operator
+    - sre
+    - sovereignty-authority
+    - executive
   intent: Roll up multi-region cost into a single reporting currency
   success_criteria:
   - Per-region cost lines are enumerated across currencies

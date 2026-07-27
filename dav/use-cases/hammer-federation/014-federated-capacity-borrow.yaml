@@ -12,6 +12,9 @@ scenario:
   actor:
     persona: finance-analyst
     profile: prod
+  perspectives:
+    - provider-owner
+    - federation-peer-operator
   intent: Borrow bounded compute capacity from a peer DCM when local capacity is exhausted
   success_criteria:
   - Local placement fails on capacity exhaustion for the submitted order

@@ -9,6 +9,8 @@ scenario:
   actor:
     persona: compliance-auditor
     profile: sovereign
+  perspectives:
+    - regulator
   intent: Validate an auditor can independently re-verify the audit-chain proofs and detect tampering
   success_criteria:
   - Independently re-verifying inclusion proofs against the signed tree heads succeeds for untampered

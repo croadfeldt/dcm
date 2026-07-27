@@ -8,6 +8,11 @@ scenario:
   actor:
     persona: platform-engineer
     profile: standard
+  perspectives:
+    - platform-operator
+    - sre
+    - provider-owner
+    - compliance-auditor
   intent: Cross-cloud re-port stalls when the data-migration provider times out
   success_criteria:
   - Compute re-realizes on OCPVirt from the stored intent

@@ -12,6 +12,8 @@ scenario:
   actor:
     persona: application-team-member
     profile: sovereign
+  perspectives:
+    - sovereignty-authority
   intent: Provision one residency-tagged VM in the correct jurisdiction
   success_criteria:
   - The residency tag is validated as well-formed and resolvable to a known jurisdiction

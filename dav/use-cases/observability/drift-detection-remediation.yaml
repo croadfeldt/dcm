@@ -9,6 +9,9 @@ scenario:
   actor:
     persona: platform-engineer
     profile: standard
+  perspectives:
+    - platform-operator
+    - sre
   intent: Detect drift between discovered and realized state and remediate per recovery
     policy
   success_criteria:

@@ -12,6 +12,10 @@ scenario:
   actor:
     persona: finance-analyst
     profile: standard
+  perspectives:
+    - platform-operator
+    - sre
+    - compliance-auditor
   intent: Export a cluster's cost in FOCUS-conformant columns
   success_criteria:
   - The cluster's resources are enumerated as FOCUS rows keyed by ResourceId

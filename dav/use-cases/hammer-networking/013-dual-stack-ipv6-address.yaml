@@ -12,6 +12,7 @@ scenario:
   actor:
     persona: platform-engineer
     profile: standard
+  perspectives: []
   intent: Add an IPv6 address to an interface that already has an IPv4 address (go dual-stack)
   success_criteria:
   - A second Network.IPAddress is created with ip_family ipv6 on the same interface

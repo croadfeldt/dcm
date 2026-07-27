@@ -10,6 +10,11 @@ scenario:
   actor:
     persona: application-team-member
     profile: standard
+  perspectives:
+    - platform-operator
+    - sre
+    - provider-owner
+    - sovereignty-authority
   intent: Provision a composite service from a single intent declaration
   success_criteria:
   - Composite service request is accepted and decomposed into constituents

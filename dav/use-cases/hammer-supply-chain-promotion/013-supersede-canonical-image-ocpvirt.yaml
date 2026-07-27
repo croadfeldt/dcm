@@ -12,6 +12,7 @@ scenario:
   actor:
     persona: platform-engineer
     profile: standard
+  perspectives: []
   intent: Promote a new image version that supersedes and deprecates the prior canonical one
   success_criteria:
   - Version N+1 passes all promotion gates and is admitted to canonical

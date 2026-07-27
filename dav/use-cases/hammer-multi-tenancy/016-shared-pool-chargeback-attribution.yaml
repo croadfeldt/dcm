@@ -12,6 +12,10 @@ scenario:
   actor:
     persona: finance-analyst
     profile: standard
+  perspectives:
+    - platform-operator
+    - sre
+    - tenancy-authority
   intent: Produce per-tenant chargeback for a shared allocatable pool
   success_criteria:
   - Each tenant's share of the shared pool is computed from its attributed allocations

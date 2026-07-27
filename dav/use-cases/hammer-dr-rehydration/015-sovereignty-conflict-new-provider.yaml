@@ -14,6 +14,12 @@ scenario:
   actor:
     persona: platform-engineer
     profile: sovereign
+  perspectives:
+    - application-team-member
+    - platform-operator
+    - sre
+    - provider-owner
+    - sovereignty-authority
   intent: Portably rehydrate a residency-pinned dataset when only cross-border providers survive
   success_criteria:
   - Sovereignty policy is re-evaluated against each surviving candidate provider at rehydration

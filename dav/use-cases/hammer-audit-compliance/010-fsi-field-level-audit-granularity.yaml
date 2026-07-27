@@ -12,6 +12,11 @@ scenario:
   actor:
     persona: compliance-auditor
     profile: fsi
+  perspectives:
+    - application-team-member
+    - sre
+    - sovereignty-authority
+    - tenancy-authority
   intent: Enforce field-level audit granularity as a floor that cannot be downgraded
   success_criteria:
   - Each change to a regulated field produces a distinct field-level audit entry

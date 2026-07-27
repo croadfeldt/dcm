@@ -7,6 +7,9 @@ scenario:
   actor:
     persona: application-team-member
     profile: dev
+  perspectives:
+    - federation-peer-operator
+    - sovereignty-authority
   intent: Freely exchange capabilities between two open-profile peer DCMs
   success_criteria:
   - Two open-profile DCMs federate without governance gates

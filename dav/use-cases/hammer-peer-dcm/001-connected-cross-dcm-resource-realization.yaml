@@ -8,6 +8,9 @@ scenario:
   actor:
     persona: platform-engineer
     profile: standard
+  perspectives:
+    - provider-owner
+    - federation-peer-operator
   intent: Realize a resource on a peer DCM's provider across the federation boundary
   success_criteria:
   - Placement identifies the peer DCM as the eligible provider

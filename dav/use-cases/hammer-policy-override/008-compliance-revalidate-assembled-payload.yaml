@@ -14,6 +14,8 @@ scenario:
   actor:
     persona: compliance-auditor
     profile: fsi
+  perspectives:
+    - provider-owner
   intent: Re-validate the assembled provider payload against compliance before dispatch
   success_criteria:
   - Intent-time validation passes on the raw request

@@ -12,6 +12,10 @@ scenario:
   actor:
     persona: platform-engineer
     profile: prod
+  perspectives:
+    - platform-operator
+    - sre
+    - provider-owner
   intent: Derive a child's placement criteria from its parent's reserved facts
   success_criteria:
   - The parent resource is placed and its reserved facts (zone, node, provider) captured

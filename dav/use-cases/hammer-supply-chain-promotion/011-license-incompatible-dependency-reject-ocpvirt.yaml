@@ -12,6 +12,10 @@ scenario:
   actor:
     persona: compliance-auditor
     profile: fsi
+  perspectives:
+    - application-team-member
+    - platform-operator
+    - sre
   intent: Promote a base image whose SBOM contains a prohibited-license dependency
   success_criteria:
   - SBOM analysis enumerates transitive SoftwarePackages by purl during promotion

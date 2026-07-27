@@ -13,6 +13,10 @@ scenario:
   actor:
     persona: platform-engineer
     profile: prod
+  perspectives:
+    - platform-operator
+    - sre
+    - federation-peer-operator
   intent: Replicate a dataset to a peer-DCM-managed replica for cross-site DR
   success_criteria:
   - A cross-DCM replication edge is expressed between local and peer datasets

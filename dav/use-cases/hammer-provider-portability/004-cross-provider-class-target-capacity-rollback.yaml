@@ -8,6 +8,10 @@ scenario:
   actor:
     persona: platform-engineer
     profile: standard
+  perspectives:
+    - platform-operator
+    - sre
+    - provider-owner
   intent: Re-port rolls back when the target provider lacks capacity mid-realize
   success_criteria:
   - The re-port reserves against the target provider

@@ -12,6 +12,11 @@ scenario:
   actor:
     persona: finance-analyst
     profile: fsi
+  perspectives:
+    - platform-operator
+    - sre
+    - compliance-auditor
+    - tenancy-authority
   intent: Split a shared pool's cost across tenants by proportional consumption
   success_criteria:
   - The shared pool and its multiple consuming tenants are identified

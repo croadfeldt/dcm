@@ -12,6 +12,10 @@ scenario:
   actor:
     persona: platform-engineer
     profile: prod
+  perspectives:
+    - application-team-member
+    - sre
+    - tenancy-authority
   intent: Decommission a tenant that owns a shared pool still consumed by other tenants
   success_criteria:
   - Decommission enumerates resources owned by tenant A, including the shared pool

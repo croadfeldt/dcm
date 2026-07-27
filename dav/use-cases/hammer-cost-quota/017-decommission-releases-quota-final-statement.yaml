@@ -12,6 +12,9 @@ scenario:
   actor:
     persona: tenant-admin
     profile: standard
+  perspectives:
+    - finance-analyst
+    - tenancy-authority
   intent: Decommission a service, release its quota, and close its cost
   success_criteria:
   - Decommission clears the resource's realized state

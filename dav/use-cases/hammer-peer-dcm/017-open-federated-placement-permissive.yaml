@@ -7,6 +7,10 @@ scenario:
   actor:
     persona: application-team-member
     profile: dev
+  perspectives:
+    - provider-owner
+    - sovereignty-authority
+    - tenancy-authority
   intent: Place across peers with no sovereignty or residency constraints
   success_criteria:
   - The open profile applies no sovereignty/residency constraints

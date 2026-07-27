@@ -11,6 +11,9 @@ scenario:
   actor:
     persona: platform-engineer
     profile: standard
+  perspectives:
+    - application-team-member
+    - sre
   intent: Re-issue a decommission for an already-decommissioned resource and get a safe no-op
   success_criteria:
   - System detects the resource is already retired with no realized state

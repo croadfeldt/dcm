@@ -13,6 +13,10 @@ scenario:
   actor:
     persona: platform-engineer
     profile: standard
+  perspectives:
+    - information-provider-owner
+    - compliance-auditor
+    - tenancy-authority
   intent: Record a scanned, undeclared server as a Discovered-only entity with no Intent
   success_criteria:
   - The scanned resource is persisted as an entity in Discovered state

@@ -9,6 +9,7 @@ scenario:
   actor:
     persona: platform-engineer
     profile: standard
+  perspectives: []
   intent: Deploy a full environment from a software profile definition alone
   success_criteria:
   - Software profile definition is complete and validated

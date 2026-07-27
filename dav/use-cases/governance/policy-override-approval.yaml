@@ -11,6 +11,8 @@ scenario:
   actor:
     persona: platform-engineer
     profile: prod
+  perspectives:
+    - executive
   intent: Obtain time-bounded override of a soft policy to unblock a business-critical
     deployment
   success_criteria:

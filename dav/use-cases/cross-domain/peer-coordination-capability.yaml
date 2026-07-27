@@ -8,6 +8,10 @@ scenario:
   actor:
     persona: sovereign-tenant-admin
     profile: sovereign
+  perspectives:
+    - federation-peer-operator
+    - compliance-auditor
+    - sovereignty-authority
   intent: Validate DCM can run a peer-coordinated two-phase release with hold-on-unreachable
   success_criteria:
   - DCM coordinates a two-phase release with a peer DCM instance

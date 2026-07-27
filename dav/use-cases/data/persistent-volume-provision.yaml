@@ -9,6 +9,12 @@ scenario:
   actor:
     persona: application-team-member
     profile: dev
+  perspectives:
+    - platform-operator
+    - sre
+    - provider-owner
+    - compliance-auditor
+    - sovereignty-authority
   intent: Provision a persistent block volume and attach it to an existing VM in
     the tenant
   success_criteria:

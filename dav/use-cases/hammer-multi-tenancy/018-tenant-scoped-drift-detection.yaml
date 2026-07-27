@@ -12,6 +12,11 @@ scenario:
   actor:
     persona: sre
     profile: prod
+  perspectives:
+    - application-team-member
+    - platform-operator
+    - security-officer
+    - tenancy-authority
   intent: Detect drift scoped to one tenant without disclosing another tenant's drift
   success_criteria:
   - Drift scan for tenant A reports only tenant A's drifted resources

@@ -11,6 +11,11 @@ scenario:
   actor:
     persona: platform-engineer
     profile: prod
+  perspectives:
+    - application-team-member
+    - platform-operator
+    - sre
+    - tenancy-authority
   intent: Decommission a shared resource that another tenant hard-depends on
   success_criteria:
   - Decommission traversal finds the cross-tenant hard dependency held by tenant B

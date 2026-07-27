@@ -13,6 +13,9 @@ scenario:
   actor:
     persona: sre
     profile: prod
+  perspectives:
+    - application-team-member
+    - platform-operator
   intent: Decommission a host without breaching a shared compute/storage fault domain
   success_criteria:
   - System recognizes the host belongs to both a compute pool and a Ceph storage fault domain

@@ -12,6 +12,7 @@ scenario:
   actor:
     persona: compliance-auditor
     profile: fsi
+  perspectives: []
   intent: Confirm audit and intent history survive after a resource is decommissioned
   success_criteria:
   - After teardown, realized state is cleared but the intent record is retained (marked retired, not deleted)

@@ -11,6 +11,11 @@ scenario:
   actor:
     persona: platform-engineer
     profile: prod
+  perspectives:
+    - provider-owner
+    - federation-peer-operator
+    - compliance-auditor
+    - sovereignty-authority
   intent: Spill placement to a peer DCM when local capacity is exhausted
   success_criteria:
   - Local providers are confirmed exhausted before considering the peer

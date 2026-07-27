@@ -13,6 +13,12 @@ scenario:
   actor:
     persona: platform-engineer
     profile: sovereign
+  perspectives:
+    - platform-operator
+    - sre
+    - federation-peer-operator
+    - sovereignty-authority
+    - tenancy-authority
   intent: Attach a sovereign workload to a shared service governed in a foreign estate
   success_criteria:
   - Both endpoint resources individually pass their own in-scope policies

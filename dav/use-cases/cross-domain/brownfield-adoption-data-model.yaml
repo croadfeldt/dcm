@@ -9,6 +9,10 @@ scenario:
   actor:
     persona: platform-operator
     profile: standard
+  perspectives:
+    - sre
+    - compliance-auditor
+    - security-officer
   intent: Validate UDLM models the brownfield adoption data (provenance, management authority, drift)
   success_criteria:
   - Each ingested entity carries provenance marking it brownfield

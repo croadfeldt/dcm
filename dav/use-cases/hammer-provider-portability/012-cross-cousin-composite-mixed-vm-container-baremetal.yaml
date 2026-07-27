@@ -7,6 +7,9 @@ scenario:
   actor:
     persona: platform-engineer
     profile: standard
+  perspectives:
+    - platform-operator
+    - sre
   intent: Realize a composite whose constituents are VM, Container and BareMetal cousins
   success_criteria:
   - The composite declares VM, Container and BareMetal constituents

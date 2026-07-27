@@ -12,6 +12,10 @@ scenario:
   actor:
     persona: platform-operator
     profile: fsi
+  perspectives:
+    - application-team-member
+    - sre
+    - security-officer
   intent: Promote a high-impact base image that requires human approval before it goes canonical
   success_criteria:
   - Automated gates (SBOM, CVE, signature, license) all pass and are recorded

@@ -11,6 +11,10 @@ scenario:
   actor:
     persona: sre
     profile: prod
+  perspectives:
+    - application-team-member
+    - platform-operator
+    - provider-owner
   intent: Recover placement when the selected provider fails mid-dispatch
   success_criteria:
   - Capacity is reserved on the winning provider and dispatch begins

@@ -11,6 +11,9 @@ scenario:
   actor:
     persona: compliance-auditor
     profile: fsi
+  perspectives:
+    - security-officer
+    - tenancy-authority
   intent: Retrieve a tenant-scoped audit trail without leaking other tenants' events
   success_criteria:
   - Audit query returns only tenant A's events

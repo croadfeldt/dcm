@@ -10,6 +10,8 @@ scenario:
   actor:
     persona: platform-engineer
     profile: standard
+  perspectives:
+    - federation-peer-operator
   intent: Discover a trusted peer DCM's published catalog of orderable capabilities
   success_criteria:
   - Local DCM issues a read-only catalog query to the peer

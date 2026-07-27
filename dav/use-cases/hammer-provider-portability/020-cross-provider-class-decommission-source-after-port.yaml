@@ -7,6 +7,10 @@ scenario:
   actor:
     persona: platform-engineer
     profile: standard
+  perspectives:
+    - platform-operator
+    - sre
+    - compliance-auditor
   intent: Decommission the source Provider-Class resource after a verified re-port
   success_criteria:
   - The re-ported workload is verified healthy on the target

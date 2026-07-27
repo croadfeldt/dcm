@@ -12,6 +12,11 @@ scenario:
   actor:
     persona: platform-engineer
     profile: prod
+  perspectives:
+    - application-team-member
+    - platform-operator
+    - sre
+    - compliance-auditor
   intent: Handle a mid-teardown provider failure without leaving an ambiguous half-state
   success_criteria:
   - Three resources destroy cleanly and their realized state is cleared

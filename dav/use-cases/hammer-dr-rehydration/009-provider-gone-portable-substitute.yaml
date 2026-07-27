@@ -13,6 +13,11 @@ scenario:
   actor:
     persona: platform-engineer
     profile: standard
+  perspectives:
+    - application-team-member
+    - platform-operator
+    - sre
+    - provider-owner
   intent: Rehydrate onto a substitute provider after the original is decommissioned
   success_criteria:
   - System detects the original provider is absent from the registry

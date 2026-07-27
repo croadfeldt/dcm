@@ -11,6 +11,9 @@ scenario:
   actor:
     persona: application-team-member
     profile: standard
+  perspectives:
+    - platform-operator
+    - sre
   intent: Decommission a resource that still has live dependents
   success_criteria:
   - System detects the three dependent services from the dependency graph before any destroy

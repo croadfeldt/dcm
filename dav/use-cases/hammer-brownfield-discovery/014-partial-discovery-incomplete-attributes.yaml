@@ -13,6 +13,10 @@ scenario:
   actor:
     persona: platform-engineer
     profile: standard
+  perspectives:
+    - application-team-member
+    - sre
+    - security-officer
   intent: Ingest a partially-discovered resource without defaulting unknown attributes
   success_criteria:
   - Known attributes (MAC, IP) are ingested; unknown attributes are marked unknown, not defaulted to zero

@@ -13,6 +13,11 @@ scenario:
   actor:
     persona: compliance-auditor
     profile: sovereign
+  perspectives:
+    - platform-operator
+    - sre
+    - provider-owner
+    - sovereignty-authority
   intent: Decommission a resource with proof of in-jurisdiction data destruction
   success_criteria:
   - Decommission triggers provider-side data destruction within the mandated jurisdiction

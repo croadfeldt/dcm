@@ -11,6 +11,12 @@ scenario:
   actor:
     persona: compliance-auditor
     profile: sovereign
+  perspectives:
+    - application-team-member
+    - sre
+    - provider-owner
+    - sovereignty-authority
+    - tenancy-authority
   intent: Place a workload only within a sovereignty allowed-zones set
   success_criteria:
   - Allowed-zones set is resolved from the sovereignty policy for the tenant

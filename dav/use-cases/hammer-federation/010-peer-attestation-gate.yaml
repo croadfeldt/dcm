@@ -12,6 +12,12 @@ scenario:
   actor:
     persona: security-officer
     profile: fsi
+  perspectives:
+    - application-team-member
+    - sre
+    - provider-owner
+    - federation-peer-operator
+    - compliance-auditor
   intent: Gate a federation interaction on a fresh, verifiable peer attestation
   success_criteria:
   - Order targets a peer whose trust attestation has expired

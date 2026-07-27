@@ -11,6 +11,8 @@ scenario:
   actor:
     persona: application-team-member
     profile: prod
+  perspectives:
+    - provider-owner
   intent: Co-locate two affine resources on the same provider
   success_criteria:
   - The affinity rule between the two resources is resolved before placement

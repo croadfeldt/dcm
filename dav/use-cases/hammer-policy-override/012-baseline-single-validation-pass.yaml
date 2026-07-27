@@ -12,6 +12,8 @@ scenario:
   actor:
     persona: application-team-member
     profile: dev
+  perspectives:
+    - compliance-auditor
   intent: Submit a conforming request satisfying a single in-scope validation policy
   success_criteria:
   - Exactly one validation policy is resolved as in scope for the dev profile

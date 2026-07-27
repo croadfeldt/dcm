@@ -11,6 +11,9 @@ scenario:
   actor:
     persona: application-team-member
     profile: standard
+  perspectives:
+    - sre
+    - tenancy-authority
   intent: Submit a request that exceeds the tenant's declared resource quota
   success_criteria:
   - Tenant's current aggregate consumption for the resource class is computed at admission

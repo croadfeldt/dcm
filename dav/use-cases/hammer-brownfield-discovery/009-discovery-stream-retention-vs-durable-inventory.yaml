@@ -13,6 +13,7 @@ scenario:
   actor:
     persona: compliance-auditor
     profile: standard
+  perspectives: []
   intent: Separate bounded-retention discovery observations from durable inventory entities
   success_criteria:
   - Raw discovery observations are retained on a bounded window and then aged out

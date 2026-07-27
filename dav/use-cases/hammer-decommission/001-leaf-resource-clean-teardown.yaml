@@ -11,6 +11,7 @@ scenario:
   actor:
     persona: platform-engineer
     profile: dev
+  perspectives: []
   intent: Decommission an unshared leaf resource and confirm clean teardown
   success_criteria:
   - Dependency check confirms the resource has zero dependents before teardown begins

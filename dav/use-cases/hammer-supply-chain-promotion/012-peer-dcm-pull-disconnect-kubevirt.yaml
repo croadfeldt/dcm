@@ -12,6 +12,9 @@ scenario:
   actor:
     persona: platform-engineer
     profile: prod
+  perspectives:
+    - federation-peer-operator
+    - compliance-auditor
   intent: Mirror a peer DCM approved image but the federation link drops mid-pull
   success_criteria:
   - Federation pull references the peer DCM canonical image and its attestation

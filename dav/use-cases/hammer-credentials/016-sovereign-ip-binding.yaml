@@ -12,6 +12,11 @@ scenario:
   actor:
     persona: compliance-auditor
     profile: sovereign
+  perspectives:
+    - application-team-member
+    - sre
+    - security-officer
+    - sovereignty-authority
   intent: Enforce that a credential is only valid from sovereign-boundary source IPs
   success_criteria:
   - The IP-binding constraint is recorded as credential metadata

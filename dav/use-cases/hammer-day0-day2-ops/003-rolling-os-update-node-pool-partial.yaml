@@ -10,6 +10,10 @@ scenario:
   actor:
     persona: platform-operator
     profile: prod
+  perspectives:
+    - application-team-member
+    - sre
+    - security-officer
   intent: Roll an OS-package update across a node pool and correctly record a partial outcome
   success_criteria:
   - A per-node update job is bound to each node and runs independently

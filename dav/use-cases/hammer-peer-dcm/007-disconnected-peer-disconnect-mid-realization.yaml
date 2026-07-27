@@ -7,6 +7,9 @@ scenario:
   actor:
     persona: sre
     profile: prod
+  perspectives:
+    - platform-operator
+    - federation-peer-operator
   intent: Hold and retry a cross-DCM realization when the peer disconnects mid-operation
   success_criteria:
   - The cross-DCM realization is in flight to the peer

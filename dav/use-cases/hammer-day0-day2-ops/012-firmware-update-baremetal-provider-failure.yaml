@@ -9,6 +9,11 @@ scenario:
   actor:
     persona: platform-engineer
     profile: prod
+  perspectives:
+    - application-team-member
+    - platform-operator
+    - sre
+    - compliance-auditor
   intent: Update bare-metal firmware in a window and recover from a mid-flash provider failure
   success_criteria:
   - The firmware job is bound to the bare-metal host and runs only inside the maintenance window

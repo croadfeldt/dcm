@@ -7,6 +7,10 @@ scenario:
   actor:
     persona: application-team-member
     profile: dev
+  perspectives:
+    - platform-operator
+    - sre
+    - federation-peer-operator
   intent: Test cross-DCM dependency resolution in the dev profile
   success_criteria:
   - A dev resource depends on a peer-owned resource

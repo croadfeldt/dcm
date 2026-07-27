@@ -12,6 +12,11 @@ scenario:
   actor:
     persona: finance-analyst
     profile: prod
+  perspectives:
+    - application-team-member
+    - sre
+    - compliance-auditor
+    - tenancy-authority
   intent: Approve or reject spend that crosses a soft budget threshold
   success_criteria:
   - Projected cost of the request is computed and added to cumulative committed spend

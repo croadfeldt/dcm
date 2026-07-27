@@ -9,6 +9,10 @@ scenario:
   actor:
     persona: platform-engineer
     profile: standard
+  perspectives:
+    - platform-operator
+    - sre
+    - provider-owner
   intent: Re-port a portable Compute.VM from VMware to OCPVirt across Provider Classes
   success_criteria:
   - The stored intent is replayed against the OCPVirt Provider Class

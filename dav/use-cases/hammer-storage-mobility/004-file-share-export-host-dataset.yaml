@@ -12,6 +12,8 @@ scenario:
   actor:
     persona: platform-engineer
     profile: standard
+  perspectives:
+    - provider-owner
   intent: Export a file share backed by a host-local ZFS dataset
   success_criteria:
   - File-share Service resource is created with a stable UUID

@@ -7,6 +7,10 @@ scenario:
   actor:
     persona: sre
     profile: prod
+  perspectives:
+    - platform-operator
+    - federation-peer-operator
+    - compliance-auditor
   intent: Reconcile peer-owned state after a peer returns from a disconnect
   success_criteria:
   - The peer returns after a disconnection window

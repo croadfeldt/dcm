@@ -11,6 +11,9 @@ scenario:
   actor:
     persona: platform-engineer
     profile: standard
+  perspectives:
+    - provider-owner
+    - security-officer
   intent: Decommission a resource and return its allocation to the shared pool
   success_criteria:
   - The VM's 200 GB allocation stake against the pool is identified during teardown

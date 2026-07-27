@@ -11,6 +11,9 @@ scenario:
   actor:
     persona: tenant-admin
     profile: standard
+  perspectives:
+    - compliance-auditor
+    - tenancy-authority
   intent: Apply a tenant profile override that composes over the platform default
   success_criteria:
   - Tenant override is accepted and recorded as a delta over the platform default

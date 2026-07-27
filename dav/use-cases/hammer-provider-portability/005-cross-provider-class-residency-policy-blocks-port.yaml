@@ -7,6 +7,12 @@ scenario:
   actor:
     persona: compliance-officer
     profile: sovereign
+  perspectives:
+    - application-team-member
+    - platform-operator
+    - sre
+    - provider-owner
+    - sovereignty-authority
   intent: Cross-provider re-port is blocked by a residency policy on the target region
   success_criteria:
   - The target provider's region is evaluated against current residency policy

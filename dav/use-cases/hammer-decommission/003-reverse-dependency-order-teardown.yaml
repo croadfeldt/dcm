@@ -11,6 +11,9 @@ scenario:
   actor:
     persona: platform-engineer
     profile: standard
+  perspectives:
+    - platform-operator
+    - sre
   intent: Tear down a full stack in correct reverse-dependency order
   success_criteria:
   - Teardown order is computed dynamically as the reverse of the build dependency graph

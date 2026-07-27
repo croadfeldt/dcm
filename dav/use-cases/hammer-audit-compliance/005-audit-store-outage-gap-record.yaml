@@ -12,6 +12,9 @@ scenario:
   actor:
     persona: sre
     profile: prod
+  perspectives:
+    - application-team-member
+    - compliance-auditor
   intent: Ensure an audit-store outage yields an explicit gap record, never silent loss
   success_criteria:
   - The outage is detected and its start and end are timestamped

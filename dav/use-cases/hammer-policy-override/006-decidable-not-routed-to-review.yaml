@@ -13,6 +13,8 @@ scenario:
   actor:
     persona: platform-engineer
     profile: prod
+  perspectives:
+    - security-officer
   intent: Submit a fully policy-decidable request and confirm no human review is invoked
   success_criteria:
   - Every in-scope policy returns a definite pass or fail with no missing inputs

@@ -12,6 +12,10 @@ scenario:
   actor:
     persona: platform-engineer
     profile: prod
+  perspectives:
+    - platform-operator
+    - sre
+    - compliance-auditor
   intent: Promote one approved image and make it consumable by both VM and container classes
   success_criteria:
   - The image is scanned, signed, and gated once through the promotion pipeline

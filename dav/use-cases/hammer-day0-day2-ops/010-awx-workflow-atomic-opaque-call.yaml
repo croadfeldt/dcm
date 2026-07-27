@@ -10,6 +10,7 @@ scenario:
   actor:
     persona: platform-engineer
     profile: standard
+  perspectives: []
   intent: Invoke a provider AWX workflow as a single opaque atomic process call
   success_criteria:
   - DCM dispatches the AWX workflow as one atomic Automation.Workflow call

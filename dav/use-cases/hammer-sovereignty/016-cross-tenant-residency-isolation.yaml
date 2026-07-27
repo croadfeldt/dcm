@@ -14,6 +14,11 @@ scenario:
   actor:
     persona: tenant-admin
     profile: sovereign
+  perspectives:
+    - application-team-member
+    - sre
+    - sovereignty-authority
+    - tenancy-authority
   intent: Add a shared tier without co-mingling data across incompatible jurisdictions
   success_criteria:
   - The shared backing resource's existing tenant residency constraints are resolved

@@ -9,6 +9,7 @@ scenario:
   actor:
     persona: platform-engineer
     profile: standard
+  perspectives: []
   intent: Bootstrap bare-metal nodes via PXE and ABI to a cluster-ready state
   success_criteria:
   - Bare-metal nodes PXE-boot from the discovery ISO

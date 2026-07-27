@@ -11,6 +11,7 @@ scenario:
   actor:
     persona: platform-engineer
     profile: prod
+  perspectives: []
   intent: Provision a Compute instance stated only at the Base Class, resolved down to a Provider Class
     by capability and policy
   success_criteria:

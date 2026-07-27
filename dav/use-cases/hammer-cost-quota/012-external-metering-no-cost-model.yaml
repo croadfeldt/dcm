@@ -13,6 +13,7 @@ scenario:
   actor:
     persona: finance-analyst
     profile: standard
+  perspectives: []
   intent: Compute a workload's monetary cost from the model alone
   success_criteria:
   - The workload's resource footprint and ownership are resolved from the model

@@ -14,6 +14,9 @@ scenario:
   actor:
     persona: application-team-member
     profile: standard
+  perspectives:
+    - platform-operator
+    - sre
   intent: Rehydrate a composite service with per-constituent data restores
   success_criteria:
   - The composite is rehydrated as one governed unit, not three unrelated resources

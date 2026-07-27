@@ -12,6 +12,12 @@ scenario:
   actor:
     persona: finance-analyst
     profile: standard
+  perspectives:
+    - platform-operator
+    - sre
+    - compliance-auditor
+    - tenancy-authority
+    - executive
   intent: Produce a per-tenant cost rollup decomposed by resource type
   success_criteria:
   - Every tenant's owned resources are enumerated via ownership edges

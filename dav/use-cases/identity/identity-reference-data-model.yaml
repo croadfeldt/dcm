@@ -9,6 +9,11 @@ scenario:
   actor:
     persona: platform-engineer
     profile: sovereign
+  perspectives:
+    - platform-operator
+    - sre
+    - compliance-auditor
+    - sovereignty-authority
   intent: Validate UDLM models identity as references + observed projection, not a membership store
   success_criteria:
   - Identity references (subject/group IDs, claims mappings) are modeled

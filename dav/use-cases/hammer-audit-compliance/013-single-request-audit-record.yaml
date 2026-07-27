@@ -11,6 +11,8 @@ scenario:
   actor:
     persona: application-team-member
     profile: standard
+  perspectives:
+    - compliance-auditor
   intent: Provision a simple resource and get one complete, correct audit record
   success_criteria:
   - Exactly one audit record is produced for the request

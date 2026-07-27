@@ -13,6 +13,11 @@ scenario:
   actor:
     persona: platform-engineer
     profile: prod
+  perspectives:
+    - platform-operator
+    - sre
+    - federation-peer-operator
+    - compliance-auditor
   intent: Establish a correct cross-DCM operation order using causal references, not clocks
   success_criteria:
   - Operations from both peers carry explicit causal references to observed resources

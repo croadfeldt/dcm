@@ -11,6 +11,8 @@ scenario:
   actor:
     persona: tenant-admin
     profile: standard
+  perspectives:
+    - tenancy-authority
   intent: Provision a small VM that fits within remaining tenant quota
   success_criteria:
   - Request declared footprint (vCPU, memory, storage) is parsed at admission

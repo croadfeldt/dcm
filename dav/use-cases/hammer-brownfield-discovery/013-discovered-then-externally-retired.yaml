@@ -13,6 +13,8 @@ scenario:
   actor:
     persona: sre
     profile: standard
+  perspectives:
+    - platform-operator
   intent: Detect a managed resource disappearing from discovery as drift, not a missed scan
   success_criteria:
   - Sustained absence across a configured number of scan cycles is detected

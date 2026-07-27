@@ -11,6 +11,9 @@ scenario:
   actor:
     persona: tenant-admin
     profile: standard
+  perspectives:
+    - provider-owner
+    - tenancy-authority
   intent: Expand a running resource's capacity in place without recreation
   success_criteria:
   - The modification targets an already-realized resource by stable UUID

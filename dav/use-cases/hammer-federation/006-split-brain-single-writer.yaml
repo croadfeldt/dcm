@@ -13,6 +13,10 @@ scenario:
   actor:
     persona: sre
     profile: prod
+  perspectives:
+    - application-team-member
+    - platform-operator
+    - federation-peer-operator
   intent: Resolve a split-brain on a shared resource via single-writer authority
   success_criteria:
   - Both peers accept conflicting modifications during the partition

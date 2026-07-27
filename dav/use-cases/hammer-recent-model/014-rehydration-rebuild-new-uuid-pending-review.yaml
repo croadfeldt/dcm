@@ -11,6 +11,12 @@ scenario:
   actor:
     persona: sre
     profile: sovereign
+  perspectives:
+    - platform-operator
+    - provider-owner
+    - federation-peer-operator
+    - sovereignty-authority
+    - tenancy-authority
   intent: Rebuild a sovereign service from intent on a peer DCM, minting a new UUID and landing in PENDING_REVIEW
     under tightened policy
   success_criteria:

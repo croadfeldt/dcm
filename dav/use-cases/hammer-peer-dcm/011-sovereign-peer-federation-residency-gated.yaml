@@ -7,6 +7,10 @@ scenario:
   actor:
     persona: compliance-auditor
     profile: sovereign
+  perspectives:
+    - provider-owner
+    - federation-peer-operator
+    - sovereignty-authority
   intent: Federate only with peers in a compliant jurisdiction for a sovereign workload
   success_criteria:
   - The sovereign residency policy is read for the workload

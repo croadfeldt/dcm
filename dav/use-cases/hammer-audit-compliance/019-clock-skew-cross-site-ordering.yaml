@@ -12,6 +12,9 @@ scenario:
   actor:
     persona: security-officer
     profile: sovereign
+  perspectives:
+    - federation-peer-operator
+    - compliance-auditor
   intent: Reconstruct correct causal audit order across sites despite clock skew
   success_criteria:
   - Events from both sites are merged into one ordered history

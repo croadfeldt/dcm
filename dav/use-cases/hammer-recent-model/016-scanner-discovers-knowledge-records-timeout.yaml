@@ -12,6 +12,7 @@ scenario:
   actor:
     persona: platform-engineer
     profile: standard
+  perspectives: []
   intent: Populate Discovered SBOM Knowledge records via a scanner that times out mid-sweep, keeping the
     partial graph
   success_criteria:

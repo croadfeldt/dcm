@@ -14,6 +14,11 @@ scenario:
   actor:
     persona: security-officer
     profile: sovereign
+  perspectives:
+    - application-team-member
+    - sre
+    - compliance-auditor
+    - sovereignty-authority
   intent: Require in-jurisdiction attestation for both the data plane and the control plane
   success_criteria:
   - The mandate is expressed as separate data-plane and control-plane residency requirements

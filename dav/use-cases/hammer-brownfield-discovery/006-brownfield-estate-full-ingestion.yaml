@@ -13,6 +13,9 @@ scenario:
   actor:
     persona: platform-operator
     profile: standard
+  perspectives:
+    - sre
+    - compliance-auditor
   intent: Ingest a complete running estate as brownfield entities in place, with a consistent dependency
     graph
   success_criteria:

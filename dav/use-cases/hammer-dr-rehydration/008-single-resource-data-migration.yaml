@@ -13,6 +13,8 @@ scenario:
   actor:
     persona: sre
     profile: standard
+  perspectives:
+    - platform-operator
   intent: Rehydrate one stateful service including its data-volume restore
   success_criteria:
   - The compute resource and its attached volume are both re-realized

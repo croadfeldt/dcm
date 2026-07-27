@@ -8,6 +8,9 @@ scenario:
   actor:
     persona: platform-engineer
     profile: standard
+  perspectives:
+    - platform-operator
+    - sre
   intent: Measure RTO and validate completeness after dynamic rehydration
   success_criteria:
   - RTO is measured from destroy trigger to last resource reaching OPERATIONAL

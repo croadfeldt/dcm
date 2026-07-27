@@ -13,6 +13,9 @@ scenario:
   actor:
     persona: sre
     profile: prod
+  perspectives:
+    - application-team-member
+    - platform-operator
   intent: Detect a non-convergent flapping loop and break out instead of remediating forever
   success_criteria:
   - The same field is remediated and reverted repeatedly across passes

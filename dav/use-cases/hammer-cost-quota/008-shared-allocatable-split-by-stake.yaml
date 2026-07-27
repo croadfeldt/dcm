@@ -12,6 +12,9 @@ scenario:
   actor:
     persona: finance-analyst
     profile: standard
+  perspectives:
+    - platform-operator
+    - sre
   intent: Split one allocatable's cost across fractional stakes by weight
   success_criteria:
   - The allocatable and its fractional stakes are enumerated

@@ -12,6 +12,10 @@ scenario:
   actor:
     persona: platform-engineer
     profile: fsi
+  perspectives:
+    - provider-owner
+    - federation-peer-operator
+    - compliance-auditor
   intent: Route an order to the correct peer DCM by evaluating federation-routing policy
   success_criteria:
   - Placement engine enumerates all peer DCMs as candidate providers

@@ -11,6 +11,12 @@ scenario:
   actor:
     persona: platform-engineer
     profile: standard
+  perspectives:
+    - application-team-member
+    - platform-operator
+    - sre
+    - provider-owner
+    - security-officer
   intent: Release all held capacity when a reserved operation aborts
   success_criteria:
   - Capacity reservations are placed across the required providers

@@ -13,6 +13,11 @@ scenario:
   actor:
     persona: sre
     profile: sovereign
+  perspectives:
+    - application-team-member
+    - platform-operator
+    - provider-owner
+    - sovereignty-authority
   intent: Detect when a resource's actual data-at-rest drifts out of its mandated jurisdiction
   success_criteria:
   - Provider-reported data-at-rest location is compared against the recorded intent jurisdiction

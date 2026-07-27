@@ -13,6 +13,9 @@ scenario:
   actor:
     persona: platform-engineer
     profile: standard
+  perspectives:
+    - application-team-member
+    - sre
   intent: Refuse adoption of a discovered resource with no matching UDLM type and surface the type gap
   success_criteria:
   - The raw observation is noted but not modeled as a first-class typed entity

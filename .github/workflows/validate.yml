@@ -22,6 +22,8 @@ jobs:
       - run: python3 tests/validate_contracts.py
       # UC dimension vocabulary (DIM-001) — needs pyyaml, lives in this job
       - run: python3 tests/check_uc_dimensions.py
+      # UC persona vocabulary (PER-001) — canonical persona set, single-sourced
+      - run: python3 tests/check_uc_personas.py
 
   terminology:
     runs-on: ubuntu-latest

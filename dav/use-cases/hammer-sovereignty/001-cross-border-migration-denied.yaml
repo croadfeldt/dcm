@@ -13,6 +13,11 @@ scenario:
   actor:
     persona: platform-engineer
     profile: sovereign
+  perspectives:
+    - application-team-member
+    - sre
+    - provider-owner
+    - sovereignty-authority
   intent: Migrate a residency-pinned database to a cheaper cross-border region
   success_criteria:
   - Migration request is accepted into the pipeline and re-evaluated, not silently applied

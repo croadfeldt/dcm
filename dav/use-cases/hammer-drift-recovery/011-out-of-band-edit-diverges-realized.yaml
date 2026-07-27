@@ -12,6 +12,11 @@ scenario:
   actor:
     persona: tenant-admin
     profile: standard
+  perspectives:
+    - application-team-member
+    - platform-operator
+    - sre
+    - tenancy-authority
   intent: Surface an out-of-band console edit as a Discovered-vs-Realized divergence with a clear delta
   success_criteria:
   - Realized snapshot records the pipeline-set 30-day expiry

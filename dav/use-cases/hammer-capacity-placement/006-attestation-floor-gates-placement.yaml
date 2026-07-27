@@ -10,6 +10,10 @@ scenario:
   actor:
     persona: security-officer
     profile: fsi
+  perspectives:
+    - provider-owner
+    - compliance-auditor
+    - tenancy-authority
   intent: Admit placement only on nodes meeting the attestation floor
   success_criteria:
   - Live attestation evidence is collected for each candidate provider

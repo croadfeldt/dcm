@@ -12,6 +12,10 @@ scenario:
   actor:
     persona: compliance-auditor
     profile: fsi
+  perspectives:
+    - platform-operator
+    - sre
+    - security-officer
   intent: Enforce attestation expiry by demoting a golden VM image that is no longer attested
   success_criteria:
   - The canonical image's security attestation reaches expiry without renewal

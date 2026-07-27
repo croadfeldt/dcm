@@ -11,6 +11,10 @@ scenario:
   actor:
     persona: sre
     profile: fsi
+  perspectives:
+    - provider-owner
+    - compliance-auditor
+    - regulator
   intent: Place only where attested time-sync capability meets the profile floor
   success_criteria:
   - The profile's time-sync capability floor is resolved for the request
