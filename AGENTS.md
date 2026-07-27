@@ -5,7 +5,7 @@
 
 ## What this repo is
 
-**DCM — the Data Center Manager.** A vendor-neutral architecture specification for an intent-driven
+**DCM — Data Center Management.** A vendor-neutral architecture specification for an intent-driven
 control plane that provisions, governs, and rehydrates data-center resources. **DCM is one realization
 of UDLM** (the Unified Data-center Lifecycle Model, `github.com/croadfeldt/udlm`) — understand the UDLM
 substrate first; DCM is the control-plane architecture built on it.
