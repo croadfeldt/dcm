@@ -24,7 +24,7 @@ scenario:
     lifecycle_phase: rehydration_faithful
     resource_complexity: full_stack
     policy_complexity: multi_validation
-    provider_landscape: multi_eligible
+    provider_landscape: multiple_eligible
     governance_context: standard_governance
     failure_mode: happy_path
   profile: standard

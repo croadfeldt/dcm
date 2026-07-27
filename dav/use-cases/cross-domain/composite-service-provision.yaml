@@ -25,7 +25,7 @@ scenario:
     lifecycle_phase: new_request
     resource_complexity: composite_service
     policy_complexity: multi_validation
-    provider_landscape: multi_eligible
+    provider_landscape: multiple_eligible
     governance_context: standard_governance
     failure_mode: happy_path
   profile: standard
