@@ -271,18 +271,18 @@ resource_type_spec:
   notification_rules:
     - event_type: entity.decommissioning
       notify_relationships:
-        - relationship_type: attached_to     # source direction (VMs attached to this VLAN)
+        - relation: attached_to     # source direction (VMs attached to this VLAN)
           min_stake_strength: required        # only required stakes get notified
           traversal_depth: 1                  # direct relationships only
           audience_role: stakeholder
-        - relationship_type: attached_to
+        - relation: attached_to
           min_stake_strength: optional        # optional stakes get informational notice
           traversal_depth: 1
           audience_role: observer
 
     - event_type: entity.state_changed
       notify_relationships:
-        - relationship_type: attached_to
+        - relation: attached_to
           min_stake_strength: required
           traversal_depth: 1
           audience_role: stakeholder
@@ -423,7 +423,7 @@ notification:
     # stakeholder: explains WHY this actor is in the audience
     stakeholder_reason:
       via_entity_uuid: <vm-a-uuid>       # "because your VM-A is attached to this VLAN"
-      via_relationship_type: attached_to
+      via_relation: attached_to
       via_entity_display_name: "VM-A (payments-api-server-01)"
 
   # What changed

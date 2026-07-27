@@ -31,6 +31,12 @@ RULES = [
     ("fulfilled (lifecycle state → use 'Realized')",
      re.compile(r"fulfilled\s+service|been\s+fulfilled|fulfilled\s+at\s+the\s+request", re.I)),
     ("likeC4 (customer-specific format, not DCM-native)", re.compile(r"likec4", re.I)),
+    # Retired edge vocabulary (UDLM data-model-core §4): the authoritative fields are
+    # `edge_type` + `strength: hard|soft` + declared `relation`; nature is derived. NOT
+    # `relationship_type`/`dependency_type`. ('stake_strength' — ownership stake — is a
+    # separate, current concept and is NOT retired.)
+    ("relationship_type (retired edge field → 'relation')", re.compile(r"relationship_type", re.I)),
+    ("dependency_type (retired → 'strength' or 'required_resource_type')", re.compile(r"dependency_type", re.I)),
 ]
 
 # Whole-file exemptions: documents whose PURPOSE is to record decisions / proposals /

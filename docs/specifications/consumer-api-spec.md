@@ -1523,7 +1523,7 @@ Response 204 No Content
 GET /api/v1/resources/{entity_uuid}/relationships
 
 Query parameters:
-  relationship_type=<type>     filter by relationship type
+  relation=<type>     filter by relationship type
   direction=<inbound|outbound|both>   default: both
 
 Response 200:
@@ -1531,7 +1531,7 @@ Response 200:
   "relationships": [
     {
       "relationship_uuid": "<uuid>",
-      "relationship_type": "attached_to",
+      "relation": "attached_to",
       "direction": "outbound",
       "related_entity_uuid": "<uuid>",
       "related_entity_type": "Network.VLAN",
