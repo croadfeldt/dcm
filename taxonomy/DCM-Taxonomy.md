@@ -53,7 +53,7 @@ non-normative gists; the owner is the [udlm repo](https://github.com/croadfeldt/
 | Term | Definition |
 |------|-----------|
 | **Entity** | A Resource Entity, Process Entity, or Composite Entity — the primary managed thing in DCM. Has a UUID that is stable across all four lifecycle states. |
-| **Four States** | Intent (consumer declaration), Requested (assembled/policy-validated), Realized (provider-confirmed), Discovered (independently observed). Same entity at four lifecycle stages in four data domains within a single PostgreSQL-compatible database. |
+| **Four States** | The UDLM lifecycle states — Intent → Requested → Realized → Discovered — adopted by reference from udlm `foundations/four-states.md` (the authoritative definition); DCM realizes the same entity across them, one data domain per state. |
 | **Data Layer** | A versioned data artifact that contributes fields to request payload assembly. Types: Base, Core, Intermediate, Service, Request. Each has a declared contributor type. |
 | **Resource Type Specification** | The schema definition for a resource type. Declares fields, constraints, portability class, dependency graph, and field criticality. |
 | **Provider Catalog Item** | A provider-specific instantiation of a Resource Type Specification. What consumers actually request from the service catalog. |

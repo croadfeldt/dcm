@@ -102,7 +102,7 @@ for the tier evaluation algorithm and degradation review orchestration.
 
 ## 3. Profile-governed system constraints
 
-DCM ships six built-in profiles (`minimal`, `dev`, `standard`, `prod`, `fsi`,
+DCM ships six built-in profiles (`homelab`, `dev`, `standard`, `prod`, `fsi`,
 `sovereign`). Profiles control:
 
 - Enforcement strictness (how strictly a security property is enforced)
@@ -119,7 +119,7 @@ Profiles do **not** control:
 - Whether the data model is valid
 
 **The `minimal` profile is "security with minimal operational overhead" — not
-"minimal security."** A minimal-profile deployment still rotates credentials
+"minimal security."** A homelab-profile deployment still rotates credentials
 (longer interval, manual trigger acceptable), detects idle credentials (generous
 P30D threshold), audits first credential retrieval, maintains revocation
 registry. The security model is present and correct; the enforcement strictness
@@ -188,10 +188,10 @@ differently.
 
 ## 7. Common misapplications to avoid
 
-**"We can disable X in the minimal profile for simplicity."**
-Wrong. The minimal profile scales down operational burden, not security
+**"We can disable X in the homelab profile for simplicity."**
+Wrong. The homelab profile scales down operational burden, not security
 properties. Question: what is the minimum viable implementation of X that
-requires no operational overhead? That is what minimal profile gets.
+requires no operational overhead? That is what the homelab profile gets.
 
 **"Security is too complex for our users, so we'll make it optional."**
 Wrong. If security is too complex, the design of the security mechanism needs

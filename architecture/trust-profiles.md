@@ -98,4 +98,4 @@ trust_floor:                      # default per profile; request may tighten onl
   key_custody:   { hsm: required, fips_level: 140-3-L3, jurisdiction_in: [eu] }
   federation:    { min_peer_tier: accredited, jurisdiction_match: true }
 ```
-Defaults shipped for `homelab/dev`, `minimal`, `standard`, `fsi`, `sovereign`; operators override within governance bounds. This makes "what trust is required here" a **declared, queryable, governable** profile parameter — selected and enforced by the ADR-022/023 engine.
+Defaults shipped for `homelab`, `dev`, `standard`, `prod`, `fsi`, `sovereign`; operators override within governance bounds. This makes "what trust is required here" a **declared, queryable, governable** profile parameter — selected and enforced by the ADR-022/023 engine.
