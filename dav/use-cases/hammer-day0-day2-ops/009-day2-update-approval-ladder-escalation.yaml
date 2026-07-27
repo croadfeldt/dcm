@@ -9,6 +9,8 @@ scenario:
   actor:
     persona: platform-operator
     profile: fsi
+  perspectives:
+    - security-officer
   intent: Gate a day-2 update behind a human approval ladder before the bound process runs
   success_criteria:
   - The update is recognized as touching a compliance-gated resource

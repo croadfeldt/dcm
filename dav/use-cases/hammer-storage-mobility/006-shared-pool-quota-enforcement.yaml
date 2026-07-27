@@ -12,6 +12,11 @@ scenario:
   actor:
     persona: tenant-admin
     profile: standard
+  perspectives:
+    - application-team-member
+    - sre
+    - provider-owner
+    - tenancy-authority
   intent: Allocate a volume that fits the pool but violates the tenant's quota
   success_criteria:
   - Pool free space and per-tenant quota are tracked as distinct quantities

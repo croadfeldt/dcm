@@ -12,6 +12,7 @@ scenario:
   actor:
     persona: compliance-auditor
     profile: prod
+  perspectives: []
   intent: Explain a past allow decision against the policy version in force at the time
   success_criteria:
   - The audit record identifies the policy version used for the evaluation

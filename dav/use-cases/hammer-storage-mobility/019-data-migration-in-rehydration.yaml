@@ -13,6 +13,9 @@ scenario:
   actor:
     persona: platform-engineer
     profile: prod
+  perspectives:
+    - platform-operator
+    - sre
   intent: Rehydrate a stack and restore each storage resource's data before dependents start
   success_criteria:
   - Rehydration plan re-realizes storage resources from stored intent

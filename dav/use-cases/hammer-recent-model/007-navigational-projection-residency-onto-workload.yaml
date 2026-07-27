@@ -11,6 +11,9 @@ scenario:
   actor:
     persona: platform-engineer
     profile: sovereign
+  perspectives:
+    - provider-owner
+    - sovereignty-authority
   intent: Project the DataCenter residency onto a sovereign workload via self.datacenter.residency at
     evaluation time
   success_criteria:

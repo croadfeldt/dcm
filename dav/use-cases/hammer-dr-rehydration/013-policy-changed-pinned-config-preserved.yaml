@@ -14,6 +14,11 @@ scenario:
   actor:
     persona: security-officer
     profile: fsi
+  perspectives:
+    - platform-operator
+    - sre
+    - provider-owner
+    - compliance-auditor
   intent: Rehydrate under the historical pinned policy for a legal hold
   success_criteria:
   - The request specifies pinned-config mode bound to the historical policy version

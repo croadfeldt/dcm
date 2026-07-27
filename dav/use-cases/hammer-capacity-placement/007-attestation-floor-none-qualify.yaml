@@ -11,6 +11,10 @@ scenario:
   actor:
     persona: compliance-auditor
     profile: fsi
+  perspectives:
+    - application-team-member
+    - sre
+    - provider-owner
   intent: Place under an attestation floor no eligible provider meets
   success_criteria:
   - Attestation evidence is gathered for all capacity-eligible providers

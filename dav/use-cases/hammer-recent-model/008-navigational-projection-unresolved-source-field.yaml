@@ -11,6 +11,10 @@ scenario:
   actor:
     persona: sre
     profile: prod
+  perspectives:
+    - application-team-member
+    - provider-owner
+    - sovereignty-authority
   intent: Detect that a self.datacenter.residency projection is unresolved because the source field is
     empty
   success_criteria:

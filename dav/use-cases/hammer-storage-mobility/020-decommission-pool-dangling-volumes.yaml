@@ -12,6 +12,10 @@ scenario:
   actor:
     persona: platform-engineer
     profile: prod
+  perspectives:
+    - application-team-member
+    - platform-operator
+    - sre
   intent: Decommission a storage pool that still has dependent volumes
   success_criteria:
   - Pool decommission detects volumes that hard-depend on the pool

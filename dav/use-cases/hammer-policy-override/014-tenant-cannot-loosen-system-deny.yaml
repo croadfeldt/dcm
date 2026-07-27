@@ -13,6 +13,10 @@ scenario:
   actor:
     persona: tenant-admin
     profile: prod
+  perspectives:
+    - security-officer
+    - sovereignty-authority
+    - tenancy-authority
   intent: Attempt to relax a system deny with a tenant-scoped permit
   success_criteria:
   - Both the system deny and the tenant permit are in scope and evaluated

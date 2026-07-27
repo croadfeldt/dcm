@@ -16,6 +16,11 @@ scenario:
   actor:
     persona: platform-engineer
     profile: fsi
+  perspectives:
+    - compliance-auditor
+    - sovereignty-authority
+    - tenancy-authority
+    - regulator
   intent: Onboard a new tenant as an atomic operation, bound to the instance profile
     with its compliance overlay and quotas, before it can request any resources
   success_criteria:

@@ -12,6 +12,8 @@ scenario:
   actor:
     persona: compliance-auditor
     profile: fsi
+  perspectives:
+    - regulator
   intent: Obtain a verifiable inclusion proof that one audit event is committed in the log
   success_criteria:
   - The audit event resolves to a stable leaf hash

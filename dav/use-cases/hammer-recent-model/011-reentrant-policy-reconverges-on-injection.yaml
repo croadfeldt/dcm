@@ -11,6 +11,8 @@ scenario:
   actor:
     persona: platform-engineer
     profile: prod
+  perspectives:
+    - provider-owner
   intent: Re-evaluate policies to a stable fixpoint as each injected value feeds the next policy
   success_criteria:
   - An enrichment policy injects a derived tier label into the evaluation state

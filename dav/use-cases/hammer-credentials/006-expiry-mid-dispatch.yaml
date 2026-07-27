@@ -12,6 +12,9 @@ scenario:
   actor:
     persona: sre
     profile: prod
+  perspectives:
+    - application-team-member
+    - security-officer
   intent: Handle a credential that expires between steps of an active dispatch
   success_criteria:
   - Credential expiry is detected before the next interaction uses it

@@ -7,6 +7,8 @@ scenario:
   actor:
     persona: platform-engineer
     profile: standard
+  perspectives:
+    - tenancy-authority
   intent: Promote a Compute.Container workload to a Compute.VM for a kernel-level requirement
   success_criteria:
   - The Base requirements carry from Container to VM

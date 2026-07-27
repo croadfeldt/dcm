@@ -13,6 +13,11 @@ scenario:
   actor:
     persona: security-officer
     profile: fsi
+  perspectives:
+    - application-team-member
+    - sre
+    - compliance-auditor
+    - sovereignty-authority
   intent: Attempt to override a hard-enforcement deny on regulated data export
   success_criteria:
   - The target policy is identified as hard-enforcement (override-ineligible)

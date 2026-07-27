@@ -14,6 +14,8 @@ scenario:
   actor:
     persona: sre
     profile: prod
+  perspectives:
+    - platform-operator
   intent: Rehydrate while a concurrent actor drifts already-restored resources
   success_criteria:
   - Rehydration proceeds while an out-of-band actor mutates an already-restored resource

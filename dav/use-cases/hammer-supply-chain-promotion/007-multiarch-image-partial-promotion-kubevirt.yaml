@@ -12,6 +12,10 @@ scenario:
   actor:
     persona: platform-engineer
     profile: prod
+  perspectives:
+    - application-team-member
+    - sre
+    - compliance-auditor
   intent: Promote a multi-arch image where only one architecture variant passes scanning
   success_criteria:
   - Each architecture digest in the manifest list is scanned and gated independently

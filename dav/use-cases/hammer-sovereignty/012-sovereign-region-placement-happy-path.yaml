@@ -12,6 +12,8 @@ scenario:
   actor:
     persona: platform-engineer
     profile: sovereign
+  perspectives:
+    - sovereignty-authority
   intent: Place a compute instance in a designated sovereign region
   success_criteria:
   - The required sovereign region is read from the request

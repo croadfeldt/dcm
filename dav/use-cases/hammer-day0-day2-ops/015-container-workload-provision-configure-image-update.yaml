@@ -9,6 +9,9 @@ scenario:
   actor:
     persona: tenant-admin
     profile: dev
+  perspectives:
+    - security-officer
+    - tenancy-authority
   intent: Provision, configure, then image-update a container workload as one bound lifecycle
   success_criteria:
   - Day 0 realizes the container workload on the Kubernetes provider

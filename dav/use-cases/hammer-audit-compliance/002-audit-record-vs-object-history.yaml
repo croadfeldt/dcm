@@ -13,6 +13,8 @@ scenario:
   actor:
     persona: security-officer
     profile: prod
+  perspectives:
+    - compliance-auditor
   intent: Retrieve object history and audit record as two distinct, non-conflated views
   success_criteria:
   - Object history returns the ordered realized-state snapshots of the resource

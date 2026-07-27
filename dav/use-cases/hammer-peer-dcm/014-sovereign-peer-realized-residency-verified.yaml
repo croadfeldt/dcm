@@ -7,6 +7,9 @@ scenario:
   actor:
     persona: compliance-auditor
     profile: sovereign
+  perspectives:
+    - federation-peer-operator
+    - sovereignty-authority
   intent: Verify the residency of a resource realized on a peer DCM
   success_criteria:
   - The workload realizes on a compliant peer DCM

@@ -10,6 +10,7 @@ scenario:
   actor:
     persona: platform-engineer
     profile: standard
+  perspectives: []
   intent: Register a composite service definition as a catalog item
   success_criteria:
   - Composite service definition is registered as a catalog item

@@ -11,6 +11,8 @@ scenario:
   actor:
     persona: platform-engineer
     profile: prod
+  perspectives:
+    - tenancy-authority
   intent: Inject layer values into a request only where covers (entity) and applies_on (process) intersect
   success_criteria:
   - The layer covers the target entity (all Compute.VM in the tenant)

@@ -12,6 +12,10 @@ scenario:
   actor:
     persona: compliance-auditor
     profile: fsi
+  perspectives:
+    - application-team-member
+    - sre
+    - sovereignty-authority
   intent: Confirm a request no policy applied to is recorded as ungoverned, not passed
   success_criteria:
   - The evaluation records the count of policies that matched the request (zero)

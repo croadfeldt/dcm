@@ -12,6 +12,10 @@ scenario:
   actor:
     persona: platform-engineer
     profile: prod
+  perspectives:
+    - application-team-member
+    - sre
+    - security-officer
   intent: Rotate an in-use credential with a parallel-validity overlap window
   success_criteria:
   - New credential version is issued while the old remains valid

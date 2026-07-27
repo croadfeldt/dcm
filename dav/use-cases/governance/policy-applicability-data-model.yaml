@@ -8,6 +8,11 @@ scenario:
   actor:
     persona: platform-engineer
     profile: standard
+  perspectives:
+    - application-team-member
+    - platform-operator
+    - sre
+    - compliance-auditor
   intent: Validate UDLM models resolved-profile policy sets and three-state audit outcomes
   success_criteria:
   - The request record models the resolved profile and the set of policies it carries

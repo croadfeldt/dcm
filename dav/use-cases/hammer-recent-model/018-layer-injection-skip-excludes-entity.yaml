@@ -11,6 +11,9 @@ scenario:
   actor:
     persona: tenant-admin
     profile: fsi
+  perspectives:
+    - tenancy-authority
+    - regulator
   intent: Exclude a workload from a covering layer via skip, so effective injection is from_layers minus
     skip
   success_criteria:

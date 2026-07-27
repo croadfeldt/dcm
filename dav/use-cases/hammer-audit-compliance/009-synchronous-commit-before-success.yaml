@@ -12,6 +12,10 @@ scenario:
   actor:
     persona: platform-engineer
     profile: fsi
+  perspectives:
+    - application-team-member
+    - sre
+    - compliance-auditor
   intent: Guarantee no change is acknowledged as successful before its audit record commits
   success_criteria:
   - The audit record commit is attempted before success is returned

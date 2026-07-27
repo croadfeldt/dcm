@@ -11,6 +11,10 @@ scenario:
   actor:
     persona: compliance-auditor
     profile: sovereign
+  perspectives:
+    - sovereignty-authority
+    - tenancy-authority
+    - regulator
   intent: Cryptographically verify that a named range of audit events has not been
     tampered with
   success_criteria:

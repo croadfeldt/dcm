@@ -12,6 +12,8 @@ scenario:
   actor:
     persona: security-officer
     profile: prod
+  perspectives:
+    - tenancy-authority
   intent: Provision an L3 gateway with source NAT and an egress-only ACL
   success_criteria:
   - Network.Gateway record captures the routed segments (inside VLAN, uplink)

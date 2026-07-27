@@ -14,6 +14,12 @@ scenario:
   actor:
     persona: platform-engineer
     profile: sovereign
+  perspectives:
+    - application-team-member
+    - sre
+    - provider-owner
+    - federation-peer-operator
+    - sovereignty-authority
   intent: Satisfy capacity via a peer DCM without crossing a residency boundary
   success_criteria:
   - The request is identified as satisfiable only by delegating to a peer DCM

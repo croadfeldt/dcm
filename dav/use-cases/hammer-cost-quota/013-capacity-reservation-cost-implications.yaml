@@ -12,6 +12,10 @@ scenario:
   actor:
     persona: platform-engineer
     profile: prod
+  perspectives:
+    - finance-analyst
+    - provider-owner
+    - tenancy-authority
   intent: Reserve capacity and account its cost from reservation, not consumption
   success_criteria:
   - A capacity reservation is created as intent distinct from realized usage

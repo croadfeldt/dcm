@@ -10,6 +10,9 @@ scenario:
   actor:
     persona: application-team-member
     profile: standard
+  perspectives:
+    - compliance-auditor
+    - tenancy-authority
   intent: Provision a new VM in the standard profile
   success_criteria:
   - VM is created and reachable for the requesting team

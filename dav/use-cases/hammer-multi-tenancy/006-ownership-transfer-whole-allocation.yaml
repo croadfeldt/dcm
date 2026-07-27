@@ -13,6 +13,9 @@ scenario:
   actor:
     persona: platform-engineer
     profile: prod
+  perspectives:
+    - compliance-auditor
+    - tenancy-authority
   intent: Transfer a whole_allocation resource from one tenant to another in place
   success_criteria:
   - Ownership field moves from tenant A to tenant B atomically

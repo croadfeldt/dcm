@@ -12,6 +12,10 @@ scenario:
   actor:
     persona: platform-engineer
     profile: fsi
+  perspectives:
+    - application-team-member
+    - sre
+    - security-officer
   intent: Decommission an entity whose credential cannot be revoked
   success_criteria:
   - The credential tied to the entity is found to be un-revocable

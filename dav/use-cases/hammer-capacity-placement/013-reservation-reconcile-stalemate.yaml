@@ -12,6 +12,10 @@ scenario:
   actor:
     persona: sre
     profile: prod
+  perspectives:
+    - application-team-member
+    - platform-operator
+    - provider-owner
   intent: Resolve a reservation-vs-provider reconcile that will not converge
   success_criteria:
   - A divergence between the reservation ledger and provider-reported capacity is detected

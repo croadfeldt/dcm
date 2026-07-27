@@ -7,6 +7,12 @@ scenario:
   actor:
     persona: platform-engineer
     profile: standard
+  perspectives:
+    - application-team-member
+    - platform-operator
+    - sre
+    - provider-owner
+    - federation-peer-operator
   intent: A federated re-port to a peer DCM's provider fails when the peer disconnects
   success_criteria:
   - The re-port dispatches across the federation boundary to the peer

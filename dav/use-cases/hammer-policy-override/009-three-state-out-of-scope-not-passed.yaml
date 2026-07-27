@@ -13,6 +13,10 @@ scenario:
   actor:
     persona: compliance-auditor
     profile: homelab
+  perspectives:
+    - application-team-member
+    - sre
+    - sovereignty-authority
   intent: Verify out-of-scope policies are reported as ungoverned, not passed
   success_criteria:
   - The resolved profile's policy set is selected by construction

@@ -12,6 +12,10 @@ scenario:
   actor:
     persona: application-team-member
     profile: standard
+  perspectives:
+    - platform-operator
+    - sre
+    - tenancy-authority
   intent: Declare a dependency that references another tenant's resource by UUID
   success_criteria:
   - Dependency resolver detects the referenced UUID belongs to a foreign tenant

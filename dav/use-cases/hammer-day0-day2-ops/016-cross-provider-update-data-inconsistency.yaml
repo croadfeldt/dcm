@@ -9,6 +9,11 @@ scenario:
   actor:
     persona: sre
     profile: sovereign
+  perspectives:
+    - application-team-member
+    - platform-operator
+    - federation-peer-operator
+    - sovereignty-authority
   intent: Update a cross-domain composite and correctly handle divergent realized state across DCMs
   success_criteria:
   - The composite update spans local DCM and a peer DCM in another domain

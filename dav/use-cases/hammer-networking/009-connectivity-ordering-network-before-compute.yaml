@@ -11,6 +11,9 @@ scenario:
   actor:
     persona: platform-engineer
     profile: standard
+  perspectives:
+    - platform-operator
+    - sre
   intent: Provision a full stack and verify network resources realize before compute
   success_criteria:
   - The dependency graph places Network.VLAN and Network.Gateway upstream of the VMs

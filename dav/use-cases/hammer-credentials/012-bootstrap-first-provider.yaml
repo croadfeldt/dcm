@@ -12,6 +12,10 @@ scenario:
   actor:
     persona: platform-engineer
     profile: sovereign
+  perspectives:
+    - compliance-auditor
+    - security-officer
+    - sovereignty-authority
   intent: Establish the first provider credential with no pre-existing authority
   success_criteria:
   - The absence of any prior credential authority is recognized

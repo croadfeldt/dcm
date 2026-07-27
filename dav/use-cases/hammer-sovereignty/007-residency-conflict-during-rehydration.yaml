@@ -14,6 +14,11 @@ scenario:
   actor:
     persona: sre
     profile: sovereign
+  perspectives:
+    - application-team-member
+    - platform-operator
+    - provider-owner
+    - sovereignty-authority
   intent: Rehydrate to new providers without violating pinned residency constraints
   success_criteria:
   - Rehydration derives a rebuild plan from stored intent including residency constraints

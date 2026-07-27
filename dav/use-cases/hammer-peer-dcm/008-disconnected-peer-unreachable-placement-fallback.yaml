@@ -7,6 +7,11 @@ scenario:
   actor:
     persona: platform-engineer
     profile: prod
+  perspectives:
+    - platform-operator
+    - sre
+    - provider-owner
+    - federation-peer-operator
   intent: Fall back to another candidate when the peer that would host is unreachable
   success_criteria:
   - Placement selects a peer that is then unreachable at dispatch

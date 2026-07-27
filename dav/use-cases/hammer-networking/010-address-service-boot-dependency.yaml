@@ -12,6 +12,9 @@ scenario:
   actor:
     persona: platform-engineer
     profile: standard
+  perspectives:
+    - platform-operator
+    - sre
   intent: Boot a host that hard-depends on a DHCP/DNS AddressService and verify ordering both ways
   success_criteria:
   - Host declares a hard dependency on the Network.AddressService (services dhcp, dns)

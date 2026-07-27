@@ -14,6 +14,8 @@ scenario:
   actor:
     persona: platform-engineer
     profile: standard
+  perspectives:
+    - security-officer
   intent: Confirm two engines expressing one rule yield identical contract verdicts
   success_criteria:
   - Both policies are registered against the same verdict contract

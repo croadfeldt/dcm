@@ -12,6 +12,11 @@ scenario:
   actor:
     persona: platform-engineer
     profile: prod
+  perspectives:
+    - platform-operator
+    - sre
+    - provider-owner
+    - federation-peer-operator
   intent: Realize a local resource whose hard dependency is realized by a peer DCM
   success_criteria:
   - Dependency graph includes a cross-DCM edge from local app tier to peer-realized fabric

@@ -13,6 +13,9 @@ scenario:
   actor:
     persona: platform-engineer
     profile: fsi
+  perspectives:
+    - application-team-member
+    - sre
   intent: Attempt to self-approve an override the same principal requested
   success_criteria:
   - The override eligibility declares a separation-of-duties constraint

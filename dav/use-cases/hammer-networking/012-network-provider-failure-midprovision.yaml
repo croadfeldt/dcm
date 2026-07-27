@@ -12,6 +12,9 @@ scenario:
   actor:
     persona: sre
     profile: standard
+  perspectives:
+    - application-team-member
+    - platform-operator
   intent: Survive a network-provider failure partway through a multi-resource network provision
   success_criteria:
   - The already-realized VLAN is preserved and marked realized

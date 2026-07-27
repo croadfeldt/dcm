@@ -14,6 +14,10 @@ scenario:
   actor:
     persona: compliance-auditor
     profile: fsi
+  perspectives:
+    - application-team-member
+    - platform-operator
+    - sre
   intent: Rehydrate a resource whose original config now violates tightened policy
   success_criteria:
   - Rehydration re-evaluates the current governing policy, not a pinned snapshot (RHY-001)

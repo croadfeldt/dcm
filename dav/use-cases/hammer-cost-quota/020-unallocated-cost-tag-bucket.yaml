@@ -12,6 +12,11 @@ scenario:
   actor:
     persona: finance-analyst
     profile: standard
+  perspectives:
+    - application-team-member
+    - sre
+    - compliance-auditor
+    - tenancy-authority
   intent: Allocate estate cost by tag and expose the untagged remainder
   success_criteria:
   - Every resource is checked for an owning allocation tag

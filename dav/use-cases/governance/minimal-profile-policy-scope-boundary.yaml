@@ -19,6 +19,10 @@ scenario:
   actor:
     persona: individual-developer
     profile: homelab
+  perspectives:
+    - platform-operator
+    - sre
+    - sovereignty-authority
   intent: Provision a VM with attached volume and cross-region network attachment
     under a minimal resolved profile, with FSI-scoped policies correctly out of scope
   success_criteria:

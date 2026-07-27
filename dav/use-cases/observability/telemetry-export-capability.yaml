@@ -9,6 +9,10 @@ scenario:
   actor:
     persona: platform-operator
     profile: standard
+  perspectives:
+    - application-team-member
+    - sre
+    - compliance-auditor
   intent: Validate DCM exposes one UDLM export surface over standard transports with per-subscriber policy
   success_criteria:
   - DCM exposes a single export/discovery surface consumable over standard transports (OTLP/Prometheus/bus)

@@ -12,6 +12,9 @@ scenario:
   actor:
     persona: security-officer
     profile: fsi
+  perspectives:
+    - compliance-auditor
+    - tenancy-authority
   intent: Ensure reads of the audit log are themselves recorded in a tamper-evident meta-audit
   success_criteria:
   - Reading audit records produces a meta-audit entry for the access

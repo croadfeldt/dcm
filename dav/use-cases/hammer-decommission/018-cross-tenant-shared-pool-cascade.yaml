@@ -12,6 +12,11 @@ scenario:
   actor:
     persona: tenant-admin
     profile: prod
+  perspectives:
+    - application-team-member
+    - sre
+    - compliance-auditor
+    - tenancy-authority
   intent: Prevent a decommission cascade from crossing into another tenant's resources
   success_criteria:
   - System computes the cascade and detects it would reach tenant B's resources

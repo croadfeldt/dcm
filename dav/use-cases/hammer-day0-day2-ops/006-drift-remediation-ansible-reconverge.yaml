@@ -9,6 +9,9 @@ scenario:
   actor:
     persona: sre
     profile: standard
+  perspectives:
+    - platform-operator
+    - security-officer
   intent: Re-converge a drifted resource to declared intent via a bound remediation playbook
   success_criteria:
   - Drift is detected as a delta between declared intent and realized state

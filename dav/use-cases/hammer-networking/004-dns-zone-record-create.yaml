@@ -11,6 +11,7 @@ scenario:
   actor:
     persona: application-team-member
     profile: standard
+  perspectives: []
   intent: Add a DNS A record to an existing managed zone
   success_criteria:
   - The record intent is created and associated with the target Network.DNSZone

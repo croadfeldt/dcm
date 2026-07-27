@@ -12,6 +12,8 @@ scenario:
   actor:
     persona: compliance-auditor
     profile: fsi
+  perspectives:
+    - sovereignty-authority
   intent: Reconstruct the complete provenance chain of one field across its entire lifecycle
   success_criteria:
   - The current value of the field is returned with its originating intent record

@@ -12,6 +12,8 @@ scenario:
   actor:
     persona: security-officer
     profile: prod
+  perspectives:
+    - compliance-auditor
   intent: Answer who changed a resource, when, and whether they were authorized then
   success_criteria:
   - The acting identity for the change is resolved from the audit trail

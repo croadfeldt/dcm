@@ -11,6 +11,10 @@ scenario:
   actor:
     persona: application-team-member
     profile: standard
+  perspectives:
+    - platform-operator
+    - sre
+    - tenancy-authority
   intent: Provision a VM under conditions where the primary service provider fails
     mid-realization
   success_criteria:

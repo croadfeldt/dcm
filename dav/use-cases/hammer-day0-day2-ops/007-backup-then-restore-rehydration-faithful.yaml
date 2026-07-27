@@ -9,6 +9,9 @@ scenario:
   actor:
     persona: sre
     profile: fsi
+  perspectives:
+    - platform-operator
+    - compliance-auditor
   intent: Back up a stateful resource and later faithfully rehydrate it from that backup
   success_criteria:
   - The backup job is bound to the database and produces a referenceable restore point

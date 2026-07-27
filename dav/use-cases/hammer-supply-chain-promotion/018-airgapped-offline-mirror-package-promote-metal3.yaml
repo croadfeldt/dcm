@@ -12,6 +12,10 @@ scenario:
   actor:
     persona: platform-operator
     profile: sovereign
+  perspectives:
+    - compliance-auditor
+    - security-officer
+    - sovereignty-authority
   intent: Promote an OS package into an air-gapped controlled mirror using only in-boundary services
   success_criteria:
   - Scanner discovery avenue resolves to the in-boundary offline scanner, not a public one

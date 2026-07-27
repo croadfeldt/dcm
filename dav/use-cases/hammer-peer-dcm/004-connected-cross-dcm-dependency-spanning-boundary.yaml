@@ -7,6 +7,10 @@ scenario:
   actor:
     persona: platform-engineer
     profile: prod
+  perspectives:
+    - platform-operator
+    - sre
+    - federation-peer-operator
   intent: Resolve a dependency where a resource depends on one realized in a peer DCM
   success_criteria:
   - The dependency graph includes a cross-boundary edge to the peer-owned resource

@@ -8,6 +8,7 @@ scenario:
   actor:
     persona: platform-engineer
     profile: standard
+  perspectives: []
   intent: Deploy the DCM control plane onto the Kubernetes cluster
   success_criteria:
   - DCM control plane components are deployed and healthy (livez/readyz passing)

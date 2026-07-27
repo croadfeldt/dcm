@@ -7,6 +7,10 @@ scenario:
   actor:
     persona: application-team-member
     profile: dev
+  perspectives:
+    - platform-operator
+    - sre
+    - federation-peer-operator
   intent: Exercise peer-disconnect recovery in a dev sandbox
   success_criteria:
   - A dev sandbox federates with a peer, then drops the connection

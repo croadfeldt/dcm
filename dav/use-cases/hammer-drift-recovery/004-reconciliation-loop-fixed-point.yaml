@@ -12,6 +12,9 @@ scenario:
   actor:
     persona: platform-engineer
     profile: standard
+  perspectives:
+    - platform-operator
+    - sre
   intent: Drive a reconciliation loop to a stable zero-drift fixed point
   success_criteria:
   - Initial pass detects a non-empty drift set on the shared config

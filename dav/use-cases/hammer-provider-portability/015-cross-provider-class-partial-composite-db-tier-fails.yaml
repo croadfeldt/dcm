@@ -8,6 +8,12 @@ scenario:
   actor:
     persona: platform-engineer
     profile: standard
+  perspectives:
+    - application-team-member
+    - platform-operator
+    - sre
+    - provider-owner
+    - compliance-auditor
   intent: A three-tier re-port partially fulfills when the DB tier's provider-specific replication does not carry
   success_criteria:
   - Web and app tiers re-realize on the target Provider Class

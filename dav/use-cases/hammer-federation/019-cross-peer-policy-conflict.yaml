@@ -13,6 +13,12 @@ scenario:
   actor:
     persona: compliance-auditor
     profile: fsi
+  perspectives:
+    - application-team-member
+    - platform-operator
+    - sre
+    - federation-peer-operator
+    - sovereignty-authority
   intent: Detect and refuse a federation order where two peers' policies conflict
   success_criteria:
   - The order requires realization spanning two peers with governing policies

@@ -13,6 +13,11 @@ scenario:
   actor:
     persona: platform-engineer
     profile: prod
+  perspectives:
+    - application-team-member
+    - platform-operator
+    - sre
+    - provider-owner
   intent: Faithfully rebuild a resource onto its original, now-missing provider
   success_criteria:
   - System detects the original provider is absent and required by faithful mode

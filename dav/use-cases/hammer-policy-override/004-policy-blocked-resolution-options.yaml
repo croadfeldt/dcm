@@ -13,6 +13,8 @@ scenario:
   actor:
     persona: application-team-member
     profile: standard
+  perspectives:
+    - sre
   intent: Resolve a soft-policy block by choosing among offered resolution options
   success_criteria:
   - The blocking policy produces a POLICY_BLOCKED verdict, not a bare error

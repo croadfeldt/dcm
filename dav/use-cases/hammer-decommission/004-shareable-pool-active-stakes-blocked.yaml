@@ -11,6 +11,10 @@ scenario:
   actor:
     persona: platform-engineer
     profile: prod
+  perspectives:
+    - application-team-member
+    - sre
+    - tenancy-authority
   intent: Decommission a shared pool that still has active allocations against it
   success_criteria:
   - System enumerates all active stakes/allocations held against the pool

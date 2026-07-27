@@ -9,6 +9,10 @@ scenario:
   actor:
     persona: platform-engineer
     profile: standard
+  perspectives:
+    - application-team-member
+    - platform-operator
+    - sre
   intent: Apply a config bundle via a consuming process, blocked when the bundle violates policy
   success_criteria:
   - The configuration bundle is modeled as a layer the process consumes, distinct from the process

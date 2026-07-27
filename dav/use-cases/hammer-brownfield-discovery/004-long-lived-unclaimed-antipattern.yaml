@@ -13,6 +13,11 @@ scenario:
   actor:
     persona: platform-engineer
     profile: standard
+  perspectives:
+    - application-team-member
+    - platform-operator
+    - sre
+    - compliance-auditor
   intent: Force a claim-or-retire decision on a resource unclaimed past a threshold
   success_criteria:
   - Entities in Discovered-only state past an age threshold are surfaced as a distinct class

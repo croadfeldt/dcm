@@ -12,6 +12,10 @@ scenario:
   actor:
     persona: tenant-admin
     profile: fsi
+  perspectives:
+    - application-team-member
+    - sre
+    - tenancy-authority
   intent: Attempt to decommission a resource under an active legal hold
   success_criteria:
   - System resolves the active legal hold on the target data store

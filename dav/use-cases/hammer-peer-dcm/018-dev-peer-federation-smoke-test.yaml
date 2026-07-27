@@ -7,6 +7,8 @@ scenario:
   actor:
     persona: application-team-member
     profile: dev
+  perspectives:
+    - federation-peer-operator
   intent: Validate cross-DCM realization against a local test peer in the dev profile
   success_criteria:
   - A dev-profile DCM federates with a local test peer

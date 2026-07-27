@@ -12,6 +12,10 @@ scenario:
   actor:
     persona: security-officer
     profile: fsi
+  perspectives:
+    - application-team-member
+    - sre
+    - federation-peer-operator
   intent: Block egress of a release-restricted confidential value before it crosses to a peer DCM
   success_criteria:
   - Egress mediation runs before any value crosses the boundary

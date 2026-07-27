@@ -11,6 +11,8 @@ scenario:
   actor:
     persona: platform-engineer
     profile: standard
+  perspectives:
+    - provider-owner
   intent: Hold capacity via reservation, then commit only after validation
   success_criteria:
   - A capacity reservation (hold) is placed before realization begins

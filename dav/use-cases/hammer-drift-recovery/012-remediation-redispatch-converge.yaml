@@ -12,6 +12,9 @@ scenario:
   actor:
     persona: platform-engineer
     profile: standard
+  perspectives:
+    - platform-operator
+    - sre
   intent: Remediate drift by re-dispatching intent through the provider and confirming convergence
   success_criteria:
   - Drift detected on the DNS target IP against the Realized snapshot

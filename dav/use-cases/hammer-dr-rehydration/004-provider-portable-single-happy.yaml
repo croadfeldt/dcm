@@ -13,6 +13,11 @@ scenario:
   actor:
     persona: platform-engineer
     profile: standard
+  perspectives:
+    - platform-operator
+    - sre
+    - provider-owner
+    - sovereignty-authority
   intent: Rehydrate one resource in portable mode via fresh placement
   success_criteria:
   - Rehydration runs in provider-portable mode, ignoring the original provider binding

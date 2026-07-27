@@ -11,6 +11,7 @@ scenario:
   actor:
     persona: application-team-member
     profile: standard
+  perspectives: []
   intent: Snapshot a dataset and later restore it to that point-in-time state
   success_criteria:
   - Snapshot is created as a Realized artifact bound to its source dataset UUID

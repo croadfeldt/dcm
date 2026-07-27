@@ -11,6 +11,9 @@ scenario:
   actor:
     persona: sre
     profile: prod
+  perspectives:
+    - platform-operator
+    - compliance-auditor
   intent: Detect a non-converging policy cycle and roll back rather than commit oscillating state
   success_criteria:
   - Mutual injection between two policies produces an oscillating, non-settling value set

@@ -9,6 +9,8 @@ scenario:
   actor:
     persona: compliance-auditor
     profile: sovereign
+  perspectives:
+    - sovereignty-authority
   intent: Validate DCM can produce signed tree heads + inclusion/consistency proofs with in-boundary signing
   success_criteria:
   - DCM produces signed tree heads for every audit epoch covering a requested range

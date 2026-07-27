@@ -11,6 +11,9 @@ scenario:
   actor:
     persona: platform-engineer
     profile: standard
+  perspectives:
+    - platform-operator
+    - sre
   intent: Allocate a block volume of a requested size from an existing storage pool
   success_criteria:
   - StorageVolume resource is created with a stable UUID

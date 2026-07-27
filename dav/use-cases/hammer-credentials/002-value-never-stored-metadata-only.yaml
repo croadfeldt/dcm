@@ -11,6 +11,10 @@ scenario:
   actor:
     persona: security-officer
     profile: prod
+  perspectives:
+    - platform-operator
+    - sre
+    - compliance-auditor
   intent: Prove no credential secret value is persisted anywhere in the model
   success_criteria:
   - Every Credential record is confirmed to contain metadata only

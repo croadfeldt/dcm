@@ -10,6 +10,11 @@ scenario:
   actor:
     persona: platform-engineer
     profile: standard
+  perspectives:
+    - application-team-member
+    - platform-operator
+    - sre
+    - provider-owner
   intent: Re-resolve and rebuild resources on an alternate provider after provider
     failure
   success_criteria:

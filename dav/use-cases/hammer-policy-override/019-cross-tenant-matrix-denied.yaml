@@ -13,6 +13,11 @@ scenario:
   actor:
     persona: tenant-admin
     profile: standard
+  perspectives:
+    - platform-operator
+    - sre
+    - security-officer
+    - tenancy-authority
   intent: Declare a dependency on another tenant's resource without a sharing grant
   success_criteria:
   - The two resources are identified as belonging to different tenants

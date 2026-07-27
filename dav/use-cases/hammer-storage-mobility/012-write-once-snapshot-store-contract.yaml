@@ -12,6 +12,10 @@ scenario:
   actor:
     persona: compliance-auditor
     profile: fsi
+  perspectives:
+    - application-team-member
+    - sre
+    - regulator
   intent: Provision a write-once immutable snapshot store with retention locks
   success_criteria:
   - Snapshot store is provisioned with a declared write-once contract

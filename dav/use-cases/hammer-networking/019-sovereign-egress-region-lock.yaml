@@ -13,6 +13,11 @@ scenario:
   actor:
     persona: compliance-auditor
     profile: sovereign
+  perspectives:
+    - provider-owner
+    - federation-peer-operator
+    - sovereignty-authority
+    - tenancy-authority
   intent: Prevent a gateway from routing a sovereign tenant's traffic out of territory
   success_criteria:
   - The gateway's egress/uplink path and its territory are resolved from the model

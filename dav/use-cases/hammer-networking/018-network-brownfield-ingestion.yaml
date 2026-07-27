@@ -13,6 +13,8 @@ scenario:
   actor:
     persona: platform-engineer
     profile: standard
+  perspectives:
+    - compliance-auditor
   intent: Ingest a hand-built brownfield network estate into the data model
   success_criteria:
   - Existing VLANs are discovered and represented as Network.VLAN records

@@ -12,6 +12,8 @@ scenario:
   actor:
     persona: sre
     profile: standard
+  perspectives:
+    - platform-operator
   intent: Re-scan an unchanged host and confirm idempotent no-op discovery
   success_criteria:
   - The re-scan resolves to the existing entity via correlation_ids

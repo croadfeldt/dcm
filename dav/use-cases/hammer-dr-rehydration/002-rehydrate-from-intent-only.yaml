@@ -13,6 +13,10 @@ scenario:
   actor:
     persona: sre
     profile: standard
+  perspectives:
+    - platform-operator
+    - provider-owner
+    - security-officer
   intent: Rebuild the environment from surviving intent when realized state is lost
   success_criteria:
   - Rehydration proceeds using intent state as the sole surviving source

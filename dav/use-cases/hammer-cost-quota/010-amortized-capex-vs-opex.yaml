@@ -13,6 +13,12 @@ scenario:
   actor:
     persona: finance-analyst
     profile: standard
+  perspectives:
+    - platform-operator
+    - sre
+    - provider-owner
+    - compliance-auditor
+    - tenancy-authority
   intent: Blend amortized capex and metered opex into one tenant cost view
   success_criteria:
   - Capex assets and opex-metered resources are distinguished in the estate

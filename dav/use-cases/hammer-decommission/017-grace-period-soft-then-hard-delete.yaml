@@ -12,6 +12,7 @@ scenario:
   actor:
     persona: platform-engineer
     profile: prod
+  perspectives: []
   intent: Decommission with a grace period — soft-delete, then hard-delete if not cancelled
   success_criteria:
   - Phase one soft-deletes the resource (detached and quiesced) while keeping it recoverable

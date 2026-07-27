@@ -12,6 +12,8 @@ scenario:
   actor:
     persona: tenant-admin
     profile: standard
+  perspectives:
+    - tenancy-authority
   intent: Raise the tenant quota ceiling within the approved budget envelope
   success_criteria:
   - Quota-increase modification is accepted into the pipeline as intent

@@ -12,6 +12,8 @@ scenario:
   actor:
     persona: platform-engineer
     profile: standard
+  perspectives:
+    - tenancy-authority
   intent: Attribute discovered brownfield resources to the correct tenant during ingestion
   success_criteria:
   - Each discovered resource is evaluated for tenant ownership from available evidence

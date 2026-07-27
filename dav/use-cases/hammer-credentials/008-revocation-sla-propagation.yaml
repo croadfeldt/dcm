@@ -12,6 +12,7 @@ scenario:
   actor:
     persona: security-officer
     profile: prod
+  perspectives: []
   intent: Revoke a credential and confirm SLA-bounded propagation to all consumers
   success_criteria:
   - All consumers referencing the credential are enumerated from the dependency graph

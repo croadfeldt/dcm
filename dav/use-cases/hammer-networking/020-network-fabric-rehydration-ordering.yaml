@@ -13,6 +13,9 @@ scenario:
   actor:
     persona: platform-engineer
     profile: standard
+  perspectives:
+    - platform-operator
+    - sre
   intent: Rehydrate the full environment and verify the network fabric is rebuilt first and faithfully
   success_criteria:
   - Rebuild plan is derived from stored intent and the dependency graph (not a static replay)

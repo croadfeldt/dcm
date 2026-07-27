@@ -12,6 +12,12 @@ scenario:
   actor:
     persona: platform-engineer
     profile: standard
+  perspectives:
+    - application-team-member
+    - platform-operator
+    - sre
+    - finance-analyst
+    - tenancy-authority
   intent: Ingest an owner-unknown discovered VM and surface the missing ownership as a gap
   success_criteria:
   - The orphan VM is ingested as a Discovered entity with its hypervisor dependency resolved

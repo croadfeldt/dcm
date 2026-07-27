@@ -12,6 +12,9 @@ scenario:
   actor:
     persona: sre
     profile: prod
+  perspectives:
+    - platform-operator
+    - finance-analyst
   intent: Decommission a resource whose provider cannot confirm the destroy
   success_criteria:
   - Destroy is dispatched but the owning provider does not acknowledge

@@ -12,6 +12,9 @@ scenario:
   actor:
     persona: sre
     profile: prod
+  perspectives:
+    - platform-operator
+    - federation-peer-operator
   intent: Detect and remediate drift on a peer-realized resource across the federation boundary
   success_criteria:
   - Local DCM compares recorded intent against the peer's reported realized state

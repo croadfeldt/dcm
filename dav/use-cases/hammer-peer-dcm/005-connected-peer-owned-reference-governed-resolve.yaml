@@ -7,6 +7,11 @@ scenario:
   actor:
     persona: sre
     profile: prod
+  perspectives:
+    - federation-peer-operator
+    - compliance-auditor
+    - sovereignty-authority
+    - tenancy-authority
   intent: Resolve a reference to a peer-owned entity across the federation boundary, governed
   success_criteria:
   - The reference to the peer-owned entity is addressable across the federation

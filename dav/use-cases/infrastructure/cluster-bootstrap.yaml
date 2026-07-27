@@ -8,6 +8,7 @@ scenario:
   actor:
     persona: platform-engineer
     profile: standard
+  perspectives: []
   intent: Form a Kubernetes cluster from bootstrapped bare-metal nodes
   success_criteria:
   - Kubernetes cluster is formed from bootstrapped nodes

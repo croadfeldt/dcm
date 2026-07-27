@@ -12,6 +12,12 @@ scenario:
   actor:
     persona: tenant-admin
     profile: fsi
+  perspectives:
+    - application-team-member
+    - platform-operator
+    - sre
+    - finance-analyst
+    - security-officer
   intent: Query cost and confirm no other tenant's detail leaks through shared joins
   success_criteria:
   - The cost query is scoped to the requesting tenant's boundary

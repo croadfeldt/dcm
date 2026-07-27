@@ -11,6 +11,10 @@ scenario:
   actor:
     persona: sre
     profile: standard
+  perspectives:
+    - platform-operator
+    - provider-owner
+    - federation-peer-operator
   intent: Track peer DCM liveness so placement can avoid unreachable peers
   success_criteria:
   - Each peer's heartbeat is received and its reachability status recorded

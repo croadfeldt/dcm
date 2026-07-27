@@ -13,6 +13,9 @@ scenario:
   actor:
     persona: compliance-auditor
     profile: sovereign
+  perspectives:
+    - federation-peer-operator
+    - sovereignty-authority
   intent: Interact with a sovereign peer whose audit is local-only with manual export
   success_criteria:
   - Sovereign peer participates without auto-exporting any audit record

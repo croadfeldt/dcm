@@ -9,6 +9,8 @@ scenario:
   actor:
     persona: application-team-member
     profile: standard
+  perspectives:
+    - tenancy-authority
   intent: Authenticate against the identity provider and obtain a DCM actor identity
   success_criteria:
   - Actor receives a valid token with tenant and role claims

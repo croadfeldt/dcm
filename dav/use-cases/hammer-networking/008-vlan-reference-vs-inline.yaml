@@ -12,6 +12,9 @@ scenario:
   actor:
     persona: platform-engineer
     profile: standard
+  perspectives:
+    - platform-operator
+    - sre
   intent: Prove inline VLAN declaration and by-reference attachment resolve to one segment
   success_criteria:
   - By-reference attachment binds the VM to the existing Network.VLAN without creating a new one

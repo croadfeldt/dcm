@@ -11,6 +11,8 @@ scenario:
   actor:
     persona: platform-engineer
     profile: standard
+  perspectives:
+    - provider-owner
   intent: Place a single VM on the only eligible provider with capacity
   success_criteria:
   - Placement engine identifies the single eligible provider

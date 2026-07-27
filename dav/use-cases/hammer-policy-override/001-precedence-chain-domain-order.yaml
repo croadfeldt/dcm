@@ -13,6 +13,9 @@ scenario:
   actor:
     persona: platform-engineer
     profile: prod
+  perspectives:
+    - provider-owner
+    - tenancy-authority
   intent: Submit an intent matched by conflicting policies at different domain levels
   success_criteria:
   - All four in-scope policies are evaluated and their individual verdicts captured

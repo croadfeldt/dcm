@@ -14,6 +14,10 @@ scenario:
   actor:
     persona: compliance-auditor
     profile: fsi
+  perspectives:
+    - platform-operator
+    - sre
+    - sovereignty-authority
   intent: Rehydrate a regulated full stack with full governance-matrix enforcement
   success_criteria:
   - Every resource is re-evaluated against the full governance matrix before re-realization

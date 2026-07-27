@@ -9,6 +9,10 @@ scenario:
   actor:
     persona: platform-engineer
     profile: fsi
+  perspectives:
+    - compliance-auditor
+    - sovereignty-authority
+    - tenancy-authority
   intent: Validate UDLM models approved-list profiles, default, and the profile/overlay binding
   success_criteria:
   - The instance models an approved_profiles set and a default_profile

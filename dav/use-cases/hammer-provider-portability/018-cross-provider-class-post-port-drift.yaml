@@ -7,6 +7,10 @@ scenario:
   actor:
     persona: sre
     profile: standard
+  perspectives:
+    - platform-operator
+    - provider-owner
+    - compliance-auditor
   intent: Post-port drift when the target's realized state diverges from the ported intent
   success_criteria:
   - The workload re-realizes on the target Provider Class

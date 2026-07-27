@@ -12,6 +12,10 @@ scenario:
   actor:
     persona: platform-engineer
     profile: prod
+  perspectives:
+    - platform-operator
+    - sre
+    - federation-peer-operator
   intent: Safely decommission a peer-realized resource that a third peer still depends on
   success_criteria:
   - Decommission target is a peer-realized resource with a cross-DCM dependent

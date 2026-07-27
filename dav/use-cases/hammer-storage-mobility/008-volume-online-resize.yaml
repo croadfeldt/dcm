@@ -11,6 +11,8 @@ scenario:
   actor:
     persona: application-team-member
     profile: standard
+  perspectives:
+    - tenancy-authority
   intent: Grow an in-use volume and preserve its identity and attachments
   success_criteria:
   - Resize is accepted as a modification of the existing volume

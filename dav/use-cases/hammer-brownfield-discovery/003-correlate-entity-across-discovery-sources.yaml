@@ -13,6 +13,7 @@ scenario:
   actor:
     persona: platform-engineer
     profile: standard
+  perspectives: []
   intent: Correlate observations of one host from multiple discovery sources into a single entity
   success_criteria:
   - All three source observations resolve to exactly one entity

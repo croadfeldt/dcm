@@ -15,6 +15,12 @@ scenario:
   actor:
     persona: sovereign-tenant-admin
     profile: sovereign
+  perspectives:
+    - platform-operator
+    - sre
+    - federation-peer-operator
+    - compliance-auditor
+    - sovereignty-authority
   intent: Decommission a resource such that both the local and the peer replica are
     released, with a consistent cross-DCM audit record
   success_criteria:

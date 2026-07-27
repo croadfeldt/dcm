@@ -12,6 +12,7 @@ scenario:
   actor:
     persona: sre
     profile: standard
+  perspectives: []
   intent: Promote a golden VM image whose CVE scan job never completes in time
   success_criteria:
   - Promotion dispatches a scan Automation.Job to the scanner discovery avenue

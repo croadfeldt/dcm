@@ -7,6 +7,10 @@ scenario:
   actor:
     persona: platform-engineer
     profile: standard
+  perspectives:
+    - platform-operator
+    - sre
+    - provider-owner
   intent: Fall back to a Compute.Container cousin when Compute.VM capacity is exhausted
   success_criteria:
   - The preferred Compute.VM providers report capacity exhaustion

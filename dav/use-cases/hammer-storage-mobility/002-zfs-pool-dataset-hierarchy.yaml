@@ -12,6 +12,7 @@ scenario:
   actor:
     persona: sre
     profile: standard
+  perspectives: []
   intent: Model a nested ZFS pool and dataset hierarchy with property inheritance
   success_criteria:
   - Storage.Pool is created as the root of the hierarchy

@@ -7,6 +7,11 @@ scenario:
   actor:
     persona: compliance-auditor
     profile: sovereign
+  perspectives:
+    - application-team-member
+    - sre
+    - federation-peer-operator
+    - sovereignty-authority
   intent: Deny federation to a peer in a non-compliant jurisdiction
   success_criteria:
   - The only capable peer is in a forbidden jurisdiction

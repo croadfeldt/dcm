@@ -8,6 +8,8 @@ scenario:
   actor:
     persona: application-team-member
     profile: standard
+  perspectives:
+    - tenancy-authority
   intent: Validate UDLM models resource tenancy fields and the tenant_boundary DCMGroup
   success_criteria:
   - A resource record models the tenancy fields binding it to its tenant

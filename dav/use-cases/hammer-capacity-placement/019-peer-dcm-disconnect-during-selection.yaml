@@ -11,6 +11,11 @@ scenario:
   actor:
     persona: sre
     profile: prod
+  perspectives:
+    - application-team-member
+    - platform-operator
+    - provider-owner
+    - federation-peer-operator
   intent: Keep placement safe when a peer DCM disconnects during selection
   success_criteria:
   - The peer DCM's candidates are in-flight when it becomes unreachable

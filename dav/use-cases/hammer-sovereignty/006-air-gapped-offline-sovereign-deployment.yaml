@@ -13,6 +13,10 @@ scenario:
   actor:
     persona: platform-engineer
     profile: sovereign
+  perspectives:
+    - provider-owner
+    - federation-peer-operator
+    - sovereignty-authority
   intent: Deploy a full sovereign stack entirely within an offline air-gapped enclave
   success_criteria:
   - The full stack is realized using only providers resident inside the air-gapped enclave

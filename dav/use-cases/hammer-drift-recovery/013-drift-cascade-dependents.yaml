@@ -13,6 +13,10 @@ scenario:
   actor:
     persona: sre
     profile: prod
+  perspectives:
+    - application-team-member
+    - platform-operator
+    - tenancy-authority
   intent: Detect drift on a base resource and remediate its dependents in dependency order
   success_criteria:
   - Drift detected on the database endpoint against its Realized snapshot

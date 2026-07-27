@@ -13,6 +13,9 @@ scenario:
   actor:
     persona: sre
     profile: standard
+  perspectives:
+    - platform-operator
+    - executive
   intent: Rebuild a drifted resource from its captured realized state, not intent
   success_criteria:
   - System detects that realized state diverged from declared intent before the disaster

@@ -12,6 +12,9 @@ scenario:
   actor:
     persona: platform-engineer
     profile: prod
+  perspectives:
+    - compliance-auditor
+    - security-officer
   intent: Promote an attested vendor firmware package for bare-metal host provisioning
   success_criteria:
   - Vendor signature on the firmware package verifies against a trusted vendor key

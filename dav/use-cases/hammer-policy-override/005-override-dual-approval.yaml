@@ -13,6 +13,9 @@ scenario:
   actor:
     persona: platform-engineer
     profile: fsi
+  perspectives:
+    - security-officer
+    - tenancy-authority
   intent: Obtain a dual-approved override of a high-risk soft policy
   success_criteria:
   - The policy's override eligibility declares a two-approver quorum across distinct roles

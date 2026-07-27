@@ -10,6 +10,8 @@ scenario:
   actor:
     persona: platform-engineer
     profile: standard
+  perspectives:
+    - security-officer
   intent: Provision a VM and carry it end to end through configuration and its first patch cycle
   success_criteria:
   - Day 0 realizes the VM resource and records its provider-assigned UUID

@@ -12,6 +12,12 @@ scenario:
   actor:
     persona: security-officer
     profile: prod
+  perspectives:
+    - application-team-member
+    - platform-operator
+    - sre
+    - provider-owner
+    - compliance-auditor
   intent: Evaluate a candidate policy in shadow mode without affecting live decisions
   success_criteria:
   - The shadow policy is evaluated on every matched request

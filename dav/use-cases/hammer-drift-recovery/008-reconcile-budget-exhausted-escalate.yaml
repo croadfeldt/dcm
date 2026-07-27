@@ -12,6 +12,8 @@ scenario:
   actor:
     persona: sre
     profile: prod
+  perspectives:
+    - platform-operator
   intent: Exhaust a bounded remediation budget then escalate instead of retrying indefinitely
   success_criteria:
   - Recovery policy defines a max attempt count within a grace window

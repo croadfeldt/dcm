@@ -7,6 +7,9 @@ scenario:
   actor:
     persona: storage-admin
     profile: standard
+  perspectives:
+    - sre
+    - provider-owner
   intent: Re-home data from Storage.Volume to Storage.FileShare during a migration
   success_criteria:
   - The Storage Base requirements (tier, capacity) carry across

@@ -8,6 +8,8 @@ scenario:
   actor:
     persona: sre
     profile: standard
+  perspectives:
+    - application-team-member
   intent: Green a brownfield resource and re-port it, recovering its Base/Type class first
   success_criteria:
   - The brownfield resource is discovered with only its native construct

@@ -8,6 +8,7 @@ scenario:
   actor:
     persona: compliance-auditor
     profile: sovereign
+  perspectives: []
   intent: Validate UDLM models the audit chain (events, epochs, tree heads, proofs) as append-only
   success_criteria:
   - Audit events are modeled as append-only artifacts addressable by handle and epoch

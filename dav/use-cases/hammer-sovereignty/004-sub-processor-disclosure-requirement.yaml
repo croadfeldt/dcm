@@ -14,6 +14,9 @@ scenario:
   actor:
     persona: security-officer
     profile: sovereign
+  perspectives:
+    - provider-owner
+    - sovereignty-authority
   intent: Provision a service only if its full sub-processor chain is disclosed and compliant
   success_criteria:
   - The primary provider's declared sub-processor chain is resolved from the provider model

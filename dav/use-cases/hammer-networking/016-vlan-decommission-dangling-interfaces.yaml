@@ -12,6 +12,9 @@ scenario:
   actor:
     persona: platform-engineer
     profile: standard
+  perspectives:
+    - application-team-member
+    - sre
   intent: Decommission a VLAN that still has interfaces and a reservation depending on it
   success_criteria:
   - Dependent Hardware.NetworkInterface and Network.IPAddress records are discovered

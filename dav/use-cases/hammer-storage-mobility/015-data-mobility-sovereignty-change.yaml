@@ -13,6 +13,10 @@ scenario:
   actor:
     persona: compliance-auditor
     profile: sovereign
+  perspectives:
+    - provider-owner
+    - sovereignty-authority
+    - tenancy-authority
   intent: Evacuate data off a provider that lost its sovereignty classification
   success_criteria:
   - Sovereignty reclassification of the provider is detected as a governance event

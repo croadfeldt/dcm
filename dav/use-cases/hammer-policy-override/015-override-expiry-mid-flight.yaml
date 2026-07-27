@@ -14,6 +14,8 @@ scenario:
   actor:
     persona: sre
     profile: prod
+  perspectives:
+    - platform-operator
   intent: Continue a multi-step flow whose override expires mid-execution
   success_criteria:
   - Override validity is bound to a time window with a defined mid-flight semantics

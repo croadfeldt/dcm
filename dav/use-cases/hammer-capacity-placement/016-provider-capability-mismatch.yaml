@@ -12,6 +12,9 @@ scenario:
   actor:
     persona: application-team-member
     profile: standard
+  perspectives:
+    - sre
+    - provider-owner
   intent: Place a request whose required capability no eligible provider offers
   success_criteria:
   - The required capability is resolved from the request declaration

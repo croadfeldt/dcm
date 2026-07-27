@@ -13,6 +13,10 @@ scenario:
   actor:
     persona: platform-engineer
     profile: standard
+  perspectives:
+    - application-team-member
+    - platform-operator
+    - sre
   intent: Rehydrate an environment whose dependency graph contains a cycle
   success_criteria:
   - The rebuild planner attempts to derive a topological build order from the graph

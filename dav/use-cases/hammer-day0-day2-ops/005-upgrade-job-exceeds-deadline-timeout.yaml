@@ -9,6 +9,8 @@ scenario:
   actor:
     persona: sre
     profile: prod
+  perspectives:
+    - platform-operator
   intent: Enforce a deadline on a long-running upgrade job and record a terminal timeout
   success_criteria:
   - The upgrade job is bound to the appliance and carries an explicit deadline

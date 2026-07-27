@@ -12,6 +12,12 @@ scenario:
   actor:
     persona: security-officer
     profile: sovereign
+  perspectives:
+    - application-team-member
+    - sre
+    - provider-owner
+    - sovereignty-authority
+    - tenancy-authority
   intent: Allocate a volume only on a provider within the mandated data-residency region
   success_criteria:
   - Requesting tenant's residency mandate is resolved for the request

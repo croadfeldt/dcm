@@ -12,6 +12,12 @@ scenario:
   actor:
     persona: tenant-admin
     profile: fsi
+  perspectives:
+    - application-team-member
+    - platform-operator
+    - sre
+    - provider-owner
+    - compliance-auditor
   intent: Delete a retention-locked snapshot before its lock expires
   success_criteria:
   - Decommission request targets a snapshot under an unexpired retention lock

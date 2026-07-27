@@ -9,6 +9,9 @@ scenario:
   actor:
     persona: application-team-member
     profile: standard
+  perspectives:
+    - platform-operator
+    - sre
   intent: Re-apply unchanged intent and verify no-op reconvergence
   success_criteria:
   - Re-applied intent is accepted and processed through the pipeline

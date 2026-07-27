@@ -7,6 +7,9 @@ scenario:
   actor:
     persona: security-officer
     profile: fsi
+  perspectives:
+    - federation-peer-operator
+    - compliance-auditor
   intent: Block federation to an FSI peer whose attestation is stale
   success_criteria:
   - The FSI profile requires a fresh peer attestation before federation

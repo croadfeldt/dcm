@@ -13,6 +13,9 @@ scenario:
   actor:
     persona: security-officer
     profile: sovereign
+  perspectives:
+    - provider-owner
+    - sovereignty-authority
   intent: Place a regulated dataset only on a provider with acceptable government-access risk
   success_criteria:
   - Both candidate providers pass the physical data-at-rest residency check

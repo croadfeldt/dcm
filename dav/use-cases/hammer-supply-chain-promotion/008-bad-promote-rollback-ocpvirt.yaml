@@ -12,6 +12,9 @@ scenario:
   actor:
     persona: sre
     profile: prod
+  perspectives:
+    - platform-operator
+    - compliance-auditor
   intent: Roll a bad image back out of the controlled repo after it was already promoted
   success_criteria:
   - The bad SoftwareImage is identified as incorrectly promoted after canonical admission

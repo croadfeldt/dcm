@@ -13,6 +13,10 @@ scenario:
   actor:
     persona: security-officer
     profile: prod
+  perspectives:
+    - application-team-member
+    - sre
+    - compliance-auditor
   intent: Confirm a request-scoped override does not leak to sibling requests
   success_criteria:
   - The override is scoped to exactly one matched request

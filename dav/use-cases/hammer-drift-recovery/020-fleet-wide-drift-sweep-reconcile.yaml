@@ -13,6 +13,9 @@ scenario:
   actor:
     persona: sre
     profile: prod
+  perspectives:
+    - platform-operator
+    - compliance-auditor
   intent: Run a fleet-wide drift sweep that classifies and responds to each resource under one governance
     matrix
   success_criteria:

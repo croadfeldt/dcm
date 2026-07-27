@@ -13,6 +13,9 @@ scenario:
   actor:
     persona: platform-engineer
     profile: standard
+  perspectives:
+    - platform-operator
+    - sre
   intent: Safely resolve a sanctioned modification racing with a drift remediation on the same field
   success_criteria:
   - A sanctioned modification and a drift remediation target the same field concurrently

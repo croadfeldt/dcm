@@ -12,6 +12,11 @@ scenario:
   actor:
     persona: platform-engineer
     profile: fsi
+  perspectives:
+    - application-team-member
+    - sre
+    - compliance-auditor
+    - security-officer
   intent: Promote an OS package that lacks a signature and provenance attestation
   success_criteria:
   - SBOM and CVE scan run and return no gating vulnerabilities

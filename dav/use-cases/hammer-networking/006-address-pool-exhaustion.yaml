@@ -12,6 +12,9 @@ scenario:
   actor:
     persona: platform-engineer
     profile: standard
+  perspectives:
+    - application-team-member
+    - sre
   intent: Provision more addresses than the pool can satisfy and observe clean exhaustion handling
   success_criteria:
   - Allocations proceed until the pool's free set is empty

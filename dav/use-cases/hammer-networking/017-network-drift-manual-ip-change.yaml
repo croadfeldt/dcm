@@ -12,6 +12,8 @@ scenario:
   actor:
     persona: sre
     profile: standard
+  perspectives:
+    - platform-operator
   intent: Detect and reconcile an out-of-band manual change to a host's network config
   success_criteria:
   - Reconciliation compares realized NMstate against declared ConnectionProfile/IPAddress intent

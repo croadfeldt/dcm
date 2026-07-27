@@ -13,6 +13,11 @@ scenario:
   actor:
     persona: security-officer
     profile: sovereign
+  perspectives:
+    - application-team-member
+    - platform-operator
+    - sre
+    - sovereignty-authority
   intent: Remediate a residency drift where the corrective action is itself blocked by sovereignty
   success_criteria:
   - Drift detected as an out-of-jurisdiction replica of a residency-pinned dataset

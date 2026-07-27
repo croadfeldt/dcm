@@ -11,6 +11,9 @@ scenario:
   actor:
     persona: application-team-member
     profile: prod
+  perspectives:
+    - sre
+    - tenancy-authority
   intent: Provision a GPU workload that exceeds remaining tenant quota
   success_criteria:
   - Request footprint is computed and compared against remaining quota

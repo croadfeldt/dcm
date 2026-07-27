@@ -13,6 +13,8 @@ scenario:
   actor:
     persona: finance-analyst
     profile: prod
+  perspectives:
+    - provider-owner
   intent: Thin-provision volumes beyond physical capacity and guard against fill
   success_criteria:
   - Logical (declared) and physical (allocated) capacity are modeled distinctly

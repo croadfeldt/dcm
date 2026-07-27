@@ -12,6 +12,9 @@ scenario:
   actor:
     persona: security-officer
     profile: fsi
+  perspectives:
+    - platform-operator
+    - sre
   intent: Detect a critical control regression and halt-and-escalate rather than auto-heal
   success_criteria:
   - Discovery reports encryption-at-rest disabled against a Realized snapshot showing it enabled

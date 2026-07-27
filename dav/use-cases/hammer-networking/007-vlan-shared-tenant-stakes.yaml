@@ -12,6 +12,11 @@ scenario:
   actor:
     persona: tenant-admin
     profile: prod
+  perspectives:
+    - application-team-member
+    - sre
+    - compliance-auditor
+    - tenancy-authority
   intent: Attempt to decommission a VLAN that multiple tenants have active stakes in
   success_criteria:
   - The VLAN is modelled as a shared resource with multiple tenant stakeholders (M:N stakes)

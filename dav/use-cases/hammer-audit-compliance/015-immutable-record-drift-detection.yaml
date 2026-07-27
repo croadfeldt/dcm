@@ -12,6 +12,11 @@ scenario:
   actor:
     persona: security-officer
     profile: fsi
+  perspectives:
+    - platform-operator
+    - sre
+    - compliance-auditor
+    - executive
   intent: Detect out-of-band mutation of an immutable, hash-chained audit record
   success_criteria:
   - An integrity scan recomputes the hash chain over stored records

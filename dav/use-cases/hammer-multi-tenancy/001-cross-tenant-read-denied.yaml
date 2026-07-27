@@ -12,6 +12,11 @@ scenario:
   actor:
     persona: security-officer
     profile: fsi
+  perspectives:
+    - application-team-member
+    - sre
+    - compliance-auditor
+    - tenancy-authority
   intent: Prove a cross-tenant read of another tenant's resource is rejected at the boundary
   success_criteria:
   - Request naming tenant-A UUID from a tenant-B principal is rejected

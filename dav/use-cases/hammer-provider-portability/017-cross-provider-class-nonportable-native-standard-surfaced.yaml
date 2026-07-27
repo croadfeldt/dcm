@@ -8,6 +8,11 @@ scenario:
   actor:
     persona: platform-engineer
     profile: standard
+  perspectives:
+    - application-team-member
+    - platform-operator
+    - sre
+    - provider-owner
   intent: A type adopting a provider-native standard is surfaced as non-portable at re-port
   success_criteria:
   - The portable Base/Type subset re-realizes on the target

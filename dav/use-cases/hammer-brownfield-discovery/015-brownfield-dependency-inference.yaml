@@ -14,6 +14,9 @@ scenario:
   actor:
     persona: platform-engineer
     profile: standard
+  perspectives:
+    - platform-operator
+    - sre
   intent: Infer candidate dependencies among discovered resources from observed signals
   success_criteria:
   - Candidate dependency edges are derived from observed network flows and configuration

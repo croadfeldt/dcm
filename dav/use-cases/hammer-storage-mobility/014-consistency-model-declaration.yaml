@@ -12,6 +12,7 @@ scenario:
   actor:
     persona: application-team-member
     profile: standard
+  perspectives: []
   intent: Declare per-dataset consistency models and place on providers that honor them
   success_criteria:
   - Each dataset's intent declares a consistency model (strong or eventual)

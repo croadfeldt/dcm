@@ -9,6 +9,8 @@ scenario:
   actor:
     persona: finance-analyst
     profile: dev
+  perspectives:
+    - security-officer
   intent: Enforce a resource TTL at expiry by firing a bound decommission process
   success_criteria:
   - At TTL expiry the policy autonomously fires a decommission job bound to each expired VM

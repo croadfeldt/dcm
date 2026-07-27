@@ -9,6 +9,9 @@ scenario:
   actor:
     persona: platform-operator
     profile: prod
+  perspectives:
+    - application-team-member
+    - sre
   intent: Recover a resource to its pre-patch state when a bound patch job fails mid-run
   success_criteria:
   - The patch job is bound to the database host and records a FAILED terminal outcome on failure

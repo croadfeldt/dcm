@@ -12,6 +12,7 @@ scenario:
   actor:
     persona: platform-engineer
     profile: standard
+  perspectives: []
   intent: Model and realize a bond -> bridge -> VLAN interface stack on a host
   success_criteria:
   - Each layer (physical NICs, bond, bridge, vlan) is a Hardware.NetworkInterface record
