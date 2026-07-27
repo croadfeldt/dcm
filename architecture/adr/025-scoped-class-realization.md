@@ -5,7 +5,7 @@
 
 ## Context
 
-UDLM **ADR-038** lands the *scoped resource-type Class* paradigm: resource types are layered **Base / Type / Provider Classes** composed of scoped `SharedDataElement`s, with a URL-native addressing coordinate, a dual-anchor reference model, `covers`/`skip` layers, and three relationship axes (is-a / has-a / references-context). ADR-038's UDLM-vs-DCM split (the ADR-008 peer test) assigns the **model, grammar, classification, and data** to UDLM and the **engine — every *decision*** to DCM.
+UDLM **ADR-038** lands the *scoped resource-type Class* paradigm: resource types are layered **Base / Type / Provider Classes** composed of scoped `SharedDataElement`s, with a URL-native addressing coordinate, a dual-anchor reference model, and the *is-a* / *has-a* relationship axes. The third axis (**references-context**), field projection along edges, and `covers`/`skip` layer scoping were extracted to **UDLM ADR-054**. Their shared UDLM-vs-DCM split (the ADR-008 peer test) assigns the **model, grammar, classification, and data** to UDLM and the **engine — every *decision*** to DCM.
 
 This ADR records **where that engine half lives in DCM**. The important finding: it is *mostly already here*. The paradigm is a cleaner data model over the realization engines DCM already has; only a few capabilities are net-new.
 
