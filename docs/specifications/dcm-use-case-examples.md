@@ -571,14 +571,14 @@ relationships:
   - relationship_uuid: rel-001
     from_entity: ent-vm-pay-03
     to_entity: ent-ip-pay-03
-    relationship_type: assigned_to
+    relation: assigned_to
     cardinality: one_to_one
     required_for_delivery: true      # VM cannot be OPERATIONAL without an IP
 
   - relationship_uuid: rel-002
     from_entity: ent-vm-pay-03
     to_entity: ent-fw-pay-03
-    relationship_type: protected_by
+    relation: protected_by
     cardinality: one_to_many
     required_for_delivery: false     # VM can be OPERATIONAL; rule is operational hygiene
 ```

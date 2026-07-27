@@ -669,7 +669,7 @@ components:
           items:
             type: object
             properties:
-              relationship_type:    { type: string }
+              relation:    { type: string }
               target_entity_uuid:   { type: string, format: uuid }
         failure_reason:
           type: string

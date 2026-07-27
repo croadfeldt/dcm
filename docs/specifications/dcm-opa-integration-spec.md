@@ -230,7 +230,7 @@ DCM provides built-in functions callable from Rego policies:
 dcm.entity.relationships(entity_uuid)
   # Returns: array of relationship records for the entity
 
-dcm.entity.has_relationship(entity_uuid, relationship_type)
+dcm.entity.has_relationship(entity_uuid, relation)
   # Returns: bool
 
 dcm.entity.stakeholder_count(entity_uuid, min_stake_strength)

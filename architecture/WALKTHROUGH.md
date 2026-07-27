@@ -179,7 +179,7 @@ Before placement can proceed, DCM checks the Resource Type Specification for `Co
 resource_type: Compute.VirtualMachine
 type_level_dependencies:
   - required_resource_type: Network.IPAddress
-    dependency_type: hard
+    strength: hard
     cardinality: one_to_one
     description: "Every VM requires exactly one IP address"
     payload_fields:             # fields to inject from the realized IP into the VM payload
@@ -323,7 +323,7 @@ fields:
     provenance:
       source_type: dependency_payload
       source_uuid: aabb1122-ip-uuid        # the IP entity
-      dependency_type: Network.IPAddress
+      required_resource_type: Network.IPAddress
       timestamp: 2026-03-15T09:01:15Z
   network_subnet:
     value: "10.1.0.0/16"
@@ -333,7 +333,7 @@ fields:
     provenance: { source_type: dependency_payload, source_uuid: aabb1122-ip-uuid }
 
 dependencies_satisfied:
-  - dependency_type: Network.IPAddress
+  - required_resource_type: Network.IPAddress
     entity_uuid: aabb1122-ip-uuid
     status: SATISFIED
     satisfied_at: 2026-03-15T09:01:15Z

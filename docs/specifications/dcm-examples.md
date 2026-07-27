@@ -792,7 +792,7 @@ POST https://slack-notif.corp.example.com/deliver
     "stakeholder_reason": {
       "via_entity_uuid": "vm-a-uuid",
       "via_entity_display_name": "VM-A (payments-api-server-01)",
-      "via_relationship_type": "attached_to"
+      "via_relation": "attached_to"
     }
   },
   "context": { "change_summary": "VLAN-100 decommission initiated" },

@@ -139,11 +139,11 @@
 
     "relationship": {
       "type": "object",
-      "required": ["relationship_uuid", "relationship_type", "target_entity_uuid", "created_at"],
+      "required": ["relationship_uuid", "relation", "target_entity_uuid", "created_at"],
       "additionalProperties": false,
       "properties": {
         "relationship_uuid":   { "$ref": "dcm-common.json#/$defs/uuid" },
-        "relationship_type": {
+        "relation": {
           "type": "string",
           "enum": [
             "requires",

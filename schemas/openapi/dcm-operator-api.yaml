@@ -364,7 +364,7 @@ components:
           items:
             type: object
             properties:
-              relationship_type: { type: string }
+              relation: { type: string }
               target_entity_uuid: { type: string, format: uuid }
               target_resource_type: { type: string }
         callback_url:

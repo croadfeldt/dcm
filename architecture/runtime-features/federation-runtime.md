@@ -253,7 +253,7 @@ dcm_provider_registration:
     status: active
 
   provider_type: dcm_provider
-  relationship_type: <peer|parent|child|hub>
+  relation: <peer|parent|child|hub>
 
   remote_dcm:
     instance_uuid: <remote-dcm-uuid>
