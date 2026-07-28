@@ -12,8 +12,18 @@ data. How much of a workload carries over is a function of its requirements.
 
 ## Migration and rehydration are the same process
 
-Both **replay stored intent against a target and activate a DR data source to repopulate the data.** They differ
-only in *circumstance*, not mechanism:
+**Three words, one act — so they stop contradicting.** *Rehydration* is the **operation**: replay stored intent
+against a target. *Rebuild* is its **mechanism**: the target stands up a fresh, native realization from that
+intent — never a lift-and-shift of the source construct. *Migration* is the **effect** the user sees: the
+workload now runs on the new provider. So "is it a migration or a rebuild?" is a false choice — it is a
+**rebuild-from-intent that produces an effective migration**, and *rehydration* is the name of the operation
+that performs it. Ryan's "rebuild" and the user's "migration" are the **same act named at different layers**;
+they were never in tension. And because a rebuild is driven by the intent — not the source construct — there is
+no NSX→OVN conversion to fail at: NSX was never carried across, only the requirement behind it (`isolation:
+private`), which OCPVirt satisfies natively with OVN.
+
+Both paths **replay stored intent against a target and activate a DR data source to repopulate the data.** They
+differ only in *circumstance*, not mechanism:
 
 | | **Migration** | **Rehydration** |
 |---|---|---|
