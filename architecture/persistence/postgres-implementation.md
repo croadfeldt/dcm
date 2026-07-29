@@ -536,7 +536,7 @@ Queries that may take longer (< 5s acceptable):
 ## 10. Realization note
 
 The schemas, indexes, and operational patterns above are **DCM's specific
-realization choices**. A peer DCM realization using a different storage
+realization choices**. A peer DCM implementation using a different storage
 technology would have its own equivalent enforcement mechanisms — different
 SQL, different indexes, potentially different concurrency models — while
 satisfying the same UDLM persistence contract.

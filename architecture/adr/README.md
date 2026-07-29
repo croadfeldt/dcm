@@ -12,7 +12,7 @@ Short, reviewable summaries of the major architectural decisions in DCM. Each AD
 > the capability/decision it justifies, paired with [Audit & Tamper Evidence](010-audit-tamper-evidence.md) and
 > field-level provenance ([ADR-012](012-data-assembly-layering.md)). A `DecisionRecord` is the substrate-level,
 > **validation-backed** counterpart of an ADR (it reaches `CANONICAL` only with passing use-case validation); the
-> authoring/validation loop is realized by a conformant assessment realization (non-normative; nothing here depends on a specific tool). Adopt-by-reference per
+> authoring/validation loop is realized by a conformant assessment implementation (non-normative; nothing here depends on a specific tool). Adopt-by-reference per
 > [ADR-021](021-adopting-external-standards.md): DCM records its decisions *as* UDLM DecisionRecords rather than a
 > parallel form.
 

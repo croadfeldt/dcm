@@ -5,7 +5,7 @@ declarative control plane for managing the lifecycle of arbitrary infrastructure
 resources across an enterprise — from bare metal and VMs to containers,
 applications, and managed services.
 
-**DCM is one realization of [UDLM](https://github.com/croadfeldt/udlm)**, the
+**DCM is one implementation of [UDLM](https://github.com/croadfeldt/udlm)**, the
 Universal Data Lifecycle Model. UDLM is the wire-compatible substrate
 (entity types, four-state lifecycle, contracts, identifiers, events). DCM is
 the operational platform built on it — convergence engine, control-plane
@@ -91,7 +91,7 @@ events, schema sharing, conformance), see
 
 ## Getting Started
 
-1. **Understand the substrate first** — read [UDLM's README and CONFORMANCE.md](https://github.com/croadfeldt/udlm). DCM only makes sense if you know what it's a realization of.
+1. **Understand the substrate first** — read [UDLM's README and CONFORMANCE.md](https://github.com/croadfeldt/udlm). DCM only makes sense if you know what it's an implementation of.
 2. **Read DCM's architecture overview** — [`architecture/overview.md`](architecture/overview.md), then [`architecture/layering.md`](architecture/layering.md) for the UDLM/DCM boundary.
 3. **Read the operator perspective** — [`architecture/operator-perspective.md`](architecture/operator-perspective.md) — narrative handbook for running DCM.
 4. **Dive into the convergence engine** — [`architecture/convergence-engine/overview.md`](architecture/convergence-engine/overview.md) — the heart of DCM.

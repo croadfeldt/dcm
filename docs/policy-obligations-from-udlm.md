@@ -1,7 +1,7 @@
 # Policy obligations delegated from UDLM
 
 **What this is.** The register of policy work UDLM has *delegated to DCM*. UDLM fixes an invariant every
-conformant realization must honor; where UDLM applies the ADR-008 peer test and finds that a conformant
+conformant implementation must honor; where UDLM applies the ADR-008 peer test and finds that a conformant
 peer could legitimately decide the *mechanism* or the *exception* differently, it stops there and hands the
 operational choice to the realization. Each row below is one such hand-off: the UDLM invariant DCM **must
 satisfy**, and the policy DCM **must decide** to satisfy it.

@@ -6,7 +6,7 @@
 ## What this repo is
 
 **DCM — Data Center Management.** A vendor-neutral architecture specification for an intent-driven
-control plane that provisions, governs, and rehydrates data-center resources. **DCM is one realization
+control plane that provisions, governs, and rehydrates data-center resources. **DCM is one implementation
 of UDLM** (the Unified Data-center Lifecycle Model, `github.com/croadfeldt/udlm`) — understand the UDLM
 substrate first; DCM is the control-plane architecture built on it.
 
@@ -35,7 +35,7 @@ README.md, project-overview.md, LICENSE
 
 ## Read first (entry points)
 
-1. UDLM substrate — `github.com/croadfeldt/udlm` (DCM is one realization of it).
+1. UDLM substrate — `github.com/croadfeldt/udlm` (DCM is one implementation of it).
 2. `architecture/overview.md` → `architecture/layering.md` (the UDLM/DCM boundary).
 3. `architecture/convergence-engine/overview.md` — the intent→realized loop, the heart of DCM.
 4. `architecture/operator-perspective.md`, `taxonomy/DCM-Taxonomy.md`.

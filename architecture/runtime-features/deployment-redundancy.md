@@ -7,7 +7,7 @@ Document Type: Architecture Reference — Deployment and Redundancy
 
 > **DCM-native runtime feature; no single UDLM contract counterpart.**
 > Deployment topology and redundancy are realization-layer concerns. UDLM
-> does not mandate a deployment model — a peer DCM realization could choose a
+> does not mandate a deployment model — a peer DCM implementation could choose a
 > different redundancy strategy and still satisfy every UDLM contract. This
 > document specifies DCM's own deployment and redundancy approach.
 
