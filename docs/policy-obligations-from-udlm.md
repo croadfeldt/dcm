@@ -14,6 +14,7 @@ section.
 |---|---|---|---|
 | OBL-001 | Credential-material intake mechanism | UDLM ADR-049 | **open** |
 | OBL-002 | Provider-pin eligibility bypass | UDLM ADR-050 | **open** |
+| OBL-003 | Provenance sealing — completeness, retention, and port fidelity | UDLM ADR-059 | **open** (pending ADR-059 ratification) |
 
 ---
 
@@ -63,3 +64,40 @@ ineligible provider yields `placement.capability_mismatch` **before dispatch**. 
 **Definition of done:** placement enforces the ceiling on every path (pin included); any bypass is a
 recorded, approved, time-bounded override whose permissibility is set per profile; a passing run of UDLM
 must-reject `005-provider-capability-mismatch-refused`, typed `policy_violation`.
+
+---
+
+## OBL-003 — Provenance sealing: completeness, retention, and port fidelity
+
+**Pending UDLM ADR-059 ratification (croadfeldt/udlm#342)** — registered now so the obligations land with
+the decision, not after it.
+
+**UDLM invariant DCM must satisfy** (ADR-059): every data write on every record, from Intent intake through
+layer application and policy writes to Realized — Discovered included — is **sealed** as an OpenLineage
+event embedding the working copy and its Layer-1 chain head; the working record carries state claims only
+(states + leaf pin + integrity chain — never provenance); lineage is cited **only** from the sealed,
+chained, anchored ledger; DCM is the **sole hasher** at both grains; a port never silently degrades
+fidelity — every dropped or mapped element is sealed with its authorizing policy.
+
+**Policy DCM must decide:**
+- **Emission completeness + delivery** — the declared policy naming what MUST be sealed and the platform
+  proof that it was (OL itself guarantees neither); the failure disposition when sealing is unavailable
+  (block the write vs queue-and-flag, per profile).
+- **Discovered-seal retention** — profile/policy-decided windows for the snapshot stream (rides the
+  RHY-008 retention machinery; the durable-inventory role stays exempt).
+- **Provider-scope consumption permission** — whether consumers may bind Provider-scope definitions
+  directly, per profile; the catalog projection must price the portability consequence either way.
+- **Port-fidelity classes** — which elements are ignorable-on-port vs blocking (the drop/refuse/
+  route-to-review split), and the translation-policy admission bar for the mapped grade of the
+  compatibility ladder.
+- **Ledger operation** — anchoring cadence for the global root (per boundary: git carrier, WORM object
+  store), verification cadence, and the tenancy/authorization posture of the ledger store (the platform
+  half of the OL gap assignment).
+- **L1-verification failure as its own finding class** — a record failing chain verification is TAMPER,
+  not drift: separate finding type, separate response matrix row; the walker treats it as REFUSING.
+
+**Definition of done:** a profile-governed sealing policy with platform-proven completeness; retention and
+port-fidelity policies shipped; ledger runbook (anchor + verify cadences) in operation; a port exercised
+end-to-end whose seals show the full journey including at least one policy-authorized fidelity drop; chain
+verification wired into the walker preflight with the tamper finding class emitted on failure.
+
