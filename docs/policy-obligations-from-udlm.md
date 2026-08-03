@@ -82,7 +82,16 @@ fidelity — every dropped or mapped element is sealed with its authorizing poli
 **Policy DCM must decide:**
 - **Emission completeness + delivery** — the declared policy naming what MUST be sealed and the platform
   proof that it was (OL itself guarantees neither); the failure disposition when sealing is unavailable
-  (block the write vs queue-and-flag, per profile).
+  (block the write vs queue-and-flag, per profile). For discovery specifically, completeness is
+  **cadence attestation**, not chain arithmetic: discovery-run chains deliberately do not link cycle to
+  cycle (runs are independent evidence; chains prove what exists is unaltered, never that everything
+  that should exist does), so a silently omitted run is caught by declaring the expected discovery
+  cadence and raising a finding when a seal is missing against it — the ADR-048 staleness shape
+  (`expected_observation` / `on_exceeded`), which also survives seal retention where a chain would not.
+- **Opt-in run-continuity citation** — a profile MAY require each discovery-run seal to cite the
+  previous run's chain head (the `pathway_ref` citation mechanism, pointed backward), giving
+  regulated estates (`fsi`/`sovereign`) structural gap detection without making cross-run chaining
+  the substrate default or entangling RHY-008 retention for everyone else.
 - **Discovered-seal retention** — profile/policy-decided windows for the snapshot stream (rides the
   RHY-008 retention machinery; the durable-inventory role stays exempt).
 - **Provider-scope consumption permission** — whether consumers may bind Provider-scope definitions
