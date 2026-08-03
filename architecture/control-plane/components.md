@@ -8,7 +8,7 @@ Document Type: Architecture Reference
 > **DCM-native control-plane runtime; no single UDLM contract counterpart.**
 > The control-plane components are runtime implementations of the three UDLM
 > abstractions (Data, Provider, Policy) — not a fourth abstraction and not a
-> distinct UDLM contract. A peer DCM realization could decompose its control
+> distinct UDLM contract. A peer DCM implementation could decompose its control
 > plane differently and still satisfy every UDLM contract.
 
 

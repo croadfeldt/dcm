@@ -144,7 +144,7 @@ non-normative gists; the owner is the [udlm repo](https://github.com/croadfeldt/
 | **PatternFly** | Red Hat's open-source design system and React component library — the design system for the DCM GUI surfaces. Key components: Nav (sidebar), NavGroup (non-clickable headers), NavItem with NotificationBadge (approvals count), Table, Toolbar, Gallery (catalog cards), Drawer (live status), Modal (step-up MFA). |
 
 <!-- RHDH / Backstage integration terms removed 2026-06-29 (engineering feedback, dcm PR #64): the DCM GUI
-     is realization-neutral; RHDH/Backstage is not a DCM dependency. Backstage Dynamic Plugins were rejected
+     is implementation-neutral; RHDH/Backstage is not a DCM dependency. Backstage Dynamic Plugins were rejected
      upstream. The dedicated dcm-rhdh-integration-spec was retired. PatternFly (the design system) is retained
      above as it is not Backstage-coupled. -->
 
