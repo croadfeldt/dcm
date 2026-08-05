@@ -110,11 +110,21 @@ fidelity — every dropped or mapped element is sealed with its authorizing poli
   not drift: separate finding type, separate response matrix row; the walker treats it as REFUSING.
 - **The drift policy** (ADR-059 Decision 8 delegates the whole classification surface): per-field
   relevance (which fields matter — observed-only fields and benign jitter are policy-excluded),
-  severity classification onto the canonical drift enum, flap debounce, and **the accept
-  mechanism** — the deliberately open fork: adopt-the-discovered-value-into-intent (a
-  request-pathway change, chained and sealed; cleanest, heaviest) versus an accepted-deviation
-  record that suppresses re-detection (lighter, but standing "known divergence" state that must
-  be governed and expired). Both are priced in the ADR; this register is where the ruling lands.
+  severity classification onto the canonical drift enum, flap debounce.
+- **Drift resolution — RULED (2026-08-05, UDLM ADR-060): policy dictates and performs; the
+  substrate ships no built-in action or decision.** A drift finding routes to policy first;
+  policies choose from the enabled vocabulary — adopt (intent updated to match), accept
+  (realized kept, difference noted on intent), replay at three depths (intent through the
+  pipeline / request to the provider / realized re-asserted), re-observe (close as
+  observation-error on a disagreeing re-read), quarantine/suspend (interim containment, not a
+  resolution), defer (recorded decision, finding stays open with a review timer), decommission —
+  or **hand the decision off** (human, AI, external policy system), the outcome landing as a
+  DecisionRecord citing the finding. Every action is an ordinary governed request, so the audit
+  chain (routing, evaluations, handoff, final decision, resulting action) is captured by the
+  existing surfaces with no new machinery. **DCM's part: ship the example resolution policies
+  (one per vocabulary row) and the profile bundles that MAY bind defaults** — e.g. fsi/sovereign
+  defaulting security-classified drift to quarantine + handoff; nothing binds unless a profile
+  or the organization's policy says so.
 - **Finding lifecycle operation** — open-once keying (resource + diverged-field-set),
   confirm-not-duplicate on re-detection, closure by citing resolution seal; current drift status
   is always derived on read, never answered from a finding.
