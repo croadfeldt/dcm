@@ -15,6 +15,7 @@ section.
 | OBL-001 | Credential-material intake mechanism | UDLM ADR-049 | **open** |
 | OBL-002 | Provider-pin eligibility bypass | UDLM ADR-050 | **open** |
 | OBL-003 | Provenance sealing — completeness, retention, and port fidelity | UDLM ADR-059 | **open** (pending ADR-059 ratification) |
+| OBL-004 | Graph-depth and nesting ceilings | UDLM `service-dependencies` §11c, `entity-relationships` §15, `template-composition-model` §8 | **open** |
 
 ---
 
@@ -134,3 +135,46 @@ port-fidelity policies shipped; ledger runbook (anchor + verify cadences) in ope
 end-to-end whose seals show the full journey including at least one policy-authorized fidelity drop; chain
 verification wired into the walker preflight with the tamper finding class emitted on failure.
 
+---
+
+## OBL-004 — Graph-depth and nesting ceilings
+
+**What changed.** UDLM used to cap three graphs: dependency depth at 10 (`DEP-015`), relationship
+traversal at 15 (`REL-021`), and composite nesting at 3 (`CMP-008`), each with a per-profile table.
+All three are **removed**. The maintainer's ruling (2026-08-10): *"That is a policy item, not a data
+model enforcement. The data models, the platform enforces."*
+
+The numbers were governance wearing a rule's clothes. Nothing structural makes depth 11 impossible —
+someone picked 10 — and a homelab and a bank plausibly want different answers. The nesting cap was
+the clearest case: a three-tier application inside a platform stack inside an environment is three
+levels before anything unusual happens.
+
+**UDLM invariant DCM must satisfy.** Only cycles. A cycle is *unorderable* — ordering derives from
+`depends_on` and a cycle has no first step — which is a structural impossibility rather than a
+threshold somebody chose. That distinction is the whole line: **the model refuses what cannot be
+computed; policy decides what should not be permitted.** UDLM's remaining obligation is to make depth
+**computable** from the declared edges, which it is.
+
+**Policy DCM must decide:**
+- **Whether to cap at all**, and at what value. An estate may legitimately run uncapped and rely on
+  cycle detection plus operational review.
+- **Which depth is being capped.** Dependency depth counts the provisioning chain; relationship depth
+  counts traversal distance between any two entities; nesting depth counts composite containment.
+  A VM with 50 IP-address relationships has relationship depth 1, not 50 — a policy that does not say
+  which it means will surprise somebody.
+- **When it is evaluated.** Registration time refuses a definition; request time refuses a particular
+  order. They are different failures, and the second still admits a definition that can never be used.
+- **What a refusal says.** UDLM's precedent throughout is that a refusal names the thing it refuses —
+  the chain and the depth reached, not "too deep".
+
+**Suggested starting values, if DCM wants a default** — these are the numbers UDLM used to mandate,
+kept here as a starting point rather than a requirement, and worth revisiting rather than inheriting:
+
+| | homelab | dev | standard | prod | fsi | sovereign |
+|---|---|---|---|---|---|---|
+| dependency depth | 20 | 15 | 10 | 10 | 7 | 7 |
+| relationship traversal | 25 | 20 | 15 | 15 | 10 | 10 |
+| composite nesting | — | — | 3 | 3 | 3 | 3 |
+
+The composite row was a flat 3 with no profile variation, which is itself a signal it was never
+tuned against a real estate.
