@@ -56,12 +56,12 @@ README.md, project-overview.md, LICENSE
 - **Counts come from source artifacts, never summary blocks.** Summary blocks in this repo (e.g. README
   "Key Facts", the old onboarding doc) disagree with each other and with the actual files. When you need a
   number, read the artifact:
-  - capabilities → `architecture/DCM-Capabilities-Matrix.md` total (311 across 39 domains)
-  - SQL tables → `schemas/sql/001-initial.sql` (18)
-  - events → the §65 Event Catalog / UDLM event-catalog (82 across 26 domains)
-  - API paths → `schemas/openapi/dcm-consumer-api.yaml` (75) / `dcm-admin-api.yaml` (admin spec)
-  - providers → declared **capabilities** `(verb × domain)`, not fixed types (ADR-PROV-002); the legacy "provider types" are convenience labels for capability profiles — see `croadfeldt/udlm` capability-discovery.md
-  - policy types → 7, with 2 evaluation modes (Internal via OPA / External via provider)
+  - capabilities → `architecture/DCM-Capabilities-Matrix.md` (count the capability-ID rows; its own summary total has drifted)
+  - SQL tables → `schemas/sql/001-initial.sql`
+  - events → UDLM `docs/spec/contracts/event-catalog.md`
+  - API paths → the `paths` keys of each spec in `schemas/openapi/`
+  - providers → declared **capabilities** `(verb × domain)`, not fixed types (ADR-PROV-002); the legacy "provider types" are convenience labels for capability profiles. Verbs: UDLM `docs/spec/contracts/provider-contract.md` §8, listed once in `taxonomy/DCM-Taxonomy.md`
+  - policy types → the `policy_type` enum in UDLM `registry/policy.schema.json`; 2 evaluation modes (Internal / External, `architecture/governance-enforcement/policy-profiles.md` §4)
 
 ## Terminology decisions (locked 2026-06-30)
 
