@@ -394,7 +394,10 @@ Step 5: Tie-Breaking (deterministic hierarchy)
 
   Priority 1: Policy preference
     A Transformation policy injected a preference_score or preferred_provider_uuid.
-    Highest preference_score wins. preferred_provider_uuid is absolute — skips Steps 2-6.
+    Highest preference_score wins. preferred_provider_uuid outranks every lower priority,
+    but it only chooses among providers that passed Steps 1-4. It never skips the
+    sovereignty and accreditation filters (PLC-001, PLC-002). If the preferred provider
+    was filtered out, it is not a candidate and the hierarchy continues without it.
 
   Priority 2: Provider declared priority
     Providers declare a numeric priority at registration (default: 50).

@@ -2,7 +2,9 @@
 
 Short, reviewable summaries of the major architectural decisions in DCM. Each ADR answers **"Why does this exist and what does it do?"** — not implementation details.
 
-**Required lens (every ADR / DecisionRecord).** Each decision MUST state its **Data · Policy · Provider** aspects — the three foundational abstractions (ADR-002). *Data* = what's modeled/held (UDLM); *Policy* = what's decided/computed/governed (DCM); *Provider* = what's declared as possible and what executes the mechanism. A decision that can't name all three (or explicitly say "n/a, because…") isn't fully scoped. This is foundational across UDLM and DCM (and any consumer).
+**Required lens (ADR-019 onward, and every DecisionRecord).** Each decision MUST state its **Data · Policy · Provider** aspects — the three foundational abstractions (ADR-002). *Data* = what's modeled/held (UDLM); *Policy* = what's decided/computed/governed (DCM); *Provider* = what's declared as possible and what executes the mechanism. A decision that can't name all three (or explicitly say "n/a, because…") isn't fully scoped. This is foundational across UDLM and DCM (and any consumer).
+
+*Which ADRs carry it.* The rule was adopted with ADR-019 and ADR-020. ADR-019, 020, 022, 023, 024, 025 and 027 have a Data · Policy · Provider section. ADR-021 and ADR-028 state the three aspects inside their Decision text instead of a separate section. ADR-001 to ADR-018 predate the rule and do not have the section. They are not edited to add it, because an Accepted ADR is superseded, not edited (CONTRIBUTING). ADR-016 is still open; the record that settles it will carry the lens.
 
 **Reading order:** ADRs 001-003 establish the foundations. Read those first, then jump to whichever ADRs are relevant to your area.
 
