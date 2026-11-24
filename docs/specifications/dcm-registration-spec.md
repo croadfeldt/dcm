@@ -56,8 +56,10 @@ provider_type_registry_entry:
   # What this provider type is permitted to do
   permissions:
     may_receive_assembled_payload: true
-    may_write_realized_state: true
-    may_write_discovered_state: true
+    # Providers never write DCM state directly (operator-interface-spec §7a.1).
+    # They submit; DCM validates, writes the state, and writes the audit record.
+    may_submit_realized_state: true            # realized_state_push / update notification; the API Gateway writes Realized State
+    may_submit_discovered_state: true          # discovery reports; the Discovery Service is the only writer of Discovered State
     may_receive_scoped_credentials: true
     may_receive_phi_by_default: false          # requires HIPAA accreditation
     may_receive_sovereign_data: false          # hard limit; never overridden
@@ -889,7 +891,7 @@ profiles, the following readiness gates must pass. These align with the DCM road
 |------|------------|-------------------|
 | `GATE-SP-01` | Simple OpenAPI Spec — declared at registration, URL reachable | all |
 | `GATE-SP-02` | Healthy API — health endpoint returns `{"status": "healthy"}` at activation | all |
-| `GATE-SP-03` | State Management — implements realized_state_push callback | all |
+| `GATE-SP-03` | State Management — implements realized_state_push callback (the provider submits; DCM writes Realized State) | all |
 | `GATE-SP-04` | Tenant Metadata — endpoint declared or implemented | standard+ |
 | `GATE-SP-05` | Prometheus Metrics — required metric families present at declared endpoint | standard+ |
 | `GATE-SP-06` | AEP.DEV Linting — OpenAPI spec passes AEP linter with no errors | standard+ |
